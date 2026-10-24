@@ -10,6 +10,7 @@ for (const locale of ["ar", "en"]) for (const session of ["", "user", "new"]) co
 
 const seeds = ["/", "/services", "/account", "/booking/branch", "/gift/BK-21414", "/v/LK-9F3K-7QPD", "/does-not-exist-404"];
 const bad = new Map(); // url -> {status, from}
+const assets = new Map(); // image path -> أول صفحة ظهرت فيها
 let total = 0;
 
 for (const { locale, session } of combos) {
@@ -42,6 +43,14 @@ for (const { locale, session } of combos) {
       continue;
     }
     const html = await res.text();
+    // الصور: src وsrcset وbackground-image: url(...) (بعد فك &quot;) — كل صورة بتتختبر مرة واحدة
+    const decoded = html.replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+    const found = [
+      ...[...decoded.matchAll(/\ssrc="([^"]+)"/g)].map((m) => m[1]),
+      ...[...decoded.matchAll(/\ssrcset="([^"]+)"/g)].flatMap((m) => m[1].split(",").map((s) => s.trim().split(/\s+/)[0])),
+      ...[...decoded.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)].map((m) => m[1]),
+    ];
+    for (const a of found) if (a.startsWith("/") && !a.startsWith("//") && !a.startsWith("/_next/static")) assets.set(a, assets.get(a) ?? url);
     for (const m of html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)) {
       let href = m[1].replace(/&amp;/g, "&");
       if (!href.startsWith("/") || href.startsWith("//")) continue;
@@ -53,6 +62,11 @@ for (const { locale, session } of combos) {
   console.log(`${locale}/${session || "guest"}: ${seen.size} URLs`);
 }
 
+for (const [a, from] of assets) {
+  const r = await fetch(base + a).catch((e) => ({ status: String(e) }));
+  if (r.status !== 200) bad.set(`[image] ${a}`, { status: r.status, from });
+}
+console.log(`images checked: ${assets.size}`);
 console.log(`requests: ${total}`);
 if (bad.size === 0) console.log("OK — no broken internal links");
 else {
