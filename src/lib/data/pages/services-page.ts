@@ -1,0 +1,30 @@
+// W2-25 · كل الخدمات (779:17880)
+export const servicesPage = {
+  title_ar: "خدمات العناية بالسيارات",
+  title_en: "Car care services",
+  description_ar: "اختر خدمة أو أكثر لترى مقدّمي الخدمة الذين يقدّمونها قريباً منك، وأسعارهم حسب نوع سيارتك.",
+  description_en: "Choose one or more services to see the providers near you who offer them, with prices for your car type.",
+  crumb_ar: "الخدمات",
+  crumb_en: "Services",
+  // شريط الاختيار (Selection bar)
+  selected_one_ar: "اخترت خدمة: {a}",
+  selected_one_en: "You chose one service: {a}",
+  selected_two_ar: "اخترت خدمتين: {a} + {b}",
+  selected_two_en: "You chose two services: {a} + {b}",
+  selected_many_ar: "اخترت {n} خدمات: {list}",
+  selected_many_en: "You chose {n} services: {list}",
+  together_ar: "تُحجزان معاً في زيارة واحدة وبدفع واحد",
+  together_en: "Booked together in one visit with one payment",
+  cta_one_ar: "اعرض مقدّمي الخدمة",
+  cta_one_en: "Show providers",
+  cta_two_ar: "اعرض مقدّمي الخدمتين",
+  cta_two_en: "Show providers for both",
+  cta_many_ar: "اعرض مقدّمي الخدمات",
+  cta_many_en: "Show providers for all",
+  // الحالة الافتراضية للاختيار في الفيجما + الأسماء بأداة التعريف في جملة الشريط
+  default_selected: ["nano-ceramic", "polish"] as const,
+  definite_ar: { "nano-ceramic": "النانو سيراميك" } as Record<string, string>,
+  definite_en: {} as Record<string, string>,
+  hint_ar: "اضغط على خدمة لإضافتها، أو «احجز» لعرض مقدّميها مباشرة.",
+  hint_en: "Tap a service to add it, or “Book” to see its providers right away.",
+};

@@ -1,0 +1,266 @@
+// W2-90 · لينكار لمقدّمي الخدمة · صفحة التعريف (758:12311)
+// W2-90b · طلب الانضمام · مقدّم خدمة (759:12657)
+import type { Card, Faq, Option, PageHead, Txt } from "./types";
+
+export const providersPage = {
+  head: {
+    crumb_ar: "لمقدّمي الخدمة",
+    crumb_en: "For service providers",
+    title_ar: "وصّل خدماتك لعملاء يبحثون عنها الآن",
+    title_en: "Connect your services with customers looking for them now",
+    description_ar:
+      "اعرض خدماتك وباقاتك وعروضك بصورها وأسعارها حسب نوع السيارة. يطلب العميل خدماتك ويدفع مقدماً، فيصلك الحجز مدفوعاً ومؤكداً — بدون تحصيل أو انتظار.",
+    description_en:
+      "Show your services, packages and offers with photos and prices by car type. Customers book and pay upfront, so every booking reaches you paid and confirmed — no collection, no waiting.",
+  } satisfies PageHead,
+  cta_join_ar: "قدّم طلب الانضمام",
+  cta_join_en: "Apply to join",
+  cta_console_ar: "دخول لوحة مقدّم الخدمة",
+  cta_console_en: "Provider dashboard sign-in",
+
+  why_title_ar: "لماذا تنضم إلى لينكار؟",
+  why_title_en: "Why join Linkar?",
+  why_body_ar: "منصة سعودية تربط مقدّمي خدمات العناية بالسيارات بعملاء جاهزين للحجز والدفع.",
+  why_body_en: "A Saudi platform connecting car care providers with customers ready to book and pay.",
+  // الترتيب من بداية السطر (يمين في العربي)
+  why: [
+    {
+      icon: "calendar",
+      title_ar: "حجوزات مؤكدة ومدفوعة",
+      title_en: "Confirmed, paid bookings",
+      body_ar: "العميل يدفع عند الحجز، فيصلك الحجز مؤكداً بسيارته وخدماته وفرعه.",
+      body_en: "Customers pay when booking, so each booking reaches you confirmed with the car, services and branch.",
+    },
+    {
+      icon: "map-pin",
+      title_ar: "عملاء من منطقتك",
+      title_en: "Customers in your area",
+      body_ar: "نعرض فروعك للعملاء الأقرب لها، مع الأسعار حسب حجم السيارة.",
+      body_en: "We show your branches to the nearest customers, with prices by car size.",
+    },
+    {
+      icon: "tag",
+      title_ar: "مستحقات منتظمة",
+      title_en: "Regular payouts",
+      body_ar: "نحوّل مستحقاتك دورياً مع كشف حساب واضح لكل حجز.",
+      body_en: "We transfer your payouts regularly with a clear statement for every booking.",
+    },
+    {
+      icon: "star",
+      title_ar: "سمعة تُبنى بالتقييمات",
+      title_en: "A reputation built on reviews",
+      body_ar: "تقييمات من حجوزات مكتملة فقط، وترد عليها من لوحتك.",
+      body_en: "Reviews from completed bookings only, and you reply from your dashboard.",
+    },
+  ] satisfies Card[],
+
+  tools: {
+    title_ar: "كل ما تحتاجه لإدارة حجوزاتك",
+    title_en: "Everything you need to manage your bookings",
+    body_ar: "لوحة مقدّم الخدمة على الويب وتطبيق مقدّم الخدمة على الجوال.",
+    body_en: "The provider dashboard on the web and the provider app on mobile.",
+    features: [
+      { text_ar: "الفروع وساعات العمل لكل فرع", text_en: "Branches and opening hours for each branch" },
+      { text_ar: "الكتالوج والصور والأسعار حسب حجم السيارة", text_en: "Catalog, photos and prices by car size" },
+      { text_ar: "العروض والباقات بزيارة واحدة أو عدة زيارات", text_en: "Offers and packages for one visit or several" },
+      { text_ar: "استلام السيارة بالقسيمة وتحديث حالة الحجز", text_en: "Car check-in by voucher and booking status updates" },
+      { text_ar: "المستحقات والفواتير وكشف الحساب", text_en: "Payouts, invoices and account statement" },
+      { text_ar: "التقييمات والشكاوى والرد عليها", text_en: "Reviews and complaints, and replying to them" },
+    ] satisfies Txt[],
+    // Preview · new booking
+    preview: {
+      badge_ar: "حجز جديد مؤكد",
+      badge_en: "New confirmed booking",
+      title_ar: "‏Johnson Ceramic Pro + تفصيل داخلي كامل",
+      title_en: "Johnson Ceramic Pro + full interior detailing",
+      meta_ar: "‏BK-21452 · تويوتا كامري 2023 · سيدان",
+      meta_en: "BK-21452 · Toyota Camry 2023 · Sedan",
+      rows: [
+        { label_ar: "القسيمة", label_en: "Voucher", value_ar: "صالحة 14 يوماً", value_en: "Valid for 14 days" },
+        { label_ar: "الفرع", label_en: "Branch", value_ar: "فرع الزهراء", value_en: "Al Zahraa branch" },
+        { label_ar: "الدفع", label_en: "Payment", value_ar: "مدفوع · 2,323 ر.س", value_en: "Paid · SAR 2,323" },
+      ],
+      checkin_ar: "استلام السيارة",
+      checkin_en: "Check in car",
+      voucher_ar: "عرض القسيمة",
+      voucher_en: "View voucher",
+    },
+  },
+
+  // «كيف تنضم؟» — عليه id="criteria" (معايير الاعتماد) لأن الصفحة مافيهاش قسم معايير منفصل
+  join_title_ar: "كيف تنضم؟",
+  join_title_en: "How to join",
+  join_body_ar: "لا رسوم تسجيل — العمولة على الحجوزات المكتملة فقط، حسب اتفاقية مقدّم الخدمة.",
+  join_body_en: "No registration fees — commission on completed bookings only, per the provider agreement.",
+  join: [
+    {
+      title_ar: "قدّم طلب الانضمام",
+      title_en: "Apply to join",
+      body_ar: "بيانات منشأتك وفروعك والخدمات التي تقدّمها.",
+      body_en: "Your business details, branches and the services you offer.",
+    },
+    {
+      title_ar: "مكالمة خلال يومي عمل",
+      title_en: "A call within two business days",
+      body_ar: "يراجع فريق الشراكات بياناتك ويجيب عن أسئلتك.",
+      body_en: "The partnerships team reviews your details and answers your questions.",
+    },
+    {
+      title_ar: "التقييم الميداني والعقد",
+      title_en: "Site assessment and contract",
+      body_ar: "نقيّم المركز بمعايير لينكار ونصنّفه، ونرسل العقد والعمولة.",
+      body_en: "We assess the center against Linkar criteria, rate it, and send the contract and commission.",
+    },
+    {
+      title_ar: "تفعيل صفحتك",
+      title_en: "Your page goes live",
+      body_ar: "تضيف خدماتك وأسعارك وفروعك، وتبدأ استقبال الحجوزات.",
+      body_en: "You add your services, prices and branches, and start receiving bookings.",
+    },
+  ] satisfies Card[],
+
+  faq_title_ar: "أسئلة شائعة",
+  faq_title_en: "FAQ",
+  faq: [
+    {
+      q_ar: "هل أحتاج لتأكيد كل حجز؟",
+      q_en: "Do I need to confirm every booking?",
+      a_ar: "لا. العميل يدفع عند الطلب، فيصلك الحجز مدفوعاً ومؤكداً تلقائياً.",
+      a_en: "No. The customer pays when ordering, so the booking reaches you paid and confirmed automatically.",
+    },
+    // [placeholder] الإجابات التالية مش ظاهرة في الفيجما (الأسئلة مقفولة)
+    {
+      q_ar: "متى تصلني مستحقاتي؟",
+      q_en: "When do I receive my payouts?",
+      a_ar: "[الإجابة غير موجودة في التصميم]",
+      a_en: "[Answer not in the design]",
+    },
+    {
+      q_ar: "هل يمكن أن أعرض أكثر من فرع؟",
+      q_en: "Can I list more than one branch?",
+      a_ar: "[الإجابة غير موجودة في التصميم]",
+      a_en: "[Answer not in the design]",
+    },
+    {
+      q_ar: "كيف يستلم العميل خدمته؟",
+      q_en: "How does the customer receive the service?",
+      a_ar: "[الإجابة غير موجودة في التصميم]",
+      a_en: "[Answer not in the design]",
+    },
+  ] satisfies Faq[],
+
+  band_title_ar: "جاهز لاستقبال حجوزات مؤكدة؟",
+  band_title_en: "Ready to receive confirmed bookings?",
+  band_body_ar: "قدّم طلبك الآن، ويتواصل معك فريق الشراكات خلال يومي عمل.",
+  band_body_en: "Apply now and the partnerships team will contact you within two business days.",
+};
+
+export const providerJoin = {
+  head: {
+    crumb_ar: "طلب الانضمام",
+    crumb_en: "Application",
+    title_ar: "انضم إلى لينكار كمقدّم خدمة",
+    title_en: "Join Linkar as a service provider",
+    description_ar: "أرسل بيانات منشأتك، ويراجعها فريق الشراكات ثم يتواصل معك. لا رسوم تسجيل.",
+    description_en: "Send your business details; the partnerships team reviews them and contacts you. No registration fees.",
+  } satisfies PageHead,
+  after_title_ar: "ماذا بعد الإرسال؟",
+  after_title_en: "What happens next?",
+  after: [
+    {
+      title_ar: "مكالمة خلال يومي عمل",
+      title_en: "A call within two business days",
+      body_ar: "يراجع فريق الشراكات بياناتك ويجيب عن أسئلتك.",
+      body_en: "The partnerships team reviews your details and answers your questions.",
+    },
+    {
+      title_ar: "التقييم الميداني",
+      title_en: "Site assessment",
+      body_ar: "نقيّم التجهيزات والجودة في الفرع الرئيسي بمعايير لينكار.",
+      body_en: "We assess equipment and quality at your main branch against Linkar criteria.",
+    },
+    {
+      title_ar: "العقد والتدريب",
+      title_en: "Contract and training",
+      body_ar: "نرسل العقد ونسبة العمولة، وندرّب فريقك على لوحة مقدّم الخدمة.",
+      body_en: "We send the contract and commission rate, and train your team on the provider dashboard.",
+    },
+    {
+      title_ar: "تفعيل صفحتك",
+      title_en: "Your page goes live",
+      body_ar: "تضيف خدماتك وأسعارك وفروعك، وتبدأ استقبال الحجوزات.",
+      body_en: "You add your services, prices and branches, and start receiving bookings.",
+    },
+  ] satisfies Card[],
+  have_account_ar: "لديك حساب؟",
+  have_account_en: "Already have an account?",
+  console_ar: "دخول لوحة مقدّم الخدمة",
+  console_en: "Provider dashboard sign-in",
+
+  s1_ar: "1. بيانات المنشأة",
+  s1_en: "1. Business details",
+  trade_name_ar: "الاسم التجاري",
+  trade_name_en: "Trade name",
+  trade_name_ph_ar: "كما في السجل التجاري",
+  trade_name_ph_en: "As in the commercial registration",
+  cr_ar: "رقم السجل التجاري",
+  cr_en: "Commercial registration number",
+  cr_ph_ar: "10 أرقام",
+  cr_ph_en: "10 digits",
+  city_ar: "المدينة",
+  city_en: "City",
+  vat_ar: "الرقم الضريبي (اختياري)",
+  vat_en: "VAT number (optional)",
+  vat_ph_ar: "15 رقماً",
+  vat_ph_en: "15 digits",
+  branches_ar: "عدد الفروع",
+  branches_en: "Number of branches",
+  branches_ph_ar: "اختر العدد",
+  branches_ph_en: "Choose",
+  location_ar: "موقع الفرع الرئيسي",
+  location_en: "Main branch location",
+  location_ph_ar: "رابط الموقع على الخريطة",
+  location_ph_en: "Map link to the location",
+
+  s2_ar: "2. الخدمات التي تقدّمها",
+  s2_en: "2. Services you offer",
+  s2_hint_ar: "اختر كل ما ينطبق — تضيف التفاصيل والأسعار بعد التفعيل.",
+  s2_hint_en: "Choose all that apply — you add details and prices after activation.",
+  // الترتيب من بداية السطر
+  services: [
+    { value: "wash", label_ar: "الغسيل", label_en: "Car wash" },
+    { value: "ppf", label_ar: "حماية PPF", label_en: "PPF protection" },
+    { value: "tint", label_ar: "التظليل", label_en: "Window tinting" },
+    { value: "polish", label_ar: "التلميع", label_en: "Polishing" },
+    { value: "nano-ceramic", label_ar: "النانو سيراميك", label_en: "Nano ceramic" },
+  ] satisfies Option[],
+
+  s3_ar: "3. المسؤول عن التواصل",
+  s3_en: "3. Contact person",
+  name_ar: "الاسم",
+  name_en: "Name",
+  name_ph_ar: "الاسم الكامل",
+  name_ph_en: "Full name",
+  role_ar: "المنصب",
+  role_en: "Position",
+  role_ph_ar: "مثال: مدير الفرع",
+  role_ph_en: "e.g. Branch manager",
+  phone_ar: "رقم الجوال",
+  phone_en: "Mobile number",
+  email_ar: "البريد الإلكتروني",
+  email_en: "Email",
+  email_ph: "name@company.sa",
+
+  s4_ar: "4. المرفقات",
+  s4_en: "4. Attachments",
+  cr_doc_ar: "السجل التجاري",
+  cr_doc_en: "Commercial registration",
+  photos_ar: "صور المنشأة والفروع (اختياري)",
+  photos_en: "Photos of the business and branches (optional)",
+  photos_hint_ar: "حتى 10 صور · JPG أو PNG",
+  photos_hint_en: "Up to 10 photos · JPG or PNG",
+  consent_ar: "أقر بصحة البيانات وأوافق على شروط مقدّمي الخدمة وسياسة الخصوصية.",
+  consent_en: "I confirm the details are correct and agree to the provider terms and privacy policy.",
+  submit_ar: "إرسال الطلب",
+  submit_en: "Submit application",
+};

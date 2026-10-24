@@ -1,0 +1,267 @@
+// W2-91 · لينكار للوكالات · باقات بأسعار الوكالات (758:12823)
+// W2-91b · طلب الانضمام · وكالة (759:13176)
+import type { Card, Option, PageHead } from "./types";
+
+export const dealersPage = {
+  head: {
+    crumb_ar: "لينكار للوكالات",
+    crumb_en: "Linkar for dealerships",
+    title_ar: "لينكار للوكالات",
+    title_en: "Linkar for dealerships",
+    description_ar:
+      "اشترِ باقات العناية من مقدّمي الخدمة المعتمدين بأسعار الوكالات، وأعد بيعها لعملائك بأسعارك، مع قسيمة لكل عميل يزور بها الفرع الذي تختاره.",
+    description_en:
+      "Buy care packages from certified providers at dealership prices and resell them to your customers at your own prices, with a voucher for each customer to visit the branch you choose.",
+  } satisfies PageHead,
+  cta_join_ar: "قدّم طلب الانضمام",
+  cta_join_en: "Apply to join",
+  cta_portal_ar: "دخول بوابة الوكالات",
+  cta_portal_en: "Dealer portal sign-in",
+
+  how_title_ar: "كيف يعمل البرنامج؟",
+  how_title_en: "How does the program work?",
+  step_label_ar: "الخطوة",
+  step_label_en: "Step",
+  steps: [
+    {
+      icon: "file",
+      title_ar: "سجّل وكالتك",
+      title_en: "Register your dealership",
+      body_ar: "قدّم بيانات الوكالة والسجل التجاري والرقم الضريبي والمفوّضين، وتعتمدها لينكار مع حد ائتمان أو رصيد مسبق.",
+      body_en: "Submit the dealership details, CR, VAT number and authorized people; Linkar approves them with a credit limit or prepaid balance.",
+    },
+    {
+      icon: "package",
+      title_ar: "اختر الباقات والكمية",
+      title_en: "Choose packages and quantity",
+      body_ar: "يختار المندوب الخدمات أو الباقات المتاحة للوكالات وعددها، والمدينة والفرع الذي سيزوره العميل.",
+      body_en: "Your rep chooses the services or packages available to dealerships, the quantity, and the city and branch the customer will visit.",
+    },
+    {
+      icon: "qr",
+      title_ar: "أصدر القسائم",
+      title_en: "Issue vouchers",
+      body_ar: "أضف اسم العميل وجواله، فتصدر قسيمة QR لكل باقة جاهزة للطباعة أو المشاركة، وتصل العميل رسالة من لينكار.",
+      body_en: "Add the customer’s name and mobile; a QR voucher is issued for each package, ready to print or share, and the customer gets a message from Linkar.",
+    },
+    {
+      icon: "map-pin",
+      title_ar: "يزور العميل الفرع",
+      title_en: "The customer visits the branch",
+      body_ar: "يتواصل العميل مع الفرع أو يزوره ويعرض القسيمة، فيتحقق منها مقدّم الخدمة ويكتمل الحجز.",
+      body_en: "The customer contacts or visits the branch and shows the voucher; the provider verifies it and the booking is completed.",
+    },
+  ] satisfies Card[],
+
+  pay: {
+    eyebrow_ar: "بدون دفع عند كل طلب",
+    eyebrow_en: "No payment on every order",
+    title_ar: "ادفع بالطريقة التي تناسب وكالتك",
+    title_en: "Pay the way that suits your dealership",
+    body_ar: "يتحقق النظام من الحد المتاح أو الرصيد عند كل طلب، ويؤكد الطلب ويصدر القسائم فوراً.",
+    body_en: "The system checks the available limit or balance on each order, confirms it and issues the vouchers instantly.",
+    options: [
+      {
+        icon: "calendar",
+        title_ar: "ائتمان شهري",
+        title_en: "Monthly credit",
+        body_ar: "اطلب الآن وادفع لاحقاً: فاتورة شهرية في اليوم الأول من كل شهر عن طلبات الشهر السابق، بمهلة سداد 30 يوماً.",
+        body_en: "Order now, pay later: a monthly invoice on the first of each month for the previous month’s orders, payable within 30 days.",
+      },
+      {
+        icon: "wallet",
+        title_ar: "رصيد مسبق",
+        title_en: "Prepaid balance",
+        body_ar: "اشحن رصيد الوكالة بتحويل بنكي، ويُخصم ثمن كل طلب من الرصيد مباشرة، مع تنبيه عند انخفاضه.",
+        body_en: "Top up the dealership balance by bank transfer; each order is deducted directly, with an alert when it runs low.",
+      },
+    ] satisfies Card[],
+  },
+
+  features_title_ar: "كل ما تحتاجه وكالتك",
+  features_title_en: "Everything your dealership needs",
+  features: [
+    {
+      icon: "tag",
+      title_ar: "أسعار الوكالات",
+      title_en: "Dealership prices",
+      body_ar: "أسعار متفق عليها لكل حجم سيارة، وتبيع لعملائك بسعرك وتصدر فاتورتك لهم.",
+      body_en: "Agreed prices for each car size; you sell to your customers at your price and issue your own invoice.",
+    },
+    {
+      icon: "users",
+      title_ar: "الفروع والمندوبون",
+      title_en: "Branches and reps",
+      body_ar: "حسابات منفصلة لمدير الحساب ومديري الفروع والمندوبين والمحاسبة، بصلاحيات لكل دور.",
+      body_en: "Separate accounts for the account manager, branch managers, reps and accounting, with permissions per role.",
+    },
+    {
+      icon: "qr",
+      title_ar: "قسائم للطباعة والمشاركة",
+      title_en: "Vouchers to print and share",
+      body_ar: "ورقة تأكيد لكل طلب أو بطاقة لكل عميل، وتصل العميل رسالة نصية من لينكار برابط القسيمة.",
+      body_en: "A confirmation sheet per order or a card per customer, and the customer gets a text from Linkar with the voucher link.",
+    },
+    {
+      icon: "receipt",
+      title_ar: "فاتورة شهرية وكشف حساب",
+      title_en: "Monthly invoice and statement",
+      body_ar: "فاتورة واحدة كل شهر وكشف حساب يوضح الطلبات والقسائم المستخدمة والملغاة.",
+      body_en: "One invoice a month and a statement showing orders and used and cancelled vouchers.",
+    },
+  ] satisfies Card[],
+
+  customer: {
+    title_ar: "ماذا يرى عميلك؟",
+    title_en: "What does your customer see?",
+    body_ar:
+      "تصل العميل رسالة من لينكار باسم وكالتك والباقة والفرع، ويجد الباقة في حسابه مع قسيمتها. لا يدفع العميل شيئاً عبر لينكار، ولا يحتاج إلى أي خطوة سوى عرض القسيمة في الفرع.",
+    body_en:
+      "The customer gets a message from Linkar with your dealership’s name, the package and the branch, and finds the package and its voucher in their account. They pay nothing through Linkar and only need to show the voucher at the branch.",
+    sms_from_ar: "رسالة نصية من LINKAR",
+    sms_from_en: "Text message from LINKAR",
+    sms_ar: "لديك باقة Johnson Ceramic Pro من الريادة للسيارات. اعرض القسيمة عند زيارتك جونسون Johnson · فرع الزهراء: lnkr.sa/v/…",
+    sms_en: "You have a Johnson Ceramic Pro package from Al Riyada Motors. Show the voucher when you visit Johnson · Al Zahraa branch: lnkr.sa/v/…",
+  },
+
+  join_title_ar: "كيف تنضم؟",
+  join_title_en: "How to join",
+  join: [
+    {
+      icon: "file",
+      title_ar: "قدّم الطلب",
+      title_en: "Apply",
+      body_ar: "بيانات الوكالة والسجل التجاري والرقم الضريبي والمفوّضين وطريقة الدفع المفضلة.",
+      body_en: "Dealership details, CR, VAT number, authorized people and preferred payment method.",
+    },
+    {
+      icon: "check",
+      title_ar: "اعتماد لينكار",
+      title_en: "Linkar approval",
+      body_ar: "نراجع الطلب ونعتمد حد الائتمان أو الرصيد المسبق لوكالتك.",
+      body_en: "We review the application and approve your credit limit or prepaid balance.",
+    },
+    {
+      icon: "users",
+      title_ar: "أضف فروعك ومندوبيك",
+      title_en: "Add your branches and reps",
+      body_ar: "تصلك رسالة بدخول بوابة الوكالات، فتضيف الفروع والمستخدمين وتبدأ أول طلب.",
+      body_en: "You get a message to sign in to the dealer portal, add branches and users, and place your first order.",
+    },
+  ] satisfies Card[],
+
+  band_title_ar: "ابدأ بيع باقات العناية لعملائك",
+  band_title_en: "Start selling care packages to your customers",
+  band_body_ar: "نراجع طلبك ونتواصل معك لإكمال الاعتماد وإعداد حساب وكالتك.",
+  band_body_en: "We review your application and contact you to complete approval and set up your dealership account.",
+};
+
+export const dealerJoin = {
+  head: {
+    crumb_ar: "طلب الانضمام",
+    crumb_en: "Application",
+    title_ar: "طلب الانضمام · وكالة",
+    title_en: "Application · Dealership",
+    description_ar: "أدخل بيانات الوكالة والمفوّضين وطريقة الدفع المفضلة، وسنراجع الطلب ونتواصل معك.",
+    description_en: "Enter the dealership details, authorized people and preferred payment method; we’ll review and contact you.",
+  } satisfies PageHead,
+  after_title_ar: "ماذا بعد الإرسال؟",
+  after_title_en: "What happens next?",
+  after: [
+    { text_ar: "نراجع بيانات الوكالة والسجل التجاري والرقم الضريبي", text_en: "We review the dealership details, CR and VAT number" },
+    { text_ar: "نعتمد حد الائتمان أو الرصيد المسبق", text_en: "We approve the credit limit or prepaid balance" },
+    { text_ar: "تصلك رسالة بدخول بوابة الوكالات", text_en: "You get a message to sign in to the dealer portal" },
+    { text_ar: "تضيف فروعك ومندوبيك وتبدأ أول طلب", text_en: "You add your branches and reps and place your first order" },
+  ],
+  have_account_ar: "لديك حساب في بوابة الوكالات؟",
+  have_account_en: "Already have a dealer portal account?",
+  portal_ar: "دخول بوابة الوكالات",
+  portal_en: "Dealer portal sign-in",
+
+  s1_ar: "1. بيانات الوكالة",
+  s1_en: "1. Dealership details",
+  name_ar: "اسم الوكالة",
+  name_en: "Dealership name",
+  name_ph_ar: "كما في السجل التجاري",
+  name_ph_en: "As in the commercial registration",
+  city_ar: "المدينة الرئيسية",
+  city_en: "Main city",
+  city_ph_ar: "ابحث عن المدينة",
+  city_ph_en: "Search for the city",
+  cr_ar: "رقم السجل التجاري",
+  cr_en: "Commercial registration number",
+  cr_ph_ar: "10 أرقام",
+  cr_ph_en: "10 digits",
+  vat_ar: "الرقم الضريبي (VAT)",
+  vat_en: "VAT number",
+  vat_ph_ar: "15 رقماً",
+  vat_ph_en: "15 digits",
+  cr_doc_ar: "السجل التجاري (PDF)",
+  cr_doc_en: "Commercial registration (PDF)",
+  vat_doc_ar: "شهادة ضريبة القيمة المضافة (PDF)",
+  vat_doc_en: "VAT certificate (PDF)",
+
+  s2_ar: "2. المفوّضون",
+  s2_en: "2. Authorized people",
+  s2_hint_ar: "الأشخاص المخوّلون بإدارة حساب الوكالة واعتماد الطلبات.",
+  s2_hint_en: "People authorized to manage the dealership account and approve orders.",
+  person_ar: "اسم المفوّض",
+  person_en: "Authorized person’s name",
+  person_ph_ar: "الاسم الكامل",
+  person_ph_en: "Full name",
+  role_ar: "المنصب",
+  role_en: "Position",
+  role_ph_ar: "مثال: مدير المبيعات",
+  role_ph_en: "e.g. Sales manager",
+  phone_ar: "رقم الجوال",
+  phone_en: "Mobile number",
+  email_ar: "البريد الإلكتروني",
+  email_en: "Email",
+  email_ph: "name@company.sa",
+  add_person_ar: "إضافة مفوّض آخر",
+  add_person_en: "Add another authorized person",
+  remove_person_ar: "حذف",
+  remove_person_en: "Remove",
+
+  s3_ar: "3. الدفع والحجم المتوقع",
+  s3_en: "3. Payment and expected volume",
+  s3_hint_ar: "تحدد لينكار حد الائتمان أو تفعّل الرصيد المسبق عند اعتماد الطلب.",
+  s3_hint_en: "Linkar sets the credit limit or activates the prepaid balance when approving the application.",
+  // الترتيب من بداية السطر — «ائتمان شهري» محدد افتراضياً زي الفيجما
+  payment: [
+    {
+      value: "credit",
+      title_ar: "ائتمان شهري",
+      title_en: "Monthly credit",
+      body_ar: "فاتورة شهرية بمهلة سداد 30 يوماً بعد اعتماد حد الائتمان.",
+      body_en: "A monthly invoice payable within 30 days once the credit limit is approved.",
+    },
+    {
+      value: "prepaid",
+      title_ar: "رصيد مسبق",
+      title_en: "Prepaid balance",
+      body_ar: "تشحن الرصيد بتحويل بنكي ويُخصم عند كل طلب.",
+      body_en: "You top up by bank transfer and it’s deducted on every order.",
+    },
+  ],
+  volume_ar: "عدد الباقات المتوقع شهرياً",
+  volume_en: "Expected packages per month",
+  volume_ph_ar: "اختر النطاق",
+  volume_ph_en: "Choose a range",
+  cities_ar: "المدن التي تعمل بها",
+  cities_en: "Cities you operate in",
+  cities_ph_ar: "ابحث وأضف مدينة",
+  cities_ph_en: "Search and add a city",
+  consent_ar: "أقرّ بصحة البيانات وأوافق على شروط لينكار للوكالات",
+  consent_en: "I confirm the details are correct and agree to the Linkar for dealerships terms",
+  submit_ar: "إرسال الطلب",
+  submit_en: "Submit application",
+};
+
+// [placeholder] نطاقات «عدد الباقات المتوقع شهرياً» مش موجودة في الفيجما
+export const volumeRanges: Option[] = [
+  { value: "lt20", label_ar: "أقل من 20", label_en: "Fewer than 20" },
+  { value: "20-50", label_ar: "20 – 50", label_en: "20 – 50" },
+  { value: "51-100", label_ar: "51 – 100", label_en: "51 – 100" },
+  { value: "gt100", label_ar: "أكثر من 100", label_en: "More than 100" },
+];

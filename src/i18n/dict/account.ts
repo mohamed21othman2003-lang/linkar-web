@@ -1,0 +1,408 @@
+import type { Locale } from "@/i18n/config";
+
+// نصوص واجهة حساب العميل (الجزء الأول): الرئيسية W2-60 · حجوزاتي W2-38 · متابعة الحجز W2-37 · القسيمة W2-37v ·
+// التقييم W2-63 · الإشعارات W2-73 · الإعدادات W2-72 · النوافذ المنبثقة P-01/02/03a/03b/06/07/08/10x.
+// العربي من الفيجما بالحرف؛ الإنجليزي ترجمتنا (للمراجعة). المحتوى نفسه (حجوزات، عروض، عناوين) في lib/data/account.
+const ar = {
+  // عام
+  close: "إغلاق",
+  cancel: "إلغاء",
+  newBooking: "حجز جديد",
+  account: "حسابي",
+  bookingsCrumb: "حجوزاتي",
+  allOffers: "كل العروض",
+  browseOffers: "تصفّح العروض",
+  later: "لاحقاً",
+
+  // حالات الحجز (الشارة في الجدول والرئيسية)
+  status: { waiting: "بانتظار الزيارة", in_service: "في الخدمة", completed: "مكتمل", cancelled: "ملغى · مسترد" },
+
+  // W2-60 · الرئيسية
+  overview: {
+    greeting: (name: string) => `أهلاً ${name}`,
+    subtitle: "حجوزاتك ونقاطك وهداياك في مكان واحد.",
+    nextBooking: "حجزك القادم",
+    viewVoucher: "عرض القسيمة",
+    bookingDetails: "تفاصيل الحجز",
+    inProgress: "يُنفَّذ الآن",
+    trackBooking: "تابع الحجز",
+    stats: { cars: "سياراتي", favorites: "المفضلة", gifts: "الهدايا", points: "النقاط" },
+    rateTitle: (provider: string) => `كيف كانت تجربتك مع ${provider}؟`,
+    rateCta: "قيّم واكسب 50 نقطة",
+    offersTitle: "جديد من مقدّمي خدمة تتابعهم",
+    offersSub: "تصلك عروضهم أولاً — ويمكنك إيقاف التنبيهات من الإعدادات.",
+    // W2-60-0 · عميل جديد
+    onboardingTitle: "ابدأ مع لينكار في 3 خطوات",
+    onboardingSub: "أكمل هذه الخطوات لتظهر لك الأسعار المناسبة لسيارتك وتحجز أول خدمة.",
+    emptyBookingsTitle: "لا توجد حجوزات بعد",
+    emptyBookingsSub: "حجوزاتك وقسائمها ستظهر هنا بعد أول حجز.",
+    newOffersTitle: "عروض قد تهمك",
+    newOffersSub: "أحدث العروض من مقدّمي الخدمة المعتمدين بالقرب منك.",
+  },
+
+  // W2-38 · حجوزاتي
+  bookings: {
+    title: "حجوزاتي",
+    subtitle: "كل حجوزاتك في مكان واحد، مع حالتها وقسائمها.",
+    tabs: { all: "الكل", upcoming: "القادمة", completed: "المكتملة", cancelled: "الملغاة" },
+    search: "ابحث برقم الحجز أو مقدّم الخدمة",
+    period: "الفترة:",
+    periods: { "3m": "آخر 3 أشهر", "6m": "آخر 6 أشهر", year: "هذه السنة", all: "كل الفترات" },
+    car: "السيارة:",
+    allCars: "كل السيارات",
+    cols: { id: "رقم الحجز", provider: "مقدّم الخدمة والخدمات", date: "تاريخ الحجز والفرع", car: "السيارة", amount: "المبلغ", status: "الحالة" },
+    actions: { voucher: "القسيمة", track: "تتبّع", rate: "قيّم", invoice: "الفاتورة", details: "التفاصيل" },
+    // «يعرض 5 من 5 حجوزات» في تبويب الكل و«يعرض 2 من 2» في الباقي (زي الفيجما)
+    showing: (n: number, total: number, all: boolean) => `يعرض ${n} من ${total}${all ? " حجوزات" : ""}`,
+    noResults: "لا توجد حجوزات مطابقة",
+    prev: "الصفحة السابقة",
+    next: "الصفحة التالية",
+    emptyTitle: "لا توجد حجوزات بعد",
+    emptySub: "عند حجز خدمة ستظهر هنا مع قسيمتها وحالتها خطوة بخطوة.",
+    findService: "ابحث عن خدمة",
+  },
+
+  // W2-37 · متابعة الحجز
+  booking: {
+    title: (id: string) => `حجز رقم ${id}`,
+    directions: "الاتجاهات",
+    activity: "سجل الحجز",
+    invoice: "تحميل الفاتورة الضريبية (PDF)",
+    openVoucher: "عرض القسيمة كاملة",
+    contactBranch: "تواصل مع الفرع",
+    contactSupport: "تواصل مع الدعم",
+    supportSub: "نرد عادةً خلال دقائق",
+    rate: "قيّم الخدمة",
+    rateSub: (provider: string) => `شاركنا تجربتك مع ${provider}`,
+    walletGoogle: "إضافة إلى محفظة Google",
+    walletApple: "إضافة إلى Apple Wallet",
+  },
+
+  // W2-37v · القسيمة كاملة
+  voucher: {
+    label: "قسيمة خدمة",
+    validUntil: (d: string) => `صالحة حتى ${d}`,
+    show: "أظهر الرمز لموظف الفرع عند وصولك",
+    rows: { id: "رقم الحجز", car: "السيارة", services: "الخدمات", paid: "المدفوع", paidAt: "تاريخ الدفع", warranty: "الضمان" },
+    note: "قسيمة لاستخدام واحد خلال صلاحيتها، والضمان موثّق برقمها.",
+    share: "مشاركة",
+    pdf: "تنزيل PDF",
+  },
+
+  // W2-63 · تقييم الخدمة
+  rating: {
+    title: "قيّم خدمتك",
+    overall: "تقييمك العام",
+    // الفيجما فيها «جيد جداً» لـ4 نجوم بس — باقي التسميات ناقصة (مذكورة في التقرير)
+    labels: ["—", "—", "—", "جيد جداً", "—"],
+    criteria: ["جودة العمل", "العناية بالسيارة ونظافتها", "التعامل والتواصل", "القيمة مقابل السعر"],
+    commentLabel: "اكتب رأيك",
+    addPhotos: "أضف صوراً (اختياري)",
+    photosAdded: (n: number) => `أُرفقت ${n} صورة`,
+    publicNote: (name: string) => `يظهر تقييمك باسم «${name}»، ويستطيع مقدّم الخدمة الرد عليه مرة واحدة. تُضاف 50 نقطة لرصيدك بعد النشر.`,
+    complaintQ: "عندك ملاحظة على التنفيذ؟",
+    complaintCta: "افتح شكوى",
+    publish: "نشر التقييم",
+    star: (n: number) => `${n} من 5`,
+  },
+
+  // W2-73 · الإشعارات
+  notifications: {
+    title: "الإشعارات",
+    subtitle: "كل ما يخص حجوزاتك ونقاطك وهداياك وشكاواك.",
+    markAllRead: "تحديد الكل كمقروء",
+    alertSettings: "إعدادات التنبيهات",
+    tabs: { all: "الكل", bookings: "الحجوزات", offers: "العروض", points: "النقاط والهدايا", complaints: "الشكاوى" },
+    groups: { today: "اليوم", yesterday: "أمس", week: "هذا الأسبوع" },
+    unread: "غير مقروء",
+    emptyTitle: "لا توجد إشعارات",
+    emptySub: "ستصلك هنا تحديثات حجوزاتك وقسائمك والعروض والهدايا.",
+  },
+
+  // W2-72 · الإعدادات
+  settings: {
+    title: "الإعدادات",
+    subtitle: "بياناتك وعناوينك والتنبيهات التي تصلك ولغة الموقع.",
+    profile: "بياناتي",
+    firstName: "الاسم الأول",
+    lastName: "اسم العائلة",
+    phone: "رقم الجوال",
+    change: "تغيير",
+    phoneNote: "تغيير الرقم يحتاج رمز تحقق على الرقم الجديد، وتبقى هداياك مرتبطة بالرقم المسجّل لدى الوكالة.",
+    email: "البريد الإلكتروني (اختياري)",
+    emailPlaceholder: "أضف بريدك لاستلام الفواتير",
+    save: "حفظ التغييرات",
+    addresses: "عناويني",
+    addressesSub: "نستخدم العنوان المختار لعرض الفروع الأقرب لك — ويمكنك السماح بموقعك الحالي بدلاً منه.",
+    selected: "المختار حالياً",
+    edit: "تعديل",
+    addAddress: "أضف عنواناً",
+    alerts: "التنبيهات",
+    language: "اللغة",
+    privacy: "الخصوصية والحساب",
+    downloadData: "تحميل بياناتي",
+    deleteAccount: "حذف الحساب نهائياً",
+    deleteRule: "لا يمكن حذف الحساب وعندك حجز مدفوع لم يكتمل. عند الحذف تُحذف النقاط والهدايا غير المستخدمة، ونحتفظ بالفواتير كما يلزم النظام. لا يمكن التراجع.",
+  },
+
+  // النوافذ المنبثقة
+  popups: {
+    p01: {
+      title: "تغيير رقم الجوال",
+      body: "سنرسل رمز تحقق إلى الرقم الجديد. تبقى هداياك مرتبطة بالرقم المسجّل لدى الوكالة.",
+      current: "الرقم الحالي",
+      next: "رقم الجوال الجديد",
+      placeholder: "50 987 6543",
+      send: "إرسال الرمز",
+    },
+    p02: {
+      title: "أدخل رمز التحقق",
+      body: (phone: string) => `أرسلنا رمزاً من 4 أرقام إلى ‎${phone}‎`,
+      resendIn: (t: string) => `إعادة إرسال الرمز بعد ${t}`,
+      resend: "إعادة إرسال الرمز",
+      digit: (n: number) => `الرقم ${n}`,
+      confirm: "تأكيد الرقم",
+      edit: "تعديل الرقم",
+    },
+    p03a: {
+      title: "لا يمكن حذف الحساب الآن",
+      body: (ids: string[]) => `لديك حجوزات مدفوعة لم تكتمل: ${ids.join(" و")}. يمكنك حذف الحساب بعد اكتمالها.`,
+      viewBookings: "عرض حجوزاتي",
+    },
+    p03b: {
+      title: "حذف الحساب نهائياً؟",
+      body: (points: string) => `تُحذف النقاط (${points} نقطة) والهدايا غير المستخدمة، ونحتفظ بالفواتير كما يلزم النظام. لا يمكن التراجع.`,
+      confirm: "أفهم أن حذف الحساب نهائي",
+      delete: "حذف الحساب",
+    },
+    p06: { title: "تسجيل الخروج؟", body: "ستحتاج رمز تحقق على جوالك للدخول مرة أخرى.", confirm: "تسجيل الخروج" },
+    p07: {
+      title: "تواصل مع الفرع",
+      call: "اتصال بالفرع",
+      callSub: "مكالمة مباشرة مع موظف الفرع",
+      whatsapp: "واتساب",
+      whatsappSub: "محادثة مع الفرع على واتساب",
+      directions: "الاتجاهات",
+      directionsSub: "افتح موقع الفرع على الخريطة",
+      note: (id: string) => `اذكر رقم حجزك ${id} عند التواصل مع الفرع.`,
+    },
+    p08: {
+      title: "مشاركة القسيمة",
+      body: "من يحمل الرابط يستطيع عرض القسيمة واستخدامها في الفرع.",
+      copy: "نسخ",
+      email: "البريد",
+      sms: "رسالة نصية",
+      whatsapp: "واتساب",
+      copyLink: "نسخ الرابط",
+    },
+  },
+
+  // رسائل سريعة P-10x (تختفي بعد ثانيتين)
+  toasts: {
+    copied: "تم نسخ الرابط",
+    downloading: "جارٍ تنزيل الملف (PDF)…",
+    saved: "تم حفظ التغييرات",
+    allRead: "تم تحديد كل الإشعارات كمقروءة",
+    dataFile: "سنرسل ملف بياناتك إلى جوالك خلال 24 ساعة",
+    wallet: "أُضيفت القسيمة إلى محفظتك",
+    photo: "أُرفقت الصورة",
+  },
+};
+
+const en: typeof ar = {
+  close: "Close",
+  cancel: "Cancel",
+  newBooking: "New booking",
+  account: "My account",
+  bookingsCrumb: "My bookings",
+  allOffers: "All offers",
+  browseOffers: "Browse offers",
+  later: "Later",
+
+  status: { waiting: "Awaiting visit", in_service: "In service", completed: "Completed", cancelled: "Cancelled · Refunded" },
+
+  overview: {
+    greeting: (name: string) => `Hi ${name}`,
+    subtitle: "Your bookings, points and gifts in one place.",
+    nextBooking: "Your next booking",
+    viewVoucher: "View voucher",
+    bookingDetails: "Booking details",
+    inProgress: "In progress now",
+    trackBooking: "Track booking",
+    stats: { cars: "My cars", favorites: "Favorites", gifts: "Gifts", points: "Points" },
+    rateTitle: (provider: string) => `How was your experience with ${provider}?`,
+    rateCta: "Rate and earn 50 points",
+    offersTitle: "New from providers you follow",
+    offersSub: "Their offers reach you first — you can turn these alerts off in Settings.",
+    onboardingTitle: "Get started with Linkar in 3 steps",
+    onboardingSub: "Complete these steps to see the right prices for your car and book your first service.",
+    emptyBookingsTitle: "No bookings yet",
+    emptyBookingsSub: "Your bookings and their vouchers will show here after your first booking.",
+    newOffersTitle: "Offers you may like",
+    newOffersSub: "The latest offers from certified providers near you.",
+  },
+
+  bookings: {
+    title: "My bookings",
+    subtitle: "All your bookings in one place, with their status and vouchers.",
+    tabs: { all: "All", upcoming: "Upcoming", completed: "Completed", cancelled: "Cancelled" },
+    search: "Search booking no. or provider",
+    period: "Period:",
+    periods: { "3m": "Last 3 months", "6m": "Last 6 months", year: "This year", all: "All time" },
+    car: "Car:",
+    allCars: "All cars",
+    cols: { id: "Booking no.", provider: "Provider and services", date: "Booking date and branch", car: "Car", amount: "Amount", status: "Status" },
+    actions: { voucher: "Voucher", track: "Track", rate: "Rate", invoice: "Invoice", details: "Details" },
+    showing: (n: number, total: number) => `Showing ${n} of ${total} bookings`,
+    noResults: "No matching bookings",
+    prev: "Previous page",
+    next: "Next page",
+    emptyTitle: "No bookings yet",
+    emptySub: "When you book a service it will show here with its voucher and status, step by step.",
+    findService: "Find a service",
+  },
+
+  booking: {
+    title: (id: string) => `Booking ${id}`,
+    directions: "Directions",
+    activity: "Booking log",
+    invoice: "Download tax invoice (PDF)",
+    openVoucher: "View full voucher",
+    contactBranch: "Contact the branch",
+    contactSupport: "Contact support",
+    supportSub: "We usually reply within minutes",
+    rate: "Rate the service",
+    rateSub: (provider: string) => `Tell us about your experience with ${provider}`,
+    walletGoogle: "Add to Google Wallet",
+    walletApple: "Add to Apple Wallet",
+  },
+
+  voucher: {
+    label: "Service voucher",
+    validUntil: (d: string) => `Valid until ${d}`,
+    show: "Show the code to the branch staff when you arrive",
+    rows: { id: "Booking no.", car: "Car", services: "Services", paid: "Paid", paidAt: "Payment date", warranty: "Warranty" },
+    note: "Single-use voucher within its validity; the warranty is registered under its number.",
+    share: "Share",
+    pdf: "Download PDF",
+  },
+
+  rating: {
+    title: "Rate your service",
+    overall: "Your overall rating",
+    labels: ["—", "—", "—", "Very good", "—"],
+    criteria: ["Quality of work", "Care and cleanliness of the car", "Service and communication", "Value for money"],
+    commentLabel: "Write your review",
+    addPhotos: "Add photos (optional)",
+    photosAdded: (n: number) => `${n} photo(s) attached`,
+    publicNote: (name: string) =>
+      `Your review appears as “${name}”, and the provider can reply to it once. 50 points are added to your balance after publishing.`,
+    complaintQ: "Have a remark about the work?",
+    complaintCta: "Open a complaint",
+    publish: "Publish review",
+    star: (n: number) => `${n} of 5`,
+  },
+
+  notifications: {
+    title: "Notifications",
+    subtitle: "Everything about your bookings, points, gifts and complaints.",
+    markAllRead: "Mark all as read",
+    alertSettings: "Alert settings",
+    tabs: { all: "All", bookings: "Bookings", offers: "Offers", points: "Points and gifts", complaints: "Complaints" },
+    groups: { today: "Today", yesterday: "Yesterday", week: "This week" },
+    unread: "Unread",
+    emptyTitle: "No notifications",
+    emptySub: "Updates on your bookings, vouchers, offers and gifts will reach you here.",
+  },
+
+  settings: {
+    title: "Settings",
+    subtitle: "Your details, addresses, the alerts you receive and the site language.",
+    profile: "My details",
+    firstName: "First name",
+    lastName: "Last name",
+    phone: "Mobile number",
+    change: "Change",
+    phoneNote: "Changing your number needs a verification code on the new number; your gifts stay linked to the number registered with the dealer.",
+    email: "Email (optional)",
+    emailPlaceholder: "Add your email to receive invoices",
+    save: "Save changes",
+    addresses: "My addresses",
+    addressesSub: "We use the selected address to show the branches nearest to you — or you can allow your current location instead.",
+    selected: "Selected",
+    edit: "Edit",
+    addAddress: "Add an address",
+    alerts: "Alerts",
+    language: "Language",
+    privacy: "Privacy and account",
+    downloadData: "Download my data",
+    deleteAccount: "Delete account permanently",
+    deleteRule:
+      "You can’t delete your account while you have a paid booking that isn’t completed. Deleting removes unused points and gifts; we keep invoices as required by law. This can’t be undone.",
+  },
+
+  popups: {
+    p01: {
+      title: "Change mobile number",
+      body: "We’ll send a verification code to the new number. Your gifts stay linked to the number registered with the dealer.",
+      current: "Current number",
+      next: "New mobile number",
+      placeholder: "50 987 6543",
+      send: "Send code",
+    },
+    p02: {
+      title: "Enter the verification code",
+      body: (phone: string) => `We sent a 4-digit code to ${phone}`,
+      resendIn: (t: string) => `Resend code in ${t}`,
+      resend: "Resend code",
+      digit: (n: number) => `Digit ${n}`,
+      confirm: "Confirm number",
+      edit: "Edit number",
+    },
+    p03a: {
+      title: "You can’t delete your account now",
+      body: (ids: string[]) => `You have paid bookings that aren’t completed: ${ids.join(" and ")}. You can delete your account once they’re completed.`,
+      viewBookings: "View my bookings",
+    },
+    p03b: {
+      title: "Delete account permanently?",
+      body: (points: string) =>
+        `Your points (${points} points) and unused gifts will be deleted; we keep invoices as required by law. This can’t be undone.`,
+      confirm: "I understand that deleting my account is permanent",
+      delete: "Delete account",
+    },
+    p06: { title: "Sign out?", body: "You’ll need a verification code on your phone to sign in again.", confirm: "Sign out" },
+    p07: {
+      title: "Contact the branch",
+      call: "Call the branch",
+      callSub: "A direct call with the branch staff",
+      whatsapp: "WhatsApp",
+      whatsappSub: "Chat with the branch on WhatsApp",
+      directions: "Directions",
+      directionsSub: "Open the branch location on the map",
+      note: (id: string) => `Mention your booking number ${id} when contacting the branch.`,
+    },
+    p08: {
+      title: "Share voucher",
+      body: "Anyone with the link can view the voucher and use it at the branch.",
+      copy: "Copy",
+      email: "Email",
+      sms: "Text message",
+      whatsapp: "WhatsApp",
+      copyLink: "Copy link",
+    },
+  },
+
+  toasts: {
+    copied: "Link copied",
+    downloading: "Downloading file (PDF)…",
+    saved: "Changes saved",
+    allRead: "All notifications marked as read",
+    dataFile: "We’ll send your data file to your phone within 24 hours",
+    wallet: "Voucher added to your wallet",
+    photo: "Photo attached",
+  },
+};
+
+export const getAccountDict = (locale: Locale) => (locale === "en" ? en : ar);
+export type AccountDict = typeof ar;

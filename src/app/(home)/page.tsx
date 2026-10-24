@@ -1,0 +1,94 @@
+import type { Metadata } from "next";
+import { getLocale } from "@/i18n/locale";
+import { tx } from "@/i18n/config";
+import { getCommon } from "@/i18n/dict/common";
+import { getHomeDict } from "@/i18n/dict/home";
+import { getSession } from "@/lib/server/session";
+import { getPartnerLogos, getProviders, getProvidersBySlugs, getServices } from "@/lib/server/content";
+import { getFeaturedOfferEndsAt, getHomeContent, homeHref } from "@/lib/server/home";
+import { HomeHero } from "@/components/home/HomeHero";
+import { LocationModal } from "@/components/home/LocationModal";
+import { AppBand, AppBandGuest } from "@/components/home/AppBand";
+import { ForYouBand } from "@/components/home/signed-in/ForYouBand";
+import { HowItWorksBand } from "@/components/home/signed-in/HowItWorksBand";
+import { ServicesBand } from "@/components/home/signed-in/ServicesBand";
+import { ProvidersBand } from "@/components/home/signed-in/ProvidersBand";
+import { OffersBand } from "@/components/home/signed-in/OffersBand";
+import { PackagesBand } from "@/components/home/signed-in/PackagesBand";
+import { ReviewsBand } from "@/components/home/signed-in/ReviewsBand";
+import { DealerBand } from "@/components/home/signed-in/DealerBand";
+import { ServicesExplorer } from "@/components/home/guest/ServicesExplorer";
+import { FeaturesBand } from "@/components/home/guest/FeaturesBand";
+import { ProvidersGuestBand } from "@/components/home/guest/ProvidersGuestBand";
+import { OffersGuestBand } from "@/components/home/guest/OffersGuestBand";
+import { HowItWorksGuest } from "@/components/home/guest/HowItWorksGuest";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const d = getHomeDict(await getLocale());
+  return { title: d.metaTitle, description: d.metaDescription };
+}
+
+// الرئيسية: V2-01 (557:2) للعميل المسجّل · V2-02 (600:2964) للزائر — حسب getSession()
+export default async function Home() {
+  const [locale, user, content, providers, services, logos, endsAt] = await Promise.all([
+    getLocale(),
+    getSession(),
+    getHomeContent(),
+    getProviders(),
+    getServices(),
+    getPartnerLogos(),
+    getFeaturedOfferEndsAt(),
+  ]);
+  const t = getCommon(locale);
+  const s = (x: { text_ar: string; text_en: string }) => tx(locale, x, "text");
+  const m = content.locationModal;
+  const a = content.anchors;
+
+  return (
+    <>
+      <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={user ? a.forYou : a.services} />
+      {user ? (
+        <>
+          <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+          <HowItWorksBand locale={locale} content={content} providers={providers} />
+          <ServicesBand
+            locale={locale}
+            content={content}
+            items={await Promise.all(services.map(async (service) => ({ service, providers: await getProvidersBySlugs(service.featured_providers) })))}
+          />
+          <ProvidersBand locale={locale} content={content} providers={providers} services={services} logos={logos} />
+          <OffersBand locale={locale} content={content} providers={providers} endsAt={endsAt} />
+          <PackagesBand locale={locale} content={content} providers={providers} />
+          <AppBand id={a.app} locale={locale} content={content} />
+          <ReviewsBand locale={locale} content={content} />
+          <DealerBand locale={locale} content={content} />
+        </>
+      ) : (
+        <>
+          <ServicesExplorer id={a.services} locale={locale} content={content} providers={providers} services={services} />
+          <FeaturesBand locale={locale} content={content} providers={providers} />
+          <ProvidersGuestBand locale={locale} content={content} providers={providers} services={services} logos={logos} />
+          <OffersGuestBand locale={locale} content={content} providers={providers} />
+          <HowItWorksGuest locale={locale} content={content} />
+          <AppBandGuest id={a.app} locale={locale} content={content} />
+        </>
+      )}
+      <LocationModal
+        privacyHref={homeHref("privacy")}
+        currentLabel={s(content.demoLocation)}
+        copy={{
+          title: s(m.title),
+          body: s(m.body),
+          useCurrent: s(m.use_current),
+          or: s(m.or),
+          placeholder: s(m.search_placeholder),
+          hint: s(m.hint),
+          notNow: s(m.not_now),
+          browserNote: s(m.browser_note),
+          privacy: s(m.privacy),
+          close: t.close,
+        }}
+      />
+    </>
+  );
+}

@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   Linkar design tokens — مسحوبة من Figma (ملف Jg1QS1kTQMFGU99S6LIu3R)
+   - الألوان الدلالية: مجموعة «Color» بوضع Brand Light (الافتراضي)
+     ووضع Brand Dark داخل ‎.theme-dark (الهيرو والفوتر والأقسام الغامقة)
+   - ألوان الهوية: مجموعة «Linkar v2 · Brand» (+ v3 المعتمدة 20 أكتوبر)
+   - الخطوط: أنماط v2/Web/* — Noto Kufi Arabic
+   - المسافات: مجموعة «Spacing» كلها مضاعفات 2px → سلّم Tailwind الافتراضي
+     (4px لكل وحدة) يغطيها: space/6 = 1.5 · space/14 = 3.5 · space/120 = 30
+   أي لون أو مقاس خارج هذا الملف يعتبر غلط — ضيفه هنا من الفيجما الأول.
+   ===================================================================== */
+
+/* static: كل المتغيرات تطلع في :root حتى لو مفيش utility بتستخدمها (لوحة الـtokens بتقراها بـvar()) */
+@theme static {
+  /* نقفل باليتة Tailwind والمقاسات الافتراضية عشان محدش يستخدم قيم مش من الفيجما */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --text-*: initial;
+
+  --font-sans: var(--font-noto-kufi), system-ui, sans-serif;
+
+  /* ---------- Linkar v2 · Brand (Final Brand Guideline 2026) ---------- */
+  --color-white: #ffffff; /* base/white */
+  --color-solid-black: #231f20; /* primary/solid-black */
+  --color-deep-charcoal: #152935; /* primary/deep-charcoal */
+  --color-neon-green: #abf907; /* primary/neon-green */
+  --color-nature-green: #3bb34b; /* primary/nature-green */
+  --color-cool-gray: #d9dedb; /* secondary/cool-gray */
+  --color-state-gray: #66706b; /* secondary/state-gray */
+  --color-brik-red: #843e3f; /* secondary/brik-red */
+  --color-promotional-red: #a13434; /* secondary/promotional-red */
+  --color-olive-khaki: #828248; /* secondary/olive-khaki */
+  --color-slate-blue: #3c425c; /* secondary/slate-blue */
+  --color-neon-active: #a3e00e; /* button/neon-active */
+  --color-green-active: #3a6932; /* button/green-active */
+  --color-cool-gray-active: #bebfbe; /* button/cool-gray-active */
+  --color-green-dark: #48863e; /* button/green-dark */
+  --color-surface-soft: #d9dedb59; /* surface/soft */
+
+  /* ---------- v3 · ألوان معتمدة من تصميمات لينكار (20 أكتوبر 2026) ---------- */
+  --color-v3-text-meta: #999999; /* نص ثانوي في الكروت: التقييم والمسافة والوصف */
+  --color-v3-rating-star: #fbb03b; /* نجمة التقييم */
+  --color-v3-card-dark: #142224; /* خلفية كروت الخدمات الغامقة */
+  --color-v3-chip-dark: #3e4c53; /* شيبس الخدمات على الكروت الغامقة */
+  --color-v3-text-on-dark: #f2f3f2; /* أسماء المراكز على الكروت الغامقة */
+  --color-v3-card-stroke: #b3b3b3; /* حدود الكروت الفاتحة ومساحة الشعار */
+  --color-v3-box-light: #f2f3f2; /* صندوق المميزات وزر «التفاصيل» */
+  --color-v3-heart-lime: #bbf64f; /* زر المفضلة */
+  --color-v3-text-on-lime: #142224; /* نص الخصم على الليموني */
+
+  /* ---------- قيم خام متكررة في شاشات V2 (مش متربوطة بمتغيرات في الفيجما) ---------- */
+  --color-tile: #f4f6f5; /* خلفية العناصر الرمادية الفاتحة (القوائم، روابط الحساب) */
+  --color-tint-lime: #f4f9e8; /* خلفية أيقونات القوائم والإشعارات غير المقروءة */
+  --color-hero-bg: #07100b; /* خلفية الهيرو تحت الصورة */
+  --color-hero-ink: #0b1712; /* أزرار وحقول الهيدر والهيرو الزجاجية */
+  --color-shade: #040a07; /* ظلال الهيرو */
+  --color-whatsapp: #25d366; /* FAB · واتساب */
+  --color-page-soft: #f7f8f7; /* خلفية صفحات الحساب والحجز (W2-60، W2-38…) */
+  /* الحجز والدفع (W2-35 · P-23) */
+  --color-tabby: #3effc1; /* شارة tabby */
+  --color-tamara: #fde6dc; /* شارة tamara */
+  --color-pay-black: #000000; /* أزرار Apple Pay / Apple / المحافظ (W2-34a · W2-35 · W2-36) */
+  /* البحث والخريطة (W2-29 · W2-30 · W2-26m) */
+  --color-required-mark: #ff0000; /* النجمة الحمراء «*» في حقول شريط البحث */
+  --color-map-canvas: #eef1ee; /* أرضية الخريطة */
+  --color-map-block: #e6e9e6; /* مربعات المباني على الخريطة */
+  --color-map-park: #dfeedd; /* الحدائق على الخريطة */
+  --color-suggest-icon: #eef1ef; /* مربع أيقونة الاقتراح في لوحة البحث */
+  --color-icon-tile: #eef1ef; /* مربعات الأيقونات الرمادية وزر «حذف» المعطّل (W2-66، W2-67) */
+  --color-chip-info-bg: #e6eef5; /* شارة «بانتظار الزيارة» (W2-80c) */
+  --color-chip-info-fg: #2c6aa0;
+  --color-warning-tile: #fff1d6; /* دائرة أيقونة التنبيه في حالة «انتهت الصلاحية» (W2-80e) */
+  --color-option-selected: #f6fde8; /* خيار الدفع المحدد في نموذج الوكالة (W2-91b) */
+  --color-wallet-black: #000000; /* أزرار Apple Wallet / محفظة Google (v2 · Wallet button، W2-81) */
+  /* LNK · تصنيف المركز (1634:20844) */
+  --color-tier-platinum-bg: #e9eef2;
+  --color-tier-platinum-fg: #5b6b78;
+  --color-tier-gold-bg: #fbf1d6;
+  --color-tier-gold-fg: #9a6b00;
+  --color-tier-silver-bg: #eef0f1;
+  --color-tier-silver-fg: #5f6b73;
+
+  /* ---------- Color · Brand Light (الافتراضي) ---------- */
+  --color-bg-canvas: #ffffff;
+  --color-bg-surface: #ffffff;
+  --color-bg-subtle: #f2f4f3;
+  --color-bg-muted: #e9edeb;
+  --color-bg-strong: #d9dedb;
+  --color-bg-inverse: #152935;
+  --color-bg-inverse-subtle: #1d3443;
+  --color-bg-brand: #abf907;
+  --color-bg-brand-hover: #a3e00e;
+  --color-bg-brand-pressed: #94cc0d;
+  --color-bg-brand-subtle: #f5fee1;
+  --color-bg-success-subtle: #eaf6ec;
+  --color-bg-warning-subtle: #fff7e6;
+  --color-bg-danger: #a13434;
+  --color-bg-danger-subtle: #f6eaea;
+  --color-bg-info-subtle: #edf0f7;
+  --color-bg-overlay: #1529357a;
+  --color-bg-glass: #ffffff1f;
+
+  --color-text-primary: #152935;
+  --color-text-secondary: #66706b;
+  --color-text-tertiary: #7d8682;
+  --color-text-disabled: #b6bcb9;
+  --color-text-inverse: #ffffff;
+  --color-text-on-brand: #231f20;
+  --color-text-brand: #48863e;
+  --color-text-success: #3a6932;
+  --color-text-warning: #8a5a00;
+  --color-text-danger: #a13434;
+  --color-text-info: #3c425c;
+  --color-text-link: #48863e;
+  --color-text-on-image: #ffffff;
+  --color-text-on-image-muted: #d9dedb;
+
+  --color-border-default: #d9dedb;
+  --color-border-subtle: #e9edeb;
+  --color-border-strong: #bebfbe;
+  --color-border-inverse: #152935;
+  --color-border-focus: #3bb34b;
+  --color-border-brand: #3bb34b;
+  --color-border-danger: #a13434;
+  --color-border-success: #3bb34b;
+  --color-border-glass: #ffffff3d;
+
+  --color-icon-primary: #152935;
+  --color-icon-secondary: #66706b;
+  --color-icon-tertiary: #b6bcb9;
+  --color-icon-inverse: #ffffff;
+  --color-icon-brand: #3bb34b;
+  --color-icon-on-brand: #231f20;
+  --color-icon-danger: #a13434;
+  --color-icon-rating: #3bb34b;
+  --color-icon-on-image: #ffffff;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 999px;
+
+  /* ---------- Size (مقاسات العناصر والأيقونات) ---------- */
+  --spacing-icon-xs: 16px;
+  --spacing-icon-sm: 20px;
+  --spacing-icon-md: 24px;
+  --spacing-icon-lg: 32px;
+  --spacing-control-sm: 36px;
+  --spacing-control-md: 44px;
+  --spacing-control-lg: 52px;
+  --spacing-control-xl: 60px;
+
+  /* ---------- Effects ---------- */
+  --shadow-elevation-1: 0 1px 2px 0 #0b0d0a0f, 0 1px 3px 0 #0b0d0a0a;
+  --shadow-elevation-2: 0 8px 24px -8px #0b0d0a24;
+  --shadow-elevation-3: 0 24px 48px -12px #0b0d0a33;
+  --shadow-focus-ring: 0 0 0 3px #3f7a0873;
+  --shadow-fab: 0 10px 24px 0 #14293647; /* FAB · واتساب */
+  --shadow-popup: 0 12px 24px 0 #1429362e; /* النوافذ المنبثقة P-xx والقوائم المنسدلة P-18/P-20 */
+  --shadow-modal: 0 12px 24px 0 #00000040; /* القسيمة كاملة W2-37v وتقييم الخدمة W2-63 */
+  --shadow-popup: 0 12px 24px 0 #14293640; /* النوافذ المنبثقة والتوست (P-10x · P-21 · P-22) */
+  --shadow-dialog: 0 12px 24px 0 #1429362e; /* نوافذ التأكيد والقوائم المنسدلة (P-04 · P-05 · P-08c · P-18) */
+
+  /* ---------- Typography · v2/Web (Noto Kufi Arabic) ---------- */
+  --text-display-xl: 64px;
+  --text-display-xl--line-height: 96px;
+  --text-display-xl--font-weight: 700;
+  --text-display-l: 52px;
+  --text-display-l--line-height: 78px;
+  --text-display-l--font-weight: 700;
+  --text-h2: 32px;
+  --text-h2--line-height: 48px;
+  --text-h2--font-weight: 700;
+  --text-h3: 26px;
+  --text-h3--line-height: 40px;
+  --text-h3--font-weight: 700;
+  --text-h4: 22px;
+  --text-h4--line-height: 34px;
+  --text-h4--font-weight: 700;
+  --text-h5: 18px;
+  --text-h5--line-height: 28px;
+  --text-h5--font-weight: 700;
+  --text-body-l: 18px;
+  --text-body-l--line-height: 30px;
+  --text-body-l--font-weight: 300;
+  --text-body-m: 16px;
+  --text-body-m--line-height: 28px;
+  --text-body-m--font-weight: 300;
+  --text-body-s: 14px;
+  --text-body-s--line-height: 24px;
+  --text-body-s--font-weight: 300;
+  --text-label-l: 16px;
+  --text-label-l--line-height: 26px;
+  --text-label-l--font-weight: 500;
+  --text-label-m: 14px;
+  --text-label-m--line-height: 22px;
+  --text-label-m--font-weight: 500;
+  --text-caption: 14px;
+  --text-caption--line-height: 22px;
+  --text-caption--font-weight: 300;
+  --text-overline: 14px;
+  --text-overline--line-height: 22px;
+  --text-overline--font-weight: 500;
+  /* v2/Dash/Micro — مستخدم في V2-01 (شارات صغيرة) */
+  --text-micro: 12px;
+  --text-micro--line-height: 20px;
+  --text-micro--font-weight: 500;
+}
+
+/* ---------- Color · Brand Dark ----------
+   يتطبّق على أي قسم غامق (الهيرو، الفوتر، أقسام charcoal) بإضافة ‎.theme-dark */
+.theme-dark {
+  --color-bg-canvas: #152935;
+  --color-bg-surface: #1b3240;
+  --color-bg-subtle: #1b3240;
+  --color-bg-muted: #263f4d;
+  --color-bg-strong: #34505e;
+  --color-bg-inverse: #ffffff;
+  --color-bg-inverse-subtle: #e9edeb;
+  --color-bg-brand-subtle: #23421f;
+  --color-bg-success-subtle: #1f3f2a;
+  --color-bg-warning-subtle: #8a5a00;
+  --color-bg-danger-subtle: #633234;
+  --color-bg-info-subtle: #3c425c;
+  --color-bg-overlay: #0d1a2299;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d9dedb;
+  --color-text-tertiary: #a9b2ae;
+  --color-text-disabled: #66706b;
+  --color-text-inverse: #152935;
+  --color-text-brand: #abf907;
+  --color-text-success: #8fd99a;
+  --color-text-warning: #f5c66b;
+  --color-text-danger: #f09a8c;
+  --color-text-info: #b9c0dc;
+  --color-text-link: #abf907;
+
+  --color-border-default: #2c4553;
+  --color-border-subtle: #1b3240;
+  --color-border-strong: #3d5866;
+  --color-border-inverse: #ffffff;
+  --color-border-focus: #abf907;
+  --color-border-brand: #abf907;
+  --color-border-danger: #f09a8c;
+
+  --color-icon-primary: #ffffff;
+  --color-icon-secondary: #d9dedb;
+  --color-icon-tertiary: #66706b;
+  --color-icon-inverse: #152935;
+  --color-icon-brand: #abf907;
+  --color-icon-danger: #f09a8c;
+  --color-icon-rating: #abf907;
+}
+
+/* ---------- Paint styles (التدرّجات) ---------- */
+/* Brand/Gradient */
+@utility bg-gradient-brand {
+  background-image: linear-gradient(to right, #c8f31d, #34c82a);
+}
+/* Page head (W2-25 وكل رؤوس الصفحات): fill = #abf907@7% → أبيض. الفيجما بيعمل interpolation للّون والشفافية
+   كل واحد لوحده (non-premultiplied) فالوسط بيطلع أغمق من CSS العادي — دي القيم المحسوبة فوق الأبيض */
+@utility bg-pagehead {
+  background-image: linear-gradient(to bottom, #f9feee 0%, #ecfec7 25%, #e9fdbd 50%, #effecf 75%, #ffffff 100%);
+}
+/* Overlay/Image bottom — تدرّج فوق الصور من الشفاف للغامق تحت */
+@utility bg-overlay-image-bottom {
+  background-image: linear-gradient(to bottom, #0b0d0a00, #0b0d0ae0);
+}
+/* Overlay/Hero RTL — الغامق ناحية النص (يمين في العربي)، ويتقلب في الإنجليزي */
+@utility bg-overlay-hero {
+  background-image: linear-gradient(to right, #0b0d0a59, #0b0d0ad1 55%, #0b0d0af5);
+  [dir="ltr"] & {
+    background-image: linear-gradient(to left, #0b0d0a59, #0b0d0ad1 55%, #0b0d0af5);
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+}
+
+/* Tailwind v4 بيخلي الأزرار بمؤشّر افتراضي — نرجّع مؤشّر الإيد للعناصر التفاعلية */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary,
+select {
+  cursor: pointer;
+}
+
+/* الأيقونات اللي ليها اتجاه (أسهم، chevrons) مرسومة لاتجاه RTL وبتتقلب في LTR */
+[dir="ltr"] .dir-flip {
+  transform: scaleX(-1);
+}
+
+/* P-12 · منزلق «السعر الإجمالي لسيارتك» بمقبضين (مقبض أبيض 22px بحد كحلي) */
+@utility range-thumb {
+  &::-webkit-slider-thumb {
+    pointer-events: auto;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-white);
+    border: 1px solid var(--color-deep-charcoal);
+    cursor: pointer;
+  }
+  &::-moz-range-thumb {
+    pointer-events: auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-white);
+    border: 1px solid var(--color-deep-charcoal);
+    cursor: pointer;
+  }
+}
+
+/* =====================================================================
+   الحركة — من بروتوتايب الفيجما (linkar-site-final):
+   - DISSOLVE 200ms / 150ms EASE_OUT: التنقّل بين الصفحات وفتح النوافذ (overlays)
+   - SMART_ANIMATE 200ms EASE_OUT: تبديل حالات المكوّنات (أكورديون الأسئلة، التبويبات، التبديل)
+   - SCROLL_ANIMATE 400–600ms EASE_IN_AND_OUT: النزول لقسم في نفس الصفحة
+   - AFTER_TIMEOUT 2s: رسائل P-10 بتقفل لوحدها بعد ثانيتين
+   - Keyframes (get_motion_context): حركات متكررة كل 9 ثواني في الرئيسية (motion.dev)
+   ===================================================================== */
+@theme {
+  --ease-figma-out: cubic-bezier(0, 0, 0.58, 1); /* Figma EASE_OUT */
+  --ease-figma-in: cubic-bezier(0.42, 0, 1, 1); /* Figma EASE_IN */
+  --ease-figma-in-out: cubic-bezier(0.42, 0, 0.58, 1); /* Figma EASE_IN_AND_OUT */
+  --animate-dissolve: dissolve 200ms cubic-bezier(0, 0, 0.58, 1) both;
+  --animate-dissolve-fast: dissolve 150ms cubic-bezier(0, 0, 0.58, 1) both;
+  --animate-dissolve-out: dissolve-out 150ms cubic-bezier(0, 0, 0.58, 1) both;
+
+  @keyframes dissolve {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes dissolve-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/* SCROLL_ANIMATE — نزول ناعم للأقسام (#app، #vision، «اكتشف المزيد»…) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* انتقال الصفحات (View Transitions): DISSOLVE 200ms EASE_OUT */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0, 0, 0.58, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
