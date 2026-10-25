@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Crawl لكل الروابط الداخلية (القسم 7 · 5 في الـbrief): بيبدأ من الرئيسية وبيتبع كل <a href> داخلي
 // بالعربي والإنجليزي، كزائر وعميل حالي وعميل جديد، وبيطبع أي رابط مش بيرجّع 200.
-// node scripts/crawl.mjs [--base http://localhost:3000]
+// node scripts/crawl.mjs [--base http://localhost:3000] [--list urls.txt]
 const args = process.argv.slice(2);
 const base = args.includes("--base") ? args[args.indexOf("--base") + 1] : "http://localhost:3000";
 
@@ -11,6 +11,7 @@ for (const locale of ["ar", "en"]) for (const session of ["", "user", "new"]) co
 const seeds = ["/", "/services", "/account", "/booking/branch", "/gift/BK-21414", "/v/LK-9F3K-7QPD", "/does-not-exist-404"];
 const bad = new Map(); // url -> {status, from}
 const assets = new Map(); // image path -> أول صفحة ظهرت فيها
+const allUrls = new Set(); // كل الصفحات اللي اتزارت (--list بيكتبها في ملف لـ img-check)
 let total = 0;
 
 for (const { locale, session } of combos) {
@@ -60,6 +61,7 @@ for (const { locale, session } of combos) {
     }
   }
   console.log(`${locale}/${session || "guest"}: ${seen.size} URLs`);
+  for (const u of seen) allUrls.add(u);
 }
 
 for (const [a, from] of assets) {
@@ -67,6 +69,10 @@ for (const [a, from] of assets) {
   if (r.status !== 200) bad.set(`[image] ${a}`, { status: r.status, from });
 }
 console.log(`images checked: ${assets.size}`);
+if (args.includes("--list")) {
+  const { writeFileSync } = await import("node:fs");
+  writeFileSync(args[args.indexOf("--list") + 1], [...allUrls].filter((u) => !u.includes("does-not-exist")).join("\n"));
+}
 console.log(`requests: ${total}`);
 if (bad.size === 0) console.log("OK — no broken internal links");
 else {

@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 // فحص الصور في متصفح حقيقي: بيفتح كل صفحة (عربي/إنجليزي × زائر/عميل)، ينزل لآخرها عشان الصور الـlazy تحمّل،
 // وبيطبع أي طلب صورة رجع بخطأ وأي <img> اتحمّلت فاضية (naturalWidth = 0).
-// node scripts/img-check.mjs [--base https://linkar-web.vercel.app] [paths...]
+// node scripts/img-check.mjs [--base https://linkar-web.vercel.app] [--list urls.txt] [--mobile] [--ar-only] [paths...]
 import { chromium } from "playwright";
 
 const args = process.argv.slice(2);
 const bi = args.indexOf("--base");
 const base = bi >= 0 ? args[bi + 1] : "http://localhost:3000";
-const paths = args.filter((a, i) => !a.startsWith("--") && i !== bi + 1);
+const li = args.indexOf("--list");
+const { readFileSync } = await import("node:fs");
+const paths = li >= 0 ? readFileSync(args[li + 1], "utf8").split(/\r?\n/).filter(Boolean) : args.filter((a, i) => !a.startsWith("--") && i !== bi + 1);
+const mobile = args.includes("--mobile");
 const pages = paths.length
   ? paths
   : ["/", "/services", "/offers", "/packages", "/providers", "/search?services=polish", "/providers/johnson", "/providers/johnson/nano-ceramic",
@@ -17,9 +20,10 @@ const pages = paths.length
 
 const browser = await chromium.launch();
 const problems = [];
-for (const locale of ["ar", "en"]) {
+const locales = args.includes("--ar-only") ? ["ar"] : ["ar", "en"];
+for (const locale of locales) {
   for (const session of ["", "user"]) {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const ctx = await browser.newContext(mobile ? { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true } : { viewport: { width: 1440, height: 900 } });
     const host = new URL(base).hostname;
     await ctx.addCookies([
       { name: "locale", value: locale, domain: host, path: "/" },
