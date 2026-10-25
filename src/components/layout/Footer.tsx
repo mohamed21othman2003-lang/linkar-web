@@ -15,8 +15,9 @@ export async function Footer() {
   return (
     <footer className="theme-dark bg-bg-canvas pt-[72px] pb-8 text-text-primary">
       <Container className="flex flex-col gap-12">
-        <div className="flex flex-col gap-12 lg:flex-row">
-          <div className="flex flex-col items-start gap-[18px] lg:w-[380px] lg:shrink-0">
+        {/* جنب بعض من xl بس — في 1024 الأعمدة الأربعة كانت بتضيق لـ93px والروابط تتلف */}
+        <div className="flex flex-col gap-12 xl:flex-row">
+          <div className="flex flex-col items-start gap-[18px] xl:w-[380px] xl:shrink-0">
             <Logo tone="inverse" width={240} label={tx(locale, site, "brand_name")} />
             <p className="text-body-s text-text-secondary">{tx(locale, f, "about")}</p>
             <StoreBadges />

@@ -11,6 +11,7 @@ import { FavoriteButton } from "./FavoriteButton";
 
 // v2 · Provider card · Logo (1669:21274) — 301×453: لوجو أبيض + قلب، جسم غامق، شارة، الاسم،
 // الشارات، التقييم، الخدمات، السعر و«احجز». الأزرار في آخر الكارت (mt-auto) عشان الكروت تتساوى.
+// الطول min-h مش ثابت: لو الاسم اتلفّ سطرين (موبايل / إنجليزي) الكارت يطول بدل ما الزرار يتقصّ.
 export function ProviderCard({
   locale,
   provider,
@@ -40,7 +41,7 @@ export function ProviderCard({
     .filter((s): s is Service => !!s);
   return (
     <article
-      className={`relative flex h-[453px] w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center ${className}`}
+      className={`relative flex min-h-[453px] w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center ${className}`}
       style={{ backgroundImage: "url(/figma/cards/provider-card-bg.png)" }}
     >
       <Link href={routes.provider(provider.slug)} aria-label={name} className="absolute inset-0 z-0" />
@@ -71,13 +72,13 @@ export function ProviderCard({
           </div>
         )}
         <div className="mt-auto flex w-full items-center justify-between gap-2">
-          <p className="flex items-baseline gap-[7px]">
+          <p className="flex items-baseline gap-[7px] whitespace-nowrap">
             <span className="text-body-s text-v3-text-meta">{t.startsFrom}</span>
             <span className="text-[17px] font-bold text-white">{formatPrice(locale, provider.starting_price)}</span>
           </p>
           <Link
             href={routes.provider(provider.slug)}
-            className="pointer-events-auto relative z-10 inline-flex h-[30px] w-[78px] items-center justify-center rounded-full bg-neon-green text-label-m font-bold text-deep-charcoal hover:bg-bg-brand-hover"
+            className="pointer-events-auto relative z-10 inline-flex h-[30px] w-[78px] shrink-0 items-center max-md:h-10 max-md:w-[88px] justify-center rounded-full bg-neon-green text-label-m font-bold text-deep-charcoal hover:bg-bg-brand-hover"
           >
             {t.book}
           </Link>

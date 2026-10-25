@@ -111,7 +111,7 @@ export function DetailsForm({
             <h2 className="text-h4">{t.contact}</h2>
             <p className="text-body-s text-v3-text-meta">{t.contactSub}</p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5">
               <span className="text-label-m">{t.name}</span>
               <input defaultValue={name} className="h-[50px] rounded-md border border-border-default px-3.5 text-[16px] font-light outline-none focus:border-deep-charcoal" />

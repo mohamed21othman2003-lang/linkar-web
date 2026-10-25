@@ -271,7 +271,7 @@ export function Listing({
         </a>
       </aside>
 
-      <section id="results" className="flex min-w-0 flex-1 scroll-mt-28 flex-col gap-[18px]">
+      <section id="results" className="@container flex min-w-0 flex-1 scroll-mt-28 flex-col gap-[18px]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-h5">{offers ? t.offersCount(ordered.length) : t.packagesCount(ordered.length)}</h2>
           <DropdownMenu
@@ -296,10 +296,11 @@ export function Listing({
 
         {ordered.length ? (
           // W2-40: الصف الأول في الفيجما = العرض المميّز (620 وجوّاه الكارت 611 بإزاحة 4.5) + كارت بفاصل 18.9
-          <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-[repeat(3,313px)] xl:gap-x-[18.9px]">
+          // الـ3 أعمدة الثابتة (313×3 + 18.9×2 = 977) بس لما مساحة النتايج تكفّيها (container query) — أضيق من كده عمودين
+          <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 @min-[977px]:grid-cols-[repeat(3,313px)] @min-[977px]:gap-x-[18.9px]">
             {ordered.map((i, k) =>
               i.featured ? (
-                <div key={i.id} className="flex justify-center sm:col-span-2 max-sm:[zoom:0.58] sm:max-md:[zoom:0.9] xl:relative xl:top-1 xl:justify-start xl:ps-[4.5px]">
+                <div key={i.id} className="flex justify-center sm:col-span-2 sm:max-md:[zoom:0.9] @min-[977px]:relative @min-[977px]:top-1 @min-[977px]:justify-start @min-[977px]:ps-[4.5px]">
                   <OfferFeaturedCard
                     locale={locale}
                     provider={i.provider}
@@ -312,7 +313,7 @@ export function Listing({
                   />
                 </div>
               ) : (
-                <div key={i.id} className={k === 1 && ordered[0].featured ? "xl:rtl:translate-x-[25px] xl:ltr:-translate-x-[25px]" : undefined}>
+                <div key={i.id} className={k === 1 && ordered[0].featured ? "@min-[977px]:rtl:translate-x-[25px] @min-[977px]:ltr:-translate-x-[25px]" : undefined}>
                   <Card i={i} locale={locale} onOpen={offers ? undefined : () => router.push(i.detailsHref)} />
                 </div>
               ),

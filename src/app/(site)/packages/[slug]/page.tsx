@@ -179,12 +179,12 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               <hr className="border-border-default" />
               <div className="flex items-center justify-between gap-3">
                 <span className="text-label-l">{t.packagePriceForCar}</span>
-                <span className="text-h4">{formatPrice(locale, pkg.price)}</span>
+                <span className="text-h4 whitespace-nowrap">{formatPrice(locale, pkg.price)}</span>
               </div>
             </div>
           </section>
 
-          <div className="grid items-start gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-3">
             {facts.map((f) => (
               <div key={f.label} className="flex items-center gap-3 rounded-lg bg-cool-gray/30 px-4 py-3.5">
                 <span className="shrink-0">{f.icon}</span>
@@ -239,7 +239,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(3,313px)] lg:justify-end">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(3,313px)] xl:justify-end">
             {related.map((r) => {
               const i = packageListingItem(locale, r);
               return (

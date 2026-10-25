@@ -32,7 +32,8 @@ export function ServicesBand({ locale, content, items }: { locale: Locale; conte
           descBold
           link={b.link && { label: s(b.link), href: homeHref(b.link.href_key) }}
         />
-        <div className="grid grid-cols-1 gap-[9.4px] sm:grid-cols-3 lg:-mx-1 lg:grid-cols-5">
+        {/* 5 أعمدة من xl بس — محتوى الكارت متثبّت بمقاسات الفيجما فمحتاج عرض 226+ (عمودين من sm وتلاتة من lg) */}
+        <div className="grid grid-cols-1 gap-[9.4px] sm:grid-cols-2 lg:grid-cols-3 xl:-mx-1 xl:grid-cols-5">
           {items.map(({ service, providers }) => (
             <div key={service.slug} className="p-[5.25px]">
               <ServiceCard locale={locale} service={service} providers={providers} />

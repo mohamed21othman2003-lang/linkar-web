@@ -51,7 +51,8 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
               </ScrollTabLink>
               {hours && (
                 <>
-                  <span className="text-caption text-v3-text-meta">·</span>
+                  {/* على الموبايل المواعيد بتنزل سطر لوحدها ← من غير «·» معلّقة */}
+                  <span className="text-caption text-v3-text-meta max-sm:hidden">·</span>
                   <span className="text-label-m text-green-active">{hours}</span>
                 </>
               )}

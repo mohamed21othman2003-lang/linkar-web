@@ -89,7 +89,7 @@ export function CloseButton({ label, onClick, tone = "light" }: { label: string;
       aria-label={label}
       onClick={onClick}
       className={`flex shrink-0 items-center justify-center rounded-full ${
-        tone === "glass" ? "bg-white/12 p-2.5 text-white hover:bg-white/20" : "size-8 bg-tile text-deep-charcoal hover:bg-bg-muted"
+        tone === "glass" ? "bg-white/12 p-2.5 text-white hover:bg-white/20 max-md:p-3" : "size-8 bg-tile text-deep-charcoal hover:bg-bg-muted"
       }`}
     >
       <Icon name="x" size={tone === "glass" ? 16 : 14} />

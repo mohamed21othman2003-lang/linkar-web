@@ -219,7 +219,8 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
                 )}
               </div>
             )}
-            <div className="grid gap-5 lg:grid-cols-2">
+            {/* عمودين من xl بس: في 1024 المحتوى جنب عمود المقدّم كان بيضيق لـ240px والأسماء والأسعار تتقصّ */}
+            <div className="grid gap-5 xl:grid-cols-2">
               {listResults.map((r) => (
                 <ResultCard key={r.provider} locale={locale} result={r} provider={providers[r.provider]} multi={multi} />
               ))}
@@ -262,7 +263,7 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
                     ))}
                 </div>
               ) : (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[repeat(3,313.4px)]">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(3,313.4px)]">
                   {s.offers.items
                     .filter((o) => providers[o.provider])
                     .map((o) => {

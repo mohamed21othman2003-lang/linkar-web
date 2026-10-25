@@ -76,8 +76,19 @@ export function AffiliateJoinForm({ locale, d, next, demo = false }: { locale: L
       <TextField label={L("account")} name="account" value={v.account} onChange={set("account")} placeholder={d.account_ph} icon="share" />
 
       <SectionHead title={L("s3")} hint={L("s3_hint")} spaced />
-      <div className="flex flex-col gap-4 md:flex-row md:items-start">
-        <TextField className="md:max-w-[378px]" label={L("iban")} name="iban" value={v.iban} onChange={set("iban")} placeholder={d.iban_ph} icon="card" error={errors.iban} />
+      {/* الآيبان طويل: على lg (النموذج جنب «ماذا بعد الإرسال؟») الحقل بياخد السطر كله عشان الـplaceholder مايتقصّش من أوله، وعلى الموبايل بيصغر */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-start lg:flex-col xl:flex-row">
+        <TextField
+          className="md:max-w-[378px] lg:max-w-none xl:max-w-[378px]"
+          inputClassName="max-md:placeholder:text-[13px]"
+          label={L("iban")}
+          name="iban"
+          value={v.iban}
+          onChange={set("iban")}
+          placeholder={d.iban_ph}
+          icon="card"
+          error={errors.iban}
+        />
         <FileBox
           label={L("bank_doc")}
           accept="application/pdf"

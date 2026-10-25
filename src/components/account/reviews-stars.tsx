@@ -19,7 +19,8 @@ export function ReviewsStars({ label, starLabel }: { label: string; starLabel: s
           aria-label={starLabel.replace("{n}", String(n))}
           onMouseEnter={() => setHover(n)}
           onClick={() => setValue(n)}
-          className="rounded-xs"
+          // مساحة اللمس 40px طول من غير ما الشكل يتغيّر
+          className="relative rounded-xs after:absolute after:-inset-x-[1.5px] after:-inset-y-[9px]"
         >
           <Icon name={n <= shown ? "star-filled" : "star"} size={22} className={n <= shown ? "text-v3-rating-star" : "text-state-gray"} />
         </button>

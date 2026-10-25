@@ -58,7 +58,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
             <Icon name="settings" size={16} />
             {t.alertSettings}
           </Link>
-          <button type="button" onClick={markAll} className="py-0.5 text-label-m text-green-active hover:underline">
+          <button type="button" onClick={markAll} className="py-0.5 text-label-m text-green-active hover:underline max-md:py-[9px]">
             {t.markAllRead}
           </button>
         </div>
@@ -78,7 +78,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
       ) : (
         <>
           <div className="flex">
-            <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-full bg-cool-gray/35 p-1">
+            <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-full bg-cool-gray/35 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {tabOrder.map((k) => {
                 const on = k === tab;
                 return (
@@ -88,7 +88,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
                     role="tab"
                     aria-selected={on}
                     onClick={() => selectTab(k)}
-                    className={`rounded-full px-4 py-2 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${on ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-white/60"}`}
+                    className={`shrink-0 rounded-full px-4 py-2 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out max-md:py-[9px] ${on ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-white/60"}`}
                   >
                     {k === "all" ? `${t.tabs.all} (${list.length})` : t.tabs[k]}
                   </button>

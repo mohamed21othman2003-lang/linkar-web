@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Container } from "@/components/ui/Container";
 import { FaqAccordion } from "@/components/help/FaqAccordion";
 import { ContactBand } from "@/components/help/ContactBand";
+import { ActiveIntoView } from "@/components/help/ActiveIntoView";
 
 type Props = { searchParams: Promise<{ tab?: string }> };
 
@@ -30,7 +31,7 @@ export default async function FaqPage({ searchParams }: Props) {
     <>
       <PageHeader crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, page, "title") }]} title={tx(locale, page, "title")} description={tx(locale, page, "description")} />
       <Container className="flex flex-col gap-10 pt-10 pb-24">
-        <nav aria-label={d.faqTopics} className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
+        <ActiveIntoView activeKey={active.key} label={d.faqTopics} className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
           <ul className="flex w-max gap-1 rounded-full bg-surface-soft p-1">
             {tabs.map((x) => {
               const on = x.key === active.key;
@@ -40,7 +41,7 @@ export default async function FaqPage({ searchParams }: Props) {
                     href={routes.faq(x.key)}
                     scroll={false}
                     aria-current={on ? "page" : undefined}
-                    className={`flex h-[38px] items-center rounded-full px-4 text-label-m whitespace-nowrap transition-colors ${
+                    className={`flex h-10 items-center rounded-full px-4 md:h-[38px] text-label-m whitespace-nowrap transition-colors ${
                       on ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-white/70"
                     }`}
                   >
@@ -50,7 +51,7 @@ export default async function FaqPage({ searchParams }: Props) {
               );
             })}
           </ul>
-        </nav>
+        </ActiveIntoView>
         <FaqAccordion key={active.key} items={active.items.map((it) => ({ q: tx(locale, it, "q"), a: tx(locale, it, "a") }))} />
         <ContactBand
           title={tx(locale, band, "title")}

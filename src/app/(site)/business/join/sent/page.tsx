@@ -50,7 +50,8 @@ export default async function JoinSentPage() {
               </li>
             ))}
           </ol>
-          <div className="flex flex-wrap justify-center gap-2.5">
+          {/* الموبايل: الزرين بعرض الكارت والرئيسي فوق */}
+          <div className="flex w-full flex-col-reverse gap-2.5 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center">
             <Link href={routes.forProviders} className={actionClass("outline")}>
               {tx(locale, d, "back")}
             </Link>

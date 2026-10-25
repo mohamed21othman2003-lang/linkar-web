@@ -58,7 +58,9 @@ export default async function FavoritesPage({ searchParams }: { searchParams: Pr
           {tab !== "saved" && (
             <section aria-labelledby="fav-providers" className="flex flex-col gap-6">
               <AxSectionHead id="fav-providers" title={tx(locale, p, "providers_title")} subtitle={tx(locale, p, "providers_subtitle")} />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(3,301px)]">
+              {/* 3 كروت 301 (زي الفيجما) محتاجة 935px — المحتوى على 1280 عرضه 816 بس، فـ3 أعمدة مرنة من 1280 والثابتة من 1400
+                  (كلها بالـpx: Tailwind بيطلّع الـbreakpoints العشوائية قبل sm/xl فكانت بتتغطّى) */}
+              <div className="grid grid-cols-1 gap-4 min-[640px]:grid-cols-2 min-[1280px]:grid-cols-3 min-[1400px]:grid-cols-[repeat(3,301px)]">
                 {providers.map(({ provider, branch }) => (
                   <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} showBadges meta={tx(locale, branch, "label")} />
                 ))}

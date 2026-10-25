@@ -88,14 +88,17 @@ export function HelpCenter({ locale, topics, articles, placeholder }: { locale: 
               <ul className="flex flex-col gap-3">
                 {t.articles.map((a) => (
                   <li key={a.href}>
-                    <Link href={a.href} className="flex items-center justify-between gap-3 text-body-s text-deep-charcoal hover:text-green-active">
+                    <Link
+                      href={a.href}
+                      className="flex items-center justify-between gap-3 text-body-s text-deep-charcoal max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-1.5 max-lg:after:content-[''] hover:text-green-active"
+                    >
                       <span>{a.title}</span>
                       <Icon name="chevron-left" size={14} flip className="shrink-0 text-state-gray" />
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link href={t.allHref} className="mt-auto flex items-center gap-1.5 self-start py-0.5 text-label-m text-green-active hover:underline">
+              <Link href={t.allHref} className="max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] mt-auto flex items-center gap-1.5 self-start py-0.5 text-label-m text-green-active hover:underline">
                 {d.allArticles}
                 <Icon name="chevron-left" size={16} flip className="text-nature-green" />
               </Link>

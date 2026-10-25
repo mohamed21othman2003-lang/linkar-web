@@ -30,6 +30,7 @@ export function TextField({
   autoComplete,
   hint,
   className = "",
+  inputClassName = "",
 }: {
   label: string;
   name: string;
@@ -43,6 +44,8 @@ export function TextField({
   autoComplete?: string;
   hint?: string;
   className?: string;
+  /** كلاسات إضافية للـinput نفسه (مثلاً تصغير الـplaceholder الطويل على الموبايل) */
+  inputClassName?: string;
 }) {
   const id = useId();
   return (
@@ -62,7 +65,7 @@ export function TextField({
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-e` : undefined}
           onChange={(e) => onChange(e.target.value)}
-          className={`${box} ${borderOf(error)} ${icon ? "pe-10" : ""} [direction:inherit]`}
+          className={`${box} ${borderOf(error)} ${icon ? "pe-10" : ""} [direction:inherit] ${inputClassName}`}
         />
         {icon && (
           <span className="pointer-events-none absolute inset-y-0 end-3.5 flex items-center text-state-gray">

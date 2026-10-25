@@ -48,7 +48,7 @@ function ProviderPhotoCard({ locale, provider, photo, highlight, view }: { local
         <span className="rounded-full border border-nature-green px-3 py-1 text-caption text-green-active">{highlight}</span>
         <span className="mt-auto h-px w-full bg-cool-gray" />
         <div className="flex w-full items-center justify-between">
-          <p className="flex items-baseline gap-1.5">
+          <p className="flex items-baseline gap-1.5 whitespace-nowrap">
             <span className="text-caption text-state-gray">{t.startsFrom}</span>
             <span className="text-h5 text-deep-charcoal">{formatPrice(locale, provider.starting_price)}</span>
           </p>
@@ -88,7 +88,8 @@ export function ProvidersGuestBand({
           description={s(b.head.description)}
           link={{ label: s(b.head.link), href: homeHref(b.head.link.href_key) }}
         />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* 4 أعمدة من xl — في 1024 الكارت بيضيق لـ217px وشارة «معتمد LINKAR» والسعر بيتكسروا */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {b.cards.map((c) => {
             const p = providers.find((x) => x.slug === c.provider);
             return p ? <ProviderPhotoCard key={c.provider} locale={locale} provider={p} photo={c.photo} highlight={s(c.highlight)} view={s(b.view)} /> : null;

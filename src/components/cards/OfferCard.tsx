@@ -11,7 +11,7 @@ import { LogoArea } from "./ClientLogo";
 export type OfferFeature = { icon: "clock" | "warranty" | "calendar"; label: string };
 
 // v2 · Offer card · Logo (1626:26141) — 313×614: شعار، خصم، اسم، عنوان العرض بالليموني،
-// صندوق المميزات، السعر والسعر القديم، «التفاصيل» و«احجز»
+// صندوق المميزات، السعر والسعر القديم، «التفاصيل» و«احجز» (min-h: الاسم الطويل يطوّل الكارت مايقصّش الأزرار)
 export function OfferCard({
   locale,
   provider,
@@ -37,7 +37,7 @@ export function OfferCard({
   const name = tx(locale, provider, "name");
   return (
     <article
-      className="relative flex h-[614px] w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center"
+      className="relative flex min-h-[614px] w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center"
       style={{ backgroundImage: "url(/figma/cards/offer-card-bg.png)" }}
     >
       <LogoArea slug={provider.slug} src={provider.logo} alt={name} />
@@ -56,8 +56,12 @@ export function OfferCard({
           {title[1]}
         </p>
         <ul className="mt-[27px] grid h-[66px] grid-cols-3 items-center rounded-sm bg-v3-box-light px-2">
+          {/* الإنجليزي أطول من العمود (≈90px) — يتلف سطرين جوه الصندوق بدل ما يركب على اللي جنبه */}
           {features.map((f) => (
-            <li key={f.icon} className="flex flex-col items-center gap-0.5 text-center text-body-s leading-[1.4] whitespace-nowrap text-v3-text-meta">
+            <li
+              key={f.icon}
+              className={`flex min-w-0 flex-col items-center gap-0.5 text-center text-body-s text-v3-text-meta ${locale === "ar" ? "leading-[1.4] whitespace-nowrap" : "leading-[1.15]"}`}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`/figma/glyphs/feature-${f.icon}.svg`} alt="" width={19} height={19} />
               {f.label}
@@ -73,13 +77,13 @@ export function OfferCard({
         <div className="mt-auto grid grid-cols-2 gap-[9.7px]">
           <Link
             href={bookHref}
-            className="flex h-[30px] items-center justify-center rounded-full bg-neon-green text-label-m font-bold text-deep-charcoal hover:bg-bg-brand-hover"
+            className="flex h-[30px] items-center justify-center rounded-full bg-neon-green max-md:h-10 text-label-m font-bold text-deep-charcoal hover:bg-bg-brand-hover"
           >
             {t.book}
           </Link>
           <Link
             href={detailsHref}
-            className="flex h-[30px] items-center justify-center rounded-full bg-v3-box-light text-label-m font-bold text-deep-charcoal hover:bg-bg-muted"
+            className="flex h-[30px] items-center justify-center rounded-full bg-v3-box-light max-md:h-10 text-label-m font-bold text-deep-charcoal hover:bg-bg-muted"
           >
             {t.details}
           </Link>

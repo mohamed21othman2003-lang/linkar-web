@@ -41,16 +41,16 @@ export function ProviderBadges({
 }) {
   const t = getCommon(locale);
   return (
-    <span className="inline-flex items-center gap-1.5">
+    <span className="inline-flex flex-wrap items-center gap-1.5">
       {/* التصنيف أولاً من بداية السطر، وبعده «معتمد LINKAR» (زي W2-26 وكروت النتائج) */}
       {/* «ذهبي G»: دايرة الحرف في بداية الشارة (يمين في العربي) زي LNK · تصنيف المركز */}
-      <span className={`inline-flex h-[22px] items-center gap-1 rounded-[11px] ps-[3px] pe-2 text-micro ${tierColors[tier]}`}>
+      <span className={`inline-flex h-[22px] shrink-0 items-center gap-1 rounded-[11px] ps-[3px] pe-2 text-micro whitespace-nowrap ${tierColors[tier]}`}>
         <span className="flex size-4 items-center justify-center rounded-lg bg-white text-[10px] leading-none">{t.tierLetters[tier]}</span>
         {t.tiers[tier]}
       </span>
       {certified && (
         <span
-          className={`inline-flex h-[22px] items-center rounded-[11px] px-2 text-micro ${
+          className={`inline-flex h-[22px] shrink-0 items-center rounded-[11px] px-2 text-micro whitespace-nowrap ${
             surface === "dark" ? "bg-neon-green text-deep-charcoal" : "bg-deep-charcoal text-neon-green"
           }`}
         >

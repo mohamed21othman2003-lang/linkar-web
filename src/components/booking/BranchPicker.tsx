@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
 import type { ServiceSlug } from "@/lib/data/types";
@@ -85,10 +85,10 @@ export function BranchPicker({
                 type="button"
                 aria-selected={on}
                 onClick={() => switchMode(tab.key)}
-                className={`flex h-[42px] items-center justify-center gap-2 rounded-[11px] px-2 text-label-m transition-colors duration-200 ease-figma-out ${on ? "bg-deep-charcoal text-white" : "text-deep-charcoal hover:bg-white/60"}`}
+                className={`flex min-h-[42px] items-center justify-center gap-2 rounded-[11px] px-2 text-label-m transition-colors duration-200 ease-figma-out ${on ? "bg-deep-charcoal text-white" : "text-deep-charcoal hover:bg-white/60"}`}
               >
                 <Icon name={tab.icon} size={16} className={`max-sm:hidden ${on ? "text-neon-green" : "text-solid-black"}`} />
-                <span className="truncate max-sm:text-[12px]">{tab.label}</span>
+                <span className="truncate max-sm:whitespace-normal max-sm:text-center max-sm:text-[12px] max-sm:leading-tight">{tab.label}</span>
               </button>
             );
           })}
@@ -208,7 +208,7 @@ function ListMode({ t, branches, selected, onSelect }: { t: T; branches: BranchV
   const field = "flex h-[50px] w-full items-center justify-between rounded-md border bg-white px-3.5 text-[16px] font-light leading-7";
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div className="flex flex-col gap-1.5">
           <span className="text-label-m">{t.branchField}</span>
           <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`${field} border-2 border-deep-charcoal`}>
@@ -306,6 +306,12 @@ function MapMode({
   const current = branches.find((b) => b.id === selected) ?? branches[0];
   // الخريطة رسم ثابت (ما بيتعكسش مع اتجاه اللغة) ← إحداثيات من اليسار
   const pos = (x: number, y: number) => ({ left: `${x}%`, top: `${y}%` });
+  // الموبايل: الخريطة أعرض من الشاشة (680) وبتتسحب أفقياً — نبدأ وموقعك في النص
+  const mapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = mapRef.current;
+    if (el && el.scrollWidth > el.clientWidth) el.scrollLeft = (me.x / 100) * el.scrollWidth - el.clientWidth / 2;
+  }, [me.x]);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col-reverse items-stretch justify-between gap-3 lg:flex-row lg:items-center">
@@ -346,44 +352,46 @@ function MapMode({
         </button>
       </div>
 
-      <div dir="ltr" className="relative h-[320px] overflow-hidden rounded-[18px] bg-map-canvas md:h-[420px]">
-        {/* خلفية الخريطة من فيكتورات الفيجما (W2-33c · Map 806×420): ماء + طرق + حديقة */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/booking/map-bg.svg" alt="" aria-hidden className="absolute inset-0 size-full object-cover object-left" />
-        {scope === "all" &&
-          alternatives.map((a) => (
-            <Link
-              key={a.slug}
-              href={a.href}
-              style={pos(a.x, a.y)}
-              dir="auto"
-              className="absolute flex items-center gap-1.5 rounded-full border border-border-default bg-white/92 py-1 ps-1 pe-2.5 text-caption text-v3-text-meta opacity-85 shadow-elevation-2 hover:opacity-100"
-            >
-              <LogoTile slug={a.slug} src={a.logo} alt="" size={22} />
-              {a.label}
-            </Link>
-          ))}
-        {branches.map((b) => {
-          const on = b.id === selected;
-          return (
-            <button
-              key={b.id}
-              type="button"
-              onClick={() => onSelect(b.id)}
-              aria-pressed={on}
-              dir="auto"
-              style={pos(b.x, b.y)}
-              className={`absolute flex items-center gap-1.5 rounded-full py-1 ps-1 pe-2.5 text-caption shadow-elevation-2 ${on ? "z-10 bg-deep-charcoal text-neon-green" : "border border-border-default bg-white text-deep-charcoal"}`}
-            >
-              <LogoTile slug={provider.slug} src={provider.logo} alt="" size={26} />
-              {b.name}
-            </button>
-          );
-        })}
-        <span style={pos(me.x, me.y)} className="absolute size-4 rounded-full border-[5px] border-neon-green bg-deep-charcoal" />
-        <span style={{ left: `calc(${me.x}% - 18px)`, top: `calc(${me.y}% + 22px)` }} className="absolute rounded-full bg-deep-charcoal px-2 py-[3px] text-caption text-white">
-          {t.me}
-        </span>
+      <div ref={mapRef} dir="ltr" className="overflow-x-auto overscroll-x-contain rounded-[18px] [scrollbar-width:none]">
+        <div className="relative h-[320px] overflow-hidden rounded-[18px] bg-map-canvas max-md:w-[680px] max-md:whitespace-nowrap md:h-[420px]">
+          {/* خلفية الخريطة من فيكتورات الفيجما (W2-33c · Map 806×420): ماء + طرق + حديقة */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/booking/map-bg.svg" alt="" aria-hidden className="absolute inset-0 size-full object-cover object-left" />
+          {scope === "all" &&
+            alternatives.map((a) => (
+              <Link
+                key={a.slug}
+                href={a.href}
+                style={pos(a.x, a.y)}
+                dir="auto"
+                className="absolute flex items-center gap-1.5 rounded-full border border-border-default bg-white/92 py-1 ps-1 pe-2.5 text-caption text-v3-text-meta opacity-85 shadow-elevation-2 hover:opacity-100"
+              >
+                <LogoTile slug={a.slug} src={a.logo} alt="" size={22} />
+                {a.label}
+              </Link>
+            ))}
+          {branches.map((b) => {
+            const on = b.id === selected;
+            return (
+              <button
+                key={b.id}
+                type="button"
+                onClick={() => onSelect(b.id)}
+                aria-pressed={on}
+                dir="auto"
+                style={pos(b.x, b.y)}
+                className={`absolute flex items-center gap-1.5 rounded-full py-1 ps-1 pe-2.5 text-caption shadow-elevation-2 ${on ? "z-10 bg-deep-charcoal text-neon-green" : "border border-border-default bg-white text-deep-charcoal"}`}
+              >
+                <LogoTile slug={provider.slug} src={provider.logo} alt="" size={26} />
+                {b.name}
+              </button>
+            );
+          })}
+          <span style={pos(me.x, me.y)} className="absolute size-4 rounded-full border-[5px] border-neon-green bg-deep-charcoal" />
+          <span style={{ left: `calc(${me.x}% - 18px)`, top: `calc(${me.y}% + 22px)` }} className="absolute rounded-full bg-deep-charcoal px-2 py-[3px] text-caption text-white">
+            {t.me}
+          </span>
+        </div>
       </div>
 
       <div className="flex flex-col gap-0.5 rounded-[20px] border-2 border-neon-green bg-neon-green/10 px-[18px] py-3.5">

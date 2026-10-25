@@ -56,7 +56,8 @@ export default async function AffiliateSentPage() {
               </li>
             ))}
           </ol>
-          <div className="flex flex-wrap gap-2.5">
+          {/* الموبايل: الزرين بعرض الكارت */}
+          <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
             <Link href={routes.home} className={actionClass("primary")}>
               {tx(locale, d, "home")}
               <Icon name="home" size={16} />

@@ -31,7 +31,7 @@ export default async function PointsPage() {
     <div className="flex flex-col gap-6">
       <AxTitle title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[483fr_477fr]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[483fr_477fr]">
         <section className="flex flex-col gap-2 rounded-2xl bg-deep-charcoal p-7 text-white">
           <h2 className="text-label-m text-neon-green">{tx(locale, p, "balance_label")}</h2>
           <p className="flex items-baseline gap-2 rtl:flex-row-reverse rtl:justify-end">
@@ -73,7 +73,7 @@ export default async function PointsPage() {
       </div>
 
       <AxSectionHead title={tx(locale, p, "earn_title")} />
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {earnRules.map((r) => (
           <li key={r.points} className="flex flex-col gap-1 rounded-[20px] border border-cool-gray bg-white p-5">
             <span className="text-h4 text-green-active">{t.points(formatNumber(r.points))}</span>

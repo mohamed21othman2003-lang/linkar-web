@@ -233,7 +233,7 @@ export function ComplaintForm({
       <DescribeStep title={c.step3Title} text={c.step3Text} c={c} />
 
       <Card title={c.step4Title} text={c.step4Text}>
-        <div role="radiogroup" aria-label={c.step4Title} className="flex flex-col gap-3.5">
+        <div role="radiogroup" aria-label={c.step4Title} className="flex flex-col gap-3.5 max-md:gap-0.5">
           {resolutions.map((r) => (
             <button
               key={r.key}
@@ -241,7 +241,7 @@ export function ComplaintForm({
               role="radio"
               aria-checked={r.key === resolution}
               onClick={() => setResolution(r.key)}
-              className="flex items-center gap-2.5 self-start text-body-m text-deep-charcoal"
+              className="flex items-center gap-2.5 self-start text-body-m text-deep-charcoal max-md:min-h-10"
             >
               <RadioDot on={r.key === resolution} />
               {r.label}

@@ -29,7 +29,7 @@ export function PeriodFilter({ options, value, onChange, label }: { options: Per
         aria-controls={listId}
         aria-label={`${label}: ${current.label}`}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-control-sm items-center gap-1.5 rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:border-border-strong"
+        className="inline-flex h-control-sm items-center gap-1.5 rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:border-border-strong max-md:h-10"
       >
         {current.label}
         <Icon name="chevron-down" size={16} className={open ? "rotate-180" : ""} />
@@ -101,7 +101,27 @@ export function PointsHistory({
         </h2>
         <PeriodFilter options={options} value={period} onChange={setPeriod} label={filterLabel} />
       </div>
-      <div className="overflow-x-auto rounded-lg border border-cool-gray bg-white p-4 md:p-6">
+      {/* تحت 1280: كل عملية سطر (العملية والتاريخ في البداية، النقاط والرصيد في الآخر) بدل جدول بيتسحب أفقياً
+          (على الموبايل عمود النقاط كان مستخبي، وعلى 1024 عمود العملية بيتزنق) */}
+      <ul className="flex flex-col rounded-lg border border-cool-gray bg-white px-4 md:px-6 xl:hidden">
+        {visible.map((r) => (
+          <li key={r.id} className="flex items-start justify-between gap-3 border-b border-cool-gray py-3.5 last:border-b-0">
+            <span className="flex min-w-0 flex-col gap-0.5">
+              <span className="text-body-s text-deep-charcoal">{r.operation}</span>
+              <span className="text-caption text-state-gray">{r.dateLabel}</span>
+            </span>
+            <span className="flex shrink-0 flex-col items-end gap-0.5">
+              <span className={`text-label-l ${r.points < 0 ? "text-promotional-red" : "text-green-active"}`} dir="ltr">
+                {r.pointsLabel}
+              </span>
+              <span className="text-caption whitespace-nowrap text-state-gray">
+                {headers.balance} {r.balanceLabel}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="hidden overflow-x-auto rounded-lg border border-cool-gray bg-white p-4 md:p-6 xl:block">
         <table className="block w-full min-w-[640px] text-start">
           <thead className="block">
             <tr className={`${cols} h-[50px] bg-tile`}>

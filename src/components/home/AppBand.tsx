@@ -36,7 +36,8 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
   const chip = "flex h-14 items-center gap-2.5 rounded-full ps-3.5 pe-4 text-label-m whitespace-nowrap shadow-[0_12px_24px_#0b0d0a33]";
   return (
     <section id={id} className="scroll-mt-20 overflow-hidden bg-deep-charcoal py-16 lg:py-24">
-      <Container className="flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+      {/* النص جنب مسرح الجوالين (700px) من xl بس — في 1024 عمود النص كان بيضيق لـ200px */}
+      <Container className="flex flex-col gap-12 xl:flex-row xl:items-center xl:justify-between xl:gap-10">
         <div className="flex flex-col items-start gap-6 lg:w-[540px]">
           <p className="text-overline text-neon-green">{s(a.overline)}</p>
           <h2 className={`text-[36px]/[54px] font-bold text-white ${locale === "ar" ? "md:text-display-l" : "md:text-[44px]/[64px]"}`}>
@@ -60,7 +61,7 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
         </div>
 
         {/* Phones stage (700×720) — الجوالين صور مصدّرة من الفيجما، والشيبس HTML */}
-        <div className="relative mx-auto h-[360px] w-[350px] shrink-0 sm:h-[576px] sm:w-[560px] lg:mx-0 lg:h-[720px] lg:w-[700px]">
+        <div className="relative mx-auto h-[360px] w-[350px] shrink-0 sm:h-[576px] sm:w-[560px] lg:h-[720px] lg:w-[700px] xl:mx-0">
           <div className="absolute start-0 top-0 h-[720px] w-[700px] scale-50 ltr:origin-top-left rtl:origin-top-right sm:scale-80 lg:scale-100">
           <FloatPhone kind="home" className="absolute -end-[7px] top-[89px] w-[368px]">
             <Image src="/figma/home/app-phone-home.png" alt="" width={368} height={570} sizes="368px" className="h-auto w-[368px]" />
@@ -69,7 +70,8 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
             <Image src="/figma/home/app-phone-voucher.png" alt="" width={368} height={570} sizes="368px" className="h-auto w-[368px]" />
           </FloatPhone>
           {/* الشيبس بتودّي لشاشاتها: W2-36 تأكيد الحجز · W2-66 باقات الوكالات · W2-37b متابعة الحجز */}
-          <PopChip kind="accepted" className="absolute end-[400px] top-5">
+          {/* في الإنجليزي النص أطول — نثبّته من بداية المسرح بدل ما يمتد برّه على العنوان */}
+          <PopChip kind="accepted" className="absolute end-[400px] top-5 ltr:start-0 ltr:end-auto">
             <Link href={routes.bookingConfirmed} className={`${chip} bg-neon-green text-solid-black`}>
               <FigmaIcon name="brand-shield-neon" size={32} className="rounded-full" />
               {s(a.chips.accepted)}

@@ -23,9 +23,11 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
           description={s(b.head.description)}
           link={{ label: s(b.head.link), href: homeHref(b.head.link.href_key) }}
         />
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:flex lg:items-start lg:gap-0">
+        {/* الصف الواحد (611 + 313 + 313) محتاج 1277px — بيتساوى بالظبط مع محتوى الـ1440؛ تحت كده الكارت المميّز
+            بياخد صف لوحده والكارتين تحته (نفس شكل التابلت) بدل ما الصف يطلع برّه الشاشة */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 min-[1440px]:flex min-[1440px]:items-start min-[1440px]:gap-0">
           {fp && (
-            <div className="flex justify-center md:col-span-2 lg:-ms-[7px] lg:w-[621px] lg:shrink-0 lg:p-[5px] max-sm:[zoom:0.58] sm:max-md:[zoom:0.9]">
+            <div className="flex justify-center md:col-span-2 min-[1440px]:-ms-[7px] min-[1440px]:w-[621px] min-[1440px]:shrink-0 min-[1440px]:p-[5px] sm:max-md:[zoom:0.9]">
               <OfferFeaturedCard
                 locale={locale}
                 provider={fp}
@@ -42,7 +44,7 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
             const p = providers.find((x) => x.slug === o.provider);
             if (!p) return null;
             return (
-              <div key={o.provider} className={`lg:w-[313px] lg:shrink-0 ${i === 0 ? "lg:ms-[17px]" : "lg:ms-5"}`}>
+              <div key={o.provider} className={`min-[1440px]:w-[313px] min-[1440px]:shrink-0 ${i === 0 ? "min-[1440px]:ms-[17px]" : "min-[1440px]:ms-5"}`}>
               <OfferCard
                 locale={locale}
                 provider={p}

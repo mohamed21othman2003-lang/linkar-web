@@ -40,8 +40,9 @@ export function ProvidersBand({
           link={{ label: s(b.head.link), href: homeHref(b.head.link.href_key) }}
         />
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* 100 ثابت زي الفيجما من 1440 (النص بيطلع شوية برّه الصندوق هناك)، وأقل من كده الصندوق بيكبر مع النص */}
           {b.certs.map((c) => (
-            <li key={c.title.text_ar} className="flex min-h-[100px] items-center lg:h-[100px] gap-3.5 rounded-xl border border-white/24 bg-white/12 p-[18px]">
+            <li key={c.title.text_ar} className="flex min-h-[100px] items-center gap-3.5 rounded-xl border border-white/24 bg-white/12 p-[18px] min-[1440px]:h-[100px]">
               <FigmaIcon name={c.icon} size={44} />
               <div className="flex flex-col gap-0.5">
                 <p className="text-label-l text-white">{s(c.title)}</p>

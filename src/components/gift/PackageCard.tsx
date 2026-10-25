@@ -27,7 +27,7 @@ export function PackageCard({ locale, gift, variant }: { locale: Locale; gift: A
   );
 
   return (
-    <div className={`flex items-start gap-5 rounded-2xl bg-deep-charcoal p-5 md:p-7 ${full ? "" : "lg:w-[520px] lg:shrink-0"}`}>
+    <div className={`flex items-start gap-5 rounded-2xl bg-deep-charcoal p-5 md:p-7 ${full ? "" : "lg:w-[520px] lg:min-w-0 xl:shrink-0"}`}>
       {full && (
         <span className="hidden size-[68px] shrink-0 items-center justify-center rounded-xl bg-neon-green text-deep-charcoal sm:flex">
           <Icon name="package" size={32} />

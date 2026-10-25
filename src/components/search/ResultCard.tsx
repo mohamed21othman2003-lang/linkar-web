@@ -70,7 +70,7 @@ export function ResultCard({ locale, result: r, provider: p, multi }: { locale: 
 
       {/* المحتوى */}
       <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5 p-5">
-        <div className="flex min-h-[22px] flex-wrap items-center gap-1.5 lg:flex-nowrap">
+        <div className="flex min-h-[22px] flex-wrap items-center gap-1.5 min-[1440px]:flex-nowrap">
           {r.pills.map((x) => (
             <Pill key={x.label_ar} tone={x.tone} icon={x.icon}>
               {tx(locale, x, "label")}

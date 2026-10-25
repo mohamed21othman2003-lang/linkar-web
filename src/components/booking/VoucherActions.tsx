@@ -14,7 +14,8 @@ export function VoucherActions({ locale, mapsUrl, shareLink }: { locale: Locale;
   const [toast, setToast] = useState<string | null>(null);
   const done = useCallback(() => setToast(null), []);
   const [sharing, setSharing] = useState(false);
-  const wallet = "flex h-[42px] flex-1 items-center justify-center gap-2 bg-pay-black px-3.5 text-label-m text-white";
+  // min-h بدل h: على الموبايل «إضافة إلى محفظة Google» بتنزل سطرين
+  const wallet = "flex min-h-[42px] flex-1 items-center justify-center gap-2 bg-pay-black px-3.5 py-2 text-center text-label-m text-white";
   return (
     <>
       <div className="grid grid-cols-2 gap-2 px-[22px] pb-[22px]">

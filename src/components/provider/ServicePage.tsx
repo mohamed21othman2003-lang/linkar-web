@@ -183,7 +183,7 @@ export function ServicePage({
         </div>
       )}
 
-      <div className="grid gap-8 pb-10 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid grid-cols-1 gap-8 pb-10 lg:grid-cols-[minmax(0,1fr)_400px]">
         {/* Main */}
         <div className="flex min-w-0 flex-col gap-5">
           <div className="flex h-[260px] gap-3 sm:h-[380px]">
@@ -289,7 +289,7 @@ export function ServicePage({
               <div className="flex flex-col gap-[18px]">
                 <p className="text-body-l text-deep-charcoal">{d ? tx(locale, d, "overview") : tx(locale, service, "description")}</p>
                 {facts.length > 0 && (
-                  <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     {facts.map((f) => (
                       <div key={f.kind} className="flex items-center gap-3 rounded-lg bg-cool-gray/30 px-4 py-3.5">
                         <BrandIcon name={factIcon[f.kind]} size={22} />
@@ -362,7 +362,7 @@ export function ServicePage({
                     <Icon name="chevron-left" size={16} flip />
                   </Link>
                 </div>
-                <div className="grid gap-6 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   {reviews.map((r, i) => (
                     <article key={i} className="flex flex-col gap-2.5 rounded-[18px] border border-cool-gray bg-white p-[18px]">
                       <Stars n={r.stars} size={14} label={t.stars(r.stars)} />
@@ -497,7 +497,8 @@ export function ServicePage({
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          {/* 3 أعمدة من xl بس — تحتها الكارت (صورة 110 + سعر + «قارن») بيضيق ويطلع برّه الشاشة */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {otherOffers.map((o) => {
               const on = compare.includes(o.provider.slug);
               const pName = tx(locale, o.provider, "name");
@@ -529,7 +530,7 @@ export function ServicePage({
                         type="button"
                         aria-pressed={on}
                         onClick={() => toggleCompare(o.provider.slug)}
-                        className={`flex items-center gap-1 rounded-[10px] px-2.5 py-1.5 text-caption ${
+                        className={`flex shrink-0 items-center gap-1 rounded-[10px] px-2.5 py-1.5 text-caption whitespace-nowrap max-md:min-h-10 ${
                           on ? "bg-deep-charcoal text-neon-green" : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
                         }`}
                       >
@@ -570,7 +571,7 @@ export function ServicePage({
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {ordered.map((s) => {
               const on = addons.includes(s.slug);
               const meta = [tx(locale, s, "duration"), s.warranty_label ? tx(locale, s.warranty_label, "label") : "", formatPrice(locale, s.prices[size])].filter(Boolean).join(" · ");

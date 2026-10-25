@@ -64,7 +64,7 @@ export function OtpForm({ phone, length, next, copy, demo = false }: { phone: st
   };
 
   return (
-    <form onSubmit={submit} noValidate className="flex w-full flex-col gap-4 rounded-2xl border border-border-default bg-white p-5 md:p-8 lg:w-[540px] lg:shrink-0">
+    <form onSubmit={submit} noValidate className="flex w-full flex-col gap-4 rounded-2xl border border-border-default bg-white p-5 md:p-8 lg:w-[540px] lg:min-w-0 xl:shrink-0">
       <h1 className="text-h4 text-deep-charcoal md:text-h3">{copy.title}</h1>
       <p className="text-body-m text-text-secondary">{copy.body}</p>
 

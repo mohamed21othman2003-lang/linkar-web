@@ -98,7 +98,8 @@ function CarouselCard({ locale, item }: { locale: Locale; item: CarouselData }) 
   const name = tx(locale, p, "name");
   const meta = [item.reviews_count ? `(${formatNumber(item.reviews_count)})` : null, c.branches(p.branches)].filter(Boolean).join(" · ");
   return (
-    <article className="flex h-[287px] w-[217px] shrink-0 snap-start flex-col gap-1.5 overflow-hidden rounded-[18px] border border-neon-green/35 bg-linear-to-b from-[#1d3a4a] to-deep-charcoal p-3.5 shadow-[0_12px_24px_0_#08141c47]">
+    // min-h بدل h + *:shrink-0: لما الشارات/الميزة تنزل سطرين (الإنجليزي) الكارت يطول بدل ما الاسم (truncate) ينضغط لصفر
+    <article className="flex min-h-[287px] w-[217px] shrink-0 snap-start flex-col gap-1.5 overflow-hidden rounded-[18px] *:shrink-0 border border-neon-green/35 bg-linear-to-b from-[#1d3a4a] to-deep-charcoal p-3.5 shadow-[0_12px_24px_0_#08141c47]">
       <div className="flex items-center justify-between">
         <span className="flex h-8 w-[84px] items-center justify-center overflow-hidden rounded-sm border border-cool-gray bg-white">
           <ClientLogo slug={p.slug} src={p.logo} alt={name} scale={(logoScale[p.slug] ?? 0.93) * 0.525} />
@@ -208,8 +209,8 @@ export function SimilarProviders({
             ))}
           </div>
         </div>
-        {/* ديسكتوب/تابلت: 4 كروت */}
-        <div key={filter} className={`hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4 ${switched ? "animate-dissolve" : ""}`}>
+        {/* ديسكتوب: 4 كروت · تابلت ولابتوب صغير (< 1280): 2×2 عشان سطر السعر مايتكسرش */}
+        <div key={filter} className={`hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4 ${switched ? "animate-dissolve" : ""}`}>
           {sets[filter].map((card) => (
             <SimilarCard key={card.provider.slug} locale={locale} card={card} services={services} />
           ))}

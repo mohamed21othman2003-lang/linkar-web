@@ -33,8 +33,44 @@ export function OfferFeaturedCard({
   const t = getCommon(locale);
   const name = tx(locale, provider, "name");
   return (
+    <>
+    {/* موبايل (أقل من sm): نفس المحتوى مرصوص عادي بمقاسات مقروءة — الكارت الأصلي متثبّت بإحداثيات 611 وتصغيره كان بيخلّي النص 7–8px */}
     <article
-      className="relative size-[611px] shrink-0 overflow-hidden rounded-[30.5px] border border-white/10 bg-cover bg-center text-white"
+      className="flex w-full flex-col gap-4 overflow-hidden rounded-[24px] border border-white/10 bg-cover bg-center p-5 text-white sm:hidden"
+      style={{ backgroundImage: "url(/figma/cards/offer-featured-bg.png)" }}
+    >
+      <div className="flex items-center gap-3">
+        <div className="flex h-[72px] w-[120px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-v3-card-stroke bg-white">
+          <ClientLogo slug={provider.slug} src={provider.logo} alt={name} scale={0.9} />
+        </div>
+        <div className="flex min-w-0 flex-col gap-1">
+          <span className="text-caption text-white/72">{t.offeredBy}</span>
+          <span className="truncate text-label-l">{name}</span>
+          <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} />
+        </div>
+      </div>
+      <div className="flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
+        <span className="text-[34px] leading-[1.3] font-bold text-neon-green">{t.discount(discount)}</span>
+        <span className="flex flex-col items-end">
+          <span className="text-[24px] leading-[1.3] font-bold whitespace-nowrap text-neon-green">{formatPrice(locale, price)}</span>
+          <span className="text-[14px] whitespace-nowrap">
+            <s>{formatNumber(oldPrice)}</s> {currency(locale)}
+          </span>
+        </span>
+      </div>
+      <h3 className="text-[20px] leading-[1.5] font-medium">{title}</h3>
+      <div className="flex flex-wrap justify-center">
+        <Countdown locale={locale} endsAt={endsAt} />
+      </div>
+      <Link
+        href={bookHref}
+        className="flex h-11 items-center justify-center rounded-full bg-neon-green text-label-l font-bold text-deep-charcoal transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
+      >
+        {t.bookOffer}
+      </Link>
+    </article>
+    <article
+      className="relative hidden size-[611px] shrink-0 overflow-hidden rounded-[30.5px] border border-white/10 bg-cover bg-center text-white sm:block"
       style={{ backgroundImage: "url(/figma/cards/offer-featured-bg.png)" }}
     >
       <span className="absolute start-[49.6px] top-[40.9px] text-[22.97px] leading-normal">{t.offeredBy}</span>
@@ -62,5 +98,6 @@ export function OfferFeaturedCard({
         {t.bookOffer}
       </Link>
     </article>
+    </>
   );
 }

@@ -41,7 +41,7 @@ export function ForYouBand({
             <p className="text-caption text-state-gray">{s(f.hint)}</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 xl:grid-cols-4">
           {f.picks.map((p) => {
             const provider = providers.find((x) => x.slug === p.provider);
             if (!provider) return null;

@@ -65,7 +65,7 @@ export function AxNote({ icon = "info", children, className = "" }: { icon?: UiG
 // تبويبات كبسولة (W2-64 · تبويبات / W2-69 · تبويبات / W2-69b): روابط، النشط كحلي بنص ليموني
 export function AxTabs({ items, label }: { items: { key: string; label: string; href: string; active: boolean }[]; label: string }) {
   return (
-    <div className="max-w-full overflow-x-auto">
+    <div className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <nav aria-label={label} className="inline-flex gap-1 rounded-full bg-cool-gray/35 p-1">
         {items.map((t) => (
           <Link
@@ -73,7 +73,7 @@ export function AxTabs({ items, label }: { items: { key: string; label: string; 
             href={t.href}
             scroll={false}
             aria-current={t.active ? "page" : undefined}
-            className={`rounded-full px-4 py-2 text-label-m whitespace-nowrap transition-colors ${
+            className={`shrink-0 rounded-full px-4 py-2 text-label-m whitespace-nowrap transition-colors max-md:py-[9px] ${
               t.active ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-white/70"
             }`}
           >

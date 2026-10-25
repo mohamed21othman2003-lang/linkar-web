@@ -50,7 +50,7 @@ export function PickCard({
         <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} className="mt-1.5" />
         <p className="mt-2.5 text-body-s leading-[1.5] text-v3-text-meta">{ai ? reason : note}</p>
         <div className="mt-auto flex w-full items-center justify-between">
-          <p className="flex items-baseline gap-[7px]">
+          <p className="flex items-baseline gap-[7px] whitespace-nowrap">
             <span className="text-body-s text-v3-text-meta">{t.startsFrom}</span>
             <span className={`text-[17px] font-bold ${ai ? "text-white" : "text-deep-charcoal"}`}>
               {formatPrice(locale, provider.starting_price)}

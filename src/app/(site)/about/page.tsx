@@ -15,7 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: tx(locale, p, "title"), description: tx(locale, p, "description") };
 }
 
-const card = "flex flex-col gap-2.5 rounded-xl border border-v3-card-stroke bg-white p-7";
+// p-7 من lg زي الفيجما؛ أقل على الموبايل والتابلت عشان كروت الـ3 أعمدة على 768 ماتتزنقش
+const card = "flex flex-col gap-2.5 rounded-xl border border-v3-card-stroke bg-white p-5 lg:p-7";
 
 // W2-95 · من نحن (760:13173) — #vision (رؤيتنا ورسالتنا) و#how-it-works (كيف تعمل لينكار) مربوطين من قائمة «من نحن» والفوتر
 export default async function AboutPage() {
@@ -91,7 +92,7 @@ export default async function AboutPage() {
               </span>
               <h3 className="text-h5 text-deep-charcoal">{tx(locale, a, "title")}</h3>
               <p className="text-body-s text-v3-text-meta">{tx(locale, a, "body")}</p>
-              <Link href={a.href} className="flex items-center gap-1.5 self-start py-0.5 text-label-m text-green-active hover:underline">
+              <Link href={a.href} className="max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] flex items-center gap-1.5 self-start py-0.5 text-label-m text-green-active hover:underline">
                 {tx(locale, a, "cta")}
                 <Icon name="chevron-left" size={16} flip className="text-nature-green" />
               </Link>

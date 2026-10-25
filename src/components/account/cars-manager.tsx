@@ -349,7 +349,7 @@ export function CarsManager({
               {car.isDefault ? (
                 <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
               ) : (
-                <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-green-active hover:underline">
+                <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]">
                   {c.makeDefault}
                 </button>
               )}

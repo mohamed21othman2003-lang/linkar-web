@@ -99,10 +99,11 @@ export function BookingTable({
         r.provider.toLowerCase().includes(needle)),
   );
 
-  const action = (r: BookingRowView) => {
+  // card: في الكروت (موبايل/تابلت) الزر 40px على الأقل عشان يبقى سهل اللمس
+  const action = (r: BookingRowView, card = false) => {
     const dark =
       r.action === "voucher" || r.action === "track" || r.action === "rate";
-    const cls = `rounded-sm px-2.5 py-1.5 text-caption whitespace-nowrap ${
+    const cls = `rounded-sm text-caption whitespace-nowrap ${card ? "flex h-10 items-center px-4" : "px-2.5 py-1.5"} ${
       dark
         ? "bg-deep-charcoal text-neon-green hover:bg-bg-inverse-subtle"
         : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
@@ -123,12 +124,12 @@ export function BookingTable({
     );
   };
 
-  const chevron = (r: BookingRowView) =>
+  const chevron = (r: BookingRowView, card = false) =>
     r.hasDetail ? (
       <Link
         href={routes.booking(r.id)}
         aria-label={`${t.actions.details} ${r.id}`}
-        className="text-state-gray hover:text-deep-charcoal"
+        className={`text-state-gray hover:text-deep-charcoal ${card ? "-me-3 flex size-10 items-center justify-center" : ""}`}
       >
         <Icon name="chevron-left" size={16} flip />
       </Link>
@@ -138,13 +139,10 @@ export function BookingTable({
 
   return (
     <div className="flex flex-col gap-5">
-      {/* شريط التبويبات + الفلاتر */}
-      {/* RTL ديسكتوب: نفس مقاسات الفيجما — الفلاتر 600 والتبويبات الباقي (والتبويب النشط مرن ويلف زي الفيجما) */}
-      <div className="flex flex-wrap items-center gap-2 lg:rtl:flex-nowrap lg:rtl:gap-0">
-        <div
-          role="tablist"
-          className="flex max-w-full min-w-0 grow items-start gap-1 overflow-x-auto rounded-md bg-cool-gray/40 p-1 lg:rtl:basis-0 lg:rtl:overflow-visible"
-        >
+      {/* شريط التبويبات + الفلاتر: التبويبات كبسولة مجزّأة (كل تبويب سطر واحد والعدد في شارة)،
+          والفلاتر بتنزل سطر لوحدها لما المساحة متكفيش بدل ما التبويبات تتزنق وتلف */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-[14px] bg-cool-gray/40 p-1 [scrollbar-width:none]">
           {tabOrder.map((k) => {
             const on = k === tab;
             return (
@@ -154,18 +152,24 @@ export function BookingTable({
                 role="tab"
                 aria-selected={on}
                 onClick={() => selectTab(k)}
-                // زي الفيجما: تبويب «الكل» مرن (ويلف لسطرين في الديسكتوب العربي) والباقي بعرض نصّه — النشط بيتغيّر لونه بس
-                className={`rounded-[9px] px-3.5 py-2 text-center text-label-m transition-colors duration-200 ease-figma-out ${
-                  k === "all" ? "min-w-0 flex-1 max-lg:whitespace-nowrap ltr:whitespace-nowrap" : "shrink-0 whitespace-nowrap"
-                } ${on ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-white/60"}`}
+                className={`flex h-10 shrink-0 items-center gap-2 rounded-[10px] ps-4 pe-3 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${
+                  on ? "bg-deep-charcoal text-neon-green shadow-elevation-1" : "text-deep-charcoal hover:bg-white/70"
+                }`}
               >
-                {t.tabs[k]} ({counts[k]})
+                {t.tabs[k]}
+                <span
+                  className={`flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-caption tabular-nums ${
+                    on ? "bg-neon-green text-deep-charcoal" : "bg-white text-state-gray"
+                  }`}
+                >
+                  {counts[k]}
+                </span>
               </button>
             );
           })}
         </div>
-        <div className="flex flex-wrap items-center gap-2 lg:rtl:shrink-0 lg:rtl:flex-nowrap">
-          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-cool-gray bg-white px-3 py-[9px] focus-within:border-deep-charcoal sm:w-[252px] sm:flex-none">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+          <label className="flex min-w-0 basis-full items-center gap-2 rounded-md border border-cool-gray bg-white px-3 py-[9px] focus-within:border-deep-charcoal sm:w-[252px] sm:basis-auto">
             <BrandIcon name="brand-search" size={18} />
             <input
               type="search"
@@ -199,14 +203,15 @@ export function BookingTable({
 
       {/* المحتوى بيتبدّل بـ DISSOLVE 200ms EASE_OUT زي «W2-38 · تبويبات» */}
       <div key={tab} className="flex animate-dissolve flex-col gap-5">
-        {/* الجدول (ديسكتوب) */}
-        <div className="hidden overflow-hidden rounded-[20px] border border-cool-gray bg-white lg:block">
+        {/* الجدول (ديسكتوب ≥1400) — أعمدته الثابتة 752px: على 1280 المحتوى 816 بس فعمود مقدّم الخدمة بيتزنق
+            (≈60px) والنصوص بتركب على العمود اللي جنبه، فتحت 1400 بنعرض الكروت */}
+        <div className="hidden overflow-hidden rounded-[20px] border border-cool-gray bg-white min-[1400px]:block">
           <div
             className={`${cols} h-11 items-center bg-cool-gray/30 px-3 text-label-m text-state-gray`}
           >
             <span className="px-1.5">{t.cols.id}</span>
-            <span className="px-1.5">{t.cols.provider}</span>
-            <span className="px-1.5">{t.cols.date}</span>
+            <span className="truncate px-1.5">{t.cols.provider}</span>
+            <span className="truncate px-1.5">{t.cols.date}</span>
             <span className="px-1.5">{t.cols.car}</span>
             <span className="px-1.5">{t.cols.amount}</span>
             <span className="px-1.5">{t.cols.status}</span>
@@ -231,9 +236,9 @@ export function BookingTable({
                   </span>
                 </span>
               </span>
-              <span className="flex flex-col gap-0.5 px-1.5 text-[14px] leading-[22px]">
-                <span className="font-medium text-deep-charcoal">{r.date}</span>
-                <span className="font-light text-state-gray">{r.branch}</span>
+              <span className="flex min-w-0 flex-col gap-0.5 px-1.5 text-[14px] leading-[22px]">
+                <span className="truncate font-medium text-deep-charcoal">{r.date}</span>
+                <span className="truncate font-light text-state-gray">{r.branch}</span>
               </span>
               <span className="truncate px-1.5 text-body-s text-deep-charcoal">
                 {r.car}
@@ -260,8 +265,8 @@ export function BookingTable({
           )}
         </div>
 
-        {/* كروت (موبايل وتابلت) */}
-        <div className="flex flex-col gap-3 lg:hidden">
+        {/* كروت (موبايل وتابلت ولابتوب لحد 1400) — عمودين من التابلت */}
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 min-[1400px]:hidden">
           {visible.map((r) => (
             <div
               key={r.id}
@@ -285,20 +290,23 @@ export function BookingTable({
                   </span>
                 </span>
               </div>
-              <p className="text-body-s text-state-gray">
-                {r.date} · {r.branch} · {r.car} ·{" "}
-                <span className="whitespace-nowrap text-deep-charcoal">
+              {/* المبلغ سطر لوحده: لما كان في آخر نفس السطر كانت «·» بتفضل معلّقة، و<bdi> عشان «ES 2022» ماتقلبش ترتيب الفواصل */}
+              <div className="flex flex-col gap-0.5">
+                <p className="text-body-s text-state-gray">
+                  {r.date} · {r.branch} · <bdi>{r.car}</bdi>
+                </p>
+                <span className="text-label-m whitespace-nowrap text-deep-charcoal">
                   {r.amount}
                 </span>
-              </p>
-              <div className="flex items-center justify-between">
-                {action(r)}
-                {chevron(r)}
+              </div>
+              <div className="mt-auto flex items-center justify-between">
+                {action(r, true)}
+                {chevron(r, true)}
               </div>
             </div>
           ))}
           {visible.length === 0 && (
-            <p className="rounded-[20px] border border-cool-gray bg-white px-5 py-8 text-center text-body-s text-state-gray">
+            <p className="rounded-[20px] border border-cool-gray bg-white px-5 py-8 text-center text-body-s text-state-gray md:col-span-2">
               {t.noResults}
             </p>
           )}
@@ -315,13 +323,13 @@ export function BookingTable({
             type="button"
             disabled
             aria-label={t.prev}
-            className="flex size-9 items-center justify-center rounded-[10px] border border-cool-gray bg-white text-state-gray"
+            className="flex size-9 items-center justify-center rounded-[10px] border border-cool-gray bg-white text-state-gray max-md:size-10"
           >
             <Icon name="chevron-right" size={16} flip />
           </button>
           <span
             aria-current="page"
-            className="flex size-9 items-center justify-center rounded-[10px] bg-deep-charcoal text-label-m text-neon-green"
+            className="flex size-9 items-center justify-center rounded-[10px] bg-deep-charcoal text-label-m text-neon-green max-md:size-10"
           >
             1
           </span>
@@ -329,7 +337,7 @@ export function BookingTable({
             type="button"
             disabled
             aria-label={t.next}
-            className="flex size-9 items-center justify-center rounded-[10px] border border-cool-gray bg-white text-state-gray"
+            className="flex size-9 items-center justify-center rounded-[10px] border border-cool-gray bg-white text-state-gray max-md:size-10"
           >
             <Icon name="chevron-left" size={16} flip />
           </button>

@@ -160,7 +160,7 @@ export function ProviderTabs({
 
       <div key={active} className={switched ? "animate-dissolve" : undefined}>
       {active === "services" && (
-        <Container className="grid gap-8 pt-8 pb-10 lg:grid-cols-[minmax(0,1fr)_392px]">
+        <Container className="grid grid-cols-1 gap-8 pt-8 pb-10 lg:grid-cols-[minmax(0,1fr)_392px]">
           {/* قائمة الخدمات */}
           <div className="flex min-w-0 flex-col gap-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -278,7 +278,7 @@ export function ProviderTabs({
                     <span className="min-w-0 text-body-s text-deep-charcoal">{it.name}</span>
                     <span className="flex shrink-0 items-center gap-2">
                       <span className="text-label-m text-deep-charcoal">{formatPrice(locale, it.price)}</span>
-                      <button type="button" aria-label={t.removeItem(it.name)} onClick={() => toggle(it.id)} className="text-state-gray hover:text-deep-charcoal">
+                      <button type="button" aria-label={t.removeItem(it.name)} onClick={() => toggle(it.id)} className="relative text-state-gray after:absolute after:-inset-3 after:content-[''] hover:text-deep-charcoal">
                         <Icon name="x" size={16} />
                       </button>
                     </span>
@@ -350,7 +350,7 @@ export function ProviderTabs({
             <h2 className="text-h3">{t.packagesTitle}</h2>
             <p className="text-body-m text-state-gray">{t.packagesSub(short)}</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {detail.packages.map((p) => {
               const on = selected.includes(PKG + p.slug);
               return (

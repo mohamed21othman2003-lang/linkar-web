@@ -62,7 +62,7 @@ export function Countdown({ locale, endsAt, variant = "inline" }: { locale: Loca
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
       <span className="flex items-center gap-1.5 text-[14px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/figma/glyphs/clock-white.svg" alt="" width={15} height={15} />

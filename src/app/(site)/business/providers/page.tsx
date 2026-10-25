@@ -43,7 +43,7 @@ export default async function ForProvidersPage() {
         </a>
       </BusinessHead>
 
-      <Container className="flex flex-col gap-16 pt-12 pb-24">
+      <Container className="flex flex-col gap-10 pt-12 pb-24 md:gap-16">
         <SectionTitle title={tx(locale, p, "why_title")} body={tx(locale, p, "why_body")} />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {p.why.map((c) => (
@@ -63,14 +63,14 @@ export default async function ForProvidersPage() {
             <p className="text-body-m text-white/80 md:text-body-l">{tx(locale, tools, "body")}</p>
             <ul className="flex flex-col gap-3.5">
               {tools.features.map((f) => (
-                <li key={f.text_ar} className="flex items-center gap-2.5 text-body-m text-white">
-                  <Icon name="check" size={18} className="shrink-0 text-neon-green" />
+                <li key={f.text_ar} className="flex items-start gap-2.5 text-body-m text-white md:items-center">
+                  <Icon name="check" size={18} className="mt-[5px] shrink-0 text-neon-green md:mt-0" />
                   {tx(locale, f, "text")}
                 </li>
               ))}
             </ul>
           </div>
-          <div aria-hidden className="flex w-full flex-col gap-3 rounded-xl border border-border-default bg-white p-6 lg:w-[420px] lg:shrink-0">
+          <div aria-hidden className="flex w-full flex-col gap-3 rounded-xl border border-border-default bg-white p-5 md:p-6 lg:w-[420px] lg:shrink-0">
             <p className="flex items-center gap-2 text-label-m text-green-active">
               {tx(locale, tools.preview, "badge")}
               <span className="size-2 rounded-full bg-nature-green" />
@@ -83,9 +83,9 @@ export default async function ForProvidersPage() {
                 <span className="text-label-m text-deep-charcoal">{tx(locale, r, "value")}</span>
               </div>
             ))}
-            <div className="flex gap-2">
-              <span className="rounded-md border border-border-default bg-white px-3.5 py-2 text-label-m text-deep-charcoal">{tx(locale, tools.preview, "voucher")}</span>
-              <span className="rounded-md bg-neon-green px-3.5 py-2 text-label-m text-deep-charcoal">{tx(locale, tools.preview, "checkin")}</span>
+            <div className="flex flex-wrap gap-2 whitespace-nowrap">
+              <span className="rounded-md border border-border-default bg-white px-3 py-2 text-label-m md:px-3.5 text-deep-charcoal">{tx(locale, tools.preview, "voucher")}</span>
+              <span className="rounded-md bg-neon-green px-3 py-2 text-label-m md:px-3.5 text-deep-charcoal">{tx(locale, tools.preview, "checkin")}</span>
             </div>
           </div>
         </section>

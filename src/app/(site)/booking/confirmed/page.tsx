@@ -234,7 +234,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                 <span className="text-caption text-white/70">{t.earnPointsSub}</span>
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Link href={routes.booking(conf.booking_id)} className="flex h-14 items-center justify-center gap-1.5 rounded-[14px] bg-neon-green text-label-l transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed">
                 {t.track}
                 <Icon name="chevron-left" size={16} flip />

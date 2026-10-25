@@ -112,7 +112,7 @@ export function ExplorerClient({ items, initial, startsFrom, availableAt }: { it
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <span className="flex flex-col">
             <span className="text-caption text-white/60">{startsFrom}</span>
-            <span className="text-[26px]/[40px] font-bold text-neon-green">{cur.price}</span>
+            <span className="text-[26px]/[40px] font-bold whitespace-nowrap text-neon-green">{cur.price}</span>
           </span>
           <span className="flex flex-wrap items-center gap-5">
             <Link

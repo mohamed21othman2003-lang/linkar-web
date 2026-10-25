@@ -104,7 +104,7 @@ export default async function AccountHomePage() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col gap-2.5 md:items-end">
+            <div className="flex shrink-0 flex-col gap-2.5 whitespace-nowrap md:items-end">
               <Link
                 href={routes.voucher(data.next.booking_id)}
                 className="flex items-center justify-center gap-1.5 rounded-md bg-neon-green px-[18px] py-2.5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover"
@@ -144,8 +144,8 @@ export default async function AccountHomePage() {
             </Link>
           </section>
 
-          {/* سياراتي · المفضلة · الهدايا · النقاط */}
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {/* سياراتي · المفضلة · الهدايا · النقاط — 4 أعمدة من 1280 بس (تحتها الكروت بتتزنق والملاحظات بتلف 3 سطور) */}
+          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
             {data.stats.map((s) => (
               <Link
                 key={s.key}
@@ -202,12 +202,13 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
           <h2 className="text-h4 text-deep-charcoal">{title}</h2>
           <p className="text-body-s text-v3-text-meta">{sub}</p>
         </div>
-        <Link href={routes.offers} className="flex items-center gap-1.5 px-1 py-1.5 text-label-m text-green-active hover:underline">
+        <Link href={routes.offers} className="flex items-center gap-1.5 px-1 py-1.5 text-label-m text-green-active hover:underline max-md:py-[9px]">
           {allLabel}
           <Icon name="chevron-left" size={16} flip className="text-nature-green" />
         </Link>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
+      {/* 3 أعمدة من 1280؛ تحتها عمودين (الشارة كانت بتطلع برّه الكارت على 768/1024) والكارت الفردي الأخير بياخد السطر كله */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 md:max-xl:[&>*:last-child:nth-child(odd)]:col-span-2">
         {offers.map((f) => (
           <Link
             key={f.id}
@@ -215,7 +216,7 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
             className="flex flex-col items-start gap-3 rounded-[20px] border border-v3-card-stroke bg-white p-5 hover:border-deep-charcoal"
           >
             <span className="flex w-full items-center justify-between gap-2">
-              <span className="flex items-center gap-1.5">
+              <span className="flex min-w-0 items-center gap-1.5">
                 {f.services.map((s) => (
                   <ServiceGlyph key={s} name={s} size={32} className="text-state-gray" />
                 ))}

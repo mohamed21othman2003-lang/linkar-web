@@ -16,7 +16,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
   const t = getCommon(locale);
   return (
     <div className="bg-page-soft">
-      <Container className="flex flex-col gap-8 pt-8 pb-14 lg:flex-row lg:items-start">
+      <Container className="flex flex-col gap-5 pt-5 pb-14 lg:flex-row lg:items-start lg:gap-8 lg:pt-8">
         <aside className="lg:sticky lg:top-28 lg:w-[272px] lg:shrink-0">
           <AccountNav
             v={{

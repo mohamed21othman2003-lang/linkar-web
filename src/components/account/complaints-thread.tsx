@@ -99,10 +99,10 @@ export function ComplaintsThread({
             className="min-w-0 flex-1 bg-transparent text-body-m text-deep-charcoal outline-none placeholder:text-state-gray focus-visible:shadow-none"
           />
           <div className="flex shrink-0 items-center gap-2.5">
-            <button type="submit" className="h-[34px] rounded-md bg-deep-charcoal px-3.5 text-label-m text-neon-green hover:bg-bg-inverse-subtle">
+            <button type="submit" className="h-[34px] rounded-md max-md:h-10 bg-deep-charcoal px-3.5 text-label-m text-neon-green hover:bg-bg-inverse-subtle">
               {c.send}
             </button>
-            <button type="button" aria-label={c.attach} onClick={() => file.current?.click()} className="flex size-8 items-center justify-center rounded-md text-state-gray hover:bg-tile">
+            <button type="button" aria-label={c.attach} onClick={() => file.current?.click()} className="flex size-8 items-center max-md:size-10 justify-center rounded-md text-state-gray hover:bg-tile">
               <Icon name="camera" size={18} />
             </button>
             <input ref={file} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.length && show(c.toastPhoto)} />

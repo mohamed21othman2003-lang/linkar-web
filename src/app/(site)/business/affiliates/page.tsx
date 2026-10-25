@@ -70,12 +70,12 @@ export default async function AffiliatesPage() {
               ))}
             </ul>
           </div>
-          <div aria-hidden className="flex w-full flex-col gap-3 rounded-xl border border-border-default bg-white p-7 lg:w-[400px] lg:shrink-0">
+          <div aria-hidden className="flex w-full flex-col gap-3 rounded-xl border border-border-default bg-white p-5 md:p-7 lg:w-[400px] lg:shrink-0">
             <p className="text-caption text-text-secondary">{tx(locale, c, "code_label")}</p>
             <p dir="ltr" className="text-h2 text-deep-charcoal rtl:text-end">
               {c.code}
             </p>
-            <p className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-3 py-1.5 text-label-m text-green-active">
+            <p className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-3 py-1.5 text-label-m whitespace-nowrap text-green-active max-md:text-caption">
               {tx(locale, c, "pill")}
               <Icon name="tag" size={14} className="text-nature-green" />
             </p>

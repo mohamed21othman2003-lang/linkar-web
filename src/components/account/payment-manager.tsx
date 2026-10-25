@@ -248,7 +248,7 @@ export function PaymentManager({
                   <button
                     type="button"
                     onClick={() => (setCards((cur) => cur.map((x) => ({ ...x, isDefault: x.id === card.id }))), show(c.toastDefault))}
-                    className="py-1 text-label-m text-green-active hover:underline"
+                    className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]"
                   >
                     {c.makeDefault}
                   </button>
@@ -257,7 +257,7 @@ export function PaymentManager({
                   type="button"
                   onClick={() => setConfirm(card)}
                   aria-label={`${c.del} ${label(card)}`}
-                  className="inline-flex h-control-sm items-center rounded-md border border-promotional-red bg-white px-3 text-label-m text-promotional-red hover:bg-bg-danger-subtle"
+                  className="inline-flex h-control-sm items-center rounded-md border border-promotional-red max-md:h-10 bg-white px-3 text-label-m text-promotional-red hover:bg-bg-danger-subtle"
                 >
                   {c.del}
                 </button>
@@ -284,7 +284,7 @@ export function PaymentManager({
                 <button
                   type="button"
                   onClick={() => (setMethods((cur) => cur.map((x) => (x.id === m.id ? { ...x, linked: false } : x))), show(c.toastUnlinked.replace("{name}", m.name)))}
-                  className="inline-flex h-control-sm items-center rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:bg-tile"
+                  className="inline-flex h-control-sm items-center rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:bg-tile max-md:h-10"
                 >
                   {c.unlink}
                 </button>

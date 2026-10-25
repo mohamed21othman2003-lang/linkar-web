@@ -31,7 +31,8 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
 
   return (
     <section className="bg-cool-gray/35 py-16 lg:py-[72px]">
-      <Container className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-[72px]">
+      {/* جنب بعض من xl — في 1024 الرسمة (520px ثابتة) كانت بتضيّق الخطوات */}
+      <Container className="flex flex-col gap-12 xl:flex-row xl:items-center xl:gap-[72px]">
         {/* Steps column */}
         <div className="flex flex-col gap-9 lg:w-[688px]">
           <div className="flex flex-col gap-2.5">
@@ -77,7 +78,7 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
         </div>
 
         {/* Responses visual */}
-        <div className="relative mx-auto w-full max-w-[520px] pt-5 pb-5 lg:h-[560px] lg:w-[520px] lg:shrink-0 lg:py-0" aria-hidden>
+        <div className="relative mx-auto w-full max-w-[520px] pt-5 pb-5 xl:h-[560px] xl:w-[520px] xl:shrink-0 xl:py-0" aria-hidden>
           <div className="mx-auto flex max-w-[440px] flex-col gap-3 rounded-2xl bg-white p-4 shadow-[0_12px_24px_#0b0d0a33] sm:p-6 lg:mt-2.5">
             <div className={card}>
               {stepHead(1)}

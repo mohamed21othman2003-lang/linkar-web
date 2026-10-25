@@ -14,7 +14,8 @@ export function AuthShell({ side, children }: { side: SidePanelCopy; children: R
   return (
     <div className="bg-tile">
       <Container className="flex flex-col gap-6 pt-6 pb-16 lg:flex-row lg:items-stretch lg:gap-8 lg:pt-14 lg:pb-24">
-        <div className="w-full lg:w-[560px] lg:shrink-0">{children}</div>
+        {/* 560 من xl زي الفيجما؛ على 1024–1279 أضيق شوية عشان اللوحة الغامقة ماتتزنقش */}
+        <div className="w-full lg:w-[500px] lg:shrink-0 xl:w-[560px]">{children}</div>
         <SidePanel {...side} />
       </Container>
     </div>
@@ -185,6 +186,7 @@ export function SocialButtons({ next, google, apple }: { next: string; google: s
 
 // رابط أخضر صغير (Label M · green-active) — مع سهم اختياري
 // padded: أزرار «Btn ·» في الفيجما (ارتفاع 26) — روابط «Link ·» من غير حشو (22)
+// after: مساحة لمس أكبر (≥40px) على الموبايل/التابلت من غير ما الشكل أو المسافات تتغير
 export function TextLink({
   href,
   children,
@@ -201,7 +203,7 @@ export function TextLink({
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-1.5 text-label-m hover:underline ${padded ? "py-0.5" : ""} ${tone === "green" ? "text-green-active" : "text-deep-charcoal"} ${className}`}
+      className={`inline-flex items-center gap-1.5 text-label-m max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] hover:underline ${padded ? "py-0.5" : ""} ${tone === "green" ? "text-green-active" : "text-deep-charcoal"} ${className}`}
     >
       {children}
     </Link>

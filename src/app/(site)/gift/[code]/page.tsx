@@ -67,7 +67,7 @@ export default async function GiftPage({ params }: Props) {
           </ul>
         </section>
 
-        <ol className="grid gap-4 md:grid-cols-3">
+        <ol className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {gift.steps.map((s) => (
             <li key={s.icon} className="flex flex-col gap-2 rounded-[18px] border border-border-default bg-white p-5">
               <span className="flex size-10 items-center justify-center rounded-md bg-icon-tile text-deep-charcoal">

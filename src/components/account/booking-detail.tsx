@@ -150,7 +150,8 @@ export function BookingDetail({
         </p>
       </Card>
 
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
+      {/* عمودين من 1150 بس: على 1024 المحتوى 640 فعمود التفاصيل كان بيتزنق (≈280) والعناوين والقيم بتلف */}
+      <div className="flex flex-col gap-5 min-[1150px]:flex-row min-[1150px]:items-start">
         {/* التفاصيل + سجل الحجز */}
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <Card className="flex flex-col gap-3 px-5 py-[22px] md:px-6">
@@ -200,7 +201,7 @@ export function BookingDetail({
         </div>
 
         {/* القسيمة + إدارة الحجز */}
-        <div className="flex w-full shrink-0 flex-col gap-5 lg:w-[340px]">
+        <div className="flex w-full shrink-0 flex-col gap-5 min-[1150px]:w-[340px]">
           <Card className="flex flex-col items-center gap-2.5 p-5">
             <img
               src="/figma/account/qr-placeholder.svg"

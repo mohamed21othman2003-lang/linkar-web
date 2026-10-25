@@ -37,7 +37,8 @@ export function ProviderGrid({
           </Link>
         ))}
       </div>
-      <div className="grid grid-cols-1 gap-[25px] sm:grid-cols-2 lg:grid-cols-4">
+      {/* 4 أعمدة من xl — في 1024 الكارت بيضيق لـ217px وسطر السعر و«احجز» مايكفّوش */}
+      <div className="grid grid-cols-1 gap-[25px] sm:grid-cols-2 xl:grid-cols-4">
         {list.map(({ provider, tag, ai }) => (
           <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} tagLabel={tag} aiLabel={ai} />
         ))}

@@ -33,8 +33,8 @@ export function OffersGuestBand({ locale, content, providers }: { locale: Locale
             const multi = c.services.length > 1;
             const href = c.package_slug ? packageHref(c.package_slug) : c.is_package ? packageHref() : routes.provider(p.slug);
             return (
-              <article key={c.provider} className="flex flex-col gap-4 rounded-2xl bg-white p-6 lg:h-[411px]">
-                <div className="flex items-center justify-between">
+              <article key={c.provider} className="flex flex-col gap-4 rounded-2xl bg-white p-6 lg:min-h-[411px] min-[1440px]:h-[411px]">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="flex [&>*+*]:-ms-2.5">
                     {c.services.map((svc) => (
                       <span
@@ -45,7 +45,7 @@ export function OffersGuestBand({ locale, content, providers }: { locale: Locale
                       </span>
                     ))}
                   </span>
-                  <span className="flex h-[38px] items-center gap-1.5 rounded-full bg-deep-charcoal px-3.5">
+                  <span className="flex h-[38px] items-center gap-1.5 rounded-full bg-deep-charcoal px-3.5 whitespace-nowrap">
                     <Icon name="tag" size={16} className="text-neon-green" />
                     {c.is_package && <span className="text-label-m text-white">{s(o.package_label)}</span>}
                     <span className="text-label-l text-neon-green">{t.discount(c.discount)}</span>

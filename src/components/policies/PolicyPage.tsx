@@ -10,6 +10,7 @@ import { routes } from "@/lib/routes";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/icons/Icon";
+import { ActiveIntoView } from "@/components/help/ActiveIntoView";
 
 export async function policyMetadata(slug: PolicySlug): Promise<Metadata> {
   const [locale, policy] = await Promise.all([getLocale(), getPolicy(slug)]);
@@ -34,8 +35,13 @@ export async function PolicyPage({ slug }: { slug: PolicySlug }) {
         description={meta}
       />
       <Container className="flex flex-col gap-8 pt-10 pb-24 lg:flex-row-reverse lg:items-start lg:gap-12">
-        <nav aria-label={tx(locale, copy, "nav_title")} className="flex flex-col gap-1 rounded-lg bg-tile p-3 lg:w-[300px] lg:shrink-0">
-          <p className="px-3 py-2 text-label-m text-state-gray">{tx(locale, copy, "nav_title")}</p>
+        {/* تحت lg القائمة بتبقى شريط أفقي بيتسكرول (بدل كتلة طويلة فوق النص)؛ من lg عمود جانبي زي الفيجما */}
+        <ActiveIntoView
+          activeKey={slug}
+          label={tx(locale, copy, "nav_title")}
+          className="-mx-4 flex gap-1 overflow-x-auto px-4 md:mx-0 md:px-0 lg:w-[300px] lg:shrink-0 lg:flex-col lg:overflow-visible lg:rounded-lg lg:bg-tile lg:p-3"
+        >
+          <p className="hidden px-3 py-2 text-label-m text-state-gray lg:block">{tx(locale, copy, "nav_title")}</p>
           {policies.map((p) => {
             const on = p.slug === slug;
             return (
@@ -43,13 +49,15 @@ export async function PolicyPage({ slug }: { slug: PolicySlug }) {
                 key={p.slug}
                 href={p.href}
                 aria-current={on ? "page" : undefined}
-                className={`rounded-[10px] px-3 py-2.5 text-label-m transition-colors ${on ? "bg-deep-charcoal text-neon-green" : "text-deep-charcoal hover:bg-bg-muted"}`}
+                className={`shrink-0 rounded-[10px] px-3 py-2.5 text-label-m whitespace-nowrap transition-colors lg:whitespace-normal ${
+                  on ? "bg-deep-charcoal text-neon-green" : "bg-tile text-deep-charcoal hover:bg-bg-muted lg:bg-transparent lg:hover:bg-bg-muted"
+                }`}
               >
                 {tx(locale, p, "title")}
               </Link>
             );
           })}
-        </nav>
+        </ActiveIntoView>
 
         <article className="flex min-w-0 flex-1 flex-col gap-7 rounded-xl border border-border-default bg-white p-5 md:p-10">
           {policy.clauses.map((c) => (

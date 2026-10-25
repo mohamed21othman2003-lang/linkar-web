@@ -76,7 +76,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
                   <p className="text-body-s text-text-secondary">{tx(locale, c, "body")}</p>
                 )}
                 {c.cta && (
-                  <Link href={c.cta.href} className="flex items-center gap-1.5 py-0.5 text-label-m text-green-active hover:underline">
+                  <Link href={c.cta.href} className="max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] flex items-center gap-1.5 py-0.5 text-label-m text-green-active hover:underline">
                     {tx(locale, c.cta, "label")}
                     <Icon name="chevron-left" size={16} flip className="text-nature-green" />
                   </Link>

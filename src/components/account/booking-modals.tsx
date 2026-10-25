@@ -140,7 +140,8 @@ function Stars({ value, size, onChange, label }: { value: number; size: number; 
           aria-checked={value === n}
           aria-label={label(n)}
           onClick={() => onChange(n)}
-          className={n <= value ? "text-v3-rating-star" : "text-state-gray"}
+          // مساحة اللمس 40px طول (الشكل زي ما هو): طبقة شفافة فوق وتحت النجمة وبتغطّي الفراغ اللي بينها وبين اللي جنبها
+          className={`relative after:absolute after:-inset-x-[1.5px] ${size >= 30 ? "after:-inset-y-[5px]" : "after:-inset-y-[10px]"} ${n <= value ? "text-v3-rating-star" : "text-state-gray"}`}
         >
           <Icon name={n <= value ? "star-filled" : "star"} size={size} />
         </button>
@@ -280,7 +281,7 @@ export function VoucherModal({
     [t.rows.paidAt, v.paidAt],
     [t.rows.warranty, v.warranty],
   ];
-  const outline = "flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] border border-cool-gray bg-white px-3 py-3 text-label-m text-deep-charcoal hover:border-border-strong";
+  const outline = "flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] border border-cool-gray bg-white px-3 py-3 text-label-m whitespace-nowrap text-deep-charcoal hover:border-border-strong";
   return (
     <Dialog open={open} onClose={onClose} label={t.label} align="top" className="max-w-[520px]">
       <div className="flex flex-col overflow-hidden rounded-[28px] bg-white shadow-modal">
@@ -324,20 +325,21 @@ export function VoucherModal({
             {t.note}
           </p>
         </div>
-        <div className="flex gap-2.5 px-5 pt-1.5 pb-3 sm:px-7">
+        {/* موبايل: الـ3 أزرار في سطر واحد بتتزنق (النص بيلف والأيقونات بتصغر) — PDF والمشاركة جنب بعض والاتجاهات سطر لوحده */}
+        <div className="grid grid-cols-2 gap-2.5 px-5 pt-1.5 pb-3 sm:flex sm:px-7">
           <button type="button" onClick={onDownload} className={outline}>
-            <Icon name="download" size={16} />
+            <Icon name="download" size={16} className="shrink-0" />
             {t.pdf}
           </button>
           <button type="button" onClick={onShare} className={outline}>
-            <Icon name="share" size={16} />
+            <Icon name="share" size={16} className="shrink-0" />
             {t.share}
           </button>
           <a
             href={v.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] bg-deep-charcoal px-3 py-3 text-label-m text-neon-green hover:bg-bg-inverse-subtle"
+            className="col-span-2 flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] bg-deep-charcoal px-3 py-3 text-label-m whitespace-nowrap text-neon-green hover:bg-bg-inverse-subtle"
           >
             <Icon name="navigation" size={16} />
             {d.booking.directions}
