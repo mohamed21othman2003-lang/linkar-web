@@ -49,16 +49,29 @@ export const referralCar: Car = {
 // طرق الدفع — W2-35 (الترتيب من الفيجما). الدفع تجريبي بالكامل (بدون بوابة حقيقية).
 export const paymentMethods: PaymentMethod[] = [
   { id: "apple", name_ar: "Apple Pay", name_en: "Apple Pay", description_ar: "الأسرع على أجهزة Apple", description_en: "Fastest on Apple devices", badge: "Apple Pay", flow: "direct" },
-  { id: "mada", name_ar: "مدى", name_en: "mada", description_ar: "بطاقة مدى البنكية", description_en: "mada bank card", badge: "مدى", badge_en: "mada", flow: "verify" },
+  { id: "mada", name_ar: "مدى", name_en: "mada", description_ar: "بطاقة مدى البنكية", description_en: "mada bank card", badge: "مدى", badge_en: "mada", flow: "card" },
   { id: "stc", name_ar: "STC Pay", name_en: "STC Pay", description_ar: "محفظة STC Pay", description_en: "STC Pay wallet", badge: "STC Pay", flow: "verify" },
   { id: "tabby", name_ar: "تابي", name_en: "tabby", description_ar: "قسّمها على 4 دفعات بدون فوائد · {amount} اليوم", description_en: "Split into 4 interest-free payments · {amount} today", badge: "tabby", flow: "redirect" },
   { id: "tamara", name_ar: "تمارا", name_en: "tamara", description_ar: "قسّمها على دفعات شهرية بدون فوائد", description_en: "Split into interest-free monthly payments", badge: "tamara", flow: "redirect" },
-  { id: "card", name_ar: "بطاقة ائتمانية", name_en: "Credit card", description_ar: "Visa · Mastercard", description_en: "Visa · Mastercard", badge: "VISA · MC", flow: "verify" },
+  { id: "card", name_ar: "بطاقة ائتمانية", name_en: "Credit card", description_ar: "Visa · Mastercard", description_en: "Visa · Mastercard", badge: "VISA · MC", flow: "card" },
+  // W2-35 (نسخة العميل) · الدفع نقداً في الفرع ← P-26c
+  {
+    id: "cash",
+    name_ar: "الدفع نقداً في الفرع",
+    name_en: "Pay cash at the branch",
+    description_ar: "تصلك القسيمة الآن، وتدفع المبلغ نقداً في الفرع قبل بدء الخدمة",
+    description_en: "Get your voucher now and pay cash at the branch before the service starts",
+    badge: "نقداً",
+    badge_en: "Cash",
+    flow: "cash",
+  },
 ];
 
 // البطاقة/المحفظة المعروضة في نافذة التحقق (P-09 «mada •••• 4821» · P-09b «STC Pay · 055 123 4567»)
 // VISA •••• 9034 من P-05 (حذف بطاقة VISA •••• 9034؟)
-export const savedInstruments: Record<"mada" | "card" | "stc", string> = {
+// Apple Card •••• 1234 من P-26a
+export const savedInstruments: Record<"apple" | "mada" | "card" | "stc", string> = {
+  apple: "Apple Card •••• 1234",
   mada: "mada •••• 4821",
   card: "VISA •••• 9034",
   stc: "STC Pay · ‎055 123 4567‎",
@@ -112,8 +125,10 @@ export const completedBookings: CompletedBooking[] = [
       { key: "care", label_ar: "العناية بالسيارة ونظافتها", label_en: "Care and cleanliness of the car", value: 5 },
       { key: "communication", label_ar: "التعامل والتواصل", label_en: "Service and communication", value: 5 },
       { key: "value", label_ar: "القيمة مقابل السعر", label_en: "Value for money", value: 4 },
-      { key: "scratches", label_ar: "إزالة الخدوش والدوائر", label_en: "Scratch and swirl removal", value: 4 },
+      { key: "scratches", label_ar: "إزالة الخدوش والدوائر", label_en: "Scratch and swirl removal", value: 4, service_specific: true },
     ],
+    service_category_ar: "التلميع",
+    service_category_en: "polishing",
     comment_ar: "نتيجة التلميع ممتازة واللمعان واضح، وبقيت آثار بسيطة على حواف المصابيح فتحت بخصوصها شكوى.",
     comment_en: "The polish result is excellent and the shine is clear; a few light marks remain on the headlight edges, and I opened a complaint about them.",
     points_reward: 50,

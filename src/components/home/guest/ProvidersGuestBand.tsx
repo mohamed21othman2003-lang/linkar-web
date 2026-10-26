@@ -4,16 +4,16 @@ import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
 import type { Provider, Service } from "@/lib/data/types";
-import type { HomeContent } from "@/lib/server/home";
+import type { GuestHomeContent as HomeContent } from "@/lib/server/home";
 import { homeHref } from "@/lib/server/home";
 import { routes } from "@/lib/routes";
 import { formatPrice } from "@/lib/format";
-import { Icon, ServiceGlyph } from "@/components/icons/Icon";
-import { ProviderBadges } from "@/components/ui/Badges";
+import { Icon } from "@/components/icons/Icon";
 import { Container } from "@/components/ui/Container";
 import { LogoTile, SectionHead } from "../bits";
+import { GuestServiceIcon } from "./ServiceIcon";
 
-// كارت مقدّم الخدمة بصورة (V2-02 · Providers 618:1904) — أبيض r24: صورة 180، شعار عائم، الشارات، التقييم، الخدمات، ميزة، السعر و«عرض»
+// كارت مقدّم الخدمة بصورة (V2-02 · Providers 37:28638) — أبيض r24: صورة 180، شعار عائم، التقييم، الخدمات، ميزة، السعر و«عرض»
 function ProviderPhotoCard({ locale, provider, photo, highlight, view }: { locale: Locale; provider: Provider; photo: string; highlight: string; view: string }) {
   const t = getCommon(locale);
   const name = tx(locale, provider, "name");
@@ -27,7 +27,6 @@ function ProviderPhotoCard({ locale, provider, photo, highlight, view }: { local
       <LogoTile slug={provider.slug} alt="" size={64} className="absolute start-5 top-[148px] z-10 shadow-[0_6px_14px_#1429362e]" />
       <div className="pointer-events-none relative flex flex-1 flex-col items-start gap-2.5 px-5 pt-3.5 pb-5">
         <h3 className="ps-[76px] text-h5 text-deep-charcoal">{name}</h3>
-        <ProviderBadges locale={locale} tier={provider.tier} certified={provider.certified} surface="light" />
         <p className="flex items-center gap-1.5 text-caption text-state-gray">
           <Icon name="star-filled" size={14} className="text-nature-green" />
           <span className="text-label-l text-deep-charcoal">{provider.rating.toFixed(1)}</span>
@@ -40,8 +39,8 @@ function ProviderPhotoCard({ locale, provider, photo, highlight, view }: { local
         </p>
         <ul className="flex gap-1.5">
           {provider.services.map((svc) => (
-            <li key={svc} className="flex size-[34px] items-center justify-center rounded-[10px] bg-cool-gray/35">
-              <ServiceGlyph name={svc} size={14} className="text-state-gray" />
+            <li key={svc} className="flex size-[34px] items-center justify-center rounded-[10px] bg-surface-soft">
+              <GuestServiceIcon slug={svc} variant="outline" size={24} />
             </li>
           ))}
         </ul>
@@ -62,7 +61,7 @@ function ProviderPhotoCard({ locale, provider, photo, highlight, view }: { local
   );
 }
 
-// V2-02 · Providers (618:1894) — 4 كروت بالصور + شبكة شعارات 3×7
+// V2-02 · Providers (37:28627) — 4 كروت بالصور + شبكة شعارات 3×7
 export function ProvidersGuestBand({
   locale,
   content,

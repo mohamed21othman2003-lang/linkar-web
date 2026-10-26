@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
@@ -12,7 +11,7 @@ import { Icon } from "@/components/icons/Icon";
 import { BrandIcon, LogoTile } from "./bits";
 import { HeroActions, ScrollTabLink } from "./HeroActions";
 
-// W2-21 · الغلاف + الهوية (الاسم، الشارات، الوصف، المواعيد، الفروع، التقييمات) + شيبس الثقة
+// W2-21 · الهوية (الاسم، الشارات، الوصف، المواعيد، الفروع، التقييمات) + شيبس الثقة
 export function ProviderHero({ locale, provider, detail }: { locale: Locale; provider: Provider; detail: ProviderDetail }) {
   const t = getProviderDict(locale);
   const c = getCommon(locale);
@@ -21,16 +20,7 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
   const hours = tx(locale, detail, "hours");
   return (
     <>
-      {/* Cover banner */}
-      <Container className="pt-2">
-        <div className="relative flex h-[200px] items-end justify-end overflow-hidden rounded-2xl p-4 md:h-[320px] md:p-6">
-          <Image src={detail.cover} alt={t.coverAlt(name)} fill priority sizes="(min-width: 1440px) 1280px, 100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-linear-to-b from-deep-charcoal/0 via-deep-charcoal/0 via-55% to-deep-charcoal/45" />
-          <HeroActions locale={locale} slug={provider.slug} shortName={short} />
-        </div>
-      </Container>
-
-      {/* Identity */}
+      {/* Identity (العميل المعدّل AVbWFtRb0aHpm34oqkI5ot · 85:35696): من غير غلاف — الهوية · التقييمات · «حفظ / مشاركة» في سطر واحد */}
       <Container className="flex flex-col gap-6 pt-7 pb-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-start gap-4 md:gap-5">
           <LogoTile src={provider.logo} alt={name} size={96} className="hidden md:flex" />
@@ -72,16 +62,20 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
             {detail.linkar.count > 0 && <span className="text-caption text-v3-text-meta">{t.linkarRatingsCount(detail.linkar.count)}</span>}
           </ScrollTabLink>
           {detail.google && (
-            <div className="flex flex-col items-start gap-0.5 rounded-[14px] bg-cool-gray/30 px-4 py-2.5">
+            <ScrollTabLink
+              href={routes.provider(provider.slug, "reviews")}
+              className="flex flex-col items-start gap-0.5 rounded-[14px] bg-cool-gray/30 px-4 py-2.5 transition-colors duration-200 ease-figma-out hover:bg-cool-gray/45"
+            >
               <span className="text-caption text-v3-text-meta">{t.googleRating}</span>
               <span className="flex items-center gap-1.5">
                 <Icon name="star-filled" size={18} className="text-v3-rating-star" />
                 <span className="text-[22px] leading-[34px] font-bold text-deep-charcoal">{detail.google.rating.toFixed(1)}</span>
               </span>
               <span className="text-caption text-v3-text-meta">{t.ratingsCount(detail.google.count)}</span>
-            </div>
+            </ScrollTabLink>
           )}
         </div>
+        <HeroActions locale={locale} slug={provider.slug} shortName={short} />
       </Container>
 
       {/* Trust */}

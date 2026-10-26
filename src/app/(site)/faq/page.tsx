@@ -29,7 +29,7 @@ export default async function FaqPage({ searchParams }: Props) {
 
   return (
     <>
-      <PageHeader crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, page, "title") }]} title={tx(locale, page, "title")} description={tx(locale, page, "description")} />
+      <PageHeader tone="dark" crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, page, "title") }]} title={tx(locale, page, "title")} description={tx(locale, page, "description")} />
       <Container className="flex flex-col gap-10 pt-10 pb-24">
         <ActiveIntoView activeKey={active.key} label={d.faqTopics} className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
           <ul className="flex w-max gap-1 rounded-full bg-surface-soft p-1">

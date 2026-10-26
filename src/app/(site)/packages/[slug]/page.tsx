@@ -9,8 +9,10 @@ import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { getSession } from "@/lib/server/session";
 import { getService } from "@/lib/server/content";
-import { getPackage, getPackageSlugs, getPackagesPage, getRelatedPackages } from "@/lib/server/packages";
-import { getCheckoutConfig, getDisplayCars } from "@/lib/server/booking";
+import { getPackage, getPackageSlugs, getPackagesPage, getRelatedOffers, getRelatedPackages } from "@/lib/server/packages";
+import { getBranches, getCheckoutConfig, getDisplayCars } from "@/lib/server/booking";
+import { getOffersDict } from "@/i18n/dict/offers";
+import { bookingHref } from "@/components/booking/query";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/PageHeader";
 import { ProviderBadges } from "@/components/ui/Badges";
@@ -45,13 +47,34 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   const { pkg, provider } = data;
   const t = getBookingDict(locale);
   const c = getCommon(locale);
-  const [page, related, cars, config, main] = await Promise.all([
+  const [page, related, relatedOffers, cars, config, main, branches] = await Promise.all([
     getPackagesPage(),
     getRelatedPackages(slug),
+    getRelatedOffers(slug),
     getDisplayCars(user),
     getCheckoutConfig(),
     getService(pkg.main_service),
+    getBranches(provider),
   ]);
+  const o = getOffersDict(locale);
+  // الفرع الأقرب لكارت الحجز (الفروع مرتّبة بالمسافة)؛ «فرع رئيسي» المؤقت مالوش مسافة حقيقية فمش بيظهر
+  const nearest = branches.find((b) => !b.placeholder);
+  // «باقات أخرى»: العروض المرتبطة أولاً (يمين) ثم الباقات — نفس كارت v2 · Package card
+  const others = [
+    ...relatedOffers.map(({ offer, provider: p }) => ({
+      id: offer.id,
+      provider: p,
+      discount: offer.discount,
+      title: [tx(locale, offer, "title_line1"), tx(locale, offer, "title_line2")] as [string, string],
+      features: offer.features.map((f) => ({ icon: f.icon, label: tx(locale, f, "label") })),
+      price: offer.price,
+      oldPrice: offer.old_price,
+      // مفيش شاشة تفاصيل عرض ← صفحة مقدّم الخدمة (زي W2-40)
+      detailsHref: routes.provider(p.slug),
+      bookHref: bookingHref(routes.bookingBranch, { provider: p.slug, offer: offer.id }),
+    })),
+    ...related.map((r) => packageListingItem(locale, r)),
+  ];
   const d = pkg.detail;
   const count = t.servicesCount(pkg.services.length);
   const providerName = tx(locale, provider, "name");
@@ -109,7 +132,8 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
             <div className="flex flex-wrap items-center gap-2.5 text-caption">
               <LogoTile slug={provider.slug} src={provider.logo} alt={providerName} size={36} />
               <span className="text-label-l">{providerName}</span>
-              <ProviderBadges locale={locale} tier={provider.tier} certified={provider.certified} surface="light" />
+              {/* تصميم العميل المعدّل: شارة الفئة بس (من غير «LINKAR معتمد») */}
+              <ProviderBadges locale={locale} tier={provider.tier} certified={false} surface="light" />
               <span className="text-text-secondary">·</span>
               <span className="flex items-center gap-1">
                 <Icon name="star-filled" size={14} className="text-v3-rating-star" />
@@ -224,6 +248,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
           totalTitle={t.fill(t.packagePrice, { count })}
           totalSub={t.fill(t.insteadOf, { old: formatPrice(locale, pkg.old_price), save: formatPrice(locale, save) })}
           catalog={config.carCatalog}
+          branch={nearest ? { name: tx(locale, nearest, "name"), meta: o.branchAway(formatNumber(nearest.distance_km)) } : undefined}
         />
       </Container>
 
@@ -239,9 +264,9 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(3,313px)] xl:justify-end">
-            {related.map((r) => {
-              const i = packageListingItem(locale, r);
+          {/* 4 كروت بفاصل 9.33 — في 1440 كل كارت 313 بالظبط (1280) */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-[9.33px]">
+            {others.map((i) => {
               return (
                 <OfferCard
                   key={i.id}

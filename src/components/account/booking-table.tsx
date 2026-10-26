@@ -12,7 +12,7 @@ import type {
 } from "@/lib/data/account/bookings";
 import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
-import { BrandIcon, ProviderTile, StatusDotPill } from "./account-ui";
+import { ProviderTile, StatusDotPill } from "./account-ui";
 import { FilterDropdown } from "./booking-dropdown";
 
 export type BookingRowView = {
@@ -49,7 +49,8 @@ function inPeriod(iso: string, p: Period) {
   return d >= from;
 }
 
-// W2-38 · حجوزاتي · جدول + «W2-38 · تبويبات» (1132:33799): التبويبات والفلاتر والبحث بتشتغل في المتصفح
+// W2-38 · حجوزاتي · جدول (85:40069) + «W2-38 · تبويبات»: التبويبات والفلاتر بتشتغل في المتصفح
+// (النسخة المعتمدة شالت خانة البحث — التبويبات والفلاتر في سطر واحد)
 export function BookingTable({
   locale,
   rows,
@@ -65,7 +66,6 @@ export function BookingTable({
   const [tab, setTab] = useState<TabKey>(initialTab);
   const [period, setPeriod] = useState<Period>("3m");
   const [car, setCar] = useState<BookingCar | "all">("all");
-  const [q, setQ] = useState("");
 
   const selectTab = (k: TabKey) => {
     setTab(k);
@@ -89,14 +89,8 @@ export function BookingTable({
   }, [rows]);
 
   const inTab = rows.filter((r) => tab === "all" || r.tab === tab);
-  const needle = q.trim().toLowerCase();
   const visible = inTab.filter(
-    (r) =>
-      inPeriod(r.dateIso, period) &&
-      (car === "all" || r.carKey === car) &&
-      (!needle ||
-        r.id.toLowerCase().includes(needle) ||
-        r.provider.toLowerCase().includes(needle)),
+    (r) => inPeriod(r.dateIso, period) && (car === "all" || r.carKey === car),
   );
 
   // card: في الكروت (موبايل/تابلت) الزر 40px على الأقل عشان يبقى سهل اللمس
@@ -168,18 +162,7 @@ export function BookingTable({
             );
           })}
         </div>
-        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
-          <label className="flex min-w-0 basis-full items-center gap-2 rounded-md border border-cool-gray bg-white px-3 py-[9px] focus-within:border-deep-charcoal sm:w-[252px] sm:basis-auto">
-            <BrandIcon name="brand-search" size={18} />
-            <input
-              type="search"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={t.search}
-              aria-label={t.search}
-              className="min-w-0 flex-1 bg-transparent text-body-s text-deep-charcoal outline-none placeholder:text-state-gray"
-            />
-          </label>
+        <div className="flex flex-wrap items-center gap-2">
           <FilterDropdown
             label={t.car}
             value={car}

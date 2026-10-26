@@ -33,6 +33,9 @@ export type HelpArticle = {
   title_en: string;
   summary_ar: string;
   summary_en: string;
+  // إجابة مختصرة تظهر لما السؤال يتفتح في W2-97 (لو مش موجودة بنعرض summary)
+  answer_ar?: string;
+  answer_en?: string;
   placeholder?: boolean;
   intro_ar?: string;
   intro_en?: string;
@@ -49,6 +52,17 @@ export const helpPage = {
   description_en: "Quick answers about booking, payment, vouchers, points and gifts.",
   search_placeholder_ar: "ابحث في مركز المساعدة… مثال: القسيمة",
   search_placeholder_en: "Search the help center… e.g. voucher",
+  // W2-97 (85:47378): القائمة الجانبية «الفئات» + لوحة أسئلة الفئة المختارة
+  category_order: ["voucher", "booking", "points", "account", "warranty", "business"] as HelpTopicKey[],
+  initial_category: "voucher" as HelpTopicKey,
+  categories_ar: "الفئات",
+  categories_en: "Categories",
+  articles_count_ar: "{n} مقالات",
+  articles_count_en: "{n} articles",
+  open_hint_ar: "اضغط على أي سؤال لعرض الإجابة",
+  open_hint_en: "Tap any question to see the answer",
+  answer_helpful_ar: "هل أفادتك الإجابة؟",
+  answer_helpful_en: "Was this answer helpful?",
   related_title_ar: "مقالات ذات صلة",
   related_title_en: "Related articles",
   // P-10h
@@ -139,6 +153,8 @@ export const helpArticles: HelpArticle[] = [
     title_en: "How do I use my voucher at the visit?",
     summary_ar: "تصلك قسيمة QR بعد الدفع مباشرة، صالحة 14 يوماً، وتعرضها عند زيارتك للفرع الذي اخترته.",
     summary_en: "You get a QR voucher right after payment, valid for 14 days, and you show it when you visit the branch you chose.",
+    answer_ar: "أظهر رمز القسيمة لموظف الفرع عند وصولك، ويمسحه ليبدأ تنفيذ الخدمة. تجد القسيمة دائماً في «حجوزاتي» وفي رسالة التأكيد.",
+    answer_en: "Show the voucher code to the branch staff when you arrive, and they scan it to start your service. You’ll always find the voucher in “My bookings” and in the confirmation message.",
     intro_ar: "القسيمة إثبات حجزك المدفوع، ولا تحتاج أي دفع إضافي عند الزيارة.",
     intro_en: "The voucher is proof of your paid booking — you don't need to pay anything extra at the visit.",
     steps: [

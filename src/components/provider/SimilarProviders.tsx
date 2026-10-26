@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
@@ -9,12 +8,12 @@ import { getCommon } from "@/i18n/dict/common";
 import { getProviderDict } from "@/i18n/dict/provider";
 import type { Provider, Service, ServiceSlug } from "@/lib/data/types";
 import type { Localized } from "@/i18n/config";
-import { currency, formatNumber, formatPrice } from "@/lib/format";
+import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { Container } from "@/components/ui/Container";
 import { ProviderBadges } from "@/components/ui/Badges";
 import { ClientLogo } from "@/components/cards/ClientLogo";
-import { FavoriteButton } from "@/components/cards/FavoriteButton";
+import { ProviderCard } from "@/components/cards/ProviderCard";
 import { Icon } from "@/components/icons/Icon";
 import { scrollContainerTo } from "./motion";
 
@@ -24,71 +23,6 @@ type FilterKey = "similar" | "nearest" | "same";
 
 // مقاس الشعار جوّه صندوق الكارت 160×61 نسبةً لجدول logoSize (XPEL مربّع فيه مساحة فاضية)
 const logoScale: Record<string, number> = { xpel: 0.71, "v-kool": 0.4 };
-
-// كارت مقدّم الخدمة بالصورة (Section · مقدّمو خدمة مشابهون في W2-21): صورة + شارة + قلب + شعار عائم + الاسم + التقييم + الخدمات + السعر
-function SimilarCard({ locale, card, services }: { locale: Locale; card: SimilarCardData; services: Service[] }) {
-  const c = getCommon(locale);
-  const { provider } = card;
-  const name = tx(locale, provider, "name");
-  const chips = card.services.slice(0, 2).map((s) => services.find((x) => x.slug === s)!);
-  const more = card.services.length - chips.length;
-  return (
-    <article className="relative flex h-[453px] w-[280px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-white/6 bg-white/6 sm:w-auto">
-      <Link href={routes.provider(provider.slug)} aria-label={name} className="absolute inset-0 z-0" />
-      <div className="pointer-events-none relative h-[200px] shrink-0">
-        <Image src={card.photo} alt="" fill sizes="(min-width: 1024px) 302px, 280px" className="object-cover" />
-        {card.tag && (
-          <span className="absolute start-2.5 top-3 flex h-6 items-center gap-1.5 rounded-full bg-hero-ink px-2 text-label-m text-white">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/figma/provider/icons/badge-check.svg" alt="" width={14} height={14} />
-            {tx(locale, card.tag, "tag")}
-          </span>
-        )}
-      </div>
-      <div className="pointer-events-auto absolute end-3 top-3 z-10">
-        <FavoriteButton label={c.favorite} className="size-9! rounded-full! bg-white/92! text-nature-green!" />
-      </div>
-      <div className="pointer-events-none absolute start-[15px] top-[171px] flex h-[61px] w-[160px] items-center justify-center overflow-hidden rounded-md border border-cool-gray bg-white shadow-[0_8px_18px_0_#14293638]">
-        <ClientLogo slug={provider.slug} src={provider.logo} alt={name} scale={logoScale[provider.slug] ?? 0.93} />
-      </div>
-      <div className="pointer-events-none relative flex flex-1 flex-col items-start gap-2.5 px-4 pt-10 pb-4">
-        <h3 className="text-h4 text-white">{name}</h3>
-        <div className="flex items-center gap-2">
-          <Icon name="star-filled" size={14} className="text-v3-rating-star" />
-          <span className="text-label-l text-white">{provider.rating.toFixed(1)}</span>
-          <span className="size-[3px] rounded-full bg-white/40" />
-          <span className="flex items-center gap-1 text-body-s text-text-on-image-muted">
-            <Icon name="map-pin" size={16} />
-            {`${provider.distance_km.toFixed(1)} ${c.km} · ${c.branches(provider.branches)}`}
-          </span>
-        </div>
-        <div className="flex gap-1.5">
-          {chips.map((s) => (
-            <span key={s.slug} className="flex h-6 items-center rounded-full bg-white/10 px-2.5 text-label-m whitespace-nowrap text-white">
-              {locale === "ar" ? s.name_ar : s.chip_en}
-            </span>
-          ))}
-          {more > 0 && <span className="flex h-6 items-center rounded-full bg-white/10 px-2.5 text-label-m text-white">{`+${more}`}</span>}
-        </div>
-        <hr className="mt-auto w-full border-white/6" />
-        <div className="flex w-full items-center justify-between gap-2">
-          <p className="flex items-baseline gap-1.5 text-white">
-            <span className="text-body-s">{c.startsFrom}</span>
-            {locale === "en" && <span className="text-body-s">{currency(locale)}</span>}
-            <span className="text-h5">{formatNumber(provider.starting_price)}</span>
-            {locale === "ar" && <span className="text-body-s">{currency(locale)}</span>}
-          </p>
-          <Link
-            href={routes.provider(provider.slug)}
-            className="pointer-events-auto relative z-10 flex h-11 items-center rounded-md bg-neon-green px-5 text-[15px] leading-[22px] font-bold text-deep-charcoal transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
-          >
-            {c.book}
-          </Link>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 // «W2-21 · مقدّمو خدمة آخرون (كاروسيل)» (1143:27053) — كارت مضغوط غامق، بيظهر على الموبايل
 function CarouselCard({ locale, item }: { locale: Locale; item: CarouselData }) {
@@ -209,10 +143,10 @@ export function SimilarProviders({
             ))}
           </div>
         </div>
-        {/* ديسكتوب: 4 كروت · تابلت ولابتوب صغير (< 1280): 2×2 عشان سطر السعر مايتكسرش */}
-        <div key={filter} className={`hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4 ${switched ? "animate-dissolve" : ""}`}>
+        {/* العميل المعدّل (85:35696): كروت الشعار (v2 · Provider card · Logo) زي W2-26 — 4 على الديسكتوب · 2×2 تحت 1280 */}
+        <div key={filter} className={`hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4 xl:gap-[25.3px] ${switched ? "animate-dissolve" : ""}`}>
           {sets[filter].map((card) => (
-            <SimilarCard key={card.provider.slug} locale={locale} card={card} services={services} />
+            <ProviderCard key={card.provider.slug} locale={locale} provider={card.provider} services={services} showBadges showCertified={false} />
           ))}
         </div>
         {/* موبايل: الكاروسيل */}

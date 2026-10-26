@@ -10,6 +10,7 @@ import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { Icon, ServiceGlyph } from "@/components/icons/Icon";
 import { ProviderTile } from "@/components/account/account-ui";
+import { AxEmpty } from "@/components/account/account-extra-ui";
 import type { OverviewOffer } from "@/lib/data/account/overview";
 import type { Locale } from "@/i18n/config";
 
@@ -18,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t.account };
 }
 
-// W2-60 · حسابي · الرئيسية (748:7673) — والعميل الجديد W2-60-0 (1072:21)
+// W2-60 · حسابي · الرئيسية (748:7673 → 85:40307) — والعميل الجديد W2-60-0 (85:44770)
 export default async function AccountHomePage() {
   const [locale, user] = await Promise.all([getLocale(), getSession()]);
   if (!user) redirect(routes.login);
@@ -43,48 +44,8 @@ export default async function AccountHomePage() {
       </div>
 
       {user.is_new ? (
-        <>
-          {/* ابدأ مع لينكار في 3 خطوات */}
-          <section className="flex flex-col gap-4 rounded-[20px] bg-deep-charcoal px-5 py-7 md:px-8">
-            <h2 className="text-h4 text-white">{o.onboardingTitle}</h2>
-            <p className="max-w-[640px] text-body-m text-white">{o.onboardingSub}</p>
-            <div className="grid gap-4 md:grid-cols-3">
-              {data.onboarding.map((s, i) => (
-                <div key={s.icon} className="flex flex-col items-start gap-2.5 rounded-[16px] border border-white/14 bg-white/6 p-[18px]">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex rounded-md bg-white/10 p-2.5 text-neon-green">
-                      <Icon name={s.icon} size={20} />
-                    </span>
-                    <span className="rounded-full bg-neon-green px-2.5 py-1 text-label-m text-deep-charcoal">{formatNumber(i + 1)}</span>
-                  </div>
-                  <h3 className="text-label-l text-white">{tx(locale, s, "title")}</h3>
-                  <p className="text-caption text-white/75">{tx(locale, s, "body")}</p>
-                  <Link href={s.href} className="mt-auto rounded-md bg-neon-green px-3.5 py-[9px] text-label-m text-deep-charcoal hover:bg-bg-brand-hover">
-                    {tx(locale, s, "cta")}
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* لا توجد حجوزات بعد */}
-          <section className="flex flex-wrap items-center justify-between gap-4 rounded-[20px] border border-cool-gray bg-white px-5 py-6 md:px-7">
-            <div className="flex items-center gap-3.5">
-              <span className="flex shrink-0 rounded-full bg-neon-green/18 p-3 text-deep-charcoal">
-                <Icon name="calendar" size={22} />
-              </span>
-              <div className="flex flex-col gap-1">
-                <h2 className="text-label-l text-deep-charcoal">{o.emptyBookingsTitle}</h2>
-                <p className="text-body-s text-state-gray">{o.emptyBookingsSub}</p>
-              </div>
-            </div>
-            <Link href={routes.offers} className="rounded-md border border-cool-gray bg-white px-4 py-2.5 text-label-m text-deep-charcoal hover:border-border-strong">
-              {t.browseOffers}
-            </Link>
-          </section>
-
-          <OffersBlock locale={locale} title={o.newOffersTitle} sub={o.newOffersSub} allLabel={t.allOffers} offers={data.offers} />
-        </>
+        // W2-60-0 (85:44770): النسخة المعتمدة شالت خطوات البداية والعروض — كارت فاضي واحد
+        <AxEmpty icon="calendar" title={o.emptyTitle} text={o.emptyText} cta={{ label: t.bookings.findService, href: routes.search() }} />
       ) : (
         <>
           {/* حجزك القادم */}

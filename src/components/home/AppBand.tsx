@@ -1,73 +1,113 @@
-import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import type { HomeContent } from "@/lib/server/home";
 import { StoreBadges } from "@/components/brand/StoreBadges";
 import { Container } from "@/components/ui/Container";
 import { routes } from "@/lib/routes";
-import { FigmaIcon } from "./bits";
+import { Icon } from "@/components/icons/Icon";
+import { FigmaIcon, RText } from "./bits";
 import { FloatPhone, PopChip } from "./motion";
+import { GuestPhone } from "./guest/AppGuestBand";
 
 type S = (x: { text_ar: string; text_en: string }) => string;
 
-// «امسح للتحميل» + QR + شارات المتاجر
-function Download({ s, content, platforms }: { s: S; content: HomeContent; platforms: boolean }) {
+// «امسح للتحميل» + QR + شارات المتاجر — ديسكتوب: صندوق QR أبيض بالنص · تابلت: QR 80 جنب الشارتين · موبايل: الشارتين جنب بعض
+function Download({ s, content }: { s: S; content: HomeContent }) {
   const a = content.appBand;
   return (
-    <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-      <StoreBadges height={48} className="flex-col gap-2.5!" />
-      <div className={`flex items-center gap-3 rounded-lg bg-white p-2.5 ${platforms ? "h-[92px]" : "h-[104px]"}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} className="size-[72px]" />
-        <div className="flex w-[88px] flex-col gap-0.5">
-          <span className="text-label-m text-deep-charcoal">{s(a.scan)}</span>
-          {platforms && <span className="text-caption text-state-gray">{s(a.platforms)}</span>}
+    <>
+      {/* Download (37:27970): الشارتين فوق بعض على البداية وصندوق QR الأبيض على النهاية */}
+      <div className="flex w-full items-center justify-between gap-5 max-xl:hidden">
+        <StoreBadges height={48} className="flex-col gap-2.5!" />
+        <div className="flex items-center gap-3 rounded-lg bg-white p-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} className="size-[72px]" />
+          <span className="flex flex-col gap-0.5 text-[14px] leading-[22px] whitespace-nowrap">
+            <span className="font-medium text-deep-charcoal">{s(a.scan)}</span>
+            <span className="font-light text-state-gray">{s(a.platforms)}</span>
+          </span>
         </div>
       </div>
-    </div>
+      <div className="hidden items-center gap-2.5 md:max-xl:flex">
+        <StoreBadges height={37} className="flex-col-reverse gap-1.5!" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/figma/home/app-qr.svg" alt={s(a.scan)} width={80} height={80} className="size-20" />
+      </div>
+      <StoreBadges height={42} className="flex-row-reverse justify-center self-center md:hidden" />
+    </>
   );
 }
 
-// V2-01 · Band · App (557:210) — «لينكار في جيبك / احجز، ادفع، وتابع» على كحلي + جوالين وشيبس
+// V2-01 · Band · App (37:27756 صفحة 0:1 · تابلت 85:34492 · موبايل 85:33813) — «لينكار في جيبك / احجز، ادفع، وتابع» على كحلي
+// بتوهّجين (ليموني + أخضر) + جوالين مايلين ±13° وشيبس. الجوال هيكل HTML وشاشته صورة (نفس شاشات V2-02)
+// تحت xl مسرح الجوالين بنص المقاس (350×360) — تابلت: جنب النص · موبايل: بين العنوان والمميزات
 export function AppBand({ locale, content, id }: { locale: Locale; content: HomeContent; id: string }) {
   const a = content.appBand;
   const s: S = (x) => tx(locale, x, "text");
-  const chip = "flex h-14 items-center gap-2.5 rounded-full ps-3.5 pe-4 text-label-m whitespace-nowrap shadow-[0_12px_24px_#0b0d0a33]";
+  const chip = "flex h-14 items-center gap-2.5 rounded-full ps-4 pe-3.5 text-label-m whitespace-nowrap shadow-[0_24px_24px_#0b0d0a33]";
   return (
-    <section id={id} className="scroll-mt-20 overflow-hidden bg-deep-charcoal py-16 lg:py-24">
-      {/* النص جنب مسرح الجوالين (700px) من xl بس — في 1024 عمود النص كان بيضيق لـ200px */}
-      <Container className="flex flex-col gap-12 xl:flex-row xl:items-center xl:justify-between xl:gap-10">
-        <div className="flex flex-col items-start gap-6 lg:w-[540px]">
-          <p className="text-overline text-neon-green">{s(a.overline)}</p>
-          <h2 className={`text-[36px]/[54px] font-bold text-white ${locale === "ar" ? "md:text-display-l" : "md:text-[44px]/[64px]"}`}>
-            {s(a.title_1)}
-            <br />
-            <span className="text-neon-green">{s(a.title_2)}</span>
-          </h2>
-          <p className="text-body-l text-cool-gray">{s(a.description)}</p>
-          <ul className="grid w-full grid-cols-1 gap-3.5 sm:grid-cols-2">
-            {a.features.map((f) => (
-              <li key={f.title.text_ar} className="flex min-h-[104px] items-center gap-3 rounded-lg border border-white/24 bg-white/12 p-3.5">
-                <FigmaIcon name={f.icon} size={40} />
+    <section id={id} className="relative scroll-mt-20 overflow-hidden bg-deep-charcoal py-9 md:py-16 xl:py-24">
+      {/* Glow ×2 (37:27757/27758) */}
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[1440px] -translate-x-1/2 xl:block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/figma/home/app/glow-lime.svg" alt="" width={1180} height={1180} className="absolute top-[-120px] left-[-120px] max-w-none" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/figma/home/app/glow-green.svg" alt="" width={840} height={840} className="absolute top-[-320px] left-[840px] max-w-none" />
+      </div>
+      <Container className="grid grid-cols-1 gap-[18px] max-md:px-5 md:grid-cols-[1fr_350px] md:items-center md:gap-6 xl:flex xl:items-center xl:justify-between xl:gap-10">
+        <div className="contents md:flex md:flex-col md:items-start md:gap-4 xl:w-[540px] xl:gap-6">
+          <div className="flex flex-col items-start gap-1.5 md:gap-4 xl:gap-6">
+            <p className="text-[13px]/[20px] font-medium text-neon-green md:text-overline">{s(a.overline)}</p>
+            <h2
+              className={`text-[26px]/[38px] font-bold text-white md:text-[34px]/[50px] ${locale === "ar" ? "xl:text-display-l" : "xl:text-[44px]/[64px]"}`}
+            >
+              {s(a.title_1)}
+              <br />
+              <span className="text-neon-green">{s(a.title_2)}</span>
+            </h2>
+            <p className="text-[14px]/[23px] font-light text-v3-card-stroke md:text-[15px]/[26px] xl:text-body-l xl:text-cool-gray">
+              <RText d={s(a.description)} t={s(a.description_t)} m={s(a.description_m)} />
+            </p>
+          </div>
+          <ul className="grid w-full grid-cols-2 gap-2 max-md:order-1 md:gap-y-4 xl:gap-3.5">
+            {a.features.map((f, i) => (
+              // تحت xl كل صف معكوس (V2-01t/V2-01m: «ادفع خلال ثوانٍ» قبل «تأكيد فوري للحجز»)
+              <li
+                key={f.title.text_ar}
+                style={{ "--o": i ^ 1 } as CSSProperties}
+                className="max-xl:order-(--o) flex h-[52px] items-center gap-2 rounded-[14px] border border-white/12 bg-white/7 px-3 py-2.5 xl:h-auto xl:min-h-[98px] xl:gap-3 xl:rounded-lg xl:border-white/24 xl:bg-white/12 xl:p-3.5"
+              >
+                <FigmaIcon name={f.icon} size={40} className="max-xl:hidden" />
+                <span className="flex size-[30px] shrink-0 items-center justify-center rounded-[9px] bg-neon-green text-deep-charcoal xl:hidden">
+                  <Icon name={f.glyph} size={16} />
+                </span>
                 <div className="flex flex-col gap-1">
-                  <p className="text-label-l text-white">{s(f.title)}</p>
-                  <p className="text-caption text-cool-gray">{s(f.body)}</p>
+                  <p className="text-[13px]/[20px] font-medium text-white xl:text-label-l">{s(f.title)}</p>
+                  <p className="text-caption text-cool-gray max-xl:hidden">{s(f.body)}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <Download s={s} content={content} platforms={false} />
+          <div className="flex w-full flex-col max-md:order-2">
+            <Download s={s} content={content} />
+          </div>
         </div>
 
-        {/* Phones stage (700×720) — الجوالين صور مصدّرة من الفيجما، والشيبس HTML */}
-        <div className="relative mx-auto h-[360px] w-[350px] shrink-0 sm:h-[576px] sm:w-[560px] lg:h-[720px] lg:w-[700px] xl:mx-0">
-          <div className="absolute start-0 top-0 h-[720px] w-[700px] scale-50 ltr:origin-top-left rtl:origin-top-right sm:scale-80 lg:scale-100">
-          <FloatPhone kind="home" className="absolute -end-[7px] top-[89px] w-[368px]">
-            <Image src="/figma/home/app-phone-home.png" alt="" width={368} height={570} sizes="368px" className="h-auto w-[368px]" />
+        {/* Phones stage (700×720) — الجوالين صور مصدّرة من الفيجما، والشيبس HTML؛ تحت xl بنص المقاس */}
+        <div className="relative mx-auto h-[360px] w-[350px] shrink-0 max-[389px]:[zoom:0.9] xl:mx-0 xl:h-[720px] xl:w-[700px]">
+          <div className="absolute start-0 top-0 h-[720px] w-[700px] scale-50 ltr:origin-top-left rtl:origin-top-right xl:scale-100">
+          {/* Phone · Home (مايل -13°) على الطرف · Phone · Voucher (+13°) — الإطار 354×551 والجوال 246×508 */}
+          <FloatPhone kind="home" className="absolute end-0 top-[94.66px] flex h-[550.7px] w-[354px] items-center justify-center">
+            <div role="img" aria-label={s(a.phones_alt)} className="-rotate-13 [zoom:0.9524]">
+              <GuestPhone screen="/figma/home/guest/app-screen-home.png" />
+            </div>
           </FloatPhone>
-          <FloatPhone kind="voucher" className="absolute end-[329px] top-[114px] w-[368px]">
-            <Image src="/figma/home/app-phone-voucher.png" alt="" width={368} height={570} sizes="368px" className="h-auto w-[368px]" />
+          <FloatPhone kind="voucher" className="absolute end-[335.6px] top-[120px] flex h-[550.7px] w-[354px] items-center justify-center">
+            <div className="rotate-13 [zoom:0.9524]">
+              <GuestPhone screen="/figma/home/guest/app-screen-voucher.png" />
+            </div>
           </FloatPhone>
           {/* الشيبس بتودّي لشاشاتها: W2-36 تأكيد الحجز · W2-66 باقات الوكالات · W2-37b متابعة الحجز */}
           {/* في الإنجليزي النص أطول — نثبّته من بداية المسرح بدل ما يمتد برّه على العنوان */}
@@ -89,67 +129,6 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
               {s(a.chips.tracking)}
             </Link>
           </PopChip>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-// Phone · Home / Phone · Voucher في V2-02 (964:311734 / 858:319414) — 258.3×533.8. هيكل الجوال (الجسم والإطار
-// والنوتش والأزرار واللمعة والظل) HTML بمقاسات الفيجما، والشاشة بس صورة متصدّرة. كده الجوال بيتحرك كعنصر حقيقي
-// من غير مربع خلفية حواليه (التصدير الكامل بيطلع بخلفية السكشن الليموني).
-function GuestPhone({ screen }: { screen: string }) {
-  const button = "absolute w-[2.58px] rounded-[1.72px] bg-deep-charcoal";
-  return (
-    <div className="relative h-[533.82px] w-[258.3px] opacity-95">
-      <div
-        className="absolute inset-0 rounded-[46.49px] bg-[linear-gradient(112deg,#4a4e47_0%,#152935_45%,#3a3d38_100%)] shadow-[0_12px_24px_-8.61px_#00000059]"
-      />
-      <div className="absolute inset-[5.17px] rounded-[41.33px] bg-[#0b151b]" />
-      <div className="absolute inset-[10.33px] overflow-hidden rounded-[36.16px] bg-white">
-        <Image src={screen} alt="" width={238} height={513} sizes="238px" className="size-full" />
-      </div>
-      <div className="absolute left-[92.13px] top-[18.94px] h-[22.39px] w-[74.05px] rounded-[11.19px] bg-[#0b151b]" />
-      <span className={`${button} -left-[1.72px] top-[103.32px] h-[25.83px]`} />
-      <span className={`${button} -left-[1.72px] top-[146.37px] h-[44.77px]`} />
-      <span className={`${button} -left-[1.72px] top-[201.47px] h-[44.77px]`} />
-      <span className={`${button} left-[257.44px] top-[163.59px] h-[70.6px]`} />
-      <div className="pointer-events-none absolute inset-[10.33px] rounded-[36.16px] bg-[linear-gradient(135deg,#ffffff29_0%,#ffffff05_35%,#ffffff00_100%)]" />
-    </div>
-  );
-}
-
-// V2-02 · App (619:2123) — ليموني: النص + الجوالين من تحت
-export function AppBandGuest({ locale, content, id }: { locale: Locale; content: HomeContent; id: string }) {
-  const a = content.appBand;
-  const s: S = (x) => tx(locale, x, "text");
-  return (
-    <section id={id} className="scroll-mt-20 overflow-hidden bg-neon-green pt-12 lg:pt-[72px]">
-      <Container className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-        <div className="flex flex-col items-start gap-4 lg:w-[520px] lg:pb-[72px]">
-          <p className="text-overline text-deep-charcoal">{s(a.overline)}</p>
-          <h2 className="text-[26px]/[40px] font-bold text-deep-charcoal md:text-h2">{s(a.title_1)}</h2>
-          <p className="text-body-l text-deep-charcoal">{s(a.guest_description)}</p>
-          <ul className="flex flex-col gap-4">
-            {a.guest_points.map((p) => (
-              <li key={p.text.text_ar} className="flex items-center gap-2.5 text-label-l text-deep-charcoal">
-                <FigmaIcon name={p.icon} size={32} />
-                {s(p.text)}
-              </li>
-            ))}
-          </ul>
-          <Download s={s} content={content} platforms />
-        </div>
-        {/* Phones (619:2124): جوالين بيطفوا — Voucher على الطرف (x=0) وHome جنبه (x=282.3) */}
-        <div role="img" aria-label={s(a.phones_alt)} className="relative mx-auto h-[267px] w-[270px] shrink-0 sm:h-[534px] sm:w-[541px] lg:mx-0">
-          <div className="absolute start-0 top-0 h-[534px] w-[541px] scale-50 ltr:origin-top-left rtl:origin-top-right sm:scale-100">
-            <FloatPhone kind="guest-voucher" className="absolute end-0 top-0">
-              <GuestPhone screen="/figma/home/app-guest-screen-voucher.png" />
-            </FloatPhone>
-            <FloatPhone kind="guest-home" className="absolute end-[282.3px] top-0">
-              <GuestPhone screen="/figma/home/app-guest-screen-home.png" />
-            </FloatPhone>
           </div>
         </div>
       </Container>

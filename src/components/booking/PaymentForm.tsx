@@ -11,9 +11,12 @@ import { RadioDot, Toggle } from "./Radio";
 import { Summary, type SummaryRow } from "./Summary";
 import { computeTotals } from "./pricing";
 import { InstallmentModal, MarketerCodeModal, VerifyPaymentModal } from "./popups";
+import { ApplePayModal, CardPayModal, CashPayModal } from "./pay-popups";
 
-export type MethodView = { id: PaymentMethodId; name: string; description: string; badge: string; flow: "direct" | "verify" | "redirect" };
+export type MethodView = { id: PaymentMethodId; name: string; description: string; badge: string; flow: "direct" | "verify" | "redirect" | "card" | "cash" };
 type MarketerView = { code: string; name: string; credit: number; min: number };
+type Dialog = "apple" | "card" | "verify" | "installment" | "cash";
+const dialogFor: Record<MethodView["flow"], Dialog> = { direct: "apple", card: "card", verify: "verify", redirect: "installment", cash: "cash" };
 
 const badgeStyle: Record<PaymentMethodId, string> = {
   apple: "bg-pay-black text-white",
@@ -22,9 +25,12 @@ const badgeStyle: Record<PaymentMethodId, string> = {
   tabby: "bg-tabby text-pay-black",
   tamara: "bg-tamara text-pay-black",
   card: "border border-border-default bg-white",
+  cash: "border border-cool-gray bg-cash-tint text-green-active",
 };
 
-// W2-35 الدفع · W2-35m مدى (يفتح P-09) · W2-35b فشلت العملية · W2-35s كود المسوّق — الدفع تجريبي بالكامل
+// W2-35 الدفع · W2-35m مدى · W2-35b فشلت العملية · W2-35s كود المسوّق — الدفع تجريبي بالكامل
+// النموذج الأولي (نسخة العميل): الضغط على الطريقة يفتح نافذتها (OVERLAY · DISSOLVE 200ms):
+//   Apple Pay ← P-26a · مدى / بطاقة ائتمانية ← P-26b ثم P-09 · STC Pay ← P-09b · تابي / تمارا ← P-23 · نقداً في الفرع ← P-26c
 export function PaymentForm({
   locale,
   summary,
@@ -41,6 +47,7 @@ export function PaymentForm({
   failDemo,
   selfMarketerDemo,
   branchName,
+  providerName,
   itemsLabel,
   successHref,
   failHref,
@@ -54,13 +61,14 @@ export function PaymentForm({
   initialMarketer: MarketerView | null;
   marketers: MarketerView[];
   methods: MethodView[];
-  instruments: Record<"mada" | "card" | "stc", string>;
+  instruments: Record<"apple" | "mada" | "card" | "stc", string>;
   stcPhone: string;
   failedMethod: PaymentMethodId | null;
   initialMethod: PaymentMethodId | null; // ?method=mada ← W2-35m
   failDemo: boolean;
   selfMarketerDemo: boolean;
   branchName: string;
+  providerName: string;
   itemsLabel: string;
   successHref: string; // + &method=…&pts=…
   failHref: string; // + &failed=…
@@ -77,7 +85,8 @@ export function PaymentForm({
   const [codeIssue, setCodeIssue] = useState<{ reason: "min" | "self"; m: MarketerView } | null>(
     initialMarketer && subtotal < initialMarketer.min ? { reason: "min", m: initialMarketer } : null,
   );
-  const [dialog, setDialog] = useState<null | "verify" | "installment">(null);
+  const [dialog, setDialog] = useState<null | Dialog>(null);
+  const [typedCard, setTypedCard] = useState<string | null>(null); // آخر 4 أرقام من P-26b
   const [busy, setBusy] = useState(false);
 
   const totals = computeTotals({ subtotal, points: usePoints ? pointsSar : 0, marketerCredit: marketer?.credit ?? 0 });
@@ -90,11 +99,7 @@ export function PaymentForm({
     const extra = `&method=${method}&pts=${usePoints ? 1 : 0}${marketer ? "" : "&nomkt=1"}`;
     router.push(ok ? `${successHref}${extra}` : `${failHref}&failed=${method}`);
   };
-  const pay = () => {
-    if (current.flow === "verify") return setDialog("verify");
-    if (current.flow === "redirect") return setDialog("installment");
-    finish(!(failDemo && !failedMethod));
-  };
+  const pay = () => setDialog(dialogFor[current.flow]);
   const applyPromo = () => {
     const code = promo.trim().toUpperCase();
     const m = marketers.find((x) => x.code.toUpperCase() === code);
@@ -142,9 +147,7 @@ export function PaymentForm({
                   aria-checked={on}
                   onClick={() => {
                     setMethod(m.id);
-                    // النموذج الأولي: STC Pay / تابي / تمارا تفتح نافذتها مباشرة (OVERLAY · DISSOLVE 200ms)
-                    if (m.id === "stc") setDialog("verify");
-                    if (m.flow === "redirect") setDialog("installment");
+                    setDialog(dialogFor[m.flow]);
                   }}
                   className={`flex min-h-20 items-center justify-between gap-3 rounded-lg px-4 py-3.5 text-start transition-colors duration-200 ease-figma-out ${on ? "border-2 border-neon-green bg-neon-green/8" : "border border-border-default bg-white"}`}
                 >
@@ -264,12 +267,38 @@ export function PaymentForm({
         open={dialog === "verify"}
         kind={method === "stc" ? "stc" : "bank"}
         amount={amount}
-        instrument={method === "stc" ? instruments.stc : method === "card" ? instruments.card : instruments.mada}
+        instrument={
+          method === "stc"
+            ? instruments.stc
+            : typedCard
+              ? `${method === "card" ? "VISA" : "mada"} •••• ${typedCard}`
+              : method === "card"
+                ? instruments.card
+                : instruments.mada
+        }
         phone={stcPhone}
         onClose={() => setDialog(null)}
         onConfirm={(code) => finish(code !== "000000" && !(failDemo && !failedMethod))}
         onCancel={() => finish(false)}
       />
+      <ApplePayModal
+        locale={locale}
+        open={dialog === "apple"}
+        amount={amount}
+        provider={providerName}
+        card={instruments.apple}
+        onPay={() => finish(!(failDemo && !failedMethod))}
+        onClose={() => setDialog(null)}
+      />
+      <CardPayModal
+        key={`card-${method}`}
+        locale={locale}
+        open={dialog === "card"}
+        amount={amount}
+        onPay={(last4) => (setTypedCard(last4), setDialog("verify"))}
+        onClose={() => setDialog(null)}
+      />
+      <CashPayModal locale={locale} open={dialog === "cash"} onConfirm={() => finish(true)} onClose={() => setDialog(null)} />
       <InstallmentModal
         locale={locale}
         open={dialog === "installment"}

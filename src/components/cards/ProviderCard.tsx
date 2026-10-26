@@ -17,6 +17,7 @@ export function ProviderCard({
   provider,
   services,
   showBadges = false,
+  showCertified = true,
   className = "",
   tagLabel,
   aiLabel = false,
@@ -28,6 +29,8 @@ export function ProviderCard({
   provider: Provider;
   services: Service[];
   showBadges?: boolean;
+  // تصميم العميل المعدّل (W2-26): الكارت بيعرض التصنيف بس من غير «معتمد LINKAR»
+  showCertified?: boolean;
   className?: string;
   // نص الشارة الليموني بدل provider.tag (الرئيسية V2-01 بتحدد شارة لكل كارت)
   tagLabel?: string | null;
@@ -68,7 +71,7 @@ export function ProviderCard({
         </div>
         {showBadges && (
           <div className="mt-2">
-            <ProviderBadges locale={locale} tier={provider.tier} certified={provider.certified} />
+            <ProviderBadges locale={locale} tier={provider.tier} certified={showCertified && provider.certified} />
           </div>
         )}
         <div className="mt-auto flex w-full items-center justify-between gap-2">

@@ -30,7 +30,8 @@ export default async function BookingRatePage({ searchParams }: { searchParams: 
         subtitle={subtitle}
         provider={{ slug: provider.slug, name: tx(locale, provider, "name"), logo: provider.logo }}
         overall={booking.overall}
-        criteria={booking.criteria.map((c) => ({ key: c.key, label: tx(locale, c, "label"), value: c.value }))}
+        criteria={booking.criteria.map((c) => ({ key: c.key, label: tx(locale, c, "label"), value: c.value, serviceSpecific: c.service_specific }))}
+        serviceCategory={tx(locale, booking, "service_category")}
         comment={tx(locale, booking, "comment")}
         publicName={tx(locale, booking, "customer_display")}
         points={booking.points_reward}

@@ -37,17 +37,19 @@ export function EmailLoginForm({
   next,
   forgotHref,
   copy,
+  gapClass = "gap-[18px]",
 }: {
   next: string;
   forgotHref: string;
   copy: { email: string; emailPlaceholder: string; password: string; forgot: string; cta: string; errors: Errors };
+  gapClass?: string; // W2-34e (داخل كارت الحجز): gap-4
 }) {
   const [state, action, pending] = useActionState<AuthState, FormData>(emailLogin, null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const pwError = errOf(state, copy.errors, "password");
   return (
-    <form action={action} className="flex w-full flex-col items-start gap-[18px]" noValidate>
+    <form action={action} className={`flex w-full flex-col items-start ${gapClass}`} noValidate>
       <input type="hidden" name="next" value={next} />
       <EmailInput label={copy.email} placeholder={copy.emailPlaceholder} error={errOf(state, copy.errors, "email")} value={email} onChange={setEmail} />
       <Field label={copy.password} htmlFor="password" error={pwError}>

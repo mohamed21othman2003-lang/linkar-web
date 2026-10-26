@@ -10,6 +10,7 @@ import { GiftBody } from "@/components/gift/GiftExpired";
 import { KvRow } from "@/components/gift/ui";
 import { SharedVoucherActions } from "@/components/gift/VoucherActions";
 import { actionsCopy, contactInfo } from "@/components/gift/actionsProps";
+import { voucherCodeFont } from "@/components/booking/fonts";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -62,7 +63,7 @@ export default async function SharedVoucherPage({ params }: Props) {
             </div>
             <div className="flex shrink-0 flex-col items-center gap-2">
               <Image src={v.qr} alt={t.qrAlt(v.code)} width={170} height={170} unoptimized />
-              <p dir="ltr" className="text-h5 text-deep-charcoal">
+              <p dir="ltr" className={`${voucherCodeFont} text-[16.6px] leading-7 tracking-[0.04em] text-deep-charcoal`}>
                 {v.code}
               </p>
             </div>

@@ -54,4 +54,15 @@ export const services: Service[] = [
     description_en: "A ceramic coating that keeps the paint glossy for years.",
     featured_providers: ["johnson", "feynlab", "nanox"],
   },
+  // تغيير اللون — جديدة في التصميم المعدّل (الهيرو والخدمات والفوتر)؛ الوصف من W2-25 وكارت الهوم «ثري إم • إكسبل • ثري سفن»
+  {
+    slug: "color-change",
+    name_ar: "تغيير اللون",
+    name_en: "Color change",
+    chip_ar: "تغيير اللون",
+    chip_en: "Color change",
+    description_ar: "تغليف السيارة بلون جديد بأفلام قابلة للإزالة، يحافظ على الطلاء الأصلي.",
+    description_en: "Wrap your car in a new color with removable films that protect the original paint.",
+    featured_providers: ["3m", "xpel", "3seven"],
+  },
 ];

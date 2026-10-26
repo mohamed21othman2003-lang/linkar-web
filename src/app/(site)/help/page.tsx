@@ -15,25 +15,30 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: tx(locale, page, "title"), description: tx(locale, page, "description") };
 }
 
-// W2-97 · مركز المساعدة (761:13678)
+// W2-97 · مركز المساعدة (85:47378) — البحث + «الفئات» + أسئلة الفئة المختارة + «لم تجد إجابتك؟»
 export default async function HelpPage() {
   const locale = await getLocale();
   const t = getCommon(locale);
   const { page, topics, articles, band } = await getHelpPage();
   const bySlug = new Map(articles.map((a) => [a.slug, a]));
   const topicTitle = new Map(topics.map((tp) => [tp.key, tx(locale, tp, "title")]));
+  const ordered = page.category_order.map((k) => topics.find((tp) => tp.key === k)!).filter(Boolean);
 
   return (
     <>
-      <PageHeader crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, page, "title") }]} title={tx(locale, page, "title")} description={tx(locale, page, "description")} />
+      <PageHeader tone="dark" crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, page, "title") }]} title={tx(locale, page, "title")} description={tx(locale, page, "description")} />
       <Container className="flex flex-col gap-10 pt-10 pb-24">
         <HelpCenter
-          topics={topics.map((tp) => ({
+          locale={locale}
+          initial={page.initial_category}
+          topics={ordered.map((tp) => ({
             key: tp.key,
             icon: tp.icon,
             title: tx(locale, tp, "title"),
-            allHref: tp.allHref,
-            articles: tp.articles.map((s) => ({ title: tx(locale, bySlug.get(s)!, "title"), href: routes.helpArticle(s) })),
+            articles: tp.articles.map((s) => {
+              const a = bySlug.get(s)!;
+              return { slug: s, title: tx(locale, a, "title"), answer: (locale === "en" ? a.answer_en : a.answer_ar) ?? tx(locale, a, "summary") };
+            }),
           }))}
           articles={articles.map((a) => ({
             title: tx(locale, a, "title"),
@@ -41,8 +46,14 @@ export default async function HelpPage() {
             topic: topicTitle.get(a.topic)!,
             href: routes.helpArticle(a.slug),
           }))}
-          locale={locale}
-          placeholder={tx(locale, page, "search_placeholder")}
+          copy={{
+            placeholder: tx(locale, page, "search_placeholder"),
+            categories: tx(locale, page, "categories"),
+            count: tx(locale, page, "articles_count"),
+            hint: tx(locale, page, "open_hint"),
+            helpful: tx(locale, page, "answer_helpful"),
+            thanks: tx(locale, page, "feedback_toast"),
+          }}
         />
         <ContactBand
           title={tx(locale, band, "title")}

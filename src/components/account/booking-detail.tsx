@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getAccountDict } from "@/i18n/dict/account";
 import { routes } from "@/lib/routes";
@@ -16,7 +16,6 @@ import {
   RatingModal,
   ShareVoucherPopup,
   VoucherModal,
-  WalletButton,
   type BranchView,
   type RatingView,
   type VoucherView,
@@ -64,8 +63,6 @@ function StepDot({ state }: { state: StepState }) {
   return <span className="size-8 shrink-0 rounded-full border-2 border-cool-gray bg-white" />;
 }
 
-const noop = () => () => {};
-const isAppleDevice = () => /iPhone|iPad|Macintosh/.test(navigator.userAgent);
 
 const manageIcon: Record<ManageView["kind"], string> = { branch: "brand-phone", support: "brand-mail", rate: "brand-heart", complaint: "brand-shield" };
 
@@ -90,15 +87,12 @@ export function BookingDetail({
   const [contact, setContact] = useState(false);
   const [rating, setRating] = useState(openRating && !!v.rating);
   const [share, setShare] = useState(false);
-  // زر المحفظة واحد في الكارت: Apple Wallet على أجهزة أبل، ومحفظة Google غير كده (زي الفيجما)
-  const apple = useSyncExternalStore(noop, isAppleDevice, () => false);
 
   const closeRating = () => {
     setRating(false);
     if (openRating) window.history.replaceState(null, "", routes.booking(id));
   };
   const download = () => showToast(d.toasts.downloading, "download");
-  const wallet = () => showToast(d.toasts.wallet);
 
   // زي الفيجما: الدعم → W2-96 · الشكوى → W2-69 · «قيّم الخدمة» في W2-37c → W2-39 (تقييم الخدمة بعد اكتمالها)
   const manageHref = (a: ManageView) =>
@@ -169,7 +163,6 @@ export function BookingDetail({
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 rounded-[10px] border border-cool-gray px-3 py-2 text-label-m text-deep-charcoal hover:border-border-strong"
               >
-                <Icon name="navigation" size={16} />
                 {t.directions}
               </a>
             </div>
@@ -212,7 +205,7 @@ export function BookingDetail({
             />
             <VoucherCode
               code={v.voucher.code}
-              className={`text-[18px] leading-7 ${v.voucher.state === "cancelled" ? "text-state-gray line-through" : "text-deep-charcoal"}`}
+              className={`text-[16.6px] leading-7 ${v.voucher.state === "cancelled" ? "text-state-gray line-through" : "text-deep-charcoal"}`}
             />
             <p className="text-center text-caption text-state-gray">{v.voucher.note}</p>
             {v.voucher.state !== "cancelled" && (
@@ -222,11 +215,6 @@ export function BookingDetail({
               >
                 {t.openVoucher}
               </Link>
-            )}
-            {v.voucher.state === "active" && (
-              <div className="flex h-11 w-full">
-                {apple ? <WalletButton kind="apple" label={t.walletApple} onClick={wallet} /> : <WalletButton kind="google" label={t.walletGoogle} onClick={wallet} />}
-              </div>
             )}
           </Card>
 
@@ -272,7 +260,6 @@ export function BookingDetail({
             v={v.voucherFull}
             onShare={() => setShare(true)}
             onDownload={download}
-            onWallet={wallet}
           />
           <ShareVoucherPopup
             locale={locale}

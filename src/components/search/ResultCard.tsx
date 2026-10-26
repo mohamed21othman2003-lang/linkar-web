@@ -5,172 +5,281 @@ import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
 import { getSearchDict } from "@/i18n/dict/search";
-import type { Provider } from "@/lib/data/types";
+import type { Provider, ProviderTier, ServiceSlug } from "@/lib/data/types";
 import type { SearchResult } from "@/lib/data/search/types";
+import { logoAreaSize } from "@/lib/data/providers";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
-import { Icon, ServiceGlyph } from "@/components/icons/Icon";
+import { ServiceGlyph } from "@/components/icons/Icon";
 import { ProviderBadges } from "@/components/ui/Badges";
-import { CompareButton, useCompare } from "./Compare";
-import { LogoTile } from "./LogoTile";
-import { Pill } from "./Pill";
+import { ClientLogo } from "@/components/cards/ClientLogo";
+import { FavoriteButton } from "@/components/cards/FavoriteButton";
+import { useCompare } from "./Compare";
 
-export const resultName = (locale: Locale, r: SearchResult, p: Provider) => (r.display_name ? tx(locale, r.display_name, "name") : tx(locale, p, "name"));
+export const resultName = (locale: Locale, r: SearchResult, p: Provider) =>
+  r.display_name ? tx(locale, r.display_name, "name") : tx(locale, p, "name");
 
 export const resultWhere = (locale: Locale, r: SearchResult) => {
   const c = getCommon(locale);
   return `${r.distance_km.toFixed(1)} ${c.km}${r.branch ? ` · ${tx(locale, r.branch, "name")}` : ""}`;
 };
 
-// كارت نتيجة البحث (Result · …): عمود مقدّم الخدمة الرمادي + المحتوى
-//  - multi: سطور الخدمات بالأسعار والإجمالي (W2-30)
-//  - single: اسم الخدمة + وصف + «خدمات أخرى لدى …» (W2-30a)
-export function ResultCard({ locale, result: r, provider: p, multi }: { locale: Locale; result: SearchResult; provider: Provider; multi: boolean }) {
+export type DarkLine = {
+  key: string;
+  name: string;
+  service?: ServiceSlug;
+  price: string;
+  oldPrice?: string;
+  href?: string;
+};
+
+// v2 · Result card · Logo (تصميم العميل المعدّل · W2-30 / W2-30a): صندوق الشعار الأبيض 178 + قلب، وجسم غامق:
+// الشارات، الاسم، التقييم، سطور الخدمات، المواصفات، الإجمالي، و«قارن +» / «التفاصيل والحجز».
+// نفس الكارت لـ«طرق أخرى للحصول على نفس النتيجة» (من غير الإجمالي).
+export function DarkResultCard({
+  locale,
+  logo,
+  logoSlug,
+  name,
+  href,
+  tier,
+  pill,
+  rating,
+  ratingTone = "meta",
+  lines,
+  specs,
+  total,
+  compareId,
+  detailsHref,
+}: {
+  locale: Locale;
+  logo: string;
+  logoSlug: string;
+  name: string;
+  href: string;
+  tier?: ProviderTier;
+  pill?: string | null;
+  rating: string; // «4.9 (320) · 5.6 كم · فرع الزهراء» من غير النجمة
+  ratingTone?: "meta" | "star"; // البدائل: السطر كله برتقالي
+  lines: DarkLine[];
+  specs: string[];
+  total?: { label: string; note: string; value: string; old?: string };
+  compareId: string;
+  detailsHref: string;
+}) {
   const t = getSearchDict(locale);
   const c = getCommon(locale);
-  const name = resultName(locale, r, p);
-  const providerHref = routes.provider(p.slug);
-  const detailsHref = routes.providerService(p.slug, r.lines[0]?.service ?? p.services[0]);
-  const reviews = r.reviews ? ` (${r.reviews})` : "";
-  const titleLine = r.title ? tx(locale, r.title, "text") : null;
-  const inCompare = useCompare().has(p.slug);
-
+  const { has, toggle } = useCompare();
+  const on = has(compareId);
+  const big = logoAreaSize[logoSlug];
   return (
     <article
-      className={`flex flex-col overflow-hidden rounded-[20px] bg-white transition-colors duration-200 ease-figma-out sm:flex-row ${
-        inCompare ? "border-[1.5px] border-deep-charcoal" : "border border-v3-card-stroke"
-      }`}
+      className="relative flex flex-col overflow-hidden rounded-[20px] border border-v3-card-stroke bg-v3-card-dark bg-cover bg-center"
+      style={{ backgroundImage: "url(/figma/cards/provider-card-bg.png)" }}
     >
-      {/* عمود مقدّم الخدمة */}
-      <div className="flex shrink-0 flex-col items-center gap-1.5 bg-tile px-4 py-5 text-center sm:w-[220px]">
-        <Link href={providerHref} aria-label={name} className={r.big_logo ? "-my-3" : ""}>
-          <LogoTile src={p.logo} alt={name} size={r.big_logo ? 146 : 112} />
-        </Link>
-        <span className="h-1" aria-hidden />
-        <Link href={providerHref} className="w-full text-h5 text-deep-charcoal hover:underline">
+      <Link
+        href={href}
+        aria-label={name}
+        className={`flex h-[178px] shrink-0 justify-center overflow-hidden border-b border-v3-card-stroke bg-white ${big?.[2] === undefined ? "items-center" : "items-start"}`}
+        style={{ paddingTop: big?.[2] }}
+      >
+        <ClientLogo
+          slug={logoSlug}
+          src={logo}
+          alt={name}
+          size={big ? [big[0], big[1]] : undefined}
+        />
+      </Link>
+      <FavoriteButton
+        label={c.favorite}
+        className="absolute end-5 top-5 z-10"
+      />
+      <div className="flex flex-1 flex-col gap-3 px-5 pt-4 pb-5">
+        {(pill || tier) && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {pill && (
+              <span className="inline-flex h-[31px] items-center rounded-full bg-neon-green px-3 text-[13px] leading-[25px] font-medium whitespace-nowrap text-v3-text-on-lime">
+                {pill}
+              </span>
+            )}
+            {tier && (
+              <ProviderBadges locale={locale} tier={tier} certified={false} />
+            )}
+          </div>
+        )}
+        <Link
+          href={href}
+          className="self-start text-[20px] leading-[38px] font-bold text-white hover:underline"
+        >
           {name}
         </Link>
-        <span className="flex items-center gap-1 text-label-m text-deep-charcoal">
-          <Icon name="star-filled" size={14} className="text-v3-rating-star" />
-          <span dir="ltr">{`${r.rating.toFixed(1)}${reviews}`}</span>
-        </span>
-        <p className="w-full text-caption text-v3-text-meta">{tx(locale, r.services_line, "text")}</p>
-        <span className="flex items-center gap-1 text-caption text-v3-text-meta">
-          <Icon name="map-pin" size={13} className="text-v3-text-meta" />
-          {resultWhere(locale, r)}
-        </span>
-        <span className="text-caption text-v3-text-meta">{c.branches(r.branches)}</span>
-        {!r.big_logo && (
-          <Link href={providerHref} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
-            <Icon name="chevron-left" size={14} flip className="text-nature-green" />
-            {t.providerPage}
-          </Link>
-        )}
-      </div>
-
-      {/* المحتوى */}
-      <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5 p-5">
-        <div className="flex min-h-[22px] flex-wrap items-center gap-1.5 min-[1440px]:flex-nowrap">
-          {r.pills.map((x) => (
-            <Pill key={x.label_ar} tone={x.tone} icon={x.icon}>
-              {tx(locale, x, "label")}
-            </Pill>
-          ))}
-          <ProviderBadges locale={locale} tier={r.tier ?? p.tier} certified={r.show_certified} surface="light" />
-        </div>
-
-        {multi ? (
-          r.lines.map((l) => (
-            <Link
-              key={l.service}
-              href={routes.providerService(p.slug, l.service)}
-              className="flex w-full items-center justify-between gap-3 rounded-md bg-tile px-3 py-[9px] hover:bg-bg-muted"
-            >
-              <span className="flex min-w-0 items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center">
-                  <ServiceGlyph name={l.service} size={14} className="text-state-gray" />
-                </span>
-                <span className="truncate text-label-l text-deep-charcoal">{tx(locale, l, "name")}</span>
-              </span>
-              {l.price !== undefined && (
-                <span className="flex shrink-0 items-center gap-1.5 text-[14px] leading-[22px]">
-                  <span className={l.price === null ? "font-medium text-green-active" :"font-medium text-deep-charcoal"}>
-                    {l.price === null ? t.free : formatPrice(locale, l.price)}
+        <p
+          className={`text-[14px] leading-[18px] ${ratingTone === "star" ? "text-v3-rating-star" : "text-v3-text-meta"}`}
+        >
+          <span className="text-v3-rating-star">★</span>{" "}
+          <span dir={locale === "ar" ? "rtl" : "ltr"}>{rating}</span>
+        </p>
+        <div className="flex flex-col gap-2">
+          {lines.map((l) => {
+            const inner = (
+              <>
+                <span className="flex min-w-0 items-center gap-2">
+                  {l.service && (
+                    <ServiceGlyph
+                      name={l.service}
+                      size={22}
+                      className="shrink-0 text-neon-green"
+                    />
+                  )}
+                  <span className="truncate text-[14px] leading-[18px] text-v3-text-on-dark min-[1440px]:overflow-visible">
+                    {l.name}
                   </span>
-                  {l.old_price && <s className="font-light text-v3-text-meta">{formatNumber(l.old_price)}</s>}
                 </span>
-              )}
-            </Link>
-          ))
-        ) : (
-          <>
-            {titleLine && (
-              <h3 className="flex items-center gap-2 text-h5 text-deep-charcoal">
-                <span className="flex size-[26px] shrink-0 items-center justify-center">
-                  <ServiceGlyph name={r.lines[0]?.service ?? p.services[0]} size={15} className="text-state-gray" />
+                <span className="flex shrink-0 items-center gap-1.5">
+                  <span className="text-[14px] leading-[27px] font-medium text-v3-text-on-dark">
+                    {l.price}
+                  </span>
+                  {l.oldPrice && (
+                    <s className="text-[12px] leading-[15px] text-v3-text-meta">
+                      {l.oldPrice}
+                    </s>
+                  )}
                 </span>
-                {titleLine}
-              </h3>
-            )}
-            {r.description && <p className="text-body-s text-v3-text-meta">{tx(locale, r.description, "text")}</p>}
-          </>
-        )}
-
-        {r.specs.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {r.specs.map((x) => (
-              <Pill key={x.label_ar} tone={x.tone} icon={x.icon}>
-                {tx(locale, x, "label")}
-              </Pill>
-            ))}
-          </div>
-        )}
-
-        <div className="min-h-px flex-1" />
-
-        {r.price_layout === "inline" ? (
-          <div className="flex w-full items-center justify-between gap-3">
-            <p className="max-w-[108px] text-caption text-v3-text-meta">{t.totalBothInclVat}</p>
-            <p className="text-h4 text-deep-charcoal">{formatPrice(locale, r.price)}</p>
-          </div>
-        ) : (
-          <div className="flex flex-col items-start">
-            <p className="text-caption text-v3-text-meta">{multi ? t.totalBoth : t.priceForCar}</p>
-            <p className="flex items-baseline gap-1.5">
-              <span className="text-h4 text-deep-charcoal">{formatPrice(locale, r.price)}</span>
-              {r.old_price && <s className="text-caption text-v3-text-meta">{formatNumber(r.old_price)}</s>}
-            </p>
-            <p className="text-caption text-v3-text-meta">{t.startsInclVat}</p>
-          </div>
-        )}
-
-        <div className="flex w-full items-center gap-2">
-          <CompareButton locale={locale} id={p.slug} />
-          <Link
-            href={detailsHref}
-            className="flex h-[42px] min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md bg-neon-green px-3.5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover"
-          >
-            {t.detailsAndBook}
-            <Icon name="chevron-left" size={14} flip />
-          </Link>
-        </div>
-
-        {!multi && r.similar.length > 0 && (
-          <div className="flex w-full flex-col gap-1.5 rounded-md bg-tile px-3 py-2.5">
-            <p className="text-caption text-v3-text-meta">{t.otherServicesAt(tx(locale, p, "short_name"))}</p>
-            {r.similar.map((s) => (
+              </>
+            );
+            const cls =
+              "flex h-[45px] items-center justify-between gap-1 rounded-[10px] bg-v3-chip-dark px-3";
+            return l.href ? (
               <Link
-                key={s.name_ar}
-                href={s.service ? routes.providerService(p.slug, s.service) : providerHref}
-                className="flex items-center justify-between gap-2 rounded-[10px] border border-cool-gray bg-white px-2.5 py-1.5 hover:border-border-strong"
+                key={l.key}
+                href={l.href}
+                className={`${cls} hover:bg-state-gray`}
               >
-                <span className="text-label-m text-deep-charcoal">{tx(locale, s, "name")}</span>
-                <span className="text-caption whitespace-nowrap text-v3-text-meta">{formatPrice(locale, s.price)}</span>
+                {inner}
               </Link>
+            ) : (
+              <div key={l.key} className={cls}>
+                {inner}
+              </div>
+            );
+          })}
+        </div>
+        {specs.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {specs.map((s) => (
+              <span
+                key={s}
+                className="inline-flex h-[23px] items-center rounded-full border border-v3-chip-dark px-2.5 text-[12px] leading-[15px] whitespace-nowrap text-v3-card-stroke"
+              >
+                {s}
+              </span>
             ))}
           </div>
         )}
+        {/* الإجمالي والأزرار في آخر الكارت (mt-auto) */}
+        <div className="mt-auto flex flex-col gap-3">
+          {total && (
+            <>
+              <hr className="border-v3-chip-dark" />
+              <div className="flex flex-wrap items-center justify-between gap-x-2 whitespace-nowrap min-[1440px]:flex-nowrap">
+                <div className="flex min-w-0 flex-col items-start">
+                  <span className="text-[13px] leading-[25px] font-medium text-v3-text-on-dark">
+                    {total.label}
+                  </span>
+                  <span className="text-[12px] leading-[15px] text-v3-text-meta">
+                    {total.note}
+                  </span>
+                </div>
+                <p className="flex items-center gap-2 whitespace-nowrap">
+                  <span className="text-[22px] leading-[42px] font-bold text-neon-green">
+                    {total.value}
+                  </span>
+                  {total.old && (
+                    <s className="text-[14px] leading-[18px] text-v3-text-meta">
+                      {total.old}
+                    </s>
+                  )}
+                </p>
+              </div>
+            </>
+          )}
+          <div className="flex items-center gap-2">
+            <Link
+              href={detailsHref}
+              className="flex h-[47px] min-w-0 flex-1 items-center justify-center rounded-full bg-neon-green px-4 text-[14px] leading-[27px] font-bold whitespace-nowrap text-v3-text-on-lime hover:bg-bg-brand-hover"
+            >
+              {t.detailsAndBook}
+            </Link>
+            <button
+              type="button"
+              aria-pressed={on}
+              onClick={() => toggle(compareId)}
+              className={`flex shrink-0 items-center justify-center rounded-full px-4 text-[14px] leading-[27px] font-medium whitespace-nowrap transition-colors duration-200 ease-figma-out ${
+                on
+                  ? "h-[47px] bg-neon-green text-v3-text-on-lime"
+                  : "h-[49px] border border-v3-card-stroke text-white hover:border-white"
+              }`}
+            >
+              {on ? t.inCompareCheck : t.compareAdd}
+            </button>
+          </div>
+        </div>
       </div>
     </article>
+  );
+}
+
+// كارت نتيجة البحث (Result card): خدمة واحدة (W2-30a) أو أكتر بالإجمالي (W2-30)
+export function ResultCard({
+  locale,
+  result: r,
+  provider: p,
+  multi,
+}: {
+  locale: Locale;
+  result: SearchResult;
+  provider: Provider;
+  multi: boolean;
+}) {
+  const t = getSearchDict(locale);
+  const name = resultName(locale, r, p);
+  const reviews = r.reviews ? ` (${r.reviews})` : "";
+  const detailsHref = routes.providerService(
+    p.slug,
+    r.lines[0]?.service ?? p.services[0],
+  );
+  return (
+    <DarkResultCard
+      locale={locale}
+      logo={p.logo}
+      logoSlug={p.slug}
+      name={name}
+      href={routes.provider(p.slug)}
+      tier={r.tier ?? p.tier}
+      pill={r.pills[0] ? tx(locale, r.pills[0], "label") : null}
+      rating={`${r.rating.toFixed(1)}${reviews} · ${resultWhere(locale, r)}`}
+      lines={r.lines.map((l) => ({
+        key: l.service,
+        name: tx(locale, l, "name"),
+        service: l.service,
+        price:
+          l.price === null
+            ? t.free
+            : l.price === undefined
+              ? ""
+              : formatPrice(locale, l.price),
+        oldPrice: l.old_price ? formatNumber(l.old_price) : undefined,
+        href: routes.providerService(p.slug, l.service),
+      }))}
+      specs={r.specs.map((x) => tx(locale, x, "label"))}
+      total={{
+        label: multi ? t.totalBoth : t.priceForCar,
+        note: multi ? t.totalNoteMulti : t.startsInclVat,
+        value: formatPrice(locale, r.price),
+        old: r.old_price ? formatNumber(r.old_price) : undefined,
+      }}
+      compareId={p.slug}
+      detailsHref={detailsHref}
+    />
   );
 }

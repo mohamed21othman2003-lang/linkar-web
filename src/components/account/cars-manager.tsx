@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { routes } from "@/lib/routes";
 import { AxCloseButton, AxConfirm, AxDialog, useAxToast } from "./account-extra-dialog";
+import { AxEmpty } from "./account-extra-ui";
 
 export type CarView = {
   id: string;
@@ -23,6 +24,8 @@ export type CarView = {
 
 export type CarsCopy = {
   addCar: string;
+  emptyTitle: string;
+  emptyText: string;
   lastBooking: string;
   lockNote: string;
   specs: { size: string; plate: string; color: string };
@@ -339,71 +342,76 @@ export function CarsManager({
         </button>
       </div>
 
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {cars.map((car) => (
-          <li key={car.id} className="flex flex-col gap-3 rounded-[20px] border border-cool-gray bg-white p-[22px]">
-            <div className="flex items-center justify-between gap-3">
-              <span className={`flex size-12 items-center justify-center rounded-[14px] ${car.isDefault ? "bg-neon-green" : "bg-cool-gray/40"}`}>
-                <Icon name="car" size={24} className={car.isDefault ? "text-deep-charcoal" : "text-state-gray"} />
-              </span>
-              {car.isDefault ? (
-                <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
-              ) : (
-                <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]">
-                  {c.makeDefault}
-                </button>
+      {/* W2-67-0 (85:44968): من غير سيارات — كارت فاضي بس، و«أضف سيارة» بيفتح W2-67b */}
+      {cars.length === 0 ? (
+        <AxEmpty icon="car" title={c.emptyTitle} text={c.emptyText} cta={{ label: c.addCar, onClick: () => setDialog({ key: Date.now(), car: null }) }} />
+      ) : (
+        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {cars.map((car) => (
+            <li key={car.id} className="flex flex-col gap-3 rounded-[20px] border border-cool-gray bg-white p-[22px]">
+              <div className="flex items-center justify-between gap-3">
+                <span className={`flex size-12 items-center justify-center rounded-[14px] ${car.isDefault ? "bg-neon-green" : "bg-cool-gray/40"}`}>
+                  <Icon name="car" size={24} className={car.isDefault ? "text-deep-charcoal" : "text-state-gray"} />
+                </span>
+                {car.isDefault ? (
+                  <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
+                ) : (
+                  <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]">
+                    {c.makeDefault}
+                  </button>
+                )}
+              </div>
+              <h2 className="text-h4 text-deep-charcoal">{car.name}</h2>
+              <dl className="flex flex-wrap gap-2">
+                {[
+                  [c.specs.size, sizeLabel(car.size)],
+                  [c.specs.plate, `${car.plateLetters} · ${car.plateNumbers}`],
+                  [c.specs.color, label("colors", car.color)],
+                ].map(([k, v]) => (
+                  <div key={k} className="flex flex-col rounded-md bg-cool-gray/30 px-3 py-2">
+                    <dt className="text-caption text-state-gray">{k}</dt>
+                    <dd className="text-label-m text-deep-charcoal">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              {car.lastBooking && (
+                <p className="text-body-s text-state-gray">
+                  {c.lastBooking} {car.lastBooking}
+                </p>
               )}
-            </div>
-            <h2 className="text-h4 text-deep-charcoal">{car.name}</h2>
-            <dl className="flex flex-wrap gap-2">
-              {[
-                [c.specs.size, sizeLabel(car.size)],
-                [c.specs.plate, `${car.plateLetters} · ${car.plateNumbers}`],
-                [c.specs.color, label("colors", car.color)],
-              ].map(([k, v]) => (
-                <div key={k} className="flex flex-col rounded-md bg-cool-gray/30 px-3 py-2">
-                  <dt className="text-caption text-state-gray">{k}</dt>
-                  <dd className="text-label-m text-deep-charcoal">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            {car.lastBooking && (
-              <p className="text-body-s text-state-gray">
-                {c.lastBooking} {car.lastBooking}
-              </p>
-            )}
-            <span className="h-px bg-cool-gray" />
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setDialog({ key: Date.now(), car })}
-                className="inline-flex h-10 items-center gap-1.5 rounded-md border border-cool-gray bg-white px-3.5 text-label-m text-deep-charcoal hover:bg-tile"
-              >
-                <Icon name="edit" size={16} />
-                {c.edit}
-              </button>
-              <button
-                type="button"
-                onClick={() => setConfirm(car)}
-                aria-disabled={locked(car)}
-                className={`inline-flex h-10 items-center rounded-md px-3.5 text-label-m ${
-                  locked(car) ? "bg-icon-tile text-state-gray" : "border border-promotional-red bg-white text-promotional-red hover:bg-bg-danger-subtle"
-                }`}
-              >
-                {c.del}
-              </button>
-            </div>
-            {locked(car) && (
-              <p className="flex items-center gap-1.5 text-caption text-state-gray">
-                <Icon name="lock" size={14} className="shrink-0" />
-                {c.lockNote}
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
+              <span className="h-px bg-cool-gray" />
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setDialog({ key: Date.now(), car })}
+                  className="inline-flex h-10 items-center gap-1.5 rounded-md border border-cool-gray bg-white px-3.5 text-label-m text-deep-charcoal hover:bg-tile"
+                >
+                  <Icon name="edit" size={16} />
+                  {c.edit}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirm(car)}
+                  aria-disabled={locked(car)}
+                  className={`inline-flex h-10 items-center rounded-md px-3.5 text-label-m ${
+                    locked(car) ? "bg-icon-tile text-state-gray" : "border border-promotional-red bg-white text-promotional-red hover:bg-bg-danger-subtle"
+                  }`}
+                >
+                  {c.del}
+                </button>
+              </div>
+              {locked(car) && (
+                <p className="flex items-center gap-1.5 text-caption text-state-gray">
+                  <Icon name="lock" size={14} className="shrink-0" />
+                  {c.lockNote}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {children}
+      {cars.length > 0 && children}
 
       {dialog && (
         <CarDialog

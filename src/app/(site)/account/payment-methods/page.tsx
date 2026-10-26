@@ -17,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // W2-68 · طرق الدفع (751:8569) + W2-68b إضافة بطاقة (751:8983) كنافذة + P-05 / P-05b / P-10k / P-10l
+// W2-68-0 · حالة فارغة (85:45030) للعميل الجديد
 export default async function PaymentMethodsPage({ searchParams }: { searchParams: Promise<{ demo?: string }> }) {
   const [locale, user, sp] = await Promise.all([getLocale(), getSession(), searchParams]);
   if (!user) redirect(routes.login);
@@ -44,6 +45,8 @@ export default async function PaymentMethodsPage({ searchParams }: { searchParam
         }))}
         c={{
           addCard: tx(locale, p, "add_card"),
+          emptyTitle: tx(locale, p, "empty_title"),
+          emptyText: tx(locale, p, "empty_text"),
           cardsTitle: tx(locale, p, "cards_title"),
           otherTitle: tx(locale, p, "other_title"),
           otherSubtitle: tx(locale, p, "other_subtitle"),

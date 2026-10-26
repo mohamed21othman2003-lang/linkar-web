@@ -34,7 +34,7 @@ export function Dialog({
   if (!open) return null;
   return (
     <div
-      className={`fixed inset-0 z-[100] flex animate-dissolve justify-center overflow-y-auto bg-bg-overlay px-4 py-6 ${align === "center" ? "items-start sm:items-center" : "items-start"}`}
+      className={`fixed inset-0 z-[100] flex animate-dissolve justify-center overflow-y-auto bg-deep-charcoal/72 px-4 py-6 ${align === "center" ? "items-start sm:items-center-safe" : "items-start"}`}
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <div ref={panel} role="dialog" aria-modal="true" aria-label={label} tabIndex={-1} className={`w-full outline-none focus-visible:shadow-none ${className}`}>
@@ -68,7 +68,7 @@ export function Popup({
         <div className="flex items-start gap-3">
           <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5">
             {icon && (
-              <span className={`flex rounded-[14px] p-2.5 text-deep-charcoal ${iconTone === "red" ? "bg-promotional-red/12" : "bg-neon-green/18"}`}>
+              <span className={`flex rounded-[14px] p-2.5 ${iconTone === "red" ? "bg-promotional-red/12 text-promotional-red" : "bg-neon-green/18 text-deep-charcoal"}`}>
                 <Icon name={icon} size={22} />
               </span>
             )}

@@ -10,51 +10,74 @@ import type { Alternative, LightOffer } from "@/lib/data/search/types";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { Icon, ServiceGlyph } from "@/components/icons/Icon";
-import { CompareButton } from "./Compare";
 import { LogoTile } from "./LogoTile";
+import { DarkResultCard } from "./ResultCard";
+import { ClientLogo } from "@/components/cards/ClientLogo";
+import { logoAreaSize } from "@/lib/data/providers";
 
-// AI pick (708:3588 · 704:3341): شريط كحلي بترشيح الذكاء الاصطناعي
+// AI pick (تصميم العميل المعدّل · W2-30 / W2-30a): شريط كحلي 165 — صندوق شعار أبيض 200×129 (الشعار أكبر منه وبيتقص)،
+// العنوان + سطر التقييم + الوصف + شيبس، وفي الآخر السعر و«التفاصيل والحجز»
 export function AiPick({
   locale,
   logo,
+  logoSlug,
   name,
   title,
+  rating,
   body,
+  chips = [],
   price,
   href,
-  bigLogo,
 }: {
   locale: Locale;
   logo: string;
+  logoSlug: string;
   name: string;
   title: string;
+  rating?: string;
   body: string;
+  chips?: string[];
   price: number;
   href: string;
-  bigLogo: boolean;
 }) {
   const t = getSearchDict(locale);
+  const big = logoAreaSize[logoSlug];
   return (
-    <div
-      className={`flex flex-col gap-4 rounded-[22px] bg-deep-charcoal p-[18px] md:min-h-[136px] md:flex-row md:items-center md:gap-5 md:ps-[18px] md:pe-6 ${
-        bigLogo ? "md:py-0" : "md:py-[18px]"
-      }`}
-    >
-      <LogoTile src={logo} alt={name} size={bigLogo ? 139 : 64} height={bigLogo ? 136 : 64} className={bigLogo ? "hidden md:inline-block" : ""} />
+    <div className="flex flex-col gap-4 rounded-[22px] bg-deep-charcoal p-[18px] md:min-h-[165px] md:flex-row md:items-center md:gap-5 md:ps-[18px] md:pe-6">
+      <span className="hidden h-[129px] w-[200px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white md:flex">
+        {/* الشعار أعرض من الصندوق (230 جوه 200) وبيتقص زي الفيجما — الغلاف عشان max-width:100% */}
+        <span className="flex shrink-0 justify-center" style={{ width: big?.[0] }}>
+          <ClientLogo slug={logoSlug} src={logo} alt={name} size={big ? [big[0], big[1]] : undefined} />
+        </span>
+      </span>
       <div className="flex min-w-0 flex-col items-start gap-1">
         <span className="flex items-center gap-2 text-label-m text-neon-green">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/glyphs/ai.svg" alt="" width={24} height={24} className="size-6" />
           {t.aiLabel}
         </span>
-        <p className="text-h5 text-white">{title}</p>
+        <p className="text-[18px] leading-[28px] font-bold text-white">{title}</p>
+        {rating && (
+          <p className="text-[13px] leading-4 text-v3-text-meta">
+            <span className="text-v3-rating-star">★</span> {rating}
+          </p>
+        )}
         <p className="text-caption leading-6 text-white/80">{body}</p>
+        {chips.length > 0 && (
+          <span className="flex flex-wrap gap-1.5">
+            {chips.map((c) => (
+              <span key={c} className="inline-flex h-[21px] items-center rounded-full bg-v3-chip-dark px-2.5 text-[12px] leading-[15px] text-v3-text-on-dark">
+                {c}
+              </span>
+            ))}
+          </span>
+        )}
       </div>
       <div className="hidden flex-1 md:block" />
       <div className="flex items-center gap-4">
         <div className="flex flex-col items-start">
           <span className="text-caption text-white/65">{t.forYourCar}</span>
-          <span className="text-h4 whitespace-nowrap text-white">{formatPrice(locale, price)}</span>
+          <span className="text-[22px] leading-[34px] font-bold whitespace-nowrap text-white">{formatPrice(locale, price)}</span>
         </div>
         <Link href={href} className="flex h-12 items-center gap-1.5 rounded-md bg-neon-green px-[18px] text-label-l whitespace-nowrap text-deep-charcoal hover:bg-bg-brand-hover">
           {t.detailsAndBook}
@@ -75,48 +98,25 @@ export function SectionHead({ title, description }: { title: string; description
   );
 }
 
-// Alt · … في «طرق أخرى للحصول على نفس النتيجة» (W2-30a)
+// «طرق أخرى للحصول على نفس النتيجة» (W2-30a المعدّل): نفس كارت النتيجة الغامق من غير الإجمالي
 export function AltCard({ locale, item }: { locale: Locale; item: Alternative }) {
-  const t = getSearchDict(locale);
-  const name = tx(locale, item.name, "text");
+  const c = getCommon(locale);
   const href = item.provider ? routes.providerService(item.provider, item.service) : routes.providers();
   return (
-    <article className="flex flex-col gap-3 rounded-[20px] border border-cool-gray bg-white p-5">
-      <div className="flex items-center gap-2.5">
-        <LogoTile src={item.logo} alt={name} size={44} />
-        <div className="flex flex-col items-start gap-0.5">
-          <p className="text-label-l text-deep-charcoal">{name}</p>
-          <p className="flex items-center gap-1.5 text-caption text-v3-text-meta">
-            <Icon name="star-filled" size={14} className="text-v3-rating-star" />
-            <span className="font-medium text-deep-charcoal">{item.rating.toFixed(1)}</span>
-            <span>·</span>
-            <Icon name="map-pin" size={14} className="text-v3-text-meta" />
-            <span>{`${item.distance_km.toFixed(1)} ${getCommon(locale).km}`}</span>
-          </p>
-        </div>
-      </div>
-      <h3 className="text-h5 text-deep-charcoal">{tx(locale, item.title, "text")}</h3>
-      <p className="text-body-s text-v3-text-meta">{tx(locale, item.description, "text")}</p>
-      <span className="inline-flex items-center gap-1.5 self-start rounded-full bg-cool-gray/35 px-2.5 py-[5px] text-caption text-deep-charcoal">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/search/fact-shield.svg" alt="" width={16} height={16} className="size-4 object-contain" />
-        {tx(locale, item.warranty, "text")}
-      </span>
-      <hr className="mt-auto border-cool-gray" />
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="flex items-baseline gap-1">
-          <span className="text-caption text-v3-text-meta">{t.forYourCar}</span>
-          <span className="text-h5 text-deep-charcoal">{formatPrice(locale, item.price)}</span>
-        </p>
-        <div className="flex items-center gap-2">
-          <Link href={href} className="flex h-[38px] items-center gap-1 rounded-[10px] bg-deep-charcoal px-3 text-label-m text-neon-green hover:bg-bg-inverse-subtle">
-            {t.details}
-            <Icon name="chevron-left" size={14} flip />
-          </Link>
-          <CompareButton locale={locale} id={item.key} variant="outline" />
-        </div>
-      </div>
-    </article>
+    <DarkResultCard
+      locale={locale}
+      logo={item.logo}
+      logoSlug={item.key}
+      name={tx(locale, item.name, "text")}
+      href={href}
+      pill={item.tag ? tx(locale, item.tag, "text") : null}
+      rating={`${item.rating.toFixed(1)} · ${item.distance_km.toFixed(1)} ${c.km}`}
+      ratingTone="star"
+      lines={[{ key: item.key, name: tx(locale, item.title, "text"), service: item.service, price: formatPrice(locale, item.price) }]}
+      specs={(item.specs ?? [item.warranty]).map((x) => tx(locale, x, "text"))}
+      compareId={item.key}
+      detailsHref={href}
+    />
   );
 }
 

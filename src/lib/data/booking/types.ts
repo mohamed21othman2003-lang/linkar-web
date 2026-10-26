@@ -45,7 +45,7 @@ export type Car = Localized<"make"> &
     is_default?: boolean;
   };
 
-export type PaymentMethodId = "apple" | "mada" | "stc" | "tabby" | "tamara" | "card";
+export type PaymentMethodId = "apple" | "mada" | "stc" | "tabby" | "tamara" | "card" | "cash";
 
 export type PaymentMethod = Localized<"name"> &
   Localized<"description"> & {
@@ -53,7 +53,7 @@ export type PaymentMethod = Localized<"name"> &
     badge: string; // نص الشارة (Apple Pay · مدى · tabby …)
     badge_en?: string;
     // verify = نافذة تحقق (P-09/P-09b) · redirect = نافذة تقسيط (P-23) · direct = دفع مباشر
-    flow: "direct" | "verify" | "redirect";
+    flow: "direct" | "verify" | "redirect" | "card" | "cash"; // direct: P-26a · card: P-26b ← P-09 · verify: P-09b · redirect: P-23 · cash: P-26c
   };
 
 export type Marketer = Localized<"name"> & {
@@ -77,7 +77,9 @@ export type CompletedBooking = Localized<"service"> &
   Localized<"customer_display"> & {
     id: string;
     provider: string;
-    criteria: (Localized<"label"> & { key: string; value: number })[];
+    criteria: (Localized<"label"> & { key: string; value: number; service_specific?: boolean })[]; // service_specific: «سؤال خاص بخدمة …» (W2-39)
+    service_category_ar: string; // «التلميع» في «سؤال خاص بخدمة التلميع»
+    service_category_en: string;
     overall: number;
     comment_ar: string;
     comment_en: string;

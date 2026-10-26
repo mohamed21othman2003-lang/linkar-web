@@ -325,7 +325,8 @@ function CompareModal({
             return (
               <div key={i.key} className={`flex w-[240px] shrink-0 flex-col sm:w-[300px] ${hi ? "bg-neon-green/6" : ""}`}>
                 <div className="flex h-[120px] flex-col items-center justify-center gap-1.5">
-                  <LogoTile src={i.logo} alt={i.name} size={48} />
+                  {/* W2-31 المعدّل: الشعار 64 */}
+                  <LogoTile src={i.logo} alt={i.name} size={64} radius={21} />
                   <p className="text-label-l text-deep-charcoal">{i.name}</p>
                   <button type="button" onClick={() => onRemove(i.key)} className="flex items-center gap-1 text-caption text-state-gray hover:text-deep-charcoal">
                     <Icon name="x" size={12} />

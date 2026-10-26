@@ -12,6 +12,7 @@ export function BusinessHead({
   description,
   children,
   ctaGap = false,
+  tone = "light",
 }: {
   crumbs: Crumb[];
   title: string;
@@ -19,13 +20,16 @@ export function BusinessHead({
   children?: ReactNode;
   /** W2-91 و W2-94: صف الأزرار عليه pt 8 زيادة */
   ctaGap?: boolean;
+  /** تصميم العميل المعدّل: W2-90 و W2-94 رأسهم غامق (#152935)، W2-91 فضل ليموني */
+  tone?: "light" | "dark";
 }) {
+  const dark = tone === "dark";
   return (
-    <div className="bg-pagehead pt-9 pb-6">
+    <div className={`${dark ? "bg-deep-charcoal" : "bg-pagehead"} pt-9 pb-6`}>
       <Container className="flex flex-col gap-3">
-        <Breadcrumb items={crumbs} />
-        <h1 className="text-h3 text-deep-charcoal md:text-h2">{title}</h1>
-        <p className="max-w-[760px] text-body-m text-text-secondary md:text-body-l">{description}</p>
+        <Breadcrumb items={crumbs} tone={tone} />
+        <h1 className={`text-h3 md:text-h2 ${dark ? "text-white" : "text-deep-charcoal"}`}>{title}</h1>
+        <p className={`max-w-[760px] text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>
         {children && <div className={`flex flex-wrap ${ctaGap ? "gap-2.5 pt-2" : "gap-3"}`}>{children}</div>}
       </Container>
     </div>

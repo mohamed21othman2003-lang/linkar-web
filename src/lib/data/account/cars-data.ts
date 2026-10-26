@@ -9,6 +9,11 @@ export const carsPage = {
   description_en: "Your car’s size sets the prices you see, and your default car is picked automatically when you book.",
   add_car_ar: "أضف سيارة",
   add_car_en: "Add car",
+  // W2-67-0 · حالة فارغة (85:44968)
+  empty_title_ar: "لا توجد سيارات بعد",
+  empty_title_en: "No cars yet",
+  empty_text_ar: "أضف سيارتك ليعرض لك لينكار الأسعار المناسبة لنوعها، وتُحفظ لحجوزاتك القادمة.",
+  empty_text_en: "Add your car so Linkar shows you the right prices for its type, and it’s saved for your next bookings.",
   last_booking_ar: "آخر حجز:",
   last_booking_en: "Last booking:",
   size_note_ar: "نحدد الحجم تلقائياً من الموديل (سيدان · SUV متوسطة · كبيرة)، لأن أسعار التظليل والنانو سيراميك والتلميع تختلف حسب الحجم. يمكنك تعديل السيارة في أي وقت؛ وحذفها متاح إذا لم يكن عليها حجز قادم ولم تكن الافتراضية.",

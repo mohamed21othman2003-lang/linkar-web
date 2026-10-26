@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
-import { getCommon } from "@/i18n/dict/common";
 import { getProviderDict } from "@/i18n/dict/provider";
 import type { Provider, ServiceSlug } from "@/lib/data/types";
 import type { CarSize, Marketer, ProviderDetail, ProviderService, ServiceReview } from "@/lib/data/provider-details";
@@ -14,11 +13,12 @@ import { formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { ProviderBadges } from "@/components/ui/Badges";
 import { Icon } from "@/components/icons/Icon";
-import { BrandIcon, LogoTile, ServiceTile, SpecPill, Stars, bookingHref } from "./bits";
+import { BrandIcon, LogoTile, ServiceTile, Stars, bookingHref } from "./bits";
 import { useToast } from "./Modal";
 import { ChooseCarModal, type DemoCar } from "./Popups";
 import { PhotoViewer } from "./PhotoViewer";
 import { TabBar } from "./ProviderTabs";
+import { OfferProviderCard } from "./OfferProviderCard";
 import { scrollToEl } from "./motion";
 import type { ServiceTab } from "./tabs";
 
@@ -74,7 +74,6 @@ export function ServicePage({
   packagePrice: { name: string; price: number; old_price: number } | null;
 }) {
   const t = getProviderDict(locale);
-  const c = getCommon(locale);
   const toast = useToast();
   const params = useSearchParams();
   const name = tx(locale, provider, "name");
@@ -99,7 +98,7 @@ export function ServicePage({
   };
   const tabLabels: Record<ServiceTab, string> = {
     overview: t.serviceTabs.overview,
-    includes: t.serviceTabs.includes,
+    specs: t.serviceTabs.specs,
     warranty: t.serviceTabs.warranty,
     photos: t.serviceTabs.photos,
     reviews: t.serviceTabs.reviews(reviewsCount),
@@ -146,6 +145,9 @@ export function ServicePage({
     t.compareItem(sName, short),
     ...otherOffers.filter((o) => compare.includes(o.provider.slug)).map((o) => t.compareItem(tx(locale, o, "name"), tx(locale, o.provider, "short_name"))),
   ];
+
+  // الفرع الأقرب لموقعك في كارت الحجز
+  const branch = [...detail.branches].sort((x, y) => x.distance_km - y.distance_km)[0];
 
   // الصور
   const photos = d?.photos ?? [service.photo];
@@ -223,10 +225,12 @@ export function ServicePage({
             <h1 className="text-h3 md:text-h2">{sName}</h1>
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
               <Link href={routes.provider(provider.slug)} className="flex items-center gap-2.5">
-                <LogoTile src={provider.logo} alt={name} size={36} radius={16} />
+                {/* Partner logo · Tile 56 (r 24.9) في العميل المعدّل */}
+                <LogoTile src={provider.logo} alt={name} size={56} radius={25} />
                 <span className="text-label-l text-deep-charcoal">{name}</span>
               </Link>
-              <ProviderBadges locale={locale} tier={provider.tier} certified={affiliate && provider.certified} surface="light" />
+              {/* العميل المعدّل: التصنيف بس حتى في W2-32s (اتشالت «معتمد LINKAR») */}
+              <ProviderBadges locale={locale} tier={provider.tier} certified={false} surface="light" />
               {reviewsCount > 0 && (
                 <>
                   <span className="text-caption text-state-gray">·</span>
@@ -323,15 +327,16 @@ export function ServicePage({
               </div>
             )}
 
-            {active === "includes" && d && (
-              <ul className="flex flex-col gap-3 py-3">
-                {d.includes_list.map((it, i) => (
-                  <li key={i} className="flex items-center gap-2 text-body-m text-deep-charcoal">
-                    <Icon name="check" size={16} className="shrink-0 text-nature-green" />
-                    {tx(locale, it, "label")}
-                  </li>
+            {/* Tab=المواصفات التقنية (85:26713): جدول بصفوف متبادلة — البند في البداية والقيمة في النهاية */}
+            {active === "specs" && d && (
+              <dl className="mb-0 overflow-hidden rounded-[14px] border border-[#e6e8e6] bg-white">
+                {d.specs.map((it, i) => (
+                  <div key={i} className={`flex items-center justify-between gap-4 px-5 py-3 ${i % 2 ? "bg-white" : "bg-page-soft"}`}>
+                    <dt className="text-[14px] leading-[18px] font-normal text-state-gray">{tx(locale, it, "label")}</dt>
+                    <dd className="text-end text-[14px] leading-[18px] font-medium text-deep-charcoal">{tx(locale, it, "value")}</dd>
+                  </div>
                 ))}
-              </ul>
+              </dl>
             )}
 
             {active === "warranty" && (
@@ -413,6 +418,21 @@ export function ServicePage({
               <span className="text-caption text-v3-text-meta">{t.priceByCar}</span>
             </div>
             <hr className="border-cool-gray" />
+            {/* الفرع الأقرب (العميل المعدّل): «فرع الزهراء · على بُعد 5.6 كم من موقعك · الأقرب إليك» — «تغيير» يفتح خطوة الفرع (W2-33) */}
+            {branch && (
+              <div className="flex items-center justify-between gap-3 rounded-[14px] border border-neon-green bg-neon-green/12 px-3.5 py-3">
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span className="flex items-center gap-1.5 text-label-l text-deep-charcoal">
+                    <Icon name="map-pin" size={16} className="shrink-0 text-nature-green" />
+                    {tx(locale, branch, "name")}
+                  </span>
+                  <span className="text-label-m text-green-active">{`${t.branchDistance(branch.distance_km.toFixed(1))} · ${t.nearestSuffix}`}</span>
+                </div>
+                <Link href={href} className="shrink-0 text-label-m text-green-active hover:underline">
+                  {t.change}
+                </Link>
+              </div>
+            )}
             <span className="text-label-m text-v3-text-meta">{t.selectedService}</span>
             <div className="flex items-center justify-between gap-3 rounded-md border-2 border-neon-green bg-neon-green/6 px-3 py-2.5">
               <span className="flex items-center gap-2">
@@ -497,51 +517,17 @@ export function ServicePage({
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>
-          {/* 3 أعمدة من xl بس — تحتها الكارت (صورة 110 + سعر + «قارن») بيضيق ويطلع برّه الشاشة */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {otherOffers.map((o) => {
-              const on = compare.includes(o.provider.slug);
-              const pName = tx(locale, o.provider, "name");
-              return (
-                <article
-                  key={o.provider.slug}
-                  className={`flex items-stretch gap-3.5 rounded-[18px] bg-white p-3.5 ${on ? "border-2 border-neon-green" : "border border-cool-gray"}`}
-                >
-                  <Link href={routes.provider(o.provider.slug)} className="relative w-[110px] shrink-0 overflow-hidden rounded-md">
-                    <Image src={o.photo} alt={pName} fill sizes="220px" className="object-cover" />
-                  </Link>
-                  <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
-                    <Link href={routes.provider(o.provider.slug)} className="flex items-center gap-2 hover:underline">
-                      <LogoTile src={o.provider.logo} alt="" size={28} radius={16} />
-                      <span className="text-label-m text-deep-charcoal">{pName}</span>
-                    </Link>
-                    <span className="flex items-center gap-1.5 text-caption">
-                      <Icon name="star-filled" size={14} className="text-v3-rating-star" />
-                      <span className="text-label-m text-deep-charcoal">{o.provider.rating.toFixed(1)}</span>
-                      <span className="text-v3-text-meta">·</span>
-                      <Icon name="map-pin" size={14} className="text-state-gray" />
-                      <span className="text-v3-text-meta">{`${o.provider.distance_km.toFixed(1)} ${c.km}`}</span>
-                    </span>
-                    <span className="text-label-l text-deep-charcoal">{tx(locale, o, "name")}</span>
-                    {o.warranty_ar && <SpecPill icon="shield" size={14}>{tx(locale, o, "warranty")}</SpecPill>}
-                    <div className="mt-auto flex w-full items-center justify-between gap-2">
-                      <span className="text-label-l whitespace-nowrap text-deep-charcoal">{formatPrice(locale, o.price)}</span>
-                      <button
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() => toggleCompare(o.provider.slug)}
-                        className={`flex shrink-0 items-center gap-1 rounded-[10px] px-2.5 py-1.5 text-caption whitespace-nowrap max-md:min-h-10 ${
-                          on ? "bg-deep-charcoal text-neon-green" : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
-                        }`}
-                      >
-                        {on ? t.inCompare : t.compare}
-                        <Icon name={on ? "check" : "plus"} size={14} />
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+          {/* العميل المعدّل: 4 كروت شعار (v2 · Provider card · Logo) بزر «قارن» — 2×2 تحت xl */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[25.3px]">
+            {otherOffers.map((o) => (
+              <OfferProviderCard
+                key={o.provider.slug}
+                locale={locale}
+                offer={o}
+                inCompare={compare.includes(o.provider.slug)}
+                onCompare={() => toggleCompare(o.provider.slug)}
+              />
+            ))}
           </div>
           {compare.length > 0 && (
             <div className="flex flex-col gap-3 rounded-lg bg-cool-gray/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">

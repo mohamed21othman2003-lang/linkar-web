@@ -29,7 +29,7 @@ export async function PolicyPage({ slug }: { slug: PolicySlug }) {
 
   return (
     <>
-      <PageHeader
+      <PageHeader tone="dark"
         crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, copy, "nav_title"), href: policies[0].href }, { label: title }]}
         title={title}
         description={meta}

@@ -11,7 +11,7 @@ import { useForm } from "./useForm";
 
 // W2-93 · «اطلب عرضاً لشركتك»
 // الإرسال: OVERLAY P-10f «وصلتنا رسالتك…» DISSOLVE 200ms (مش صفحة جديدة)
-export function CorporateForm({ locale, d }: { locale: Locale; d: typeof corporatePage }) {
+export function CorporateForm({ locale, d, id, className = "" }: { locale: Locale; d: typeof corporatePage; id?: string; className?: string }) {
   const b = getBusinessDict(locale);
   const e = b.errors;
   const [toast, flash] = useFlash();
@@ -31,7 +31,7 @@ export function CorporateForm({ locale, d }: { locale: Locale; d: typeof corpora
   );
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex min-w-0 flex-1 flex-col gap-5 rounded-xl border border-border-default bg-white p-5 md:p-8">
+    <form id={id} onSubmit={onSubmit} noValidate className={`flex min-w-0 flex-col gap-5 rounded-xl border border-border-default bg-white p-5 md:p-8 ${className}`}>
       <h2 className="text-h4 text-deep-charcoal">{L("form_title")}</h2>
       <Row>
         <TextField label={L("contact")} name="contact" value={v.contact} onChange={set("contact")} placeholder={L("contact_ph")} error={errors.contact} autoComplete="name" />

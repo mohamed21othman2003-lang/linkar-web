@@ -11,7 +11,6 @@ const ar = {
   account: "حسابي",
   bookingsCrumb: "حجوزاتي",
   allOffers: "كل العروض",
-  browseOffers: "تصفّح العروض",
   later: "لاحقاً",
 
   // حالات الحجز (الشارة في الجدول والرئيسية)
@@ -31,13 +30,9 @@ const ar = {
     rateCta: "قيّم واكسب 50 نقطة",
     offersTitle: "جديد من مقدّمي خدمة تتابعهم",
     offersSub: "تصلك عروضهم أولاً — ويمكنك إيقاف التنبيهات من الإعدادات.",
-    // W2-60-0 · عميل جديد
-    onboardingTitle: "ابدأ مع لينكار في 3 خطوات",
-    onboardingSub: "أكمل هذه الخطوات لتظهر لك الأسعار المناسبة لسيارتك وتحجز أول خدمة.",
-    emptyBookingsTitle: "لا توجد حجوزات بعد",
-    emptyBookingsSub: "حجوزاتك وقسائمها ستظهر هنا بعد أول حجز.",
-    newOffersTitle: "عروض قد تهمك",
-    newOffersSub: "أحدث العروض من مقدّمي الخدمة المعتمدين بالقرب منك.",
+    // W2-60-0 · عميل جديد (85:44770)
+    emptyTitle: "ابدأ أول حجز لك",
+    emptyText: "ستظهر هنا حجوزاتك وقسائمك ونقاطك وهداياك بعد أول حجز.",
   },
 
   // W2-38 · حجوزاتي
@@ -45,7 +40,6 @@ const ar = {
     title: "حجوزاتي",
     subtitle: "كل حجوزاتك في مكان واحد، مع حالتها وقسائمها.",
     tabs: { all: "الكل", upcoming: "القادمة", completed: "المكتملة", cancelled: "الملغاة" },
-    search: "ابحث برقم الحجز أو مقدّم الخدمة",
     period: "الفترة:",
     periods: { "3m": "آخر 3 أشهر", "6m": "آخر 6 أشهر", year: "هذه السنة", all: "كل الفترات" },
     car: "السيارة:",
@@ -70,12 +64,10 @@ const ar = {
     invoice: "تحميل الفاتورة الضريبية (PDF)",
     openVoucher: "عرض القسيمة كاملة",
     contactBranch: "تواصل مع الفرع",
-    contactSupport: "تواصل مع الدعم",
+    contactSupport: "تواصل مع لينكار",
     supportSub: "نرد عادةً خلال دقائق",
     rate: "قيّم الخدمة",
     rateSub: (provider: string) => `شاركنا تجربتك مع ${provider}`,
-    walletGoogle: "إضافة إلى محفظة Google",
-    walletApple: "إضافة إلى Apple Wallet",
   },
 
   // W2-37v · القسيمة كاملة
@@ -204,7 +196,6 @@ const ar = {
     saved: "تم حفظ التغييرات",
     allRead: "تم تحديد كل الإشعارات كمقروءة",
     dataFile: "سنرسل ملف بياناتك إلى جوالك خلال 24 ساعة",
-    wallet: "أُضيفت القسيمة إلى محفظتك",
     photo: "أُرفقت الصورة",
   },
 };
@@ -216,7 +207,6 @@ const en: typeof ar = {
   account: "My account",
   bookingsCrumb: "My bookings",
   allOffers: "All offers",
-  browseOffers: "Browse offers",
   later: "Later",
 
   status: { waiting: "Awaiting visit", in_service: "In service", completed: "Completed", cancelled: "Cancelled · Refunded" },
@@ -234,19 +224,14 @@ const en: typeof ar = {
     rateCta: "Rate and earn 50 points",
     offersTitle: "New from providers you follow",
     offersSub: "Their offers reach you first — you can turn these alerts off in Settings.",
-    onboardingTitle: "Get started with Linkar in 3 steps",
-    onboardingSub: "Complete these steps to see the right prices for your car and book your first service.",
-    emptyBookingsTitle: "No bookings yet",
-    emptyBookingsSub: "Your bookings and their vouchers will show here after your first booking.",
-    newOffersTitle: "Offers you may like",
-    newOffersSub: "The latest offers from certified providers near you.",
+    emptyTitle: "Make your first booking",
+    emptyText: "Your bookings, vouchers, points and gifts will show here after your first booking.",
   },
 
   bookings: {
     title: "My bookings",
     subtitle: "All your bookings in one place, with their status and vouchers.",
     tabs: { all: "All", upcoming: "Upcoming", completed: "Completed", cancelled: "Cancelled" },
-    search: "Search booking no. or provider",
     period: "Period:",
     periods: { "3m": "Last 3 months", "6m": "Last 6 months", year: "This year", all: "All time" },
     car: "Car:",
@@ -269,12 +254,10 @@ const en: typeof ar = {
     invoice: "Download tax invoice (PDF)",
     openVoucher: "View full voucher",
     contactBranch: "Contact the branch",
-    contactSupport: "Contact support",
+    contactSupport: "Contact Linkar",
     supportSub: "We usually reply within minutes",
     rate: "Rate the service",
     rateSub: (provider: string) => `Tell us about your experience with ${provider}`,
-    walletGoogle: "Add to Google Wallet",
-    walletApple: "Add to Apple Wallet",
   },
 
   voucher: {
@@ -399,7 +382,6 @@ const en: typeof ar = {
     saved: "Changes saved",
     allRead: "All notifications marked as read",
     dataFile: "We’ll send your data file to your phone within 24 hours",
-    wallet: "Voucher added to your wallet",
     photo: "Photo attached",
   },
 };

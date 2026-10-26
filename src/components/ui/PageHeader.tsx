@@ -6,18 +6,20 @@ import { Container } from "./Container";
 export type Crumb = { label: string; href?: string };
 
 // مسار التنقّل: «الرئيسية › الخدمات» — آخر عنصر هو الصفحة الحالية
-export function Breadcrumb({ items }: { items: Crumb[] }) {
+// tone="dark": على رأس الصفحة الغامق (#152935) في تصميم العميل المعدّل — الروابط #b3b3b3 والسهم #999 والحالية أبيض
+export function Breadcrumb({ items, tone = "light" }: { items: Crumb[]; tone?: "light" | "dark" }) {
+  const dark = tone === "dark";
   return (
     <nav aria-label="breadcrumb" className="flex flex-wrap items-center gap-1.5 text-caption">
       {items.map((c, i) => (
         <span key={i} className="flex items-center gap-1.5">
-          {i > 0 && <Icon name="chevron-left" size={14} flip className="text-state-gray" />}
+          {i > 0 && <Icon name="chevron-left" size={14} flip className={dark ? "text-v3-text-meta" : "text-state-gray"} />}
           {c.href ? (
-            <Link href={c.href} className="text-text-secondary hover:text-text-primary">
+            <Link href={c.href} className={dark ? "text-v3-card-stroke hover:text-white" : "text-text-secondary hover:text-text-primary"}>
               {c.label}
             </Link>
           ) : (
-            <span className="text-text-primary" aria-current="page">
+            <span className={dark ? "text-white" : "text-text-primary"} aria-current="page">
               {c.label}
             </span>
           )}
@@ -34,20 +36,24 @@ export function PageHeader({
   description,
   aside,
   className = "",
+  tone = "light",
 }: {
   crumbs: Crumb[];
   title: string;
   description?: string;
   aside?: ReactNode;
   className?: string;
+  // "dark": Page head الغامق في تصميم العميل المعدّل (AVbWFtRb0aHpm34oqkI5ot · W2-25 وغيرها) — خلفية #152935، عنوان أبيض، وصف #b3b3b3
+  tone?: "light" | "dark";
 }) {
+  const dark = tone === "dark";
   return (
-    <div className={`bg-pagehead pt-9 pb-6 ${className}`}>
+    <div className={`${dark ? "bg-deep-charcoal" : "bg-pagehead"} pt-9 pb-6 ${className}`}>
       <Container className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-3">
-          <Breadcrumb items={crumbs} />
-          <h1 className="text-h3 md:text-h2">{title}</h1>
-          {description && <p className="max-w-[760px] text-body-l text-text-secondary">{description}</p>}
+          <Breadcrumb items={crumbs} tone={tone} />
+          <h1 className={`text-h3 md:text-h2 ${dark ? "text-white" : ""}`}>{title}</h1>
+          {description && <p className={`max-w-[760px] text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>}
         </div>
         {aside}
       </Container>

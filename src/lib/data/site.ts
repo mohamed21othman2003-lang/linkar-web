@@ -207,7 +207,8 @@ export const site = {
         links: [
           { label_ar: "نبذة عن لينكار", label_en: "About Linkar", href: routes.about },
           { label_ar: "مركز المساعدة", label_en: "Help center", href: routes.help },
-          { label_ar: "كيف يعمل لينكار", label_en: "How Linkar works", href: routes.howItWorks },
+          { label_ar: "المدونة", label_en: "Blog", href: routes.blog },
+          { label_ar: "كيف تعمل لينكار", label_en: "How Linkar works", href: routes.howItWorks },
           { label_ar: "الأسئلة الشائعة", label_en: "FAQ", href: routes.faq() },
           { label_ar: "تواصل معنا", label_en: "Contact us", href: routes.contact },
         ],
@@ -221,6 +222,7 @@ export const site = {
           { label_ar: "التظليل", label_en: "Window tinting", href: routes.search({ services: ["tint"] }) },
           { label_ar: "التلميع", label_en: "Polishing", href: routes.search({ services: ["polish"] }) },
           { label_ar: "نانو سيراميك", label_en: "Nano ceramic", href: routes.search({ services: ["nano-ceramic"] }) },
+          { label_ar: "تغيير اللون", label_en: "Color change", href: routes.search({ services: ["color-change"] }) },
         ],
       },
       {

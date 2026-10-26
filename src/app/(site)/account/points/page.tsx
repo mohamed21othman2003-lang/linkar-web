@@ -19,13 +19,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // W2-65 · النقاط (749:8301) — الرصيد، ادعُ صديقاً (P-08c)، كيف تكسب النقاط، القاعدة، السجل بفلتر الفترة (P-18)
-// W2-65-0 · حالة فارغة (1071:268) للعميل الجديد
+// W2-65-0 · حالة فارغة (85:43819) للعميل الجديد
 export default async function PointsPage() {
   const [locale, user] = await Promise.all([getLocale(), getSession()]);
   if (!user) redirect(routes.login);
   const t = getAccountExtra(locale);
   const data = await getPoints(user);
   const signed = (n: number) => `${n < 0 ? "−" : "+"} ${formatNumber(Math.abs(n))}`;
+
+  // W2-65-0 (85:43819): العميل الجديد بيشوف العنوان وكارت فاضي بس (النسخة المعتمدة شالت الرصيد والدعوة وطرق الكسب)
+  if (data.history.length === 0) {
+    return (
+      <div className="flex flex-col gap-6">
+        <AxTitle title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
+        <AxEmpty icon="gift" title={tx(locale, p, "empty_title")} text={tx(locale, p, "empty_text")} cta={{ label: tx(locale, p, "empty_cta"), href: routes.services }} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -84,26 +94,22 @@ export default async function PointsPage() {
       </ul>
       <AxNote>{tx(locale, p, "rule")}</AxNote>
 
-      {data.history.length === 0 ? (
-        <AxEmpty icon="gift" title={tx(locale, p, "empty_title")} text={tx(locale, p, "empty_text")} cta={{ label: tx(locale, p, "empty_cta"), href: routes.services }} />
-      ) : (
-        <PointsHistory
-          title={tx(locale, p, "history_title")}
-          filterLabel={tx(locale, p, "history_title")}
-          headers={t.table}
-          initial="6m"
-          options={periodOptions.map((o) => ({ key: o.key, label: tx(locale, o, "label"), months: o.months }))}
-          rows={data.history.map((r) => ({
-            id: r.id,
-            date: r.date,
-            dateLabel: formatDate(locale, r.date, { day: "numeric", month: "long", year: "numeric" }),
-            operation: tx(locale, r, "operation"),
-            points: r.points,
-            pointsLabel: signed(r.points),
-            balanceLabel: formatNumber(r.balance),
-          }))}
-        />
-      )}
+      <PointsHistory
+        title={tx(locale, p, "history_title")}
+        filterLabel={tx(locale, p, "history_title")}
+        headers={t.table}
+        initial="6m"
+        options={periodOptions.map((o) => ({ key: o.key, label: tx(locale, o, "label"), months: o.months }))}
+        rows={data.history.map((r) => ({
+          id: r.id,
+          date: r.date,
+          dateLabel: formatDate(locale, r.date, { day: "numeric", month: "long", year: "numeric" }),
+          operation: tx(locale, r, "operation"),
+          points: r.points,
+          pointsLabel: signed(r.points),
+          balanceLabel: formatNumber(r.balance),
+        }))}
+      />
     </div>
   );
 }

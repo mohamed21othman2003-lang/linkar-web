@@ -25,7 +25,7 @@ export default async function AffiliateSentPage() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader tone="dark"
         crumbs={[
           { label: t.home, href: routes.home },
           { label: b.business, href: routes.forProviders },

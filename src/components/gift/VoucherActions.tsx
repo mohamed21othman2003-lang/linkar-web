@@ -188,10 +188,9 @@ export function GiftVoucherActions({
   );
 }
 
-// أزرار W2-81: الاتجاهات · تواصل مع الفرع + أزرار المحفظة
+// أزرار W2-81: الاتجاهات · تواصل مع الفرع (نسخة العميل شالت أزرار Apple Wallet / محفظة Google)
 export function SharedVoucherActions({ contact, copy }: { contact: ContactInfo; copy: ActionsCopy }) {
   const [open, setOpen] = useState(false);
-  const [toast, setToast] = useFlash();
   const close = useCallback(() => setOpen(false), []);
   return (
     <>
@@ -205,19 +204,7 @@ export function SharedVoucherActions({ contact, copy }: { contact: ContactInfo; 
           <Icon name="phone" size={16} />
         </button>
       </div>
-      <div className="flex flex-col gap-2.5 sm:flex-row">
-        {[
-          { label: copy.appleWallet, logo: "/figma/gift/wallet-apple.svg" },
-          { label: copy.googleWallet, logo: "/figma/gift/wallet-google.svg" },
-        ].map((w) => (
-          <button key={w.logo} type="button" onClick={() => setToast(copy.walletAdded)} className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-wallet-black px-3.5 py-2.5 text-label-m whitespace-nowrap text-white transition-colors hover:bg-solid-black">
-            {w.label}
-            <img src={w.logo} alt="" width={18} height={18} />
-          </button>
-        ))}
-      </div>
       <ContactPopup open={open} onClose={close} info={contact} copy={copy} dissolve />
-      <Toast message={toast} />
     </>
   );
 }

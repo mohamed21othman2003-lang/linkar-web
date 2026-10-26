@@ -15,13 +15,15 @@ import { DetailsForm, type CarView } from "@/components/booking/DetailsForm";
 import { bookingHref, parseBookingQuery } from "@/components/booking/query";
 import { carTitle, summaryModel } from "@/components/booking/summary-model";
 import { backHref } from "@/components/booking/back-href";
+import { getAuthCommon } from "@/components/auth/copy";
+import { authHref } from "@/lib/server/auth";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getBookingDict(await getLocale());
   return { title: `${t.steps[2]} · ${t.checkoutTitle}` };
 }
 
-// W2-34a (زائر: تسجيل الدخول برقم الجوال) · W2-34b (بعد تسجيل الدخول)
+// W2-34a (زائر: تسجيل الدخول برقم الجوال) · W2-34e (زائر: بالبريد الإلكتروني · ?login=email) · W2-34b (بعد تسجيل الدخول)
 export default async function BookingDetailsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
   const [locale, user] = await Promise.all([getLocale(), getSession()]);
@@ -32,7 +34,9 @@ export default async function BookingDetailsPage({ searchParams }: { searchParam
   const base = summaryModel(locale, b);
   const summaryV = { ...base, totalLabel: t.total, total: formatPrice(locale, b.subtotal) };
   const self = bookingHref(routes.bookingDetails, b.query);
-  const config = await getCheckoutConfig();
+  const [config, auth] = await Promise.all([getCheckoutConfig(), getAuthCommon(locale)]);
+  // W2-34e: تبويب «البريد الإلكتروني» (?login=email)
+  const method = sp.login === "email" ? "email" : "phone";
 
   return (
     <>
@@ -58,9 +62,6 @@ export default async function BookingDetailsPage({ searchParams }: { searchParam
               }))}
               selectedCar={b.car?.id ?? null}
               firstName={tx(locale, user, "first_name")}
-              name={tx(locale, user, "name")}
-              phone={`+966 ${user.phone.replace(/^0/, "")}`}
-              email=""
               isNewUser={user.is_new}
               catalog={config.carCatalog}
               summary={summaryV}
@@ -70,6 +71,18 @@ export default async function BookingDetailsPage({ searchParams }: { searchParam
               <div className="flex min-w-0 flex-1 flex-col gap-5">
                 <PhoneLogin
                   locale={locale}
+                  method={method}
+                  tabs={{
+                    phone: { label: auth.t.tabPhone, href: self },
+                    email: { label: auth.t.tabEmail, href: bookingHref(routes.bookingDetails, b.query, { login: "email" }) },
+                  }}
+                  emailCopy={{
+                    email: auth.t.emailLabel,
+                    emailPlaceholder: auth.t.emailPlaceholder,
+                    password: auth.t.passwordLabel,
+                    forgot: tx(locale, auth.c.emailScreen, "forgot"),
+                    forgotHref: authHref(routes.forgotPassword, { next: self }),
+                  }}
                   defaultPhone={config.loginDemo.phone}
                   typed={config.loginDemo.typed}
                   next={self}
@@ -89,7 +102,7 @@ export default async function BookingDetailsPage({ searchParams }: { searchParam
                 v={{ ...summaryV, totalNote: t.fill(t.totalNote, { size: t.sizes[b.size] }) }}
                 cta={
                   <span aria-disabled className="flex h-14 items-center justify-center rounded-[14px] bg-cool-gray/60 text-label-l text-state-gray">
-                    {t.verifyFirst}
+                    {method === "email" ? t.signInFirst : t.verifyFirst}
                   </span>
                 }
                 footer={<VoucherNote text={t.voucherNote} />}

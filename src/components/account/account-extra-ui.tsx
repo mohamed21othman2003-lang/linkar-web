@@ -34,7 +34,9 @@ export function AxSectionHead({ title, subtitle, aside, id }: { title: string; s
 }
 
 // «Empty state» (W2-xx-0): كارت أبيض، دائرة ليموني 72 بأيقونة 32، عنوان، نص، وزر ليموني 52
-export function AxEmpty({ icon, title, text, cta }: { icon: UiGlyph; title: string; text: string; cta: { label: string; href: string } }) {
+// الزر رابط (cta.href) أو زر بيفتح نافذة (cta.onClick — W2-67-0 / W2-68-0)
+export function AxEmpty({ icon, title, text, cta }: { icon: UiGlyph; title: string; text: string; cta: { label: string; href: string } | { label: string; onClick: () => void } }) {
+  const cls = "inline-flex h-control-lg items-center justify-center rounded-[14px] bg-neon-green px-[22px] text-label-l text-deep-charcoal hover:bg-bg-brand-hover";
   return (
     <section className="flex flex-col items-center gap-3.5 rounded-[20px] border border-cool-gray bg-white px-6 py-12 text-center md:px-10">
       <span className="flex size-[72px] items-center justify-center rounded-full bg-neon-green/18">
@@ -42,12 +44,15 @@ export function AxEmpty({ icon, title, text, cta }: { icon: UiGlyph; title: stri
       </span>
       <h2 className="text-h4 text-deep-charcoal">{title}</h2>
       <p className="max-w-[520px] text-body-m text-state-gray">{text}</p>
-      <Link
-        href={cta.href}
-        className="inline-flex h-control-lg items-center justify-center rounded-[14px] bg-neon-green px-[22px] text-label-l text-deep-charcoal hover:bg-bg-brand-hover"
-      >
-        {cta.label}
-      </Link>
+      {"href" in cta ? (
+        <Link href={cta.href} className={cls}>
+          {cta.label}
+        </Link>
+      ) : (
+        <button type="button" onClick={cta.onClick} className={cls}>
+          {cta.label}
+        </button>
+      )}
     </section>
   );
 }

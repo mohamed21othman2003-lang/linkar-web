@@ -125,7 +125,7 @@ export function AxConfirm({
         <div className="flex flex-col gap-2.5">
           {icon && (
             <span className="flex size-[42px] items-center justify-center rounded-[14px] bg-promotional-red/12">
-              <Icon name={icon} size={22} className="text-deep-charcoal" />
+              <Icon name={icon} size={22} className="text-promotional-red" />
             </span>
           )}
           <h2 id={id} className="text-h4 text-deep-charcoal">

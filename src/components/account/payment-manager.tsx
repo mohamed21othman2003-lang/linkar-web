@@ -3,6 +3,7 @@
 import { useId, useState, type ReactNode } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { AxCloseButton, AxConfirm, AxDialog, useAxToast } from "./account-extra-dialog";
+import { AxEmpty } from "./account-extra-ui";
 
 export type CardView = { id: string; brand: string; last4: string; expiry: string; holder: string; isDefault: boolean };
 export type MethodView = { id: string; name: string; text: string; linked: boolean };
@@ -10,6 +11,8 @@ export type InvoiceView = { id: string; title: string; date: string; amount: str
 
 export type PaymentCopy = {
   addCard: string;
+  emptyTitle: string;
+  emptyText: string;
   cardsTitle: string;
   otherTitle: string;
   otherSubtitle: string;
@@ -226,75 +229,82 @@ export function PaymentManager({
         </button>
       </div>
 
-      <Section id="pay-cards" title={c.cardsTitle}>
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {cards.map((card) => (
-            <li key={card.id} className="flex flex-col gap-3">
-              <div dir="ltr" className="flex flex-col gap-[18px] rounded-[18px] bg-linear-to-br from-deep-charcoal to-slate-blue p-[22px] text-white">
-                <div className="flex items-center justify-between">
-                  <span className="h-6 w-[34px] rounded-[6px] bg-neon-green/85" aria-hidden />
-                  <span className="text-h4">{card.brand}</span>
+      {/* W2-68-0 (85:45030): من غير بطاقات — كارت فاضي، و«أضف بطاقة» بيفتح W2-68b */}
+      {cards.length === 0 ? (
+        <AxEmpty icon="card" title={c.emptyTitle} text={c.emptyText} cta={{ label: c.addCard, onClick: () => setAdding(true) }} />
+      ) : (
+        <Section id="pay-cards" title={c.cardsTitle}>
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {cards.map((card) => (
+              <li key={card.id} className="flex flex-col gap-3">
+                <div dir="ltr" className="flex flex-col gap-[18px] rounded-[18px] bg-linear-to-br from-deep-charcoal to-slate-blue p-[22px] text-white">
+                  <div className="flex items-center justify-between">
+                    <span className="h-6 w-[34px] rounded-[6px] bg-neon-green/85" aria-hidden />
+                    <span className="text-h4">{card.brand}</span>
+                  </div>
+                  <p className="text-h5">•••• •••• •••• {card.last4}</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-label-m">{card.expiry}</span>
+                    <span className="truncate text-caption text-white/80">{card.holder}</span>
+                  </div>
                 </div>
-                <p className="text-h5">•••• •••• •••• {card.last4}</p>
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-label-m">{card.expiry}</span>
-                  <span className="truncate text-caption text-white/80">{card.holder}</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                {card.isDefault ? (
-                  <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
-                ) : (
+                  {card.isDefault ? (
+                    <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => (setCards((cur) => cur.map((x) => ({ ...x, isDefault: x.id === card.id }))), show(c.toastDefault))}
+                      className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]"
+                    >
+                      {c.makeDefault}
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={() => (setCards((cur) => cur.map((x) => ({ ...x, isDefault: x.id === card.id }))), show(c.toastDefault))}
-                    className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]"
+                    onClick={() => setConfirm(card)}
+                    aria-label={`${c.del} ${label(card)}`}
+                    className="inline-flex h-control-sm items-center rounded-md border border-promotional-red max-md:h-10 bg-white px-3 text-label-m text-promotional-red hover:bg-bg-danger-subtle"
                   >
-                    {c.makeDefault}
+                    {c.del}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {methods.length > 0 && (
+        <Section id="pay-other" title={c.otherTitle} subtitle={c.otherSubtitle}>
+          <ul className="flex flex-col gap-4 rounded-lg border border-cool-gray bg-white p-4 md:p-6">
+            {methods.map((m) => (
+              <li key={m.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-cool-gray px-1 py-4 md:h-20 md:px-5 md:py-0">
+                <div className="flex min-w-0 items-center gap-3.5">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-cool-gray/35">
+                    <Icon name="card" size={20} className="text-deep-charcoal" />
+                  </span>
+                  <div className="flex min-w-0 flex-col gap-0.5">
+                    <span className="text-label-l text-deep-charcoal">{m.name}</span>
+                    <span className="text-body-s text-state-gray">{m.text}</span>
+                  </div>
+                </div>
+                {m.linked && (
+                  <button
+                    type="button"
+                    onClick={() => (setMethods((cur) => cur.map((x) => (x.id === m.id ? { ...x, linked: false } : x))), show(c.toastUnlinked.replace("{name}", m.name)))}
+                    className="inline-flex h-control-sm items-center rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:bg-tile max-md:h-10"
+                  >
+                    {c.unlink}
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => setConfirm(card)}
-                  aria-label={`${c.del} ${label(card)}`}
-                  className="inline-flex h-control-sm items-center rounded-md border border-promotional-red max-md:h-10 bg-white px-3 text-label-m text-promotional-red hover:bg-bg-danger-subtle"
-                >
-                  {c.del}
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Section>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
 
-      <Section id="pay-other" title={c.otherTitle} subtitle={c.otherSubtitle}>
-        <ul className="flex flex-col gap-4 rounded-lg border border-cool-gray bg-white p-4 md:p-6">
-          {methods.map((m) => (
-            <li key={m.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-cool-gray px-1 py-4 md:h-20 md:px-5 md:py-0">
-              <div className="flex min-w-0 items-center gap-3.5">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-cool-gray/35">
-                  <Icon name="card" size={20} className="text-deep-charcoal" />
-                </span>
-                <div className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-label-l text-deep-charcoal">{m.name}</span>
-                  <span className="text-body-s text-state-gray">{m.text}</span>
-                </div>
-              </div>
-              {m.linked && (
-                <button
-                  type="button"
-                  onClick={() => (setMethods((cur) => cur.map((x) => (x.id === m.id ? { ...x, linked: false } : x))), show(c.toastUnlinked.replace("{name}", m.name)))}
-                  className="inline-flex h-control-sm items-center rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:bg-tile max-md:h-10"
-                >
-                  {c.unlink}
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {security}
+      {(cards.length > 0 || methods.length > 0) && security}
 
       {invoices.length > 0 && (
         <Section id="pay-invoices" title={c.invoicesTitle} subtitle={c.invoicesSubtitle}>

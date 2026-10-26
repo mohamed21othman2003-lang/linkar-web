@@ -8,7 +8,9 @@ import { routes } from "@/lib/routes";
 
 // أماكن الأيقونة والعنوان جوه الكارت (239.5) من v2 · Service card (W2-25 / 1626:26003…) بالظبط — start = يمين في العربي.
 // الأيقونات متصدّرة من الفيجما (public/figma/services) وكل واحدة بمقاسها، فالمسافة بينها وبين العنوان بتختلف من كارت للتاني.
-const cardLayout: Record<ServiceSlug, { icon: [start: number, top: number, w: number, h: number]; title: [start: number, top: number] }> = {
+// titleSize: «تغيير اللون» أطول فالفيجما مصغّرها (13.49 في كارت الهوم 197 = 16.37 هنا)
+const cardLayout: Record<ServiceSlug, { icon: [start: number, top: number, w: number, h: number]; title: [start: number, top: number]; titleSize?: number }> = {
+  "color-change": { icon: [23.5, 35.2, 67.44, 59.64], title: [124.4, 64.7], titleSize: 16.37 },
   "nano-ceramic": { icon: [24.4, 24.8, 78, 69.19], title: [103.6, 64.7] },
   polish: { icon: [23.5, 35.2, 67.44, 59.64], title: [124.4, 64.7] },
   tint: { icon: [20.8, 56.2, 82.29, 37.79], title: [125.9, 64.7] },
@@ -19,7 +21,7 @@ const cardLayout: Record<ServiceSlug, { icon: [start: number, top: number, w: nu
 // وش الكارت: الأيقونة والاسم و«تجدها لدى» والمقدّمين، و«احجز» في مكانه — الكارت نفسه (الخلفية والارتفاع) عند اللي بيستخدمه
 export function ServiceCardFace({ locale, service, providers, book }: { locale: Locale; service: Service; providers: Provider[]; book: ReactNode }) {
   const t = getCommon(locale);
-  const { icon, title } = cardLayout[service.slug];
+  const { icon, title, titleSize } = cardLayout[service.slug];
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -30,7 +32,7 @@ export function ServiceCardFace({ locale, service, providers, book }: { locale: 
         style={{ insetInlineStart: icon[0], top: icon[1], width: icon[2], height: icon[3] }}
       />
       {locale === "ar" ? (
-        <h3 className="pointer-events-none absolute w-[150px] text-start text-[19.87px] leading-[38px] font-medium text-neon-green" style={{ insetInlineStart: title[0], top: title[1] }}>
+        <h3 className="pointer-events-none absolute w-[150px] text-start text-[19.87px] leading-[38px] font-medium text-neon-green" style={{ insetInlineStart: title[0], top: title[1], fontSize: titleSize }}>
           {tx(locale, service, "name")}
         </h3>
       ) : (

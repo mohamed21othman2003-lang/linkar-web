@@ -1,25 +1,28 @@
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import type { HomeContent } from "@/lib/server/home";
+import { getGuestHomeContent } from "@/lib/server/home";
 import { Container } from "@/components/ui/Container";
 import { FigmaIcon } from "../bits";
 
 const icons = ["brand-search-neon", "brand-car-neon", "brand-calendar-neon", "feature-payment-neon"];
 
-// V2-02 · How it works (619:2045) — كحلي: 4 خطوات بأيقونات ليموني + شريط الضمانات
-export function HowItWorksGuest({ locale, content }: { locale: Locale; content: HomeContent }) {
+// V2-02 · How it works (37:28888) — كحلي: 4 خطوات بأيقونات ليموني + شريط الضمانات
+// الخطوات والضمانات من home.ts، والعنوان العلوي «كيف يعمل لينكار» من guest.ts (V2-01 بقت «كيف تعمل»)
+export async function HowItWorksGuest({ locale, content }: { locale: Locale; content: HomeContent }) {
   const h = content.howItWorks;
+  const g = (await getGuestHomeContent()).howGuest;
   const s = (x: { text_ar: string; text_en: string }) => tx(locale, x, "text");
   return (
     <section className="bg-deep-charcoal py-16 lg:pt-24 lg:pb-[88px]">
       <Container className="flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-2.5 text-center">
-          <p className="text-overline text-neon-green">{s(h.overline)}</p>
+          <p className="text-overline text-neon-green">{s(g.overline)}</p>
           <h2 className="text-[26px]/[40px] font-bold text-white md:text-h2">{s(h.title)}</h2>
         </div>
-        <ol className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+        <ol className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:flex lg:justify-between lg:gap-4">
           {h.steps.map((st, i) => (
-            <li key={i} className="mx-auto flex w-full max-w-[260px] flex-col items-center gap-3 text-center">
+            <li key={i} className="mx-auto flex w-full max-w-[260px] flex-col items-center gap-3 text-center lg:mx-0 lg:w-[260px] lg:shrink">
               <span className="flex items-center gap-2.5">
                 <FigmaIcon name={icons[i]} size={64} />
                 <span className="flex size-7 items-center justify-center rounded-full border border-neon-green text-label-m text-neon-green">{i + 1}</span>

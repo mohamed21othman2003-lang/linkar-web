@@ -179,6 +179,10 @@ export const packages: Package[] = [
 export const relatedPackages: Record<string, string[]> = {
   "johnson-ceramic-pro": ["llumar-protection-tint", "nanoshield-monthly-care", "johnson-full-care"],
 };
+// تصميم العميل المعدّل (85:37809): «باقات أخرى» بقت 4 كروت — أولها (يمين) عرض أوتوشابو «نانو سيراميك برو» من lib/data/offers
+export const relatedOffers: Record<string, string[]> = {
+  "johnson-ceramic-pro": ["autoshabo-nano-pro"],
+};
 
 // نصوص صفحة الباقات (Page head)
 export const packagesPage = {

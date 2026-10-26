@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: `${t.steps[3]} · ${t.checkoutTitle}` };
 }
 
-const METHOD_IDS: PaymentMethodId[] = ["apple", "mada", "stc", "tabby", "tamara", "card"];
+const METHOD_IDS: PaymentMethodId[] = ["apple", "mada", "stc", "tabby", "tamara", "card", "cash"];
 
 // W2-35 الدفع · W2-35m (مدى ← P-09) · W2-35b (?failed=<method>) · W2-35s (&ref=SM123-300)
 // تجربة الفشل: ?fail=1 (أول محاولة دفع تفشل) أو رمز التحقق 000000 في P-09 / P-09b. P-25b: &demo=marketer-self
@@ -83,6 +83,7 @@ export default async function BookingPaymentPage({ searchParams }: { searchParam
             failDemo={failDemo}
             selfMarketerDemo={sp.demo === "marketer-self"}
             branchName={tx(locale, b.branch, "name")}
+            providerName={providerName}
             itemsLabel={t.fill(t.itemsAt, { items: itemsText, provider: tx(locale, b.provider, "name") })}
             successHref={bookingHref(routes.bookingConfirmed, { ...b.query, car: b.car?.id })}
             failHref={self}

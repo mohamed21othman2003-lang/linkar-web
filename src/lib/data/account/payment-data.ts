@@ -9,6 +9,11 @@ export const paymentPage = {
   description_en: "Your saved cards and available payment methods. Payment is online only, and the booking is confirmed as soon as you pay.",
   add_card_ar: "أضف بطاقة",
   add_card_en: "Add card",
+  // W2-68-0 · حالة فارغة (85:45030)
+  empty_title_ar: "لا توجد بطاقات محفوظة",
+  empty_title_en: "No saved cards",
+  empty_text_ar: "احفظ بطاقتك عند أول دفع لتدفع أسرع في حجوزاتك القادمة.",
+  empty_text_en: "Save your card on your first payment to pay faster on your next bookings.",
   cards_title_ar: "بطاقاتك المحفوظة",
   cards_title_en: "Your saved cards",
   other_title_ar: "وسائل دفع أخرى",

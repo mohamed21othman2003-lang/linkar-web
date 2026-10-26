@@ -18,11 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // W2-67 · سياراتي (750:8595) + W2-67b إضافة سيارة (751:9787) كنافذة + P-04 / P-04b / P-10k
+// W2-67-0 · حالة فارغة (85:44968) للعميل الجديد
 export default async function CarsPage({ searchParams }: { searchParams: Promise<{ demo?: string }> }) {
   const [locale, user, sp] = await Promise.all([getLocale(), getSession(), searchParams]);
   if (!user) redirect(routes.login);
   const t = getAccountExtra(locale);
-  const cars = await getCars();
+  const cars = await getCars(user);
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,6 +51,8 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
         }))}
         c={{
           addCar: tx(locale, p, "add_car"),
+          emptyTitle: tx(locale, p, "empty_title"),
+          emptyText: tx(locale, p, "empty_text"),
           lastBooking: tx(locale, p, "last_booking"),
           lockNote: tx(locale, carLockNote, "label"),
           specs: t.carSpecs,

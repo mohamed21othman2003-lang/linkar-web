@@ -1,14 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
 import { Icon } from "@/components/icons/Icon";
 import { Modal, Toast } from "./Modal";
 import { LogoTile } from "./LogoTile";
 
-export type RatingCriterion = { key: string; label: string; value: number };
+export type RatingCriterion = {
+  key: string;
+  label: string;
+  value: number;
+  serviceSpecific?: boolean;
+};
 
 function Stars({ value, onChange, size, label }: { value: number; onChange: (v: number) => void; size: number; label: string }) {
   const [hover, setHover] = useState(0);
@@ -46,6 +51,7 @@ export function RatingModal({
   comment,
   publicName,
   points,
+  serviceCategory,
   complaintHref,
 }: {
   locale: Locale;
@@ -59,6 +65,7 @@ export function RatingModal({
   comment: string;
   publicName: string;
   points: number;
+  serviceCategory: string; // «التلميع» ← «سؤال خاص بخدمة التلميع»
   complaintHref: string;
 }) {
   const t = getBookingDict(locale);
@@ -75,10 +82,19 @@ export function RatingModal({
       <Modal open={open} onClose={onClose} width={640} label={t.rateTitle} className="gap-5! sm:p-8!">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <h2 className="text-h4">{t.rateTitle}</h2>
+            {/* نسخة العميل: شارة «+50 نقطة بعد النشر» جنب العنوان */}
+            <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
+              <h2 className="text-h4">{t.rateTitle}</h2>
+              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-green-active">{t.fill(t.pointsAfterPublish, { n: points })}</span>
+            </div>
             <p className="text-body-s text-text-secondary">{subtitle}</p>
           </div>
-          <button type="button" aria-label={t.close} onClick={onClose} className="flex size-10 shrink-0 items-center justify-center rounded-md border border-border-default hover:bg-tile">
+          <button
+            type="button"
+            aria-label={t.close}
+            onClick={onClose}
+            className="flex size-10 shrink-0 items-center justify-center rounded-md border border-cool-gray hover:bg-tile"
+          >
             <Icon name="x" size={18} />
           </button>
         </div>
@@ -94,11 +110,17 @@ export function RatingModal({
           <Stars value={overall} onChange={setOverall} size={30} label={t.overall} />
         </div>
 
+        <p className="text-[13px] leading-4 font-light text-state-gray">{t.rateHint}</p>
+        <p className="text-[14px] leading-[27px] font-medium">{t.rateDetails}</p>
+
         {criteria.map((c) => (
-          <div key={c.key} className="flex items-center justify-between gap-3">
-            <span className="text-body-m">{c.label}</span>
-            <Stars value={c.value} size={20} label={c.label} onChange={(v) => setCriteria((list) => list.map((x) => (x.key === c.key ? { ...x, value: v } : x)))} />
-          </div>
+          <Fragment key={c.key}>
+            {c.serviceSpecific && <p className="text-[12px] leading-[15px] font-light text-state-gray">{t.fill(t.serviceQuestion, { service: serviceCategory })}</p>}
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-body-m">{c.label}</span>
+              <Stars value={c.value} size={20} label={c.label} onChange={(v) => setCriteria((list) => list.map((x) => (x.key === c.key ? { ...x, value: v } : x)))} />
+            </div>
+          </Fragment>
         ))}
 
         <textarea

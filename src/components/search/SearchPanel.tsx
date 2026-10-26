@@ -156,6 +156,7 @@ export function SearchPanel({ locale, onClose }: { locale: Locale; onClose: () =
               carSizes={data.carSizes}
               location={tx(locale, data.location, "label")}
               onSearch={onClose}
+              variant="panel"
             />
           )}
 

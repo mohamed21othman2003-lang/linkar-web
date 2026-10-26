@@ -62,6 +62,7 @@
   --color-tabby: #3effc1; /* شارة tabby */
   --color-tamara: #fde6dc; /* شارة tamara */
   --color-pay-black: #000000; /* أزرار Apple Pay / Apple / المحافظ (W2-34a · W2-35 · W2-36) */
+  --color-cash-tint: #e8f7d0; /* شارة «نقداً» (W2-35 · P-26c) وشارة «+50 نقطة بعد النشر» (W2-39) */
   /* البحث والخريطة (W2-29 · W2-30 · W2-26m) */
   --color-required-mark: #ff0000; /* النجمة الحمراء «*» في حقول شريط البحث */
   --color-map-canvas: #eef1ee; /* أرضية الخريطة */
@@ -74,6 +75,16 @@
   --color-warning-tile: #fff1d6; /* دائرة أيقونة التنبيه في حالة «انتهت الصلاحية» (W2-80e) */
   --color-option-selected: #f6fde8; /* خيار الدفع المحدد في نموذج الوكالة (W2-91b) */
   --color-wallet-black: #000000; /* أزرار Apple Wallet / محفظة Google (v2 · Wallet button، W2-81) */
+  /* الهيرو · البحث بخانات ناقصة (V2-01e) ونافذة P-01e */
+  --color-hero-error: #ff6b6b; /* حدود الخانات الناقصة ورسائلها على الهيرو الغامق */
+  --color-alert-red: #c72929; /* «تنبيه» و«!» في P-01e */
+  --color-alert-red-bg: #fce8e5;
+  --color-dot: #c9d1cd; /* نقاط الكاروسيل غير النشطة على الفاتح (V2-01t · V2-01m) */
+  --color-hairline: #e3e6e4; /* أرقام الخطوات الباهتة وحدود أسئلة «قبل أن تبدأ» (W2-93 · W2-95 · W2-100) */
+  --color-chip-line: #dfe3e1; /* حدود شرايح المدونة والترقيم وشارات الدفع (W2-95 · W2-100) */
+  --color-meta-gray: #99a29e; /* «3 دقائق قراءة» و placeholder البحث في المدونة (W2-100) */
+  --color-tip-lime: #f1fbe0; /* «نصيحة لينكار» والعنصر النشط في «في هذا المقال» (W2-100b) */
+  --color-tip-ink: #33433f; /* نص «نصيحة لينكار» (W2-100b) */
   /* LNK · تصنيف المركز (1634:20844) */
   --color-tier-platinum-bg: #e9eef2;
   --color-tier-platinum-fg: #5b6b78;
@@ -99,7 +110,7 @@
   --color-bg-danger: #a13434;
   --color-bg-danger-subtle: #f6eaea;
   --color-bg-info-subtle: #edf0f7;
-  --color-bg-overlay: #1529357a;
+  --color-bg-overlay: #152935b8; /* سكريم النوافذ في التصميم المعدّل: #152935 بشفافية 72% */
   --color-bg-glass: #ffffff1f;
 
   --color-text-primary: #152935;

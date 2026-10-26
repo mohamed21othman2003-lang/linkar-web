@@ -30,6 +30,7 @@ export default async function ForProvidersPage() {
   return (
     <>
       <BusinessHead
+        tone="dark"
         crumbs={[{ label: t.home, href: routes.home }, { label: b.business, href: routes.forProviders }, { label: tx(locale, p.head, "crumb") }]}
         title={tx(locale, p.head, "title")}
         description={tx(locale, p.head, "description")}

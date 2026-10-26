@@ -4,23 +4,104 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
+import { getAuthDict } from "@/i18n/dict/auth";
 import { signIn } from "@/app/actions/session";
 import { Icon } from "@/components/icons/Icon";
+import { MethodTabs } from "@/components/auth/ui";
+import { EmailLoginForm } from "@/components/auth/EmailForms";
 
-// W2-34a · تسجيل الدخول برقم الجوال داخل خطوة «بياناتك»: رقم الجوال ← رمز التحقق (4 خانات) ← «تحقّق ومتابعة».
+// W2-34a · تسجيل الدخول برقم الجوال داخل خطوة «بياناتك»: رقم الجوال ← رمز التحقق (4 خانات) ← «تحقّق ومتابعة» ← أو Google / Apple.
+// W2-34e · نفس الكارت بتبويب «البريد الإلكتروني»: البريد + كلمة المرور ← «تسجيل الدخول ومتابعة» (?login=email).
 // العميل العادي: signIn ويرجع لنفس الخطوة (W2-34b). عميل رابط المسوّق (ref): يكمل كضيف مباشرة للدفع (W2-35s).
 export function PhoneLogin({
   locale,
+  method = "phone",
+  tabs,
+  emailCopy,
   defaultPhone,
   typed = "",
   next,
   guestNext,
 }: {
   locale: Locale;
+  method?: "phone" | "email";
+  tabs: { phone: { label: string; href: string }; email: { label: string; href: string } };
+  emailCopy: { email: string; emailPlaceholder: string; password: string; forgot: string; forgotHref: string };
   defaultPhone: string; // «55 123 4567»
   typed?: string; // أرقام مكتوبة مسبقاً (حالة الفيجما: «7 4» والخانة الثالثة عليها التركيز)
   next: string; // الرابط بعد تسجيل الدخول
   guestNext?: string; // لو موجود: تحقق كضيف ثم هذا الرابط
+}) {
+  const t = getBookingDict(locale);
+  const action = signIn.bind(null, "user", next);
+
+  return (
+    <section className="flex flex-col gap-4 rounded-2xl border border-v3-card-stroke bg-white p-4 md:p-6">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-h4">{t.loginTitle}</h2>
+        <p className="text-[14px] leading-6 font-light text-v3-text-meta">{method === "email" ? t.emailLoginSub : t.loginSub}</p>
+      </div>
+
+      <MethodTabs active={method} phone={tabs.phone} email={tabs.email} inPlace />
+
+      {method === "email" ? (
+        <EmailLoginForm
+          next={next}
+          forgotHref={emailCopy.forgotHref}
+          gapClass="gap-4"
+          copy={{
+            email: emailCopy.email,
+            emailPlaceholder: emailCopy.emailPlaceholder,
+            password: emailCopy.password,
+            forgot: emailCopy.forgot,
+            cta: t.emailVerify,
+            errors: getAuthDict(locale),
+          }}
+        />
+      ) : (
+        <PhoneCode locale={locale} defaultPhone={defaultPhone} typed={typed} action={action} guestNext={guestNext} />
+      )}
+
+      <div className="flex items-center gap-3 text-[14px] leading-[22px] font-light text-v3-text-meta">
+        <span className="h-px flex-1 bg-cool-gray" />
+        {t.or}
+        <span className="h-px flex-1 bg-cool-gray" />
+      </div>
+
+      <form action={action} className="flex flex-col gap-2.5">
+        <button type="submit" className="flex h-[52px] items-center justify-center gap-2.5 rounded-[14px] border border-cool-gray bg-white text-label-l hover:border-border-strong">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/auth/google.svg" alt="" width={20} height={20} />
+          {t.google}
+        </button>
+        <button type="submit" className="flex h-[52px] items-center justify-center gap-2.5 rounded-[14px] bg-pay-black text-label-l text-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/figma/auth/apple.svg" alt="" width={20} height={20} />
+          {t.apple}
+        </button>
+      </form>
+
+      <p className="flex items-center gap-2 rounded-md bg-cool-gray/30 px-3 py-2.5 text-[14px] leading-[22px] font-light">
+        <Icon name="lock" size={16} className="shrink-0 text-state-gray" />
+        {t.privacy}
+      </p>
+    </section>
+  );
+}
+
+// رقم الجوال (مرسل له الرمز) + رمز التحقق + إعادة الإرسال + «تحقّق ومتابعة»
+function PhoneCode({
+  locale,
+  defaultPhone,
+  typed,
+  action,
+  guestNext,
+}: {
+  locale: Locale;
+  defaultPhone: string;
+  typed: string;
+  action: () => Promise<void>;
+  guestNext?: string;
 }) {
   const t = getBookingDict(locale);
   const router = useRouter();
@@ -54,20 +135,14 @@ export function PhoneLogin({
   const complete = digits.every(Boolean);
   const local = `0${phone.replace(/\s/g, "")}`;
   const mmss = `0:${String(Math.max(0, left)).padStart(2, "0")}`;
-  const action = signIn.bind(null, "user", next);
 
   return (
-    <section className="flex flex-col gap-4 rounded-2xl border border-v3-card-stroke bg-white p-4 md:p-6">
-      <div className="flex flex-col gap-1">
-        <h2 className="text-h4">{t.loginTitle}</h2>
-        <p className="text-body-s text-v3-text-meta">{t.loginSub}</p>
-      </div>
-
+    <>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="booking-phone" className="text-label-m">
           {t.phone}
         </label>
-        <div dir="ltr" className={`flex h-[50px] items-center gap-2 rounded-md border bg-white px-3.5 ${editing ? "border-deep-charcoal" : "border-border-default"}`}>
+        <div dir="ltr" className={`flex h-[50px] items-center gap-2 rounded-md border bg-white px-3.5 ${editing ? "border-deep-charcoal" : "border-cool-gray"}`}>
           <span className="text-label-m text-v3-text-meta">+966</span>
           <input
             id="booking-phone"
@@ -87,7 +162,7 @@ export function PhoneLogin({
             {t.sendCode}
           </button>
         ) : (
-          <p className="flex flex-wrap items-center gap-1 text-caption">
+          <p className="flex flex-wrap items-center gap-1 text-[14px] leading-[22px] font-light">
             <span className="text-v3-text-meta">{t.fill(t.sentTo, { phone: local })}</span>
             <button
               type="button"
@@ -105,25 +180,6 @@ export function PhoneLogin({
           </p>
         )}
       </div>
-
-      <div className="flex items-center gap-3 text-caption text-v3-text-meta">
-        <span className="h-px flex-1 bg-border-default" />
-        {t.or}
-        <span className="h-px flex-1 bg-border-default" />
-      </div>
-
-      <form action={action} className="flex flex-col gap-2.5">
-        <button type="submit" className="flex h-[52px] items-center justify-center gap-2.5 rounded-[14px] border border-border-default bg-white text-label-l hover:border-border-strong">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/auth/google.svg" alt="" width={20} height={20} />
-          {t.google}
-        </button>
-        <button type="submit" formAction={action} className="flex h-[52px] items-center justify-center gap-2.5 rounded-[14px] bg-pay-black text-label-l text-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/auth/apple.svg" alt="" width={20} height={20} />
-          {t.apple}
-        </button>
-      </form>
 
       <form
         action={guestNext ? undefined : action}
@@ -156,11 +212,11 @@ export function PhoneLogin({
               onChange={(e) => setDigit(i, e.target.value)}
               onKeyDown={(e) => e.key === "Backspace" && !d && i > 0 && boxes.current[i - 1]?.focus()}
               autoFocus={i === Math.min(3, typed.length)}
-              className="size-16 rounded-[14px] border border-border-default bg-white text-center text-h3 outline-none focus:border-2 focus:border-deep-charcoal"
+              className="size-16 rounded-[14px] border border-cool-gray bg-white text-center text-[26px] leading-10 font-bold outline-none focus:border-2 focus:border-deep-charcoal"
             />
           ))}
         </div>
-        <div className="flex items-center justify-between gap-2 text-caption text-v3-text-meta">
+        <div className="flex items-center justify-between gap-2 text-[14px] leading-[22px] font-light text-v3-text-meta">
           {left > 0 ? (
             <span>{t.fill(t.resendIn, { t: mmss })}</span>
           ) : (
@@ -178,11 +234,6 @@ export function PhoneLogin({
           {t.verify}
         </button>
       </form>
-
-      <p className="flex items-center gap-2 rounded-md bg-cool-gray/30 px-3 py-2.5 text-caption">
-        <Icon name="lock" size={16} className="shrink-0 text-state-gray" />
-        {t.privacy}
-      </p>
-    </section>
+    </>
   );
 }

@@ -127,7 +127,18 @@ export const inputClass =
   "min-w-0 flex-1 bg-transparent text-body-m text-deep-charcoal outline-none placeholder:text-state-gray focus-visible:shadow-none!";
 
 // تبويبات «رقم الجوال / البريد الإلكتروني»
-export function MethodTabs({ active, phone, email }: { active: "phone" | "email"; phone: { label: string; href: string }; email: { label: string; href: string } }) {
+// inPlace: داخل خطوة «بياناتك» في الحجز (W2-34a / W2-34e) — تبديل التبويب من غير ما الصفحة تطلع لفوق ولا تزوّد السجل
+export function MethodTabs({
+  active,
+  phone,
+  email,
+  inPlace = false,
+}: {
+  active: "phone" | "email";
+  phone: { label: string; href: string };
+  email: { label: string; href: string };
+  inPlace?: boolean;
+}) {
   const tab = (key: "phone" | "email", t: { label: string; href: string }) =>
     key === active ? (
       <span
@@ -138,7 +149,7 @@ export function MethodTabs({ active, phone, email }: { active: "phone" | "email"
         {t.label}
       </span>
     ) : (
-      <Link key={key} href={t.href} className="flex h-[42px] flex-1 items-center justify-center rounded-[10px] px-3 text-body-s text-state-gray hover:text-deep-charcoal">
+      <Link key={key} href={t.href} scroll={!inPlace} replace={inPlace} className="flex h-[42px] flex-1 items-center justify-center rounded-[10px] px-3 text-body-s text-state-gray hover:text-deep-charcoal">
         {t.label}
       </Link>
     );

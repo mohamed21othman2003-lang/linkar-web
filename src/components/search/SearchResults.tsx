@@ -16,7 +16,7 @@ import { AiPick, AltCard, LightOfferCard, SectionHead } from "./Blocks";
 import { CompareProvider, CompareTray, type CompareItem } from "./Compare";
 import { Dropdown } from "./Dropdown";
 import { FiltersModal, activeCount, emptyFilters, type Filters } from "./FiltersModal";
-import { ResultCard, resultName } from "./ResultCard";
+import { ResultCard, resultName, resultWhere } from "./ResultCard";
 import { SearchMap } from "./SearchMap";
 import { ToastProvider, useToast } from "./Toast";
 
@@ -149,6 +149,8 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
   const count = nFilters ? (multi ? t.resultsCount(listResults.length) : t.providersCount(listResults.length)) : tx(locale, s.count, "text");
   const sortLabel = L(options.sortOptions.find((o) => o.key === sort)!);
   const tray = tx(locale, view === "map" ? s.compare_label_map : s.compare_label, "text");
+  const aiResult = s.ai ? s.results.find((r) => r.provider === s.ai!.provider) : undefined;
+  const aiRating = aiResult ? `${aiResult.rating.toFixed(1)}${aiResult.reviews ? ` (${aiResult.reviews})` : ""} · ${resultWhere(locale, aiResult)}` : undefined;
 
   return (
     <>
@@ -197,17 +199,19 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
               <AiPick
                 locale={locale}
                 logo={providers[s.ai.provider].logo}
+                logoSlug={s.ai.provider}
                 name={tx(locale, providers[s.ai.provider], "name")}
                 title={tx(locale, s.ai.title, "text")}
+                rating={aiRating}
                 body={tx(locale, s.ai.body, "text")}
+                chips={(s.ai.chips ?? []).map((c) => tx(locale, c, "text"))}
                 price={s.ai.price}
                 href={routes.providerService(s.ai.provider, s.ai.service)}
-                bigLogo={s.ai.big_logo}
               />
             </Container>
           )}
 
-          <Container className={`flex flex-col pb-2 ${multi ? "gap-3.5" : "gap-3"}`}>
+          <Container className={`flex flex-col ${multi ? "gap-3.5 pb-3" : "gap-3 pb-2"}`}>
             {(tx(locale, s.results_title, "text") || s.size_hint) && (
               <div className={`flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between ${multi ? "pt-3" : "pt-2"}`}>
                 {tx(locale, s.results_title, "text") && <h2 className="text-h4 text-deep-charcoal">{tx(locale, s.results_title, "text")}</h2>}
@@ -219,8 +223,8 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
                 )}
               </div>
             )}
-            {/* عمودين من xl بس: في 1024 المحتوى جنب عمود المقدّم كان بيضيق لـ240px والأسماء والأسعار تتقصّ */}
-            <div className="grid gap-5 xl:grid-cols-2">
+            {/* تصميم العميل المعدّل: كروت رأسية — 4 أعمدة (301) للخدمة الواحدة و3 (410) للخدمتين، والمسافة 25 */}
+            <div className={`grid gap-x-[25px] gap-y-6 sm:grid-cols-2 ${multi ? "xl:grid-cols-3" : "lg:grid-cols-3 xl:grid-cols-4"}`}>
               {listResults.map((r) => (
                 <ResultCard key={r.provider} locale={locale} result={r} provider={providers[r.provider]} multi={multi} />
               ))}
@@ -243,7 +247,7 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
           {s.alternatives && (
             <Container className="flex flex-col gap-4 pt-10 pb-2">
               <SectionHead title={tx(locale, s.alternatives.title, "text")} description={tx(locale, s.alternatives.description, "text")} />
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {s.alternatives.items.map((a) => (
                   <AltCard key={a.key} locale={locale} item={a} />
                 ))}
@@ -263,7 +267,8 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
                     ))}
                 </div>
               ) : (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(3,313.4px)]">
+                // W2-30 المعدّل: 4 كروت 313 والمسافة 9.33
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-[9.33px]">
                   {s.offers.items
                     .filter((o) => providers[o.provider])
                     .map((o) => {

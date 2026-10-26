@@ -64,7 +64,7 @@ const ar = {
   removeService: (name: string) => `إزالة ${name}`,
   // نافذة المقارنة W2-31
   compareTitle: (service: string) => `قارن ${service} عند مقدّمي الخدمة`,
-  compareSub: "الأسعار تبدأ من أصغر حجم وشاملة الضريبة · أبرزنا الأفضل في كل بند",
+  compareSub: "الأسعار تبدأ من أصغر حجم وشاملة الضريبة · أبرزنا الأفضل في كل بند · قارن حتى 3 مقدّمي خدمة كحد أقصى.",
   addProvider: "أضف مقدّم خدمة",
   remove: "إزالة",
   best: "الأفضل",
@@ -93,6 +93,11 @@ const ar = {
   serviceAt: (service: string, provider: string) => `${service} · لدى ${provider}`,
   clearSearch: "مسح البحث",
   noMatches: "لا توجد نتائج مطابقة",
+  // كروت النتائج الغامقة (تصميم العميل المعدّل · W2-30 / W2-30a)
+  compareAdd: "قارن +",
+  addService: "أضف خدمة",
+  inCompareCheck: "في المقارنة ✓",
+  totalNoteMulti: "شامل الضريبة · لسيارة سيدان",
 };
 
 const en: typeof ar = {
@@ -150,7 +155,7 @@ const en: typeof ar = {
   search: "Search",
   removeService: (name: string) => `Remove ${name}`,
   compareTitle: (service: string) => `Compare ${service} across providers`,
-  compareSub: "Prices start from the smallest size and include VAT · the best in each row is highlighted",
+  compareSub: "Prices start from the smallest size and include VAT · the best in each row is highlighted · compare up to 3 providers at most.",
   addProvider: "Add a provider",
   remove: "Remove",
   best: "Best",
@@ -176,6 +181,10 @@ const en: typeof ar = {
   serviceAt: (service: string, provider: string) => `${service} · at ${provider}`,
   clearSearch: "Clear search",
   noMatches: "No matching results",
+  compareAdd: "Compare +",
+  addService: "Add a service",
+  inCompareCheck: "In comparison ✓",
+  totalNoteMulti: "Incl. VAT · for a sedan",
 };
 
 export const getSearchDict = (locale: Locale) => (locale === "en" ? en : ar);

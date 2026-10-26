@@ -40,13 +40,13 @@ export async function getDealerPackages(user: DemoUser) {
   return user.is_new ? [] : dealerPackages;
 }
 
-// سياراتي وطرق الدفع مالهاش حالة فارغة في الفيجما — نفس البيانات للعميلين
-export async function getCars() {
-  return cars;
+// سياراتي وطرق الدفع: العميل الجديد بيشوف W2-67-0 / W2-68-0 (النسخة المعتمدة) — من غير user بترجع سيارات الديمو
+export async function getCars(user?: DemoUser) {
+  return user?.is_new ? [] : cars;
 }
 
 export async function getPaymentMethods(user: DemoUser) {
-  return { cards: savedCards, other: otherMethods, invoices: user.is_new ? [] : invoices };
+  return user.is_new ? { cards: [], other: [], invoices: [] } : { cards: savedCards, other: otherMethods, invoices };
 }
 
 export async function getComplaints(user: DemoUser) {

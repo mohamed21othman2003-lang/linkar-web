@@ -35,7 +35,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
 
   return (
     <>
-      <PageHeader crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "title") }]} title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
+      <PageHeader tone="dark" crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "title") }]} title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
       <Container className="flex flex-col gap-8 pt-12 pb-24 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">
           <ContactForm

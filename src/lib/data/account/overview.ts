@@ -117,37 +117,3 @@ export const overviewOffers: OverviewOffer[] = [
     href: routes.providerService("nanoshield", "wash"),
   },
 ];
-
-// W2-60-0 · «ابدأ مع لينكار في 3 خطوات»
-export const onboardingSteps: (Localized<"title"> & Localized<"body"> & Localized<"cta"> & { icon: "car" | "search" | "user"; href: string })[] = [
-  {
-    icon: "car",
-    title_ar: "أضف سيارتك",
-    title_en: "Add your car",
-    body_ar: "نحدد حجمها تلقائياً لتظهر الأسعار المناسبة لها.",
-    body_en: "We detect its size automatically to show the right prices.",
-    cta_ar: "أضف سيارة",
-    cta_en: "Add a car",
-    href: routes.cars,
-  },
-  {
-    icon: "search",
-    title_ar: "ابحث عن خدمتك الأولى",
-    title_en: "Find your first service",
-    body_ar: "قارن مقدّمي الخدمة المعتمدين بالسعر والضمان والتقييمات.",
-    body_en: "Compare certified providers by price, warranty and reviews.",
-    cta_ar: "ابحث الآن",
-    cta_en: "Search now",
-    href: routes.search(),
-  },
-  {
-    icon: "user",
-    title_ar: "أكمل بياناتك",
-    title_en: "Complete your details",
-    body_ar: "أضف بريدك لاستلام الفواتير، واختر التنبيهات التي تناسبك.",
-    body_en: "Add your email to receive invoices, and choose the alerts that suit you.",
-    cta_ar: "الإعدادات",
-    cta_en: "Settings",
-    href: routes.settings,
-  },
-];

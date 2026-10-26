@@ -79,12 +79,16 @@ export const johnson: ProviderDetail = {
           { label_ar: "فحص نهائي وتسليم مع شهادة الضمان", label_en: "Final inspection and handover with warranty certificate" },
           { label_ar: "طبقة طاردة للماء", label_en: "Water-repellent layer" },
         ],
-        includes_list: [
-          { label_ar: "تنظيف الطلاء وإزالة الشوائب قبل التطبيق", label_en: "Paint cleaning and decontamination before application" },
-          { label_ar: "‏تطبيق طبقة Johnson Ceramic Pro بصلابة 9H على الهيكل", label_en: "Applying a 9H Johnson Ceramic Pro coating to the body" },
-          { label_ar: "طبقة للزجاج الأمامي والجنوط", label_en: "Coating for the windshield and rims" },
-          { label_ar: "فحص بالإضاءة قبل التسليم", label_en: "Light inspection before handover" },
-          { label_ar: "شهادة ضمان مسجّلة برقم القسيمة", label_en: "Warranty certificate registered to the voucher number" },
+        // تبويب «المواصفات التقنية» (85:26713) — بالترتيب من فوق
+        specs: [
+          { label_ar: "نوع المنتج", label_en: "Product type", value_ar: "طلاء نانو سيراميك (Ceramic Coating)", value_en: "Nano-ceramic coating" },
+          { label_ar: "العلامة التجارية", label_en: "Brand", value_ar: "Johnson Window Films", value_en: "Johnson Window Films" },
+          { label_ar: "الصلابة", label_en: "Hardness", value_ar: "9H", value_en: "9H" },
+          { label_ar: "عدد الطبقات", label_en: "Layers", value_ar: "طبقتان + طبقة علوية طاردة للماء", value_en: "Two layers + a water-repellent top coat" },
+          { label_ar: "مدة التنفيذ", label_en: "Turnaround", value_ar: "يوم واحد تقريباً", value_en: "About 1 day" },
+          { label_ar: "مدة المعالجة", label_en: "Curing time", value_ar: "لا تُغسل السيارة 7 أيام بعد التطبيق", value_en: "Don't wash the car for 7 days after application" },
+          { label_ar: "الأسطح المشمولة", label_en: "Covered surfaces", value_ar: "الطلاء الخارجي والجنوط والزجاج الأمامي", value_en: "Exterior paint, rims and windshield" },
+          { label_ar: "الضمان", label_en: "Warranty", value_ar: "9 سنوات · شهادة ضمان باسمك", value_en: "9 years · warranty certificate in your name" },
         ],
         warranty_text: {
           text_ar:
@@ -139,16 +143,16 @@ export const johnson: ProviderDetail = {
           `${P}/similar-bareeq.png`,
         ],
         // من بداية السطر
+        // «مقدّمو خدمة آخرون» في العميل المعدّل: 4 كروت شعار (من بداية السطر) — الشارة = اسم الخدمة عندهم، والشيب = الضمان
         other_offers: [
           {
-            provider: "xpel",
-            name_ar: "XPEL Fusion Plus",
-            name_en: "XPEL Fusion Plus",
-            warranty_ar: "ضمان 5 سنوات",
-            warranty_en: "5-year warranty",
-            price: 2999,
-            photo: `${P}/similar-xpel.png`,
-            in_compare: true,
+            provider: "autoshabo",
+            name_ar: "نانو سيراميك برو",
+            name_en: "Nano Ceramic Pro",
+            warranty_ar: "ضمان سنتان",
+            warranty_en: "2-year warranty",
+            price: 1019,
+            photo: `${P}/svc-interior.png`,
           },
           {
             provider: "nanoshield",
@@ -160,13 +164,23 @@ export const johnson: ProviderDetail = {
             photo: `${P}/offer-nanoshield.png`,
           },
           {
-            provider: "autoshabo",
-            name_ar: "نانو سيراميك برو",
-            name_en: "Nano Ceramic Pro",
-            warranty_ar: "ضمان سنتان",
-            warranty_en: "2-year warranty",
-            price: 1019,
-            photo: `${P}/svc-interior.png`,
+            provider: "xpel",
+            name_ar: "XPEL Fusion Plus",
+            name_en: "XPEL Fusion Plus",
+            warranty_ar: "ضمان 5 سنوات",
+            warranty_en: "5-year warranty",
+            price: 2999,
+            photo: `${P}/similar-xpel.png`,
+            in_compare: true,
+          },
+          {
+            provider: "lamaa",
+            name_ar: "تلميع مع حماية سيراميك",
+            name_en: "Polish with ceramic protection",
+            warranty_ar: "ضمان سنة",
+            warranty_en: "1-year warranty",
+            price: 720,
+            photo: `${P}/similar-lamaa.png`,
           },
         ],
       },
@@ -223,6 +237,8 @@ export const johnson: ProviderDetail = {
         package: { label_ar: "ضمن باقة العناية الكاملة", label_en: "Part of the Full care package" },
       },
       addons: ["johnson-ceramic-pro", "water-repellent-polish"],
+      // «متاحة في فرع الزهراء فقط» (W2-21)
+      branch_ids: ["johnson-zahraa"],
       detail: null,
     },
     {

@@ -82,10 +82,20 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
     };
   }, [panel]);
 
+  // قائمة الموبايل (aria-modal) تتقفل بـEscape زي باقي النوافذ
+  useEffect(() => {
+    if (!drawer) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDrawer(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [drawer]);
+
   const dark = variant === "hero" && !scrolled;
   const toggle = (p: Panel) => setPanel((cur) => (cur === p ? null : p));
   const close = () => setPanel(null);
-  const navKeys: NavKey[] = variant === "hero" ? ["home", "services", "offers", "packages", "about", "business"] : ["services", "offers", "packages", "about", "business"];
+  // نسخة العميل (W2-26 85:37089 · W2-40 85:37619): «الرئيسية» في الهيدر الأبيض كمان؛
+  // هيدر الهيرو في الرئيسية (37:26642 / 37:28373) من غير «الرئيسية»
+  const navKeys: NavKey[] = variant === "hero" ? ["services", "offers", "packages", "about", "business"] : ["home", "services", "offers", "packages", "about", "business"];
 
   return (
     <div ref={ref} className={variant === "hero" ? "absolute inset-x-0 top-0 z-40" : "sticky top-0 z-40"}>
@@ -95,11 +105,12 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
         // الطول 80 شامل الخط اللي تحت (stroke INSIDE في الفيجما) — مش 80 + 1
         className={
           dark
-            ? "relative h-20"
+            ? // Web header · v2 (37:26642): تدرّج كحلي من فوق
+              "relative h-16 md:h-[76px] lg:h-20 lg:bg-linear-to-b lg:from-deep-charcoal/85 lg:to-deep-charcoal/0"
             : `${variant === "hero" ? "fixed inset-x-0 top-0" : "relative"} h-20 border-b border-cool-gray bg-white`
         }
       >
-        <div className="mx-auto flex h-full max-w-[1440px] items-center px-4 md:px-10 xl:px-20">
+        <div className={`mx-auto flex h-full max-w-[1440px] items-center md:px-10 xl:px-20 ${dark ? "px-5" : "px-4 lg:gap-6"}`}>
           <Link href={routes.home} aria-label={v.brand} className="shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -107,25 +118,25 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               alt={v.brand}
               width={dark ? 210 : 160}
               height={dark ? 28 : 21}
-              className={dark ? "h-auto w-[150px] xl:w-[210px]" : "h-auto w-[130px] xl:w-[160px]"}
+              className={dark ? "h-auto w-[118px] md:w-[150px] xl:w-[210px]" : "h-auto w-[130px] xl:w-[160px]"}
             />
           </Link>
 
-          <nav className={`hidden items-center gap-7 lg:flex ${dark ? "ms-10 xl:ms-[154px]" : "mx-auto"}`}>
+          <nav className="mx-auto hidden items-center gap-4 lg:flex xl:gap-7">
             {navKeys.map((k) => {
               const item = v.nav[k];
               const isMenu = k === "about" || k === "business";
               const isActive = active === k;
-              const color = dark ? (isActive ? "text-neon-green" : "text-white") : isActive ? "text-green-active" : "text-deep-charcoal";
+              const color = dark ? (isActive ? "text-neon-green" : "text-white/85") : isActive ? "text-green-active" : "text-deep-charcoal";
               const inner = (
                 <>
                   <span>{item.label}</span>
-                  {/* السهم موجود في الهيدر الأبيض بس شفاف في الفيجما (بياخد مكانه 16px) — ظاهر في هيدر الهيرو */}
+                  {/* سهم القوائم ظاهر في الهيدرين (نسخة العميل) */}
                   {isMenu && (
                     <Icon
                       name="chevron-down"
-                      size={dark ? 14 : 16}
-                      className={`transition-transform duration-200 ease-figma-out ${panel === k ? "rotate-180" : ""} ${dark ? "text-white" : "opacity-0"}`}
+                      size={16}
+                      className={`transition-transform duration-200 ease-figma-out ${panel === k ? "rotate-180" : ""} ${dark ? "text-white/85" : "text-deep-charcoal"}`}
                     />
                   )}
                   {isActive && !dark && <span className="absolute -bottom-[25px] start-1/2 h-[3px] w-[37px] -translate-x-1/2 rounded-[2px] bg-neon-green rtl:translate-x-1/2" />}
@@ -137,51 +148,76 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                   type="button"
                   aria-expanded={panel === k}
                   onClick={() => toggle(k as Panel)}
-                  className={`relative flex items-center gap-1 text-label-l ${color}`}
+                  className={`relative flex items-center gap-1 text-label-l whitespace-nowrap ${color}`}
                 >
                   {inner}
                 </button>
               ) : (
-                <Link key={k} href={item.href} className={`relative flex items-center gap-1 text-label-l ${color}`} aria-current={isActive ? "page" : undefined}>
+                <Link key={k} href={item.href} className={`relative flex items-center gap-1 text-label-l whitespace-nowrap ${color}`} aria-current={isActive ? "page" : undefined}>
                   {inner}
                 </Link>
               );
             })}
           </nav>
 
-          <div className={`flex items-center gap-3 ${dark ? "ms-auto gap-3.5" : ""}`}>
+          <div className={`flex items-center gap-3 ${dark ? `ms-auto gap-2.5 lg:ms-0 ${v.account ? "lg:gap-4" : "lg:gap-3"}` : ""}`}>
             <LangSwitch
               locale={v.locale}
               label={v.langLabel}
               className={
                 dark
-                  ? "flex size-[43px] items-center justify-center rounded-full border border-neon-green/55 bg-hero-ink/35 text-label-m text-white"
+                  ? // V2-01t/V2-01m: مافيش زر اللغة في هيدر الهيرو تحت الديسكتوب (موجود في القائمة)
+                    `hidden h-9 items-center justify-center rounded-full border px-3 text-label-m lg:flex ${v.account ? "border-white/24 text-white" : "border-white/12 text-white/75"}`
                   : "flex h-control-sm items-center rounded-full border border-cool-gray px-3 text-label-m text-deep-charcoal"
               }
             />
+            {/* v2 · Web header · Auth=Signed in (85:26114): «Notifications» — Icon button Ghost M (44، r12) بين اللغة والحساب.
+                الأيقونة مش ظاهرة في نسخة العميل (مكتبة مش متوصّلة)، فحطّينا الجرس ويودّي لصفحة الإشعارات W2-73 */}
+            {v.account && !dark && (
+              <Link
+                href={v.account.viewAllHref}
+                aria-label={v.account.notificationsTitle}
+                // تحت xl مافيش مكان في الهيدر (1024 كان بيطلع برّه) — الإشعارات موجودة في قايمة الحساب
+                className="hidden size-11 items-center justify-center rounded-md text-deep-charcoal hover:bg-tile xl:flex"
+              >
+                <Icon name="bell" size={20} />
+              </Link>
+            )}
             {v.account ? (
               <button
                 type="button"
                 aria-expanded={panel === "account"}
                 onClick={() => toggle("account")}
-                className={`hidden items-center gap-2 rounded-full border py-1 ps-1 pe-3 text-label-m sm:flex ${
-                  dark ? "h-[44px] border-neon-green/55 bg-hero-ink/35 text-white" : "border-cool-gray text-deep-charcoal"
+                className={`items-center gap-2 rounded-full text-label-m ${
+                  dark
+                    ? // موبايل: الأفاتار بس (36) · تابلت: كبسولة بحد أبيض/30 · ديسكتوب: حد ليموني
+                      // ديسكتوب (37:26645): حد أبيض/24 والأفاتار أسود بحرف ليموني
+                      "flex md:border md:border-white/30 md:py-1.5 md:ps-2 md:pe-3 lg:gap-1.5 lg:border-white/24 lg:py-1 lg:ps-3 lg:pe-1 text-white"
+                    : "hidden border border-cool-gray py-1 ps-1 pe-3 text-deep-charcoal sm:flex"
                 }`}
               >
-                <span className="flex size-8 items-center justify-center rounded-full bg-neon-green text-label-m text-deep-charcoal">{v.account.initial}</span>
-                {v.firstName}
-                <Icon name="chevron-down" size={16} />
+                <span
+                  className={`flex items-center justify-center rounded-full bg-neon-green text-deep-charcoal ${
+                    dark ? "size-9 text-[15px] font-bold md:size-[30px] md:text-label-m lg:size-8 lg:bg-solid-black lg:font-medium lg:text-neon-green" : "size-8 text-label-m"
+                  }`}
+                >
+                  {v.account.initial}
+                </span>
+                <span className={dark ? "max-md:hidden" : ""}>{v.firstName}</span>
+                <Icon name="chevron-down" size={dark ? 14 : 16} className={dark ? "max-md:hidden lg:size-4" : ""} />
               </button>
             ) : dark ? (
               <Link
                 href={routes.login}
-                className="hidden items-center gap-2 rounded-full border border-neon-green/55 bg-hero-ink/35 px-4 py-2.5 text-label-m text-white hover:bg-hero-ink/55 sm:flex"
+                aria-label={v.signIn}
+                // ديسكتوب (37:28376): نص بس — Bold 15 أبيض/75، ارتفاع 44
+                className="flex items-center gap-2 rounded-full text-label-m whitespace-nowrap text-white max-md:size-9 max-md:justify-center max-md:bg-white/12 md:border md:border-white/30 md:px-4 md:py-2.5 lg:h-11 lg:rounded-md lg:border-0 lg:px-5 lg:py-0 lg:text-[15px] lg:leading-[22px] lg:font-bold lg:text-white/75 lg:hover:text-white"
               >
-                <Icon name="user" size={16} />
-                {v.signIn}
+                <Icon name="user" size={16} className="lg:hidden" />
+                <span className="max-md:hidden">{v.signIn}</span>
               </Link>
             ) : (
-              <Link href={routes.login} className="hidden h-control-md items-center px-5 text-[15px] leading-[22px] font-bold text-deep-charcoal sm:flex">
+              <Link href={routes.login} className="hidden h-control-md items-center px-5 whitespace-nowrap text-[15px] leading-[22px] font-bold text-deep-charcoal sm:flex">
                 {v.signIn}
               </Link>
             )}
@@ -194,19 +230,33 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                   setPanel(null);
                   setSearchOpen((o) => !o);
                 }}
-                className="hidden h-control-md items-center gap-1.5 rounded-md bg-neon-green px-5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover sm:flex"
+                className="hidden h-control-md items-center gap-1.5 whitespace-nowrap rounded-md bg-neon-green px-5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover sm:flex"
               >
                 <Icon name="search" size={18} />
                 {v.search}
+              </button>
+            )}
+            {/* V2-01t: زر «ابحث» مربع زجاجي جنب القائمة في هيدر الهيرو */}
+            {dark && (
+              <button
+                type="button"
+                aria-label={v.search}
+                aria-expanded={searchOpen}
+                onClick={() => setSearchOpen((o) => !o)}
+                className="hidden size-11 items-center justify-center rounded-md bg-white/12 text-white md:flex lg:hidden"
+              >
+                <Icon name="search" size={20} />
               </button>
             )}
             <button
               type="button"
               aria-label={v.menuLabel}
               onClick={() => setDrawer(true)}
-              className={`flex size-control-md items-center justify-center rounded-md lg:hidden ${dark ? "text-white" : "text-deep-charcoal"}`}
+              className={`flex items-center justify-center rounded-md lg:hidden ${
+                dark ? "size-10 bg-white/12 text-white md:size-11" : "size-control-md text-deep-charcoal"
+              }`}
             >
-              <Icon name="menu" />
+              <Icon name="menu" size={dark ? 20 : 24} className={dark ? "md:size-[22px]" : ""} />
             </button>
           </div>
         </div>

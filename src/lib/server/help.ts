@@ -2,6 +2,7 @@
 import { helpPage, helpTopics, helpArticles, contactBand } from "@/lib/data/help/help-center";
 import { faqPage, faqTabs, type FaqTabKey } from "@/lib/data/help/faq";
 import { notFoundPage } from "@/lib/data/help/not-found";
+import { statusPages, type StatusKey } from "@/lib/data/help/status";
 import { assistantPopup, whatsappPopup } from "@/lib/data/help/popups";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
@@ -34,6 +35,11 @@ export function isFaqTab(v: string | undefined): v is FaqTabKey {
 
 export async function getNotFoundPage() {
   return notFoundPage;
+}
+
+// صفحات الحالة (W2-500 · W2-offline · W2-503 · W2-410 · W2-403 · W2-401)
+export async function getStatusPage(key: StatusKey) {
+  return statusPages[key];
 }
 
 // نصوص P-21 / P-22 — للأزرار العائمة (Fabs) وأيقونة واتساب في «تواصل معنا»

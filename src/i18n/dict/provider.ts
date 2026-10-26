@@ -19,6 +19,7 @@ const ar = {
     tint: "التظليل",
     polish: "التلميع",
     "nano-ceramic": "النانو سيراميك",
+    "color-change": "تغيير اللون",
   } as Record<ServiceSlug, string>,
   sizes: { sedan: "سيدان", suv: "SUV متوسط", large: "SUV كبير" },
 
@@ -113,7 +114,7 @@ const ar = {
   bookAsPackage: "احجزها كباقة",
   packageBannerSub: (name: string, price: string, old: string) => `${name} · ${price} بدلاً من ${old}`,
   morePhotos: (n: number) => `+${n} صور`,
-  serviceTabs: { overview: "نظرة عامة", includes: "ما تشمله", warranty: "الضمان", photos: "الصور", reviews: (n: number) => `التقييمات (${n})` },
+  serviceTabs: { overview: "نظرة عامة", specs: "المواصفات التقنية", warranty: "الضمان", photos: "الصور", reviews: (n: number) => `التقييمات (${n})` },
   facts: { duration: "مدة التنفيذ", warranty: "الضمان", suitable: "مناسبة لـ" },
   includesTitle: "ما تشمله الخدمة",
   serviceReviewsTitle: "تقييمات الخدمة",
@@ -186,13 +187,20 @@ const ar = {
   chooseBranch: "اختر الفرع",
   chooseBranchSub: (name: string, city: string) => `فروع ${name} الأقرب لموقعك في ${city}.`,
   nearestToYou: "الأقرب لك",
+
+  // العميل المعدّل (AVbWFtRb0aHpm34oqkI5ot): توفّر الخدمة في الفروع (W2-21) + الفرع في كارت الحجز (W2-32) + «السعر» في كروت المقدّمين
+  availableAllBranches: (n: number) => `متاحة في كل الفروع (${n})`,
+  availableOnlyAt: (branch: string) => `متاحة في ${branch} فقط`,
+  branchDistance: (km: string) => `على بُعد ${km} كم من موقعك`,
+  nearestSuffix: "الأقرب إليك",
+  price: "السعر",
 };
 
 const servicesCountEn = (n: number) => (n === 1 ? "1 service" : `${n} services`);
 
 const en: typeof ar = {
   services: "Services",
-  categoryDefinite: { wash: "car wash", ppf: "PPF protection", tint: "window tinting", polish: "polishing", "nano-ceramic": "nano ceramic" },
+  categoryDefinite: { wash: "car wash", ppf: "PPF protection", tint: "window tinting", polish: "polishing", "nano-ceramic": "nano ceramic", "color-change": "color change" },
   sizes: { sedan: "Sedan", suv: "Mid-size SUV", large: "Large SUV" },
 
   share: "Share",
@@ -275,7 +283,7 @@ const en: typeof ar = {
   bookAsPackage: "Book as a package",
   packageBannerSub: (name, price, old) => `${name} · ${price} instead of ${old}`,
   morePhotos: (n) => `+${n} photos`,
-  serviceTabs: { overview: "Overview", includes: "What's included", warranty: "Warranty", photos: "Photos", reviews: (n) => `Reviews (${n})` },
+  serviceTabs: { overview: "Overview", specs: "Technical specs", warranty: "Warranty", photos: "Photos", reviews: (n) => `Reviews (${n})` },
   facts: { duration: "Duration", warranty: "Warranty", suitable: "Best for" },
   includesTitle: "What the service includes",
   serviceReviewsTitle: "Service reviews",
@@ -341,6 +349,12 @@ const en: typeof ar = {
   chooseBranch: "Choose a branch",
   chooseBranchSub: (name, city) => `${name} branches closest to you in ${city}.`,
   nearestToYou: "Closest to you",
+
+  availableAllBranches: (n) => `Available at all branches (${n})`,
+  availableOnlyAt: (branch) => `Available at ${branch} only`,
+  branchDistance: (km) => `${km} km from your location`,
+  nearestSuffix: "Closest to you",
+  price: "Price",
 };
 
 export const getProviderDict = (locale: Locale) => (locale === "en" ? en : ar);

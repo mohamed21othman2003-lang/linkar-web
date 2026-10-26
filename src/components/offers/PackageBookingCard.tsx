@@ -10,7 +10,7 @@ import { VoucherNote } from "@/components/booking/Summary";
 import { AddCarModal, ChooseCarModal, type CarCatalog, type CarOption } from "@/components/booking/popups";
 import { bookingHref, customCarId, type BookingQuery } from "@/components/booking/query";
 
-// Booking card في W2-42: سيارتك (تغيير ← P-15) · تشمل الباقة · سعر الباقة · متابعة ← خطوة الفرع
+// Booking card في W2-42: سيارتك (تغيير ← P-15) · الفرع الأقرب (تغيير ← خطوة الفرع) · تشمل الباقة · سعر الباقة · متابعة ← خطوة الفرع
 export function PackageBookingCard({
   locale,
   query,
@@ -20,6 +20,7 @@ export function PackageBookingCard({
   totalTitle,
   totalSub,
   catalog,
+  branch,
 }: {
   locale: Locale;
   query: BookingQuery;
@@ -29,6 +30,8 @@ export function PackageBookingCard({
   totalTitle: string;
   totalSub: string;
   catalog: CarCatalog;
+  // تصميم العميل المعدّل (85:37809): صندوق الفرع الأقرب تحت السيارة
+  branch?: { name: string; meta: string };
 }) {
   const t = getBookingDict(locale);
   const [cars, setCars] = useState(initialCars);
@@ -48,6 +51,21 @@ export function PackageBookingCard({
         <span className="text-caption text-v3-text-meta">{t.priceByCar}</span>
       </div>
       <hr className="border-border-default" />
+      {branch && (
+        // Branch: ليموني 12% + حد ليموني 1، r14، 12/14 — الاسم + دبوس أخضر، والمسافة بالأخضر الغامق
+        <div className="flex items-center justify-between gap-3 rounded-[14px] border border-neon-green bg-neon-green/12 px-3.5 py-3">
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <span className="flex items-center gap-1.5 text-label-l">
+              <Icon name="map-pin" size={16} className="shrink-0 text-nature-green" />
+              {branch.name}
+            </span>
+            <span className="text-label-m text-green-active">{branch.meta}</span>
+          </div>
+          <Link href={bookingHref(routes.bookingBranch, { ...query, car: car || undefined })} className="shrink-0 text-label-m text-green-active hover:underline">
+            {t.change}
+          </Link>
+        </div>
+      )}
       <span className="text-label-m text-v3-text-meta">{t.packageIncludes}</span>
       {items.map((i) => (
         <div key={i.name} className="flex items-center justify-between gap-2.5 rounded-[20px] border-2 border-neon-green bg-neon-green/6 px-3 py-2.5">

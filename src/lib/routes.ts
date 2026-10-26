@@ -87,4 +87,15 @@ export const routes = {
   cancellation: "/cancellation-policy", // W2-99c
   warranty: "/warranty-and-complaints", // W2-99d
   providerTerms: "/provider-terms", // W2-99e
+
+  // المدونة (W2-100 · W2-100b)
+  blog: "/blog", // W2-100
+  blogPost: (slug: string) => `/blog/${slug}`, // W2-100b
+
+  // صفحات الحالة (W2-500 · W2-503 · W2-410 · W2-403 · W2-401 · W2-offline) — 404 و500 تلقائية من Next
+  offline: "/offline", // W2-offline
+  maintenance: "/maintenance", // W2-503
+  linkExpired: "/link-expired", // W2-410
+  forbidden: "/forbidden", // W2-403
+  sessionExpired: "/session-expired", // W2-401
 } as const;

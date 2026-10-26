@@ -132,7 +132,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
           <Container className="py-2">
             <div className="grid gap-x-[25px] gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {visible.map((p) => (
-                <ProviderCard key={p.slug} locale={locale} provider={p} services={services} showBadges />
+                <ProviderCard key={p.slug} locale={locale} provider={p} services={services} showBadges showCertified={false} />
               ))}
             </div>
             {visible.length === 0 && <p className="py-10 text-center text-body-m text-state-gray">{t.noMatches}</p>}
@@ -213,9 +213,10 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
                     <Icon name="navigation" size={20} />
                   </button>
                 </div>
+                {/* W2-26m (المعدّل): الكارت المختار على بعد 307 من فوق الخريطة و20 من طرفها */}
                 {sel && (
-                  <div className="pointer-events-auto absolute top-[50.8%] hidden w-[301px] sm:block" style={{ right: 0 }}>
-                    <ProviderCard locale={locale} provider={sel} services={services} showBadges />
+                  <div className="pointer-events-auto absolute top-5 hidden w-[301px] sm:block lg:top-[307px]" style={{ right: 20 }}>
+                    <ProviderCard locale={locale} provider={sel} services={services} showBadges showCertified={false} />
                   </div>
                 )}
               </div>
@@ -235,7 +236,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
                     aria-pressed={on}
                     className={`flex cursor-pointer items-center gap-3.5 rounded-lg bg-white px-4 py-3.5 text-start ${on ? "border-2 border-neon-green" : "border border-cool-gray hover:border-border-strong"}`}
                   >
-                    <LogoTile src={p.logo} alt="" size={52} />
+                    <LogoTile src={p.logo} alt="" size={56} radius={17.23} />
                     <span className="flex min-w-0 flex-1 flex-col items-start gap-1">
                       <Link href={routes.provider(p.slug)} onClick={(e) => e.stopPropagation()} className="text-label-l text-deep-charcoal hover:underline">
                         {tx(locale, p, "name")}

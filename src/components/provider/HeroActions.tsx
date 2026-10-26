@@ -9,15 +9,15 @@ import { Icon } from "@/components/icons/Icon";
 import { useToast } from "./Modal";
 import { ShareModal } from "./Popups";
 
-// أزرار الغلاف «حفظ» (P-10b) و«مشاركة» (P-08b) — زجاجي أبيض فوق الصورة
+// «حفظ» (P-10b) و«مشاركة» (P-08b) — العميل المعدّل: أزرار بيضاء بحدود #b3b3b3 في سطر الهوية (مفيش غلاف)
 export function HeroActions({ locale, slug, shortName }: { locale: Locale; slug: string; shortName: string }) {
   const t = getProviderDict(locale);
   const toast = useToast();
   const [saved, setSaved] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const btn = "flex items-center gap-1.5 rounded-md border border-cool-gray bg-white/12 px-3.5 py-[9px] text-label-m text-white backdrop-blur-sm hover:bg-white/20";
+  const btn = "flex items-center gap-1.5 rounded-md border border-v3-card-stroke bg-white px-3.5 py-[9px] text-label-m text-deep-charcoal transition-colors duration-200 ease-figma-out hover:bg-tile";
   return (
-    <div className="relative flex items-end gap-2">
+    <div className="relative flex items-center gap-2">
       <button
         type="button"
         aria-pressed={saved}
@@ -28,7 +28,7 @@ export function HeroActions({ locale, slug, shortName }: { locale: Locale; slug:
         }}
         className={btn}
       >
-        <Icon name={saved ? "heart-filled" : "heart"} size={18} className={saved ? "text-neon-green" : ""} />
+        <Icon name={saved ? "heart-filled" : "heart"} size={20} className={saved ? "text-nature-green" : ""} />
         {t.save}
       </button>
       <button type="button" onClick={() => setSharing(true)} className={btn}>

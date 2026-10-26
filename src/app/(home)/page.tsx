@@ -4,36 +4,40 @@ import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
 import { getHomeDict } from "@/i18n/dict/home";
 import { getSession } from "@/lib/server/session";
-import { getPartnerLogos, getProviders, getProvidersBySlugs, getServices } from "@/lib/server/content";
-import { getFeaturedOfferEndsAt, getHomeContent, homeHref } from "@/lib/server/home";
+import { getPartnerLogos, getProviders, getServices } from "@/lib/server/content";
+import { getFeaturedOfferEndsAt, getGuestHomeContent, getHomeContent, homeHref } from "@/lib/server/home";
 import { HomeHero } from "@/components/home/HomeHero";
 import { LocationModal } from "@/components/home/LocationModal";
-import { AppBand, AppBandGuest } from "@/components/home/AppBand";
-import { ForYouBand } from "@/components/home/signed-in/ForYouBand";
-import { HowItWorksBand } from "@/components/home/signed-in/HowItWorksBand";
-import { ServicesBand } from "@/components/home/signed-in/ServicesBand";
-import { ProvidersBand } from "@/components/home/signed-in/ProvidersBand";
-import { OffersBand } from "@/components/home/signed-in/OffersBand";
-import { PackagesBand } from "@/components/home/signed-in/PackagesBand";
-import { ReviewsBand } from "@/components/home/signed-in/ReviewsBand";
-import { DealerBand } from "@/components/home/signed-in/DealerBand";
+import { AppBand } from "@/components/home/AppBand";
+import { ForYouBand } from "@/components/home/user/ForYouBand";
+import { HowItWorksBand } from "@/components/home/user/HowItWorksBand";
+import { ServicesBand } from "@/components/home/user/ServicesBand";
+import { ProvidersBand } from "@/components/home/user/ProvidersBand";
+import { OffersBand } from "@/components/home/user/OffersBand";
+import { PackagesBand } from "@/components/home/user/PackagesBand";
+import { ReviewsBand } from "@/components/home/bands/ReviewsBand";
+import { DealerBand } from "@/components/home/bands/DealerBand";
 import { ServicesExplorer } from "@/components/home/guest/ServicesExplorer";
 import { FeaturesBand } from "@/components/home/guest/FeaturesBand";
 import { ProvidersGuestBand } from "@/components/home/guest/ProvidersGuestBand";
 import { OffersGuestBand } from "@/components/home/guest/OffersGuestBand";
 import { HowItWorksGuest } from "@/components/home/guest/HowItWorksGuest";
+import { AppGuestBand } from "@/components/home/guest/AppGuestBand";
 
 export async function generateMetadata(): Promise<Metadata> {
   const d = getHomeDict(await getLocale());
   return { title: d.metaTitle, description: d.metaDescription };
 }
 
-// الرئيسية: V2-01 (557:2) للعميل المسجّل · V2-02 (600:2964) للزائر — حسب getSession()
+// الرئيسية — قرار المالك: صفحة «Linkar-Main-Website» (0:1) في نسخة العميل:
+// العميل المسجّل (user/new) = V2-01 · Home (37:26637) · الزائر = V2-02 · Home · Icons (37:28371).
+// «لأنك حجزت…/حان موعد…» للعميل العائد بس؛ العميل الجديد يشوف مكانها ترشيحات حسب موقعه (37:28368)
 export default async function Home() {
-  const [locale, user, content, providers, services, logos, endsAt] = await Promise.all([
+  const [locale, user, content, guest, providers, services, logos, endsAt] = await Promise.all([
     getLocale(),
     getSession(),
     getHomeContent(),
+    getGuestHomeContent(),
     getProviders(),
     getServices(),
     getPartnerLogos(),
@@ -46,31 +50,28 @@ export default async function Home() {
 
   return (
     <>
-      <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={user ? a.forYou : a.services} />
-      {user ? (
+      <HomeHero locale={locale} content={content} variant={user ? "user" : "guest"} services={services} providers={providers} appAnchor={a.app} />
+      {!user && (
         <>
-          <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
-          <HowItWorksBand locale={locale} content={content} providers={providers} />
-          <ServicesBand
-            locale={locale}
-            content={content}
-            items={await Promise.all(services.map(async (service) => ({ service, providers: await getProvidersBySlugs(service.featured_providers) })))}
-          />
-          <ProvidersBand locale={locale} content={content} providers={providers} services={services} logos={logos} />
-          <OffersBand locale={locale} content={content} providers={providers} endsAt={endsAt} />
-          <PackagesBand locale={locale} content={content} providers={providers} />
-          <AppBand id={a.app} locale={locale} content={content} />
-          <ReviewsBand locale={locale} content={content} />
-          <DealerBand locale={locale} content={content} />
-        </>
-      ) : (
-        <>
-          <ServicesExplorer id={a.services} locale={locale} content={content} providers={providers} services={services} />
-          <FeaturesBand locale={locale} content={content} providers={providers} />
-          <ProvidersGuestBand locale={locale} content={content} providers={providers} services={services} logos={logos} />
-          <OffersGuestBand locale={locale} content={content} providers={providers} />
+          <ServicesExplorer id={a.services} locale={locale} content={guest} providers={providers} services={services} />
+          <FeaturesBand locale={locale} content={guest} providers={providers} />
+          <ProvidersGuestBand locale={locale} content={guest} providers={providers} services={services} logos={logos} />
+          <OffersGuestBand locale={locale} content={guest} providers={providers} />
           <HowItWorksGuest locale={locale} content={content} />
-          <AppBandGuest id={a.app} locale={locale} content={content} />
+          <AppGuestBand id={a.app} locale={locale} content={guest} />
+        </>
+      )}
+      {user && (
+        <>
+      <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} services={services} user={user} />
+      <ServicesBand locale={locale} content={content} services={services} />
+      <HowItWorksBand locale={locale} content={content} providers={providers} />
+      <ProvidersBand locale={locale} content={content} providers={providers} services={services} logos={logos} />
+      <OffersBand locale={locale} content={content} providers={providers} endsAt={endsAt} />
+      <PackagesBand locale={locale} content={content} providers={providers} />
+      <AppBand id={a.app} locale={locale} content={content} />
+      <ReviewsBand locale={locale} content={content} />
+      <DealerBand locale={locale} content={content} />
         </>
       )}
       <LocationModal

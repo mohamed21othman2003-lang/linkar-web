@@ -20,7 +20,8 @@ export type ProviderReview = ServiceReview &
 export type ServiceDetail = Localized<"overview"> & {
   facts: (Localized<"value"> & { kind: "duration" | "warranty" | "suitable" })[];
   includes_chips: Localized<"label">[]; // «ما تشمله الخدمة» في نظرة عامة
-  includes_list: Localized<"label">[]; // تبويب «ما تشمله»
+  // تبويب «المواصفات التقنية» (العميل المعدّل AVbWFtRb0aHpm34oqkI5ot · Tab=المواصفات التقنية 85:26713) — بدل تبويب «ما تشمله»
+  specs: (Localized<"label"> & Localized<"value">)[];
   warranty_text: (Localized<"text">) | null; // تبويب «الضمان»
   warranty_note: (Localized<"text">) | null; // «للحفاظ على الضمان: …»
   package_banner: (Localized<"title"> & { package: string }) | null; // «متاحة كباقة: …»
@@ -54,6 +55,8 @@ export type ProviderService = Localized<"name"> &
     // نافذة المقارنة W2-22
     compare: Localized<"type"> & Localized<"warranty"> & { package: (Localized<"label">) | null };
     addons: string[]; // الخدمات المقترحة في كارت الحجز W2-32
+    // الفروع اللي بتقدّم الخدمة («متاحة في فرع الزهراء فقط») — غير محدّد = كل الفروع («متاحة في كل الفروع (3)»)
+    branch_ids?: string[];
     detail: ServiceDetail | null;
   };
 

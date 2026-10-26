@@ -253,7 +253,7 @@ export type VoucherView = {
   shareLink: string;
 };
 
-// W2-37v · القسيمة كاملة (828:181)
+// W2-37v · القسيمة كاملة (828:181 → 85:43220: النسخة المعتمدة شالت أزرار المحافظ)
 export function VoucherModal({
   locale,
   open,
@@ -261,7 +261,6 @@ export function VoucherModal({
   v,
   onShare,
   onDownload,
-  onWallet,
 }: {
   locale: Locale;
   open: boolean;
@@ -269,7 +268,6 @@ export function VoucherModal({
   v: VoucherView;
   onShare: () => void;
   onDownload: () => void;
-  onWallet: () => void;
 }) {
   const d = getAccountDict(locale);
   const t = d.voucher;
@@ -283,7 +281,7 @@ export function VoucherModal({
   ];
   const outline = "flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] border border-cool-gray bg-white px-3 py-3 text-label-m whitespace-nowrap text-deep-charcoal hover:border-border-strong";
   return (
-    <Dialog open={open} onClose={onClose} label={t.label} align="top" className="max-w-[520px]">
+    <Dialog open={open} onClose={onClose} label={t.label} className="max-w-[520px]">
       <div className="flex flex-col overflow-hidden rounded-[28px] bg-white shadow-modal">
         <div className="flex flex-col items-start gap-[18px] bg-deep-charcoal px-5 pt-6 pb-[26px] sm:px-7">
           <div className="flex w-full items-center justify-between">
@@ -307,7 +305,7 @@ export function VoucherModal({
         </div>
         <div className="flex flex-col items-center gap-2.5 px-7 pt-7 pb-[22px]">
           <img src="/figma/account/qr-placeholder.svg" alt="" width={200} height={200} className="size-[200px]" />
-          <VoucherCode code={v.code} className="text-[26px] leading-10 text-deep-charcoal" />
+          <VoucherCode code={v.code} className="text-[23.9px] leading-10 text-deep-charcoal" />
           <p className="text-center text-body-s text-state-gray">{t.show}</p>
         </div>
         <div className="mx-7 border-t-[1.5px] border-dashed border-cool-gray" />
@@ -345,21 +343,7 @@ export function VoucherModal({
             {d.booking.directions}
           </a>
         </div>
-        <div className="flex flex-col gap-2.5 px-5 pb-7 sm:flex-row sm:px-7">
-          <WalletButton kind="apple" label={d.booking.walletApple} onClick={onWallet} />
-          <WalletButton kind="google" label={d.booking.walletGoogle} onClick={onWallet} />
-        </div>
       </div>
     </Dialog>
-  );
-}
-
-// v2 · Wallet button (1073:28) — أسود، r12، أيقونة المحفظة 18
-export function WalletButton({ kind, label, onClick }: { kind: "apple" | "google"; label: string; onClick: () => void }) {
-  return (
-    <button type="button" onClick={onClick} className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-wallet-black px-3.5 py-2.5 text-label-m text-white hover:opacity-90">
-      <img src={`/figma/account/icons/wallet-${kind}.svg`} alt="" width={18} height={18} className="size-[18px] shrink-0" />
-      {label}
-    </button>
   );
 }

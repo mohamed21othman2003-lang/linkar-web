@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -200,6 +199,7 @@ export function ProviderTabs({
                     const on = selected.includes(s.slug);
                     const sName = tx(locale, s, "name");
                     return (
+                      // العميل المعدّل (85:35696): من غير صورة — مربع اختيار في البداية + توفّر الفروع، والسعر والزرار في النهاية
                       <article
                         key={s.slug}
                         onClick={(e) => !(e.target as HTMLElement).closest("button,a") && router.push(routes.providerService(provider.slug, s.slug))}
@@ -207,9 +207,18 @@ export function ProviderTabs({
                           on ? "border-2 border-neon-green bg-neon-green/6" : "border border-cool-gray bg-white"
                         }`}
                       >
-                        <Link href={routes.providerService(provider.slug, s.slug)} className="relative hidden h-28 w-[140px] shrink-0 overflow-hidden rounded-[14px] sm:block">
-                          <Image src={s.photo} alt={sName} fill sizes="280px" className="object-cover" />
-                        </Link>
+                        <button
+                          type="button"
+                          role="checkbox"
+                          aria-checked={on}
+                          aria-label={sName}
+                          onClick={() => toggle(s.slug)}
+                          className={`relative hidden size-[26px] shrink-0 items-center justify-center rounded-[7px] after:absolute after:-inset-2.5 after:content-[''] sm:flex ${
+                            on ? "bg-neon-green text-deep-charcoal" : "border-[1.5px] border-v3-card-stroke bg-white"
+                          }`}
+                        >
+                          {on && <Icon name="check" size={16} />}
+                        </button>
                         <div className="flex min-w-0 flex-1 flex-col gap-2">
                           <div className="flex flex-wrap items-center gap-2">
                             <Link href={routes.providerService(provider.slug, s.slug)} className="text-h5 text-deep-charcoal hover:underline">
@@ -224,6 +233,20 @@ export function ProviderTabs({
                               {s.duration_ar && <SpecPill icon="calendar">{tx(locale, s, "duration")}</SpecPill>}
                             </div>
                           )}
+                          {detail.branches.length > 0 && (
+                            <p className="flex items-center gap-1.5 text-[13px] leading-4 text-state-gray">
+                              <Icon name="map-pin" size={14} className="shrink-0" />
+                              {s.branch_ids?.length
+                                ? t.availableOnlyAt(
+                                    s.branch_ids
+                                      .map((id) => detail.branches.find((b) => b.id === id))
+                                      .filter((b) => !!b)
+                                      .map((b) => tx(locale, b, "name"))
+                                      .join(locale === "ar" ? " و" : " & "),
+                                  )
+                                : t.availableAllBranches(detail.branches.length)}
+                            </p>
+                          )}
                         </div>
                         <div className="flex shrink-0 items-center justify-between gap-2.5 sm:w-[150px] sm:flex-col sm:items-end">
                           <div className="flex flex-col sm:items-end">
@@ -234,11 +257,14 @@ export function ProviderTabs({
                             type="button"
                             aria-pressed={on}
                             onClick={() => toggle(s.slug)}
-                            className={`flex h-10 w-[150px] items-center justify-center gap-1.5 rounded-[10px] text-label-m text-deep-charcoal ${
-                              on ? "bg-neon-green hover:bg-bg-brand-hover active:bg-bg-brand-pressed transition-colors duration-200 ease-figma-out" : "border border-deep-charcoal bg-white hover:bg-tile"
+                            className={`flex w-[150px] items-center justify-center gap-1.5 rounded-[10px] text-label-m text-deep-charcoal ${
+                              on
+                                ? "h-10 bg-neon-green hover:bg-bg-brand-hover active:bg-bg-brand-pressed transition-colors duration-200 ease-figma-out"
+                                : "h-[42px] border border-deep-charcoal bg-white hover:bg-tile"
                             }`}
                           >
-                            {on && <Icon name="check" size={16} />}
+                            {/* «+» موجود في الفيجما بس مخفي (بياخد مكانه) */}
+                            <Icon name={on ? "check" : "plus"} size={16} className={on ? "" : "invisible"} />
                             {on ? t.added : t.addToBooking}
                           </button>
                         </div>
@@ -322,10 +348,6 @@ export function ProviderTabs({
                   {t.compareSelected}
                 </button>
               )}
-              <p className="flex items-center gap-1.5 text-caption text-state-gray">
-                <BrandIcon name="shield" size={16} />
-                {t.voucherNote}
-              </p>
             </div>
           </aside>
           <CompareModal

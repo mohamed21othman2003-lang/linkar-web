@@ -40,7 +40,7 @@ export default async function HelpArticlePage({ params }: Props) {
 
   return (
     <>
-      <PageHeader
+      <PageHeader tone="dark"
         crumbs={[
           { label: t.home, href: routes.home },
           { label: tx(locale, topic, "title"), href: topic.allHref },

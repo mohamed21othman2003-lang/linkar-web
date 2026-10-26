@@ -22,6 +22,7 @@ export function SearchBar({
   view,
   onSearch,
   className = "",
+  variant = "page",
 }: {
   locale: Locale;
   services: Service[];
@@ -31,6 +32,9 @@ export function SearchBar({
   view?: "map";
   onSearch?: () => void;
   className?: string;
+  // تصميم العميل المعدّل: في صفحة النتائج بخدمة واحدة (State=Filled · 1 service في W2-30a) الشيبس أكبر (14 Medium) و«أضف خدمة»
+  // ومفيش نجوم؛ بخدمتين (W2-30) زي ما هو بالنجوم. لوحة البحث W2-29 من غير نجوم.
+  variant?: "page" | "panel";
 }) {
   const t = getSearchDict(locale);
   const router = useRouter();
@@ -43,7 +47,9 @@ export function SearchBar({
     onSearch?.();
     router.push(routes.search({ services: selected, view }));
   };
-  const req = <span className="text-required-mark"> *</span>;
+  const one = variant === "page" && selected.length === 1;
+  const req = variant === "page" && !one ? <span className="text-required-mark"> *</span> : null;
+  const chip = one ? "gap-1.5 px-2.5 py-[5px] text-label-m" : "gap-1 px-2.5 py-[5px] text-[12px] leading-[18px] font-light";
 
   return (
     <div
@@ -64,7 +70,7 @@ export function SearchBar({
                 type="button"
                 aria-label={t.removeService(name(s))}
                 onClick={() => setSelected((cur) => cur.filter((x) => x !== s))}
-                className="inline-flex items-center gap-1 rounded-full bg-neon-green px-2.5 py-[5px] text-[12px] leading-[18px] font-light text-deep-charcoal hover:bg-bg-brand-hover"
+                className={`inline-flex items-center rounded-full bg-neon-green text-deep-charcoal hover:bg-bg-brand-hover ${chip}`}
               >
                 {name(s)}
                 <Icon name="x" size={12} />
@@ -77,8 +83,8 @@ export function SearchBar({
                 options={remaining.map((s) => ({ key: s.slug, label: tx(locale, s, "name") }))}
                 onChange={(k) => setSelected((cur) => [...cur, k])}
                 trigger={() => (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-cool-gray bg-white px-2.5 py-[5px] text-[12px] leading-[18px] font-light text-deep-charcoal hover:border-border-strong">
-                    {t.add}
+                  <span className={`inline-flex items-center rounded-full border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong ${chip}`}>
+                    {one ? t.addService : t.add}
                     <Icon name="plus" size={12} />
                   </span>
                 )}

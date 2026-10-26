@@ -45,7 +45,7 @@ export default async function OffersPage() {
   }));
   return (
     <>
-      <PageHeader crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "crumb") }]} title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
+      <PageHeader tone="dark" crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "crumb") }]} title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
       <Container className="pt-8 pb-24">
         <Listing
           locale={locale}

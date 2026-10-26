@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const TABS: FavoriteTab[] = ["all", "providers", "saved"];
 
-// W2-64 · المفضلة (749:7852) — تبويبات «W2-64 · تبويبات» (1132:34315): الكل / مقدّمو الخدمة / الخدمات والباقات
+// W2-64 · المفضلة (749:7852 → 85:40494: الكارت من غير «معتمد LINKAR») — تبويبات «W2-64 · تبويبات» (1132:34315): الكل / مقدّمو الخدمة / الخدمات والباقات
 // W2-64-0 · حالة فارغة (1071:600) للعميل الجديد
 export default async function FavoritesPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const [locale, user, sp] = await Promise.all([getLocale(), getSession(), searchParams]);
@@ -62,7 +62,7 @@ export default async function FavoritesPage({ searchParams }: { searchParams: Pr
                   (كلها بالـpx: Tailwind بيطلّع الـbreakpoints العشوائية قبل sm/xl فكانت بتتغطّى) */}
               <div className="grid grid-cols-1 gap-4 min-[640px]:grid-cols-2 min-[1280px]:grid-cols-3 min-[1400px]:grid-cols-[repeat(3,301px)]">
                 {providers.map(({ provider, branch }) => (
-                  <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} showBadges meta={tx(locale, branch, "label")} />
+                  <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} showBadges showCertified={false} meta={tx(locale, branch, "label")} />
                 ))}
               </div>
             </section>

@@ -28,7 +28,7 @@ export default async function ProviderJoinPage({ searchParams }: { searchParams:
 
   return (
     <>
-      <PageHeader
+      <PageHeader tone="dark"
         crumbs={[{ label: t.home, href: routes.home }, { label: b.business, href: routes.forProviders }, { label: tx(locale, d.head, "crumb") }]}
         title={tx(locale, d.head, "title")}
         description={tx(locale, d.head, "description")}

@@ -1,7 +1,7 @@
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import type { Provider, Service } from "@/lib/data/types";
-import type { HomeContent } from "@/lib/server/home";
+import type { GuestHomeContent as HomeContent } from "@/lib/server/home";
 import { homeHref } from "@/lib/server/home";
 import { routes } from "@/lib/routes";
 import { formatPrice } from "@/lib/format";
@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHead } from "../bits";
 import { ExplorerClient, type ExplorerItem } from "./ExplorerClient";
 
-// V2-02 · Services (617:2027) — قائمة الخدمات + لوحة تفاصيل الخدمة المختارة
+// V2-02 · Services (37:28436) — قائمة الخدمات + لوحة تفاصيل الخدمة المختارة
 export function ServicesExplorer({
   id,
   locale,

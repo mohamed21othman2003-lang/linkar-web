@@ -32,6 +32,7 @@ export default async function ProvidersPage({ searchParams }: Params) {
         crumbs={[{ label: c.home, href: routes.home }, { label: tx(locale, page.crumb, "text") }]}
         title={tx(locale, page.title, "text")}
         description={tx(locale, page.description, "text")}
+        tone="dark"
         className="pb-7!" // W2-26: Page head p-bottom 28 (218px)
       />
       <ProvidersListing

@@ -3,7 +3,7 @@
 // العميل الجديد (is_new) بياخد قوائم فاضية → حالات W2-xx-0.
 import type { DemoUser } from "@/lib/data/types";
 import { bookings, bookingCars, type Booking } from "@/lib/data/account/bookings";
-import { overviewInProgress, overviewNext, overviewOffers, overviewRate, overviewStats, onboardingSteps } from "@/lib/data/account/overview";
+import { overviewInProgress, overviewNext, overviewOffers, overviewRate, overviewStats } from "@/lib/data/account/overview";
 import { settingsAddresses, settingsAlerts, settingsLocation, settingsProfile } from "@/lib/data/account/settings";
 import { notificationFeed, type FeedNotification } from "@/lib/data/notifications";
 
@@ -38,7 +38,6 @@ export async function getOverview() {
     stats: overviewStats,
     rate: overviewRate,
     offers: overviewOffers,
-    onboarding: onboardingSteps,
   };
 }
 

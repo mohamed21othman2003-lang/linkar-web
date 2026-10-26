@@ -22,12 +22,10 @@ export const giftsPage = {
   empty_description_en: "Care packages your car dealer buys for you through Linkar appear here with their voucher.",
   empty_title_ar: "لا توجد باقات من الوكالات حالياً",
   empty_title_en: "No dealer packages right now",
-  empty_text_ar: "عندما تشتري لك وكالة سيارتك باقة عناية عبر لينكار، تظهر هنا مع قسيمتها والفرع المحدد، وتصلك رسالة نصية من لينكار.",
-  empty_text_en: "When your car dealer buys you a care package through Linkar, it appears here with its voucher and branch, and you get a text message from Linkar.",
+  empty_text_ar: "عندما تشتري لك وكالة سيارتك باقة عناية عبر لينكار، تظهر هنا مع قسيمتها والفرع المحدد.",
+  empty_text_en: "When your car dealer buys you a care package through Linkar, it appears here with its voucher and selected branch.",
   empty_cta_ar: "تصفح الخدمات",
   empty_cta_en: "Browse services",
-  empty_steps_title_ar: "كيف تعمل باقات الوكالات؟",
-  empty_steps_title_en: "How do dealer packages work?",
 };
 
 export type GiftStep = Localized<"title"> & Localized<"text"> & { icon: UiGlyph };
@@ -37,12 +35,6 @@ export const giftSteps: GiftStep[] = [
   { icon: "qr", title_ar: "اعرض القسيمة", title_en: "Show the voucher", text_ar: "اعرضها عند زيارتك لفرع الزهراء، أو تواصل مع الفرع لتنسيق زيارتك.", text_en: "Show it when you visit the Al Zahra branch, or contact the branch to arrange your visit." },
   { icon: "check", title_ar: "يتحقق الفرع منها", title_en: "The branch verifies it", text_ar: "يمسح الفرع رمز القسيمة ويتأكد من صلاحيتها.", text_en: "The branch scans the voucher code and checks it’s valid." },
   { icon: "star", title_ar: "يكتمل الحجز", title_en: "The booking is completed", text_ar: "بعد استخدام القسيمة يكتمل الحجز ويصلك طلب تقييم الخدمة.", text_en: "Once the voucher is used the booking is completed and you’re asked to review the service." },
-];
-
-export const giftEmptySteps: GiftStep[] = [
-  { icon: "store", title_ar: "تشتري الوكالة الباقة", title_en: "The dealer buys the package", text_ar: "تختار وكالة سيارتك الباقة والفرع، وتسجّل اسمك ورقم جوالك.", text_en: "Your car dealer picks the package and branch, and registers your name and mobile number." },
-  { icon: "message", title_ar: "تصلك رسالة من لينكار", title_en: "You get a message from Linkar", text_ar: "برابط القسيمة، وتظهر الباقة في حسابك تلقائياً.", text_en: "With the voucher link, and the package shows up in your account automatically." },
-  { icon: "map-pin", title_ar: "زر الفرع واعرض القسيمة", title_en: "Visit the branch and show the voucher", text_ar: "يتحقق الفرع من القسيمة ويكتمل الحجز.", text_en: "The branch verifies the voucher and the booking is completed." },
 ];
 
 export type DealerPackage = Localized<"title"> &

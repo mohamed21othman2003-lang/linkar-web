@@ -84,9 +84,7 @@ export function FloatPhone({
   const reduce = useReducedMotion();
   const loop9 = { duration: 9, ease: "easeInOut", repeat: Infinity } as const;
   const float = { rt: { ...loop9, times: [0, 0.5, 1] }, yt: { ...loop9, times: [0, 0.25, 0.5, 0.75, 1] } };
-  // V2-02 (600:2964): الـkeyframes في الفيجما مضغوطة في آخر 0.03% من دورة 2 ثانية (times 0.9997…) — يعني الجوال
-  // بيزحف ثانيتين وبعدين ينط لأوله، وده اللي كان مبيّنها زي فيديو بيعيد. بناخد نفس القيم (10.5 / 12.6 / 1.2°)
-  // على إيقاع V2-01 لنفس الجوالين: طفو ناعم مستمر من غير قفزة.
+  // طفو ناعم مستمر بدورة 9 ثواني (V2-01)
   const cfg = {
     home: { r: [0, 1.2, 0], y: [0, -10, 0, -10, 0], ...float },
     voucher: { r: [0, -1.2, 0], y: [-12, 0, -12, 0, -12], ...float },

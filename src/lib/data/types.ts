@@ -2,7 +2,8 @@
 // كل نص له نسختين _ar/_en، والروابط بتتبني من الـslug، والصور مسارات/روابط.
 import type { Localized } from "@/i18n/config";
 
-export type ServiceSlug = "wash" | "ppf" | "tint" | "polish" | "nano-ceramic";
+// "color-change" = «تغيير اللون» — الخدمة السادسة في تصميم العميل المعدّل (AVbWFtRb0aHpm34oqkI5ot)
+export type ServiceSlug = "wash" | "ppf" | "tint" | "polish" | "nano-ceramic" | "color-change";
 
 export type Service = Localized<"name"> &
   Localized<"chip"> &

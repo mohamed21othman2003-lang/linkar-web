@@ -5,11 +5,11 @@ import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
 import { getSession } from "@/lib/server/session";
 import { getDealerPackages } from "@/lib/server/account-extra";
-import { giftEmptySteps, giftSteps, giftsPage as p, type GiftStep } from "@/lib/data/account/gifts-data";
+import { giftSteps, giftsPage as p, type GiftStep } from "@/lib/data/account/gifts-data";
 import type { Locale } from "@/i18n/config";
 import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
-import { AxSectionHead, AxTitle } from "@/components/account/account-extra-ui";
+import { AxEmpty, AxSectionHead, AxTitle } from "@/components/account/account-extra-ui";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -33,7 +33,7 @@ function Steps({ locale, steps }: { locale: Locale; steps: GiftStep[] }) {
 }
 
 // W2-66 · باقات الوكالات (750:8219 · نسخة v2) — في القائمة الجانبية «الهدايا»
-// W2-66-0 · حالة فارغة (1071:469 · نسخة v2) للعميل الجديد
+// W2-66-0 · حالة فارغة (85:44019) للعميل الجديد
 export default async function DealerPackagesPage() {
   const [locale, user] = await Promise.all([getLocale(), getSession()]);
   if (!user) redirect(routes.login);
@@ -43,22 +43,8 @@ export default async function DealerPackagesPage() {
     return (
       <div className="flex flex-col gap-6">
         <AxTitle large title={tx(locale, p, "title")} description={tx(locale, p, "empty_description")} />
-        <section className="flex flex-col items-center gap-3 rounded-2xl border border-cool-gray bg-white p-6 text-center md:p-10">
-          <span className="flex size-16 items-center justify-center rounded-full bg-icon-tile">
-            <Icon name="package" size={28} className="text-deep-charcoal" />
-          </span>
-          <h2 className="text-h4 text-deep-charcoal">{tx(locale, p, "empty_title")}</h2>
-          <p className="max-w-[560px] text-body-m text-state-gray">{tx(locale, p, "empty_text")}</p>
-          <Link
-            href={routes.services}
-            className="inline-flex h-control-lg items-center gap-1.5 rounded-md border border-cool-gray bg-white px-[22px] text-label-l text-deep-charcoal hover:bg-tile"
-          >
-            {tx(locale, p, "empty_cta")}
-            <Icon name="grid" size={16} />
-          </Link>
-        </section>
-        <AxSectionHead title={tx(locale, p, "empty_steps_title")} />
-        <Steps locale={locale} steps={giftEmptySteps} />
+        {/* W2-66-0 (85:44019): كارت فاضي بس — النسخة المعتمدة شالت «كيف تعمل باقات الوكالات؟» */}
+        <AxEmpty icon="gift" title={tx(locale, p, "empty_title")} text={tx(locale, p, "empty_text")} cta={{ label: tx(locale, p, "empty_cta"), href: routes.services }} />
       </div>
     );
   }

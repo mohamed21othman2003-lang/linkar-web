@@ -18,6 +18,7 @@ import { VoucherActions } from "@/components/booking/VoucherActions";
 import { ContactBranchButton } from "@/components/booking/ContactBranchButton";
 import { parseBookingQuery } from "@/components/booking/query";
 import { carTitle } from "@/components/booking/summary-model";
+import { voucherCodeFont } from "@/components/booking/fonts";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getBookingDict(await getLocale());
@@ -37,6 +38,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
   const methods = await getPaymentMethods();
   const method = methods.find((m) => m.id === sp.method) ?? methods[0];
   const methodName = tx(locale, method, "name");
+  const cash = method.id === "cash"; // P-26c: القسيمة بانتظار الدفع في الفرع
   const totals = bookingTotals(b, sp.pts === "1");
   const referral = !!b.marketer?.eligible;
   const conf = await getConfirmation(referral);
@@ -63,6 +65,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
           ]}
           title={t.confirmedTitle}
           description={t.fill(t.referralSub, { amount: due })}
+          tone="dark"
         />
         <Container className="flex justify-center pt-10 pb-24">
           <div className="flex w-full max-w-[760px] flex-col gap-[18px] rounded-2xl border border-border-default bg-white p-5 md:p-10">
@@ -80,7 +83,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
             <div className="flex flex-col-reverse items-start gap-5 rounded-lg bg-tile p-5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-col gap-1.5">
                 <span className="text-caption text-text-secondary">{t.voucherTitle}</span>
-                <span className="text-h4">
+                <span className={`${voucherCodeFont} text-[20.2px] leading-[34px] tracking-[0.04em]`}>
                   <bdi>{conf.voucher_code}</bdi>
                 </span>
                 <span className="text-label-l">
@@ -101,8 +104,8 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                   {t.fill(t.validUntilBadge, { date: validUntil })}
                 </span>
               </div>
-              <span className="flex size-28 shrink-0 items-center justify-center rounded-md border border-border-default bg-white">
-                <Icon name="qr" size={64} />
+              <span className="flex size-[172px] shrink-0 items-center justify-center rounded-md border border-cool-gray bg-white">
+                <Image src="/figma/booking/voucher-qr.svg" alt={conf.voucher_code} width={148} height={148} unoptimized />
               </span>
             </div>
             <dl className="flex flex-col gap-2.5 rounded-lg border border-border-default p-5">
@@ -161,7 +164,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
     [t.validity, t.fill(t.validUntil, { date: validUntil })],
     [t.services, lineNames.join(" + ")],
     ...(b.car ? [[t.car, [carTitle(locale, b.car), tx(locale, b.car, "plate")].filter(Boolean).join(" · ")] as [string, string]] : []),
-    [t.paid, `${due} · ${methodName}`],
+    [t.paid, cash ? t.fill(t.payAtBranch, { amount: due }) : `${due} · ${methodName}`],
     [t.bookingNo, conf.booking_id],
   ];
 
@@ -172,7 +175,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
           <Icon name="check" size={44} className="text-solid-black" />
         </span>
         <h1 className="text-h3 md:text-h2">{t.confirmedTitle}</h1>
-        <p className="max-w-[760px] text-body-l text-text-secondary">{t.fill(t.confirmedSub, { amount: due, method: methodName, id: conf.booking_id })}</p>
+        <p className="max-w-[760px] text-body-l text-text-secondary">{t.fill(cash ? t.confirmedSubCash : t.confirmedSub, { amount: due, method: methodName, id: conf.booking_id })}</p>
       </section>
       <div className="bg-page-soft">
         <Container className="flex flex-col items-center gap-6 pt-8 pb-20 lg:flex-row lg:items-start lg:justify-center">
@@ -182,11 +185,11 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                 <Image src="/brand/logo-inverse.svg" alt="LINKAR" width={150} height={20} unoptimized />
                 <span className="text-caption text-white/70">{t.voucherCard}</span>
               </div>
-              <span className="rounded-full bg-neon-green px-2.5 py-1 text-caption">{t.statusPaid}</span>
+              <span className="rounded-full bg-neon-green px-2.5 py-1 text-caption">{cash ? t.statusCash : t.statusPaid}</span>
             </div>
             <div className="flex flex-col items-center gap-2.5 px-6 pt-6 pb-4">
               <Image src="/figma/booking/voucher-qr.svg" alt={conf.voucher_code} width={180} height={180} unoptimized />
-              <span className="text-[22px] leading-[34px] font-medium" dir="ltr">
+              <span className={`${voucherCodeFont} text-[20.2px] leading-[34px] tracking-[0.04em]`} dir="ltr">
                 {conf.voucher_code}
               </span>
               <span className="text-caption text-text-secondary">{t.showCode}</span>

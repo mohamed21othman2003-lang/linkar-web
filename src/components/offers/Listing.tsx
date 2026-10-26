@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
+import { getOffersDict } from "@/i18n/dict/offers";
 import type { Provider, ServiceSlug } from "@/lib/data/types";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons/Icon";
@@ -58,6 +59,7 @@ export function Listing({
   };
 }) {
   const t = getBookingDict(locale);
+  const o = getOffersDict(locale);
   const offers = kind === "offers";
   const defaultSort: Sort = offers ? "discount" : "savings";
   const [sort, setSort] = useState<Sort>(defaultSort);
@@ -82,7 +84,8 @@ export function Listing({
     const rank = (slug: string) => (order.includes(slug) ? order.indexOf(slug) : order.length);
     return [...map.values()].sort((a, b) => rank(a.provider.slug) - rank(b.provider.slug));
   }, [items, locale, context.providerOrder]);
-  const serviceOrder: ServiceSlug[] = offers ? ["ppf", "tint", "polish", "nano-ceramic"] : ["wash", "ppf", "tint", "polish", "nano-ceramic"];
+  // تصميم العميل المعدّل: كل الخدمات الست في الصفحتين (العدد من البيانات الحقيقية)
+  const serviceOrder: ServiceSlug[] = ["wash", "ppf", "tint", "polish", "nano-ceramic", "color-change"];
   const serviceCount = (s: ServiceSlug) => items.filter((i) => i.services.includes(s)).length;
 
   const soon = (i: ListingItem, now: number) => !!i.endsAt && new Date(i.endsAt).getTime() - now < 7 * 864e5;
@@ -163,8 +166,10 @@ export function Listing({
       </button>
       <aside className={`${panelOpen ? "flex" : "hidden"} w-full shrink-0 flex-col gap-[18px] rounded-[20px] border border-border-default bg-white p-[22px] lg:flex lg:w-[286px]`}>
         <div className="flex items-center justify-between">
-          <span className="text-h5">
-            {offers ? t.filterOffers : t.filterPackages}
+          {/* «فلتر العروض / الباقات» Bold 18 + أيقونة filter 18 (Charcoal) قبلها بفاصل 8 */}
+          <span className="flex items-center gap-2 text-h5">
+            <Icon name="filter" size={18} className="text-deep-charcoal" />
+            {offers ? o.filterOffers : o.filterPackages}
           </span>
           <button type="button" onClick={clearAll} className="text-label-m text-green-active hover:underline">
             {t.clearAll}
@@ -271,7 +276,7 @@ export function Listing({
         </a>
       </aside>
 
-      <section id="results" className="@container flex min-w-0 flex-1 scroll-mt-28 flex-col gap-[18px]">
+      <section id="results" className="@container flex min-w-0 flex-1 scroll-mt-28 flex-col gap-[18px] lg:pt-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-h5">{offers ? t.offersCount(ordered.length) : t.packagesCount(ordered.length)}</h2>
           <DropdownMenu

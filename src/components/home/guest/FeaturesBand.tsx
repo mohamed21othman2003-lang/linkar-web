@@ -2,12 +2,12 @@ import Image from "next/image";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import type { Provider } from "@/lib/data/types";
-import type { HomeContent } from "@/lib/server/home";
+import type { GuestHomeContent as HomeContent } from "@/lib/server/home";
 import { Container } from "@/components/ui/Container";
 import { FigmaIcon, LogoTile, SectionHead } from "../bits";
 import { FigmaToggle } from "../motion";
 
-// V2-02 · Features (618:1795) — «لماذا لينكار»: كارت الذكاء الاصطناعي + 4 مميزات + 4 مميزات مختصرة
+// V2-02 · Features (37:28558) — «لماذا لينكار»: كارت الذكاء الاصطناعي + 4 مميزات + 4 مميزات مختصرة
 export function FeaturesBand({ locale, content, providers }: { locale: Locale; content: HomeContent; providers: Provider[] }) {
   const f = content.featuresBand;
   const s = (x: { text_ar: string; text_en: string }) => tx(locale, x, "text");
@@ -28,8 +28,8 @@ export function FeaturesBand({ locale, content, providers }: { locale: Locale; c
             <h3 className="relative text-h3 text-white">{s(f.ai.title)}</h3>
             <p className="relative max-w-[440px] text-body-m text-white/80">{s(f.ai.body)}</p>
             <div className="flex-1" />
-            {/* Example — ⚠ نصوص فاتحة على خلفية بيضا 92% زي الفيجما بالظبط */}
-            <div className="relative flex min-h-[130px] w-full items-center gap-3.5 rounded-[18px] border border-white/20 bg-white/92 px-4 py-3.5">
+            {/* Example — زجاج: أبيض 10% + blur 18 */}
+            <div className="relative flex min-h-[130px] w-full items-center gap-3.5 rounded-[18px] border border-white/20 bg-white/10 px-4 py-3.5 backdrop-blur-[18px]">
               {ex && <LogoTile slug={ex.slug} alt={tx(locale, ex, "name")} size={52} />}
               <div className="flex flex-col gap-0.5">
                 <span className="text-caption text-white/70">{s(f.ai.example_label)}</span>

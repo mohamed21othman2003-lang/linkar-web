@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IBM_Plex_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import type { BookingStatus } from "@/lib/data/account/bookings";
 
@@ -63,10 +64,13 @@ export function AccountTitle({ title, subtitle, aside }: { title: string; subtit
 }
 
 // كود القسيمة: الأرقام Bold والحروف عادية (LK-9F3K-7QPD)
+// رمز القسيمة في النسخة المعتمدة (85:40124 · 85:43220): IBM Plex Mono SemiBold وتباعد 4%
+const plexMono = IBM_Plex_Mono({ weight: "600", subsets: ["latin"], display: "swap" });
+
 export function VoucherCode({ code, className = "" }: { code: string; className?: string }) {
   return (
-    <span dir="ltr" className={className}>
-      {code.split(/(\d+)/).map((part, i) => (/\d/.test(part) ? <b key={i} className="font-bold">{part}</b> : <span key={i} className="font-normal">{part}</span>))}
+    <span dir="ltr" className={`${plexMono.className} tracking-[0.04em] ${className}`}>
+      {code}
     </span>
   );
 }

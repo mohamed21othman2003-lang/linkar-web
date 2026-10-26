@@ -80,6 +80,9 @@ export type Alternative = {
   warranty_years: number;
   service: ServiceSlug;
   price: number;
+  // تصميم العميل المعدّل: شارة ليموني فوق الاسم («حماية أقوى») + شيبس المواصفات («ضمان 5 سنوات»، «زيارة واحدة»)
+  tag?: Localized<"text">;
+  specs?: Localized<"text">[];
 };
 
 // عرض/باقة فاتحة (W2-30a «عروض وباقات تشمل …»)
@@ -120,6 +123,8 @@ export type SearchScenario = {
     price: number;
     service: ServiceSlug;
     big_logo: boolean;
+    // تصميم العميل المعدّل: شيبس تحت الوصف («ضمان 9 سنوات»، «يوم واحد»…) — من بداية السطر
+    chips?: Localized<"text">[];
   } | null;
   results_title: Localized<"text">;
   size_hint: boolean;

@@ -18,7 +18,7 @@ import {
 import type { Provider, Service, ServiceSlug } from "@/lib/data/types";
 import type { MapPoint, ResultPill, SearchResult, SearchScenario } from "@/lib/data/search/types";
 
-const SLUGS: ServiceSlug[] = ["wash", "ppf", "tint", "polish", "nano-ceramic"];
+const SLUGS: ServiceSlug[] = ["wash", "ppf", "tint", "polish", "nano-ceramic", "color-change"];
 const T = (ar: string, en: string) => ({ text_ar: ar, text_en: en });
 
 // يقرأ ?services=a,b ويرجّع slugs صالحة بدون تكرار (فاضي = البحث الافتراضي: خدمتان)

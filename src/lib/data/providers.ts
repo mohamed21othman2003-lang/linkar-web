@@ -307,3 +307,25 @@ export const logoSize: Record<string, [number, number]> = {
   autoplus: [79, 47],
   dir: [27, 47],
 };
+
+// تصميم العميل المعدّل (AVbWFtRb0aHpm34oqkI5ot · W2-26 / W2-30 / W2-41 / W2-21): الشعار في صندوق الكروت الأبيض (300×178)
+// بقى كبير — [عرض، ارتفاع، إزاحة من فوق اختيارية]؛ نفس المقاس في كل الكروت. الشعارات اللي مش هنا بترجع لـlogoSize.
+export const logoAreaSize: Record<string, [number, number, number?]> = {
+  xpel: [158, 158],
+  "3m": [166, 89],
+  llumar: [158, 102],
+  "v-kool": [264, 264],
+  nukhba: [195, 83],
+  // نانو شيلد ملزوق في أعلى الصندوق (y=0) مش في النص
+  nanoshield: [214, 160, 0],
+  bareeq: [85, 158],
+  "3seven": [270, 77],
+  "golden-wash": [88, 158],
+  crystal: [140, 158],
+  lamaa: [222, 83],
+  autoshabo: [188, 141],
+  johnson: [230, 73],
+  armor: [121, 158],
+  nanox: [271, 78],
+  carpro: [276, 69],
+};

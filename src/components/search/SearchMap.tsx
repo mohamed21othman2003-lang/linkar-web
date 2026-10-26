@@ -12,11 +12,10 @@ import { mapGeometry } from "@/lib/data/search/map";
 import { formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
-import { ProviderBadges } from "@/components/ui/Badges";
 import { CompareButton, CompareTray, useCompare } from "./Compare";
 import { LogoTile } from "./LogoTile";
 import { MapCanvas, pos } from "./MapCanvas";
-import { resultName, resultWhere } from "./ResultCard";
+import { ResultCard, resultName } from "./ResultCard";
 import { useToast } from "./Toast";
 
 const g = mapGeometry.search;
@@ -53,7 +52,7 @@ export function SearchMap({
     if (n) setSelected(n.provider);
   };
   const popupAt = sel
-    ? { x: Math.min(Math.max(sel.map.x - 240, 20), g.w - 360), y: Math.min(Math.max(sel.map.y + 46, 70), g.h - 260) }
+    ? { x: Math.min(Math.max(sel.map.x - 240, 20), g.w - 360), y: Math.min(Math.max(sel.map.y + 46, 70), g.h - 614) }
     : null;
 
   return (
@@ -63,7 +62,7 @@ export function SearchMap({
         locale={locale}
         geometry={g}
         zoom={ZOOMS[zoom]}
-        className="h-[640px] w-full min-w-0 shrink-0 lg:h-[780px] lg:flex-1 lg:shrink"
+        className="h-[720px] w-full min-w-0 shrink-0 lg:h-[780px] lg:flex-1 lg:shrink"
         layer={
           <>
             {s.map.cluster && (
@@ -136,34 +135,10 @@ export function SearchMap({
             <span className="truncate">{tx(locale, s.map.legend, "text")}</span>
           </p>
 
-          {/* كارت مقدّم الخدمة المختار */}
+          {/* كارت مقدّم الخدمة المختار — تصميم العميل المعدّل: نفس كارت النتيجة الغامق بعرض 340 */}
           {sel && popupAt && (
-            <div
-              className="pointer-events-auto absolute flex w-[min(340px,calc(100%-40px))] max-sm:top-[140px]! max-sm:left-5! flex-col items-start gap-2 rounded-[20px] border border-v3-card-stroke bg-white p-4 shadow-[0_8px_12px_rgba(0,0,0,0.16)]"
-              style={pos(g, popupAt.x, popupAt.y)}
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="flex min-w-0 flex-col items-start">
-                  <p className="text-label-l text-deep-charcoal">{name(sel)}</p>
-                  <ProviderBadges locale={locale} tier={sel.tier ?? providers[sel.provider].tier} certified={false} surface="light" />
-                  <p className="flex items-center gap-1 text-caption text-v3-text-meta">
-                    <Icon name="star-filled" size={12} className="text-v3-rating-star" />
-                    {`${sel.rating.toFixed(1)}${sel.reviews ? ` (${sel.reviews})` : ""} · ${resultWhere(locale, sel)}`}
-                  </p>
-                </div>
-                <LogoTile src={providers[sel.provider].logo} alt="" size={40} radius={20} />
-              </div>
-              <p className="flex flex-wrap items-center gap-1.5 text-[14px] leading-[22px]">
-                <span className="font-light text-v3-text-meta">{`${tx(locale, sel.map_popup_line ?? sel.map_title, "text")} ·`}</span>
-                <span className="font-medium text-deep-charcoal">{multi ? t.bothPrice(formatPrice(locale, sel.price)) : formatPrice(locale, sel.price)}</span>
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1">
-                <Link href={details(sel)} className="flex h-[38px] items-center gap-1.5 rounded-[10px] bg-neon-green px-3.5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover">
-                  {t.detailsAndBook}
-                  <Icon name="chevron-left" size={14} flip />
-                </Link>
-                <MapCompareButton locale={locale} id={sel.provider} />
-              </div>
+            <div className="pointer-events-auto absolute w-[min(340px,calc(100%-40px))] max-lg:top-5! max-lg:left-5!" style={pos(g, popupAt.x, popupAt.y)}>
+              <ResultCard locale={locale} result={sel} provider={providers[sel.provider]} multi={multi} />
             </div>
           )}
 
@@ -198,7 +173,7 @@ export function SearchMap({
                     {`${r.rating.toFixed(1)} · ${r.distance_km.toFixed(1)} ${c.km} · ${c.branches(r.branches)}`}
                   </p>
                 </div>
-                <LogoTile src={providers[r.provider].logo} alt="" size={40} radius={20} />
+                <LogoTile src={providers[r.provider].logo} alt="" size={56} radius={22.4} />
               </div>
               <div className="flex items-center justify-between gap-1">
                 <div className="flex min-w-0 flex-col items-start">
@@ -229,25 +204,5 @@ export function SearchMap({
         </Link>
       </aside>
     </div>
-  );
-}
-
-// «أضف للمقارنة» في كارت الخريطة
-function MapCompareButton({ locale, id }: { locale: Locale; id: string }) {
-  const t = getSearchDict(locale);
-  const { has, toggle } = useCompare();
-  const on = has(id);
-  return (
-    <button
-      type="button"
-      aria-pressed={on}
-      onClick={() => toggle(id)}
-      className={`flex h-10 items-center gap-1.5 rounded-[10px] border px-3.5 text-label-m ${
-        on ? "border-deep-charcoal bg-deep-charcoal text-neon-green" : "border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
-      }`}
-    >
-      <Icon name={on ? "check" : "plus"} size={14} />
-      {on ? t.inCompare : t.addToCompare}
-    </button>
   );
 }

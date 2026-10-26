@@ -4,7 +4,8 @@ import { ServiceGlyph } from "@/components/icons/Icon";
 import type { FactIcon } from "@/lib/data/search/types";
 import type { ServiceSlug } from "@/lib/data/types";
 
-// Page head في W2-30/W2-30a: تدرّج ليموني خفيف + مسار + عنوان + وصف، وكروت «الأسعار · المدة · الضمان»
+// Page head في W2-30/W2-30a (تصميم العميل المعدّل): خلفية كحلي #152935 + مسار + عنوان أبيض + وصف #b3b3b3، ومربع الخدمة الليموني
+// جنب النص، وكروت «الأسعار · المدة · الضمان» البيضا في آخر السطر
 export function SearchHead({
   crumbs,
   title,
@@ -19,18 +20,18 @@ export function SearchHead({
   facts: { icon: FactIcon; label: string; value: string }[];
 }) {
   return (
-    <div className="bg-pagehead pt-7 pb-6">
+    <div className="bg-deep-charcoal pt-7 pb-6">
       <Container className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
-        <div className="flex items-start gap-4">
+        <div className="flex items-center gap-4">
           {tile && (
             <span className="hidden size-[72px] shrink-0 items-center justify-center rounded-md bg-neon-green text-deep-charcoal sm:flex">
               <ServiceGlyph name={tile} size={42} />
             </span>
           )}
           <div className="flex max-w-[560px] flex-col gap-2">
-            <Breadcrumb items={crumbs} />
-            <h1 className="text-h3 text-deep-charcoal md:text-h2">{title}</h1>
-            {description && <p className="text-body-m text-state-gray">{description}</p>}
+            <Breadcrumb items={crumbs} tone="dark" />
+            <h1 className="text-h3 text-white md:text-h2">{title}</h1>
+            {description && <p className="text-body-m text-v3-card-stroke">{description}</p>}
           </div>
         </div>
         {facts.length > 0 && (

@@ -2,16 +2,17 @@ import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import type { Provider } from "@/lib/data/types";
-import type { HomeContent } from "@/lib/server/home";
+import type { GuestHomeContent as HomeContent } from "@/lib/server/home";
 import { homeHref, packageHref } from "@/lib/server/home";
 import { routes } from "@/lib/routes";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { getCommon } from "@/i18n/dict/common";
-import { Icon, ServiceGlyph } from "@/components/icons/Icon";
+import { Icon } from "@/components/icons/Icon";
 import { Container } from "@/components/ui/Container";
 import { FigmaIcon, LogoTile, SectionHead } from "../bits";
+import { GuestServiceIcon } from "./ServiceIcon";
 
-// V2-02 · Offers (619:1884) — كروت عروض بيضا: الخصم، أيقونات الخدمات، العنوان، المقدّم، المميزات، السعر و«احجز العرض»
+// V2-02 · Offers (37:28781) — كروت عروض بيضا: الخصم، أيقونات الخدمات، العنوان، المقدّم، المميزات، السعر و«احجز العرض»
 export function OffersGuestBand({ locale, content, providers }: { locale: Locale; content: HomeContent; providers: Provider[] }) {
   const o = content.offersGuest;
   const t = getCommon(locale);
@@ -37,12 +38,7 @@ export function OffersGuestBand({ locale, content, providers }: { locale: Locale
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="flex [&>*+*]:-ms-2.5">
                     {c.services.map((svc) => (
-                      <span
-                        key={svc}
-                        className={`flex items-center justify-center rounded-md bg-neon-green shadow-[0_4px_10px_#0000001f] ${multi ? "size-12" : "size-[60px]"}`}
-                      >
-                        <ServiceGlyph name={svc} size={multi ? 28 : 35} className="text-deep-charcoal" />
-                      </span>
+                      <GuestServiceIcon key={svc} slug={svc} variant="neon" size={multi ? 48 : 60} className="drop-shadow-[0_4px_5px_#0000001f]" />
                     ))}
                   </span>
                   <span className="flex h-[38px] items-center gap-1.5 rounded-full bg-deep-charcoal px-3.5 whitespace-nowrap">
