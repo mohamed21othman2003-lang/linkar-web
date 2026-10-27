@@ -19,7 +19,7 @@ export function FeaturesBand({ locale, content, providers }: { locale: Locale; c
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-[628fr_302fr_302fr]">
           {/* Feature · AI */}
           <div className="relative flex min-h-[440px] flex-col items-start gap-3.5 overflow-hidden rounded-2xl p-6 md:col-span-2 lg:col-span-1 lg:p-8">
-            <Image src="/figma/home/ai-card-bg.jpg" alt="" fill sizes="(max-width: 1024px) 100vw, 628px" className="object-cover" />
+            <Image src="/figma/home/ai-card-bg.jpg" alt="" fill sizes="(max-width: 1024px) 100vw, 628px" quality={55} className="object-cover" />
             <div className="absolute inset-0 bg-linear-to-b from-deep-charcoal/35 via-deep-charcoal/75 to-deep-charcoal/92" />
             <span className="relative flex h-10 items-center gap-2 rounded-full bg-neon-green ps-1.5 pe-3 text-label-m text-deep-charcoal">
               <FigmaIcon name="feature-ai-dark" size={28} />

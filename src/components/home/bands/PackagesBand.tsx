@@ -34,7 +34,7 @@ export function PackagesBand({ locale, content, providers }: { locale: Locale; c
     <section className="relative overflow-hidden bg-tile py-9 md:py-16 xl:bg-surface-soft xl:py-[104px]">
       {/* زخرفة: Brand icon · chevron · Outline بشفافية 18% */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <img loading="lazy"
         src="/figma/home/icons/brand-chevron-outline.svg"
         alt=""
         width={320}

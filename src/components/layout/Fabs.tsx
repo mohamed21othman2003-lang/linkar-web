@@ -18,7 +18,7 @@ export async function Fabs({ side = "start" }: { side?: "start" | "end" } = {}) 
       <HelpPopupButton popup="assistant" copy={popups} aria-label={assistant} title={assistant} className="relative block size-[60px]">
         {/* الأيقونة شاملة الظل والنقطة الليموني — أكبر من الزر (108×108) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/glyphs/fab-assistant.svg" alt="" width={108} height={108} className="pointer-events-none absolute -top-[14px] -left-6 max-w-none" />
+        <img src="/figma/glyphs/fab-assistant.svg" alt="" width={108} height={108} loading="lazy" className="pointer-events-none absolute -top-[14px] -left-6 max-w-none" />
       </HelpPopupButton>
       </div>
       <HelpPopupButton
@@ -29,7 +29,7 @@ export async function Fabs({ side = "start" }: { side?: "start" | "end" } = {}) 
         className="flex size-[50px] items-center justify-center rounded-full bg-whatsapp shadow-fab md:size-[60px]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/glyphs/whatsapp.svg" alt="" width={28} height={28} className="size-6 md:size-7" />
+        <img src="/figma/glyphs/whatsapp.svg" alt="" width={28} height={28} loading="lazy" className="size-6 md:size-7" />
       </HelpPopupButton>
     </div>
   );

@@ -106,7 +106,7 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
     // خلفية ليموني باهت (11% → 3% من فوق لتحت) + نقش شيفرون بماسك دائري على الشمال (37:26889)
     <section className="relative overflow-hidden bg-linear-to-b from-[#f6fee4] to-[#fdfff8] py-9 md:py-16 xl:py-[72px]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/figma/home/chevron-pattern.png" alt="" aria-hidden width={640} height={700} className="pointer-events-none absolute top-0 left-0 hidden xl:block" />
+      <img src="/figma/home/chevron-pattern.webp" alt="" aria-hidden width={640} height={700} loading="lazy" className="pointer-events-none absolute top-0 left-0 hidden xl:block" />
       <Container className="relative flex flex-col gap-[18px] max-md:px-5 md:gap-7 xl:flex-row xl:items-center xl:gap-[72px]">
         {/* Steps column */}
         <div className="flex flex-col gap-[18px] md:gap-7 xl:flex-1 xl:gap-9">

@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 // Generates src/components/icons/generated.ts from the SVGs exported from Figma.
 // Usage: node scripts/build-icons.mjs
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const iconsDir = join(root, "src", "components", "icons");
 const outFile = join(iconsDir, "generated.ts");
+// الأيقونات بتتنشر كـsprite خارجي (ملف واحد بيتكاش) بدل ما تتحط جوه كل صفحة وجوه الـJS
+const spriteDir = join(root, "public", "icons");
 
 const BRAND_COLOR = /(fill|stroke)="#152935"/gi;
 
@@ -39,18 +42,33 @@ function readSet(folder) {
   return entries;
 }
 
-function emit(typeName, constName, entries) {
-  const union = entries.map(([k]) => `  | ${JSON.stringify(k)}`).join("\n");
-  const body = entries.map(([k, v]) => `  ${JSON.stringify(k)}: ${JSON.stringify(v)},`).join("\n");
-  return `export type ${typeName} =\n${union};\n\nexport const ${constName}: Record<${typeName}, string> = {\n${body}\n};\n`;
+function emitType(typeName, entries) {
+  return `export type ${typeName} =\n${entries.map(([k]) => `  | ${JSON.stringify(k)}`).join("\n")};\n`;
+}
+
+function sprite(entries, size) {
+  const symbols = entries.map(([k, v]) => `<symbol id="${k}" viewBox="0 0 ${size} ${size}" fill="none">${v}</symbol>`).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg">${symbols}</svg>\n`;
 }
 
 const ui = readSet("ui");
 const service = readSet("service");
 
+const uiSprite = sprite(ui, 24);
+const serviceSprite = sprite(service, 48);
+mkdirSync(spriteDir, { recursive: true });
+writeFileSync(join(spriteDir, "ui.svg"), uiSprite);
+writeFileSync(join(spriteDir, "service.svg"), serviceSprite);
+// نسخة الملف في اللينك (?v=) عشان المتصفح ياخد الجديد لما الأيقونات تتغيّر
+const version = createHash("sha1").update(uiSprite + serviceSprite).digest("hex").slice(0, 8);
+
 const header = `// Generated from Figma (UI icon set 665:3031 and v2 Service icon set 1308:420)
 // by scripts/build-icons.mjs. Do not edit by hand; rerun \`node scripts/build-icons.mjs\`.
+// The glyphs themselves live in the sprites public/icons/ui.svg and public/icons/service.svg.
 `;
 
-writeFileSync(outFile, `${header}\n${emit("UiGlyph", "UI_ICONS", ui)}\n${emit("ServiceIcon", "SERVICE_ICONS", service)}`);
-console.log(`Wrote ${outFile} (${ui.length} UI icons, ${service.length} service icons)`);
+writeFileSync(
+  outFile,
+  `${header}\n${emitType("UiGlyph", ui)}\n${emitType("ServiceIcon", service)}\nexport const ICON_SPRITE_VERSION = ${JSON.stringify(version)};\n`,
+);
+console.log(`Wrote ${outFile} and public/icons/{ui,service}.svg (${ui.length} UI icons, ${service.length} service icons, v${version})`);

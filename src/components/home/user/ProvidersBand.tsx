@@ -31,7 +31,7 @@ function ProviderPhotoCard({ locale, provider, badge, services }: { locale: Loca
         <Image src={`/figma/home/providers/${provider.slug}.jpg`} alt="" fill sizes="302px" className="object-cover" />
         <span className="absolute start-2.5 top-3 flex h-6 items-center gap-1.5 rounded-full bg-white px-2 text-label-m text-deep-charcoal">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/home/providers/badge.svg" alt="" width={14} height={14} />
+          <img loading="lazy" src="/figma/home/providers/badge.svg" alt="" width={14} height={14} />
           {badge}
         </span>
       </div>
@@ -43,11 +43,11 @@ function ProviderPhotoCard({ locale, provider, badge, services }: { locale: Loca
         <h3 className="text-h4 text-white">{name}</h3>
         <p className="flex items-center gap-2 whitespace-nowrap">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/home/providers/star.svg" alt="" width={14} height={14} />
+          <img loading="lazy" src="/figma/home/providers/star.svg" alt="" width={14} height={14} />
           <span className="text-label-l text-white">{provider.rating.toFixed(1)}</span>
           <span className="size-[3px] rounded-full bg-white/40" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/home/providers/pin.svg" alt="" width={16} height={16} />
+          <img loading="lazy" src="/figma/home/providers/pin.svg" alt="" width={16} height={16} />
           <span className="text-body-s text-cool-gray">
             {formatNumber(provider.distance_km)} {t.km} · {t.branches(provider.branches)}
           </span>
@@ -104,12 +104,12 @@ export function ProvidersBand({
     <section className="relative overflow-hidden bg-deep-charcoal py-16 xl:py-[104px]">
       {/* Glow ×2 + Chevron pattern (37:27050–27052) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/figma/home/providers/glow1.svg" alt="" aria-hidden className="pointer-events-none absolute top-[390px] left-[730px] h-[960px] w-[1100px] max-w-none" />
+      <img src="/figma/home/providers/glow1.webp" loading="lazy" alt="" aria-hidden className="pointer-events-none absolute top-[390px] left-[730px] h-[960px] w-[1100px] max-w-none object-cover" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/figma/home/providers/glow2.svg" alt="" aria-hidden className="pointer-events-none absolute top-[-280px] left-[-320px] max-w-none" />
+      <img src="/figma/home/providers/glow2.webp" loading="lazy" alt="" aria-hidden className="pointer-events-none absolute top-[-280px] left-[-320px] max-w-none object-cover" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[400px] overflow-hidden [mask-image:radial-gradient(50%_50%_at_50%_50%,#000,transparent)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/providers/chevrons.svg" alt="" className="absolute top-[-1.5px] left-[-1.5px] h-[475px] w-[1489px] max-w-none" />
+        <img loading="lazy" src="/figma/home/providers/chevrons.svg" alt="" className="absolute top-[-1.5px] left-[-1.5px] h-[475px] w-[1489px] max-w-none" />
       </div>
       <Container className="relative flex flex-col gap-9">
         <SectionHead

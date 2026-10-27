@@ -16,7 +16,7 @@ function Download({ s, a, platforms }: { s: S; a: GuestHomeContent["appGuest"]; 
       <StoreBadges height={48} className="flex-col gap-2.5!" />
       <div className={`flex items-center gap-3 rounded-lg bg-white p-2.5 ${platforms ? "h-[92px]" : "h-[104px]"}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} className="size-[72px]" />
+        <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} loading="lazy" className="size-[72px]" />
         <div className="flex w-[88px] flex-col gap-0.5">
           <span className="text-label-m text-deep-charcoal">{s(a.scan)}</span>
           {platforms && <span className="text-caption text-state-gray">{s(a.platforms)}</span>}

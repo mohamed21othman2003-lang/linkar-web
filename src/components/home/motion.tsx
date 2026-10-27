@@ -1,15 +1,13 @@
 "use client";
 
-import { animate } from "motion";
-import { motion, useReducedMotion, type Transition } from "motion/react";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
+import { EASE, reducedMotion, tween, useLoop, type Bezier, type Track } from "./waapi";
 
 // حركات الرئيسية من الفيجما (get_motion_context على 557:2 و 600:2964) — نفس المدد والـtimes والـeasing.
+// بالـWeb Animations API بتاعة المتصفح (waapi.ts) مش بمكتبة motion، عشان الـJS على أول تحميل للصفحة.
 // EASE_IN_AND_OUT في الفيجما = cubic-bezier(0.42, 0, 0.58, 1)
-type Bezier = [number, number, number, number];
 export const FIGMA_EASE_IN_OUT: Bezier = [0.42, 0, 0.58, 1];
-const S: Bezier = [0.5, 0, 0.5, 1]; // منحنى «smooth» في keyframes الفيجما
-const POP: Bezier = [0.45, 1.45, 0.8, 1];
+const S = EASE.smooth; // منحنى «smooth» في keyframes الفيجما
 
 // SCROLL_ANIMATE — تمرير الصفحة لعنصر (اكتشف المزيد 600ms)
 export function scrollToId(id: string, duration = 0.6) {
@@ -17,26 +15,28 @@ export function scrollToId(id: string, duration = 0.6) {
   if (!el) return;
   const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
   const to = el.getBoundingClientRect().top + window.scrollY - margin;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return window.scrollTo({ top: to, behavior: "instant" });
+  if (reducedMotion()) return window.scrollTo({ top: to, behavior: "instant" });
   // html عليه scroll-behavior: smooth — لازم "instant" عشان كل فريم من الحركة يتطبّق فوراً
-  animate(window.scrollY, to, { duration, ease: FIGMA_EASE_IN_OUT, onUpdate: (v) => window.scrollTo({ top: v, behavior: "instant" }) });
+  tween(window.scrollY, to, duration * 1000, FIGMA_EASE_IN_OUT, (v) => window.scrollTo({ top: v, behavior: "instant" }));
 }
 
 // SCROLL_ANIMATE لشريط أفقي (الكاروسيل: 500ms EASE_IN_AND_OUT)
 export function scrollTrack(el: HTMLElement, left: number, duration = 0.5) {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (reducedMotion()) {
     el.scrollLeft = left;
     return;
   }
   // الـscroll-snap بيقفز للنقطة الجاية أول ما الحركة تبدأ — نوقفه أثناء الحركة ونرجّعه بعدها
   const snap = el.style.scrollSnapType;
   el.style.scrollSnapType = "none";
-  animate(el.scrollLeft, left, {
-    duration,
-    ease: FIGMA_EASE_IN_OUT,
-    onUpdate: (v) => (el.scrollLeft = v),
-    onComplete: () => (el.style.scrollSnapType = snap),
-  });
+  tween(
+    el.scrollLeft,
+    left,
+    duration * 1000,
+    FIGMA_EASE_IN_OUT,
+    (v) => (el.scrollLeft = v),
+    () => (el.style.scrollSnapType = snap),
+  );
 }
 
 export function ScrollLink({ to, className, children }: { to: string; className?: string; children: ReactNode }) {
@@ -60,46 +60,39 @@ const tagTimes = [
   [0, 0.3889, 0.4222, 0.4667, 1],
   [0, 0.6667, 0.7, 0.7444, 1],
 ];
+const tagTracks = tagTimes.map((times): Track[] => [{ prop: "scale", values: [1, 1, 1.12, 1, 1], times, ease: [S, EASE.out, EASE.inOut, S] }]);
 export function PulseTag({ index, className, children }: { index: number; className: string; children: ReactNode }) {
-  const reduce = useReducedMotion();
-  const t: Transition = { duration: 9, times: tagTimes[index], ease: [S, "easeOut", "easeInOut", S], repeat: Infinity };
+  const ref = useRef<HTMLSpanElement>(null);
+  useLoop(ref, tagTracks[index], 9000);
   return (
-    <motion.span className={className} animate={reduce ? undefined : { scale: [1, 1, 1.12, 1, 1] }} transition={{ scale: t }}>
+    <span ref={ref} className={className}>
       {children}
-    </motion.span>
+    </span>
   );
 }
 
 // Phone · Home / Phone · Voucher (964:311472 / 858:313) — طفو ودوران خفيف (الصور نفسها متصدّرة مايلة،
-// فبنحرّك الفرق عن الزاوية الأصلية: -13 → -11.8 = +1.2°، و13 → 11.8 = -1.2°)
-export function FloatPhone({
-  kind,
-  className,
-  children,
-}: {
-  kind: "home" | "voucher" | "guest-home" | "guest-voucher";
-  className: string;
-  children: ReactNode;
-}) {
-  const reduce = useReducedMotion();
-  const loop9 = { duration: 9, ease: "easeInOut", repeat: Infinity } as const;
-  const float = { rt: { ...loop9, times: [0, 0.5, 1] }, yt: { ...loop9, times: [0, 0.25, 0.5, 0.75, 1] } };
-  // طفو ناعم مستمر بدورة 9 ثواني (V2-01)
-  const cfg = {
-    home: { r: [0, 1.2, 0], y: [0, -10, 0, -10, 0], ...float },
-    voucher: { r: [0, -1.2, 0], y: [-12, 0, -12, 0, -12], ...float },
-    "guest-home": { r: [0, 1.2, 0], y: [0, -10.5, 0, -10.5, 0], ...float },
-    "guest-voucher": { r: [0, -1.2, 0], y: [-12.6, 0, -12.6, 0, -12.6], ...float },
-  }[kind];
+// فبنحرّك الفرق عن الزاوية الأصلية: -13 → -11.8 = +1.2°، و13 → 11.8 = -1.2°) — طفو ناعم مستمر بدورة 9 ثواني
+const half = [0, 0.5, 1];
+const quarters = [0, 0.25, 0.5, 0.75, 1];
+const float = (r: number, y: [number, number]): Track[] => [
+  { prop: "rotate", values: ["0deg", `${r}deg`, "0deg"], times: half, ease: EASE.inOut },
+  { prop: "translate", values: [y[0], y[1], y[0], y[1], y[0]].map((v) => `0 ${v}px`), times: quarters, ease: EASE.inOut },
+];
+const floatTracks = {
+  home: float(1.2, [0, -10]),
+  voucher: float(-1.2, [-12, 0]),
+  "guest-home": float(1.2, [0, -10.5]),
+  "guest-voucher": float(-1.2, [-12.6, 0]),
+};
+export function FloatPhone({ kind, className, children }: { kind: keyof typeof floatTracks; className: string; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useLoop(ref, floatTracks[kind], 9000);
+  // أول فريم (قبل ما الأنيميشن يبدأ) = قيمة البداية
   return (
-    <motion.div
-      className={className}
-      initial={{ rotate: 0, y: cfg.y[0] }}
-      animate={reduce ? undefined : { rotate: cfg.r, y: cfg.y }}
-      transition={{ rotate: cfg.rt, y: cfg.yt }}
-    >
+    <div ref={ref} className={className} style={{ translate: floatTracks[kind][1].values[0] as string }}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -109,24 +102,23 @@ const chipTimes = {
   tracking: [0, 0.1556, 0.2, 0.4222, 0.6444],
   gift: [0, 0.2222, 0.2667, 0.4889, 0.7111],
 } as const;
+const chip = ([, a, b, c, d]: readonly number[]): Track[] => [
+  { prop: "opacity", values: [0, 0, 1, 1, 0, 0], times: [0, a, b, 0.9333, 0.9778, 1], ease: [S, EASE.out, S, EASE.in, EASE.linear] },
+  { prop: "scale", values: [0.85, 0.85, 1, 1], times: [0, a, b, 1], ease: [S, EASE.pop, S] },
+  { prop: "translate", values: ["0 12px", "0 12px", "0 0", "0 -5px", "0 0", "0 0"], times: [0, a, b, c, d, 1], ease: [S, EASE.out, EASE.inOut, EASE.inOut, S] },
+];
+const chipTracks = { accepted: chip(chipTimes.accepted), tracking: chip(chipTimes.tracking), gift: chip(chipTimes.gift) };
 export function PopChip({ kind, className, children }: { kind: keyof typeof chipTimes; className: string; children: ReactNode }) {
-  const reduce = useReducedMotion();
-  const [, a, b, c, d] = chipTimes[kind];
-  const base = { duration: 9, repeat: Infinity } as const;
-  if (reduce) return <span className={className}>{children}</span>;
+  const ref = useRef<HTMLSpanElement>(null);
+  useLoop(ref, chipTracks[kind], 9000);
+  // البداية مخفية زي أول فريم؛ مع «تقليل الحركة» الأنيميشن مش بيشتغل فبتفضل ظاهرة ثابتة
   return (
-    <motion.span
-      className={className}
-      initial={{ opacity: 0, scale: 0.85, y: 12 }}
-      animate={{ opacity: [0, 0, 1, 1, 0, 0], scale: [0.85, 0.85, 1, 1], y: [12, 12, 0, -5, 0, 0] }}
-      transition={{
-        opacity: { ...base, times: [0, a, b, 0.9333, 0.9778, 1], ease: [S, "easeOut", S, "easeIn", "linear"] },
-        scale: { ...base, times: [0, a, b, 1], ease: [S, POP, S] },
-        y: { ...base, times: [0, a, b, c, d, 1], ease: [S, "easeOut", "easeInOut", "easeInOut", S] },
-      }}
+    <span
+      ref={ref}
+      className={`${className} opacity-0 [scale:0.85] [translate:0_12px] motion-reduce:opacity-100 motion-reduce:[scale:1] motion-reduce:[translate:0]`}
     >
       {children}
-    </motion.span>
+    </span>
   );
 }
 

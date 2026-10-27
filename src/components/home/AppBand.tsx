@@ -23,7 +23,7 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
         <StoreBadges height={48} className="flex-col gap-2.5!" />
         <div className="flex items-center gap-3 rounded-lg bg-white p-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} className="size-[72px]" />
+          <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} loading="lazy" className="size-[72px]" />
           <span className="flex flex-col gap-0.5 text-[14px] leading-[22px] whitespace-nowrap">
             <span className="font-medium text-deep-charcoal">{s(a.scan)}</span>
             <span className="font-light text-state-gray">{s(a.platforms)}</span>
@@ -33,7 +33,7 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
       <div className="hidden items-center gap-2.5 md:max-xl:flex">
         <StoreBadges height={37} className="flex-col-reverse gap-1.5!" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/app-qr.svg" alt={s(a.scan)} width={80} height={80} className="size-20" />
+        <img loading="lazy" src="/figma/home/app-qr.svg" alt={s(a.scan)} width={80} height={80} className="size-20" />
       </div>
       <StoreBadges height={42} className="flex-row-reverse justify-center self-center md:hidden" />
     </>
@@ -52,9 +52,9 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
       {/* Glow ×2 (37:27757/27758) */}
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[1440px] -translate-x-1/2 xl:block">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/app/glow-lime.svg" alt="" width={1180} height={1180} className="absolute top-[-120px] left-[-120px] max-w-none" />
+        <img src="/figma/home/app/glow-lime.webp" loading="lazy" alt="" width={1180} height={1180} className="absolute top-[-120px] left-[-120px] max-w-none object-cover" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/app/glow-green.svg" alt="" width={840} height={840} className="absolute top-[-320px] left-[840px] max-w-none" />
+        <img src="/figma/home/app/glow-green.webp" loading="lazy" alt="" width={840} height={840} className="absolute top-[-320px] left-[840px] max-w-none object-cover" />
       </div>
       <Container className="grid grid-cols-1 gap-[18px] max-md:px-5 md:grid-cols-[1fr_350px] md:items-center md:gap-6 xl:flex xl:items-center xl:justify-between xl:gap-10">
         <div className="contents md:flex md:flex-col md:items-start md:gap-4 xl:w-[540px] xl:gap-6">

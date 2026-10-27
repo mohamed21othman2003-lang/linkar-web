@@ -7,7 +7,7 @@ import { logoSize } from "@/lib/data/providers";
 // أيقونات Brand icon / Feature icon من الفيجما (public/figma/home/icons) — مقاسها ثابت زي الفيجما
 export function FigmaIcon({ name, size, className = "" }: { name: string; size: number; className?: string }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`/figma/home/icons/${name}.svg`} alt="" width={size} height={size} className={`shrink-0 ${className}`} style={{ width: size, height: size }} />;
+  return <img src={`/figma/home/icons/${name}.svg`} alt="" width={size} height={size} loading="lazy" className={`shrink-0 ${className}`} style={{ width: size, height: size }} />;
 }
 
 // نص بنسخ مختلفة حسب المقاس: d ديسكتوب (xl+)، t تابلت (md–xl)، m موبايل — V2-01t/V2-01m فيهم نصوص أقصر
@@ -148,7 +148,7 @@ export function LogoTile({
   const iw = Math.max(1, Math.round(lw * scale));
   const ih = Math.max(1, Math.round(lh * scale));
   const inner = (
-    <Image src={src} alt={alt} width={iw} height={ih} sizes={`${iw * 2}px`} className="object-contain" style={{ width: iw, height: ih }} />
+    <Image src={src} alt={alt} width={iw} height={ih} className="object-contain" style={{ width: iw, height: ih }} />
   );
   const cls = `flex shrink-0 items-center justify-center overflow-hidden bg-white ${radius} ${border ? "border border-cool-gray" : ""} ${className}`;
   const style = { width: width ? undefined : size, height: size, minWidth: width ? undefined : size };

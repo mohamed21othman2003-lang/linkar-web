@@ -50,7 +50,7 @@ export function DealerBand({ locale, content }: { locale: Locale; content: HomeC
       <Container className="max-md:px-5">
         <div className="relative flex flex-col gap-[18px] overflow-hidden md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:bg-linear-to-r md:from-neon-green md:to-nature-green md:p-8 xl:gap-12 xl:rounded-[32px] xl:ps-14 xl:pe-12 xl:py-14">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src="/figma/home/icons/brand-chevron-outline.svg"
             alt=""
             aria-hidden
@@ -130,7 +130,7 @@ export function DealerBand({ locale, content }: { locale: Locale; content: HomeC
           {d.dealers.map((l) => (
             <li key={l.name} className="flex h-[72px] items-center justify-center rounded-2xl border border-cool-gray/60 bg-white px-3 max-sm:last:col-span-2 xl:h-[88px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/figma/home/dealers/${l.src}`} alt={l.name} width={l.w} height={l.h} className="h-auto max-w-[80%] opacity-78" style={{ width: l.w }} />
+              <img loading="lazy" src={`/figma/home/dealers/${l.src}`} alt={l.name} width={l.w} height={l.h} className="h-auto max-w-[80%] opacity-78" style={{ width: l.w }} />
             </li>
           ))}
         </ul>

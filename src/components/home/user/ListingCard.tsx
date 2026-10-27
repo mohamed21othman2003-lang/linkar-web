@@ -33,7 +33,7 @@ export type ListingView = {
 function SpecGlyph({ icon }: { icon: SpecIcon }) {
   if (icon === "clock" || icon === "package") return <Icon name={icon} size={16} className="text-state-gray" />;
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`/figma/home/offers/spec-${icon}.svg`} alt="" width={16} height={16} />;
+  return <img loading="lazy" src={`/figma/home/offers/spec-${icon}.svg`} alt="" width={16} height={16} />;
 }
 
 // Listing card (37:27333 عرض · 37:27483 باقة) — 302×610: صورة 186 بتدرّج + خصم + قلب + شريحة «ينتهي خلال…»،
@@ -70,7 +70,7 @@ export function ListingCard({ locale, v }: { locale: Locale; v: ListingView }) {
         </div>
         <p className="flex w-full items-center gap-1.5 text-label-m text-green-active">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`/figma/home/offers/cat-${v.category.icon}.svg`} alt="" width={16} height={16} className="shrink-0" />
+          <img loading="lazy" src={`/figma/home/offers/cat-${v.category.icon}.svg`} alt="" width={16} height={16} className="shrink-0" />
           <span className="truncate">{v.category.label}</span>
         </p>
         <p className="line-clamp-2 h-14 w-full text-h5 text-deep-charcoal">{v.title}</p>

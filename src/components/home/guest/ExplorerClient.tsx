@@ -72,7 +72,7 @@ export function ExplorerClient({ items, initial, startsFrom, availableAt }: { it
       {/* Detail */}
       <div id="service-detail" aria-live="polite" className="relative flex flex-1 flex-col gap-5 overflow-hidden rounded-3xl bg-deep-charcoal p-6 text-white sm:p-10 lg:min-h-[632px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/icons/brand-chevron-outline.svg" alt="" aria-hidden className="pointer-events-none absolute end-6 top-5 w-[300px] opacity-12" />
+        <img loading="lazy" src="/figma/home/icons/brand-chevron-outline.svg" alt="" aria-hidden className="pointer-events-none absolute end-6 top-5 w-[300px] opacity-12" />
         <div className="relative flex items-center gap-3.5">
           <GuestServiceIcon slug={cur.slug} variant="white" size={88} />
           {cur.popular && <span className="rounded-full bg-neon-green px-3.5 py-1.5 text-label-m text-deep-charcoal">{cur.popular}</span>}

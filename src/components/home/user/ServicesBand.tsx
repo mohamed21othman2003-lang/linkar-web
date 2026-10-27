@@ -30,7 +30,7 @@ export function ServicesBand({ locale, content, services }: { locale: Locale; co
       />
       {/* Glow (37:26833) — شمال فوق */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/figma/home/services-glow.svg" alt="" aria-hidden className="pointer-events-none absolute top-[-355px] left-[-330px] h-[987px] w-[1041px] max-w-none" />
+      <img src="/figma/home/services-glow.webp" loading="lazy" alt="" aria-hidden className="pointer-events-none absolute top-[-355px] left-[-330px] h-[987px] w-[1041px] max-w-none object-cover" />
       <Container className="relative flex flex-col gap-10">
         <SectionHead
           overline={s(b.overline)}

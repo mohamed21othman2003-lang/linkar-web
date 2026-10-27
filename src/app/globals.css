@@ -19,7 +19,7 @@
   --shadow-*: initial;
   --text-*: initial;
 
-  --font-sans: var(--font-noto-kufi), system-ui, sans-serif;
+  --font-sans: var(--font-noto-kufi-ar), var(--font-noto-kufi-lat), system-ui, sans-serif;
 
   /* ---------- Linkar v2 · Brand (Final Brand Guideline 2026) ---------- */
   --color-white: #ffffff; /* base/white */

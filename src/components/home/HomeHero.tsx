@@ -34,7 +34,7 @@ function AppCard({ s, content, appAnchor }: { s: S; content: HomeContent; appAnc
       <StoreBadges height={34.58} className="flex-col-reverse gap-1.5!" />
       <span className="flex shrink-0 items-center justify-center rounded-md bg-white p-[5px] max-sm:hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/qr-55.svg" alt="" width={55} height={55} className="size-[55px]" />
+        <img src="/figma/home/qr-55.svg" alt="" width={55} height={55} loading="lazy" className="size-[55px]" />
       </span>
     </div>
   );
@@ -145,13 +145,15 @@ export function HomeHero({
           fill
           preload
           sizes="100vw"
+          // تحت تدرّج غامق — 55 مش باينة وبتوفّر ~40% من أكبر صورة في أول تحميل
+          quality={55}
           className="object-cover"
         />
         <div className="absolute inset-0" style={{ backgroundImage: user ? userShade : guestShade }} />
         {user && (
           // Glow (37:26641) — توهّج ليموني تحت يسار الهيرو
           // eslint-disable-next-line @next/next/no-img-element
-          <img src="/figma/home/hero-glow.svg" alt="" aria-hidden className="pointer-events-none absolute top-[220px] -end-[360px] size-[1020px] max-w-none" />
+          <img src="/figma/home/hero-glow.webp" alt="" aria-hidden className="pointer-events-none absolute top-[220px] -end-[360px] size-[1020px] max-w-none object-cover" />
         )}
         <Header variant="hero" />
 

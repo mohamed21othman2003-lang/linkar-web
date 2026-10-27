@@ -26,7 +26,7 @@ export function HomeServiceCard({ locale, service, providers }: { locale: Locale
     <article className="relative size-[197.35px] overflow-hidden rounded-[15.5px] bg-v3-card-dark">
       <Link href={routes.search({ services: [service.slug] })} aria-label={name} className="absolute inset-0 z-10 rounded-[15.5px]" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <img loading="lazy"
         src={`/figma/services/card-${service.slug}.svg`}
         alt=""
         className="pointer-events-none absolute"

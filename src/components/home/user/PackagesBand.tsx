@@ -25,9 +25,9 @@ export function PackagesBand({ locale, content, providers }: { locale: Locale; c
       <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[300px] bg-linear-to-b from-white/90 to-white/0" />
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[1440px] -translate-x-1/2 xl:block">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/home/offers/chevron-top.svg" alt="" aria-hidden width={192} height={258} className="pointer-events-none absolute top-0 left-[1248px] max-w-none" />
+        <img loading="lazy" src="/figma/home/offers/chevron-top.svg" alt="" aria-hidden width={192} height={258} className="pointer-events-none absolute top-0 left-[1248px] max-w-none" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src="/figma/home/icons/brand-chevron-outline.svg"
           alt=""
           aria-hidden
