@@ -146,7 +146,7 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
   const listResults = apply(s.list.map(byKey).filter((r): r is SearchResult => !!r && !!providers[r.provider]));
   const mapOrder = [...s.list, ...s.results.map((r) => r.provider).filter((k) => !s.list.includes(k))];
   const mapResults = apply(mapOrder.map(byKey).filter((r): r is SearchResult => !!r && !!providers[r.provider]));
-  const count = nFilters ? (multi ? t.resultsCount(listResults.length) : t.providersCount(listResults.length)) : tx(locale, s.count, "text");
+  const count = nFilters ? (multi ? t.resultsCount(listResults.length) : t.providersCount(listResults.length)) : tx(locale, view === "map" && s.count_map ? s.count_map : s.count, "text");
   const sortLabel = L(options.sortOptions.find((o) => o.key === sort)!);
   const tray = tx(locale, view === "map" ? s.compare_label_map : s.compare_label, "text");
   const aiResult = s.ai ? s.results.find((r) => r.provider === s.ai!.provider) : undefined;

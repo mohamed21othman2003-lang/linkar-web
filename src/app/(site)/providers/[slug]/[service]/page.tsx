@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// W2-32 · الخدمة عند المزوّد (Johnson Ceramic Pro لدى جونسون 710:4119) + W2-32s عبر رابط المسوّق (?ref=SM123)
+// W2-32 · الخدمة عند المزوّد (طلاء نانو سيراميك لدى جونسون 202:13892) + W2-32s عبر رابط المسوّق (?ref=SM123)
 export default async function ProviderServicePage({ params, searchParams }: Props) {
   const { slug, service: serviceSlug } = await params;
   const sp = await searchParams;
@@ -99,7 +99,7 @@ export default async function ProviderServicePage({ params, searchParams }: Prop
             { label: c.home, href: routes.home },
             { label: t.services, href: routes.services },
             { label: tx(locale, category, "name"), href: routes.search({ services: [category.slug] }) },
-            { label: t.serviceAt(tx(locale, service, "name"), short) },
+            { label: t.serviceAt((locale === "en" ? service.short_name_en : service.short_name_ar) ?? tx(locale, service, "name"), short) },
           ]}
         />
       </Container>

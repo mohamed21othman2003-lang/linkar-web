@@ -57,7 +57,7 @@ export default async function AccountHomePage() {
                   <span className="text-label-m text-neon-green">{o.nextBooking}</span>
                   <span className="rounded-full bg-neon-green px-3 py-1 text-caption text-deep-charcoal">{t.status.waiting}</span>
                 </div>
-                <h2 className="text-h4 text-white">{tx(locale, data.next, "title")}</h2>
+                <h2 className="text-h4 text-neon-title">{tx(locale, data.next, "title")}</h2>
                 <p className="text-body-s text-white/80">{tx(locale, data.next, "meta")}</p>
                 <p className="flex items-center gap-2 text-label-l text-white">
                   <Icon name="calendar" size={18} className="shrink-0 text-neon-green" />

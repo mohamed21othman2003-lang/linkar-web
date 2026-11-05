@@ -71,8 +71,8 @@ export const providersPage = {
     preview: {
       badge_ar: "حجز جديد مؤكد",
       badge_en: "New confirmed booking",
-      title_ar: "‏Johnson Ceramic Pro + تفصيل داخلي كامل",
-      title_en: "Johnson Ceramic Pro + full interior detailing",
+      title_ar: "طلاء نانو سيراميك + تنظيف داخلي عميق",
+      title_en: "Nano-ceramic coating + deep interior cleaning",
       meta_ar: "‏BK-21452 · تويوتا كامري 2023 · سيدان",
       meta_en: "BK-21452 · Toyota Camry 2023 · Sedan",
       rows: [

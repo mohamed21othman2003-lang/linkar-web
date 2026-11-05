@@ -71,67 +71,6 @@ export const hero = {
   },
 };
 
-// ---------------------------------------------------------------- الهيرو الجديد (صفحة 0:1): العميل 37:26639 · الزائر 37:28372
-export const heroV3 = {
-  // العميل المسجّل
-  user: {
-    trust: t("مقدّمو خدمة معتمدون فقط · أسعار واضحة لسيارتك · حجز يتأكد فوراً", "Certified providers only · Clear prices for your car · Instantly confirmed booking"),
-    title_1: t("عناية بسيارتك", "Car care that"),
-    title_2: t("تستحق الثقة", "deserves your trust"),
-    subtitle: t(
-      "اختر الخدمة، وقارن مقدّمي الخدمة المعتمدين بالسعر لسيارتك والضمان والتقييمات، ثم اطلب وادفع مباشرة — يتأكد حجزك فوراً.",
-      "Choose the service, compare certified providers by price for your car, warranty and ratings, then order and pay directly — your booking is confirmed instantly.",
-    ),
-    car_placeholder: t("اختر النوع", "Select type"),
-  },
-  // الزائر
-  guest: {
-    eyebrow: t("منصة سعودية للعناية بالسيارات", "A Saudi car care platform"),
-    title: t("رابطك الموثوق للعناية بسيارتك", "Your trusted link to car care"),
-    subtitle: t(
-      "اكتشف خدمات العناية بالسيارات لدى مقدّمي خدمة معتمدين، واطّلع على الأسعار والتقييمات، ثم احجز وادفع في مكان واحد.",
-      "Discover car care services at certified providers, check prices and ratings, then book and pay in one place.",
-    ),
-    car_placeholder: t("اختر نوع السيارة", "Select car type"),
-    popular_label: t("الأكثر طلباً", "Most requested"),
-    // الترتيب من بداية السطر
-    popular: ["tint", "ppf", "nano-ceramic", "wash"] as ServiceSlug[],
-  },
-  search: {
-    provider: t("مقدّم الخدمة", "Provider"),
-    all: t("الكل", "All"),
-    services: t("الخدمة أو الخدمات", "Service or services"),
-    add: t("أضف", "Add"),
-    remove: t("إزالة {name}", "Remove {name}"),
-    location: t("الموقع أو الفرع", "Location or branch"),
-    car: t("نوع السيارة", "Car type"),
-    search: t("ابحث", "Search"),
-  },
-  // الخدمات المختارة في الفيجما: نانو سيراميك + التلميع
-  default_services: ["nano-ceramic", "polish"] as ServiceSlug[],
-  app: {
-    overline: t("تطبيق لينكار", "Linkar app"),
-    title: t("امسح الرمز وحمّل التطبيق", "Scan the code and get the app"),
-    link: t("تعرّف على التطبيق", "Learn about the app"),
-  },
-};
-
-// Partner strip (37:26701) — تحت هيرو العميل المسجّل؛ الترتيب من بداية السطر
-export const partnerStrip = {
-  overline: t("مقدّمو خدمة معتمدون على لينكار", "Certified providers on Linkar"),
-  title: t("علامات تعرفها وتثق بها", "Brands you know and trust"),
-  link: { ...t("كل مقدّمي الخدمة", "All providers"), href_key: "providers" as LinkKey },
-  // inset = مكان الشعار جوه صندوق 108×36 (Partner logo · L من الفيجما) [top, end, bottom, start] %
-  partners: [
-    { slug: "xpel", name: t("XPEL السعودية", "XPEL Saudi Arabia"), inset: [23.21, 16.31, 23.21, 16.31] },
-    { slug: "3m", name: t("3M السعودية", "3M Saudi Arabia"), inset: [10.89, 26.85, 11.07, 26.9] },
-    { slug: "stek", name: t("ستيك STEK", "STEK"), inset: [18.39, 21.49, 18.21, 21.55] },
-    { slug: "llumar", name: t("لومار LLumar", "LLumar"), inset: [26.07, 12.44, 25.89, 12.38] },
-    { slug: "v-kool", name: t("في-كول V-KOOL", "V-KOOL"), inset: [26.43, 11.85, 26.25, 11.79] },
-    { slug: "johnson", name: t("جونسون Johnson", "Johnson"), inset: [14.82, 12.8, 14.82, 12.8] },
-  ] as { slug: string; name: Text; inset: [number, number, number, number] }[],
-};
-
 // P-17 · قائمة نوع السيارة (1443:392232)
 export const carTypes: (Text & { slug: string })[] = [
   { slug: "large", ...t("كبيرة (SUV كبيرة · بيك أب)", "Large (large SUV · pickup)") },
@@ -171,31 +110,31 @@ export type PickItem = {
 };
 export const forYou = {
   overline: t("ترشيحات لينكار الذكية", "Linkar smart picks"),
-  title: t("اخترناها لك حسب موقعك وتجاربك", "Picked for you by your location and history"),
+  title: t("اخترناها لك حسب موقعك وتجاربك", "Picked for you"),
   // الزائر والعميل الجديد: مافيش تجارب لسه — الترشيح حسب الموقع بس (ملاحظة 85:30647)
   title_guest: t("اخترناها لك حسب موقعك", "Picked for you by your location"),
   near: t("قريب من:", "Near:"),
   change: t("تغيير", "Change"),
-  hint: t("تتغير الترشيحات بعد كل حجز وتقييم بما يناسب تجربتك", "Picks change after every booking and review to fit your experience"),
+  hint: t("تتغير الترشيحات بعد كل حجز وتقييم بما يناسب تجربتك", "Picks update after every booking and review to match your experience"),
   // الترتيب من بداية السطر (يمين في العربي)
   picks: [
     {
       provider: "3m",
       kind: "returning",
-      reason: t("لأنك حجزت خدمة التلميع من قبل", "Because you booked polishing before"),
-      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Excellent rating from customers with cars like yours"),
+      reason: t("لأنك حجزت خدمة التلميع من قبل", "You booked polishing before"),
+      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Top-rated by owners of cars like yours"),
     },
     {
       provider: "xpel",
       kind: "returning",
-      reason: t("لأنك حجزت خدمة التلميع من قبل", "Because you booked polishing before"),
-      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Excellent rating from customers with cars like yours"),
+      reason: t("لأنك حجزت خدمة التلميع من قبل", "You booked polishing before"),
+      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Top-rated by owners of cars like yours"),
     },
     {
       provider: "llumar",
       kind: "location",
-      reason: t("الأقرب إليك", "Closest to you"),
-      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Excellent rating from customers with cars like yours"),
+      reason: t("الأقرب إليك", "Nearest to you"),
+      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك", "Top-rated by owners of cars like yours"),
     },
     {
       provider: "v-kool",
@@ -206,118 +145,17 @@ export const forYou = {
   ] satisfies PickItem[],
   // الزائر/العميل الجديد يرى مكان «لأنك حجزت…» ترشيحات حسب موقعه (ملاحظة 85:30647):
   // أقرب مقدّمي خدمة لموقعه (من بيانات المقدّمين الحقيقية) — الأقرب، ثم الأعلى تقييماً بالقرب منه
-  location_reasons: [t("الأقرب إليك", "Closest to you"), t("الأعلى تقييماً بالقرب منك", "Top rated near you")],
+  location_reasons: [t("الأقرب إليك", "Nearest to you"), t("الأعلى تقييماً بالقرب منك", "Top rated near you")],
   location_note: t("قريب منك · {km} كم", "Near you · {km} km"),
-};
-
-// ---------------------------------------------------------------- V2-01 · اخترنا لك (37:26726، صفحة 0:1)
-// كروت بلوجو صغير: الترتيب من بداية السطر؛ kind: returning = للعميل العائد بس (ملاحظة 37:28368)
-export const forYouV3 = {
-  overline: t("ترشيحات لينكار الذكية", "Linkar smart picks"),
-  title: t("اخترنا لك حسب موقعك وتجاربك", "Picked for you by your location and history"),
-  title_new: t("اخترنا لك حسب موقعك", "Picked for you by your location"),
-  near: t("قريب من:", "Near:"),
-  change: t("تغيير", "Change"),
-  hint: t("تتحسّن الترشيحات مع كل حجز وتقييم", "Picks get better with every booking and review"),
-  ai_label: t("ترشيح الذكاء الاصطناعي", "AI pick"),
-  view: t("عرض", "View"),
-  picks: [
-    {
-      provider: "johnson",
-      kind: "returning",
-      tag: t("حان موعد صيانة النانو", "Time for your nano maintenance"),
-      note: t("مرّت 6 أشهر على النانو سيراميك — الصيانة تحافظ على الضمان.", "It’s been 6 months since your nano ceramic — maintenance keeps your warranty valid."),
-      services: ["nano-ceramic", "polish"],
-    },
-    {
-      provider: "lamaa",
-      kind: "returning",
-      tag: t("لأنك حجزت التلميع من قبل", "Because you booked polishing before"),
-      note: t("تقييم ممتاز من عملاء بسيارات مثل سيارتك.", "Excellent rating from customers with cars like yours."),
-      services: ["polish"],
-    },
-    { provider: "bareeq", kind: "location", tag: t("الأقرب إليك", "Closest to you"), note: null, services: ["wash"] },
-    {
-      provider: "xpel",
-      kind: "ai",
-      tag: null,
-      note: t("الأنسب لسيارتك: ضمان 10 سنوات، قريب منك وضمن ميزانيتك.", "Best fit for your car: 10-year warranty, close to you and within your budget."),
-      services: [],
-    },
-  ] as { provider: string; kind: "returning" | "location" | "ai"; tag: Text | null; note: Text | null; services: ServiceSlug[] }[],
-  // العميل الجديد: مكان كروت «returning» ترشيحات حسب موقعه (من بيانات المقدّمين الحقيقية)
-  location_reasons: [t("الأعلى تقييماً بالقرب منك", "Top rated near you"), t("قريب منك · {km} كم", "Near you · {km} km")],
-  location_note: t("تقييم ممتاز من عملاء في منطقتك.", "Excellent rating from customers in your area."),
-};
-
-// ---------------------------------------------------------------- V2-01 · الخدمات (37:26829، صفحة 0:1) — كروت صور بشريط متحرك
-export const servicesV3 = {
-  overline: t("خدماتنا", "Our services"),
-  title: t("كل ما تحتاجه سيارتك في مكان واحد", "Everything your car needs in one place"),
-  description: t(
-    "لكل خدمة مقدّمو خدمة معتمدون تقارن بينهم بالسعر لسيارتك والضمان والتقييمات.",
-    "Every service has certified providers you can compare by price for your car, warranty and ratings.",
-  ),
-  link: { ...t("كل الخدمات", "All services"), href_key: "services" as LinkKey },
-  // الترتيب من بداية السطر (صفّين × 3)؛ slides = صور الشريط (الأولى هي الظاهرة في الفيجما)
-  cards: [
-    { slug: "tint", at: t("لدى النخبة · XPEL · 3M · لومار وغيرهم", "At Al Nukhba · XPEL · 3M · LLumar and more"), slides: ["tint-1", "tint-2", "tint-3"] },
-    { slug: "nano-ceramic", at: t("لدى جونسون · فاينلاب · نانو إكس · كار برو", "At Johnson · Feynlab · NanoX · CarPro"), slides: ["nano-ceramic-1", "nano-ceramic-2", "nano-ceramic-3"] },
-    { slug: "ppf", at: t("لدى XPEL · 3M · ستيك · لومار وغيرهم", "At XPEL · 3M · STEK · LLumar and more"), slides: ["ppf-1", "ppf-2", "ppf-3"] },
-    { slug: "polish", at: t("لدى لمعة · جونسون · أوتوشابو وغيرهم", "At Lamaa · Johnson · Autoshabo and more"), slides: ["polish-1", "polish-2", "polish-3"] },
-    { slug: "wash", at: t("لدى بريق · نانو شيلد · كريستال وغيرهم", "At Bareeq · NanoShield · Crystal and more"), slides: ["wash-1", "wash-2", "wash-3"] },
-    // ⚠ الفيجما بتعيد صورتين من كارت PPF في شريط «تغيير اللون»
-    { slug: "color-change", at: t("لدى لومار · راب-تك", "At LLumar · Wraptek"), slides: ["color-change-1", "ppf-2", "ppf-3"] },
-  ] as { slug: ServiceSlug; at: Text; slides: [string, string, string] }[],
-};
-
-// ---------------------------------------------------------------- V2-01 · مقدّمو الخدمة (37:27049، صفحة 0:1) — كروت صور + جدار شعارات
-export const providersV3 = {
-  head: {
-    overline: t("قريبون منك · حي الروضة، جدة", "Near you · Al Rawdah, Jeddah"),
-    title: t("مقدّمو خدمة معتمدون قريبون منك", "Certified providers near you"),
-    description: t(
-      "مرتّبون حسب المسافة من موقعك. كل مقدّم خدمة على لينكار اجتاز الاعتماد، وتقييماته من حجوزات مكتملة فقط.",
-      "Sorted by distance from you. Every provider on Linkar passed certification, and their ratings come from completed bookings only.",
-    ),
-    link: { ...t("عرض كل مقدّمي الخدمة", "View all providers"), href_key: "providers" as LinkKey },
-  },
-  // الترتيب من بداية السطر
-  certs: [
-    { icon: "brand-shield-neon", title: t("ضمان الجودة واختبار المنتجات", "Quality assurance and product testing"), body: t("نختبر المنتجات المستخدمة ونتأكد من مطابقتها للمواصفات", "We test the products used and make sure they meet the specs") },
-    { icon: "brand-car-neon", title: t("زيارة ميدانية", "On-site visit"), body: t("فريق لينكار يزور كل مقدّم خدمة", "The Linkar team visits every provider") },
-    { icon: "brand-heart-neon", title: t("تقييمات حقيقية", "Real reviews"), body: t("من حجوزات مكتملة فقط", "From completed bookings only") },
-    { icon: "brand-shield-neon", title: t("ضمان موثّق", "Recorded warranty"), body: t("مسجّل برقم قسيمة الحجز", "Registered under the booking voucher number") },
-  ],
-  all: t("الكل", "All"),
-  chips: ["tint", "nano-ceramic", "polish", "wash", "ppf"] as ServiceSlug[],
-  // 8 كروت (صفّين × 4) — الترتيب من بداية السطر؛ badge = الشارة البيضا فوق الصورة
-  // ⚠ الفيجما فيها «ستيك STEK» ومش موجود في بيانات المقدّمين — مكانه في-كول (V-KOOL)
-  cards: [
-    { provider: "bareeq", badge: t("الأقرب إليك", "Closest to you") },
-    { provider: "xpel", badge: t("ضمان 10 سنوات", "10-year warranty") },
-    { provider: "nukhba", badge: t("أفضل قيمة للتظليل", "Best value for tinting") },
-    { provider: "3m", badge: t("أفلام 3M الأصلية", "Genuine 3M films") },
-    { provider: "lamaa", badge: t("تقييم ممتاز", "Excellent rating") },
-    { provider: "llumar", badge: t("ضمان حتى 5 سنوات", "Up to 5-year warranty") },
-    { provider: "v-kool", badge: t("متخصص في PPF", "PPF specialist") },
-    { provider: "johnson", badge: t("الأعلى تقييماً", "Top rated") },
-  ],
-  more: t("ومقدّمو خدمة معتمدون آخرون على لينكار", "And more certified providers on Linkar"),
-  // جدار الشعارات (Logo wall) — الترتيب من بداية السطر
-  logo_wall: [
-    "v-kool", "johnson", "nanoshield", "golden-wash", "crystal", "3seven", "autoshabo", "autoplus", "zipart",
-    "carpro", "viper", "suntek", "feynlab", "wraptek", "armor", "nanox", "dir",
-  ],
 };
 
 // ---------------------------------------------------------------- كيف تعمل لينكار (85:29850)
 export const howItWorks = {
-  overline: t("كيف يعمل لينكار", "How Linkar works"),
-  title: t("ابحث، قارن، اطلب، ثم قيّم", "Search, compare, order, then rate"),
+  overline: t("كيف تعمل لينكار", "How Linkar works"),
+  title: t("ابحث، قارن، اطلب، ثم قيّم", "Search, compare, book, then rate"),
   description: t(
     "ابحث عن خدماتك، وقارن بين مقدّمي الخدمة، واطلب وادفع في دقيقة، ثم قيّم تجربتك.",
-    "Search for your services, compare providers, order and pay in a minute, then rate your experience.",
+    "Find your services, compare providers, book and pay in a minute, then rate your experience.",
   ),
   steps: [
     {
@@ -326,7 +164,7 @@ export const howItWorks = {
       body_short: t("اكتب الخدمة أو اسم مقدّم الخدمة، ونعرض لك الأقرب لموقعك.", "Type the service or a provider’s name, and we show you the closest to you."),
       body: t(
         "اكتب الخدمة أو الخدمات التي تحتاجها، أو اسم مقدّم الخدمة، ونعرض لك الأقرب لموقعك.",
-        "Type the service or services you need, or a provider’s name, and we show you the closest to your location.",
+        "Type the services you need or a provider's name, and we show the nearest to you.",
       ),
     },
     {
@@ -334,15 +172,15 @@ export const howItWorks = {
       body_short: t("قارن الأسعار حسب نوع سيارتك، والضمان والتقييمات.", "Compare prices for your car type, warranties and ratings."),
       body: t(
         "قارن الأسعار حسب نوع سيارتك، والضمان والتقييمات، بين مقدّمي الخدمة أو بين خدماتهم.",
-        "Compare prices for your car type, warranties and ratings, across providers or across their services.",
+        "Compare prices for your car, warranties and reviews across providers or their services.",
       ),
     },
     {
-      title: t("اطلب", "Order"),
+      title: t("اطلب", "Book"),
       body_short: t("اختر الفرع وادفع إلكترونياً، وتصلك قسيمتك فوراً.", "Choose the branch and pay online, and your voucher arrives instantly."),
       body: t(
         "اختر الفرع وادفع إلكترونياً — مدى أو Apple Pay أو STC Pay أو البطاقة — وتصلك قسيمتك فوراً.",
-        "Choose the branch and pay online — mada, Apple Pay, STC Pay or card — and your voucher arrives instantly.",
+        "Pick a branch and pay online — mada, Apple Pay, STC Pay or card — and get your voucher instantly.",
       ),
     },
     {
@@ -350,7 +188,7 @@ export const howItWorks = {
       body_short: t("بعد اكتمال الخدمة قيّم تجربتك، ونتابع أي ملاحظة حتى الحل.", "Once the service is done, rate your experience and we follow up any issue until it’s resolved."),
       body: t(
         "بعد اكتمال الخدمة قيّم تجربتك، وتابع أي ملاحظة مع فريق لينكار حتى الحل.",
-        "Once the service is done, rate your experience and follow up any issue with the Linkar team until it’s resolved.",
+        "After the service, rate your experience and follow up any issue with the Linkar team until it is solved.",
       ),
     },
   ],
@@ -362,15 +200,15 @@ export const howItWorks = {
       { provider: "nanoshield", price: 1248, best: true },
       { provider: "johnson", price: 1899, best: false },
     ],
-    paid: t("تم الدفع · BK-21452 · قسيمة صالحة 14 يوماً", "Paid · BK-21452 · voucher valid for 14 days"),
+    paid: t("تم الدفع · BK-21452 · قسيمة صالحة 14 يوماً", "Paid · BK-21452 · voucher valid 14 days"),
     rate: t("قيّم واكسب 50 نقطة", "Rate and earn 50 points"),
     tags: [
-      t("حجز مؤكد فور الدفع", "Booking confirmed on payment"),
+      t("حجز مؤكد فور الدفع", "Confirmed as soon as you pay"),
       t("أسعار حسب نوع سيارتك", "Prices for your car type"),
       t("أكثر من خدمة في زيارة واحدة", "Several services in one visit"),
     ],
   },
-  protect_link: t("كيف نحمي حقك؟", "How do we protect you?"),
+  protect_link: t("كيف نحمي حقك؟", "How we protect you"),
   start: t("ابدأ الآن", "Start now"),
   guarantees: [t("حجز مؤكد فور الدفع", "Booking confirmed on payment"), t("ضمان موثّق في قسيمتك", "Warranty recorded in your voucher")],
 };
@@ -381,7 +219,7 @@ export const servicesBand = {
   title: t("كل ما تحتاجه سيارتك في منصة واحدة", "Everything your car needs on one platform"),
   description: t(
     "لكل خدمة مراكز معتمدة تقارن بينها بالسعر لسيارتك والضمان والتقييمات.",
-    "Every service has certified centers you can compare by price for your car, warranty and ratings.",
+    "Every service has certified centers to compare by price for your car, warranty and reviews.",
   ),
   description_t: t("لكل خدمة مراكز معتمدة تقارن بينها بالسعر والضمان والتقييمات.", "Every service has certified centers you can compare by price, warranty and ratings."),
   description_m: t("لكل خدمة مراكز معتمدة تقارن بينها بالسعر والضمان.", "Every service has certified centers you can compare by price and warranty."),
@@ -395,7 +233,7 @@ export const providersBand = {
     title: t("مقدّمو خدمة معتمدون قريبون منك", "Certified providers near you"),
     description: t(
       "مرتّبون حسب المسافة من موقعك. كل مقدّم خدمة على لينكار اجتاز الاعتماد، وتقييماته من حجوزات مكتملة فقط.",
-      "Sorted by distance from you. Every provider on Linkar passed certification, and their ratings come from completed bookings only.",
+      "Sorted by distance. Every provider on Linkar passed accreditation, and reviews come from completed bookings only.",
     ),
     // تابلت/موبايل
     description_t: t("مرتّبون حسب المسافة من موقعك، وتقييماتهم من حجوزات مكتملة فقط.", "Sorted by distance from you, with ratings from completed bookings only."),
@@ -406,16 +244,16 @@ export const providersBand = {
     {
       icon: "brand-shield-neon",
       glyph: "package",
-      title: t("ضمان الجودة واختبار المنتجات", "Quality assurance and product testing"),
+      title: t("ضمان الجودة واختبار المنتجات", "Quality assurance & product testing"),
       title_m: t("اختبار المنتجات", "Product testing"),
-      body: t("نختبر المنتجات المستخدمة ونتأكد من مطابقتها للمواصفات", "We test the products used and make sure they meet the specs"),
+      body: t("نختبر المنتجات المستخدمة ونتأكد من مطابقتها للمواصفات", "We test the products used and verify they meet specs"),
       body_t: t("نختبر المنتجات ونتأكد من مطابقتها", "We test the products and make sure they match"),
     },
     {
       icon: "brand-car-neon",
       glyph: "check",
-      title: t("تقييم ميداني وتصنيف", "On-site review and grading"),
-      body: t("فريق لينكار يقيّم كل مركز ويصنّفه", "The Linkar team reviews and grades every center"),
+      title: t("تقييم ميداني وتصنيف", "Field evaluation & tier"),
+      body: t("فريق لينكار يقيّم كل مركز ويصنّفه", "The Linkar team evaluates and tiers every center"),
     },
     {
       icon: "brand-heart-neon",
@@ -426,14 +264,14 @@ export const providersBand = {
     {
       icon: "brand-shield-neon",
       glyph: "gift",
-      title: t("ضمان موثّق", "Recorded warranty"),
-      body: t("مسجّل برقم قسيمة الحجز", "Registered under the booking voucher number"),
+      title: t("ضمان موثّق", "Documented warranty"),
+      body: t("مسجّل برقم قسيمة الحجز", "Registered with your voucher number"),
     },
   ] as { icon: string; glyph: "package" | "check" | "star" | "gift"; title: Text; title_m?: Text; body: Text; body_t?: Text }[],
   all: t("الكل", "All"),
   // الكروت الأربعة في الفيجما (الترتيب من بداية السطر) — والشارة فوق الاسم لكل كارت
   featured: [
-    { provider: "3m", tag: t("الأقرب إليك", "Closest to you"), ai: false },
+    { provider: "3m", tag: t("الأقرب إليك", "Nearest to you"), ai: false },
     { provider: "xpel", tag: t("ضمان 10 سنوات", "10-year warranty"), ai: false },
     { provider: "llumar", tag: t("أفضل قيمة للتظليل", "Best value for tinting"), ai: false },
     { provider: "v-kool", tag: null, ai: true },
@@ -453,10 +291,10 @@ export type OfferItem = {
 export const offersBand = {
   head: {
     overline: t("عروض مقدّمي الخدمة", "Provider offers"),
-    title: t("عروض حصرية لفترة محدودة", "Exclusive offers for a limited time"),
+    title: t("عروض حصرية لفترة محدودة", "Exclusive limited-time offers"),
     description: t(
       "خصومات يقدّمها مقدّمو الخدمة مباشرة — السعر بعد الخصم واضح قبل أن تحجز.",
-      "Discounts offered directly by providers — the price after discount is clear before you book.",
+      "Discounts offered directly by providers — the final price is clear before you book.",
     ),
     description_t: t("خصومات يقدّمها مقدّمو الخدمة مباشرة، والسعر بعد الخصم واضح قبل أن تحجز.", "Discounts offered directly by providers, and the price after discount is clear before you book."),
     description_m: t("السعر بعد الخصم واضح قبل أن تحجز.", "The price after discount is clear before you book."),
@@ -465,7 +303,7 @@ export const offersBand = {
   featured: {
     provider: "llumar",
     discount: 15,
-    title: t("حماية PPF للواجهة مع نانو سيراميك", "Front PPF protection with nano ceramic"),
+    title: t("حماية PPF للواجهة مع نانو سيراميك", "Front PPF with nano ceramic"),
     price: 5950,
     old_price: 7000,
     // العدّاد في الفيجما: 02 يوم · 14 ساعة · 36 دقيقة
@@ -475,7 +313,7 @@ export const offersBand = {
     {
       provider: "3m",
       discount: 15,
-      title: [t("نانو سيراميك", "Nano ceramic"), t("مع تظليل شامل", "with full tinting")],
+      title: [t("نانو سيراميك", "Nano Ceramic"), t("مع تظليل شامل", "With full tint")],
       features: [
         { icon: "clock", label: t("6 ساعات", "6 hours") },
         { icon: "warranty", label: t("ضمان 3 سنوات", "3-year warranty") },
@@ -487,7 +325,7 @@ export const offersBand = {
     {
       provider: "xpel",
       discount: 15,
-      title: [t("تظليل كامل للسيارة", "Full car tinting"), t("مع غسيل مجاني لمدة شهر", "with a free wash for a month")],
+      title: [t("تظليل كامل للسيارة", "Full car tint"), t("مع غسيل مجاني لمدة شهر", "With a free wash for a month")],
       features: [
         { icon: "clock", label: t("4 ساعات", "4 hours") },
         { icon: "warranty", label: t("ضمان 5 سنوات", "5-year warranty") },
@@ -504,10 +342,10 @@ export type PackageCategory = "protection" | "wash" | "polish" | "new-car";
 export const packagesBand = {
   head: {
     overline: t("باقات مقدّمي الخدمة", "Provider packages"),
-    title: t("باقات تجمع أكثر من خدمة بسعر أوفر", "Packages that bundle several services for less"),
+    title: t("باقات تجمع أكثر من خدمة بسعر أوفر", "Packages that bundle services for less"),
     description: t(
       "كل مقدّم خدمة يصمّم باقاته بنفسه — قارن محتوى الباقة وسعرها بسعر الخدمات منفردة وتقييم مقدّم الخدمة، ثم اطلبها بدفعة واحدة.",
-      "Each provider designs its own packages — compare what’s inside and the price with the services on their own and the provider’s rating, then order it in one payment.",
+      "Each provider designs its own packages — compare what is included and the price against single services and the provider's rating, then book in one payment.",
     ),
     description_t: t("كل مقدّم خدمة يصمّم باقاته بنفسه، وتُدفع مرة واحدة.", "Each provider designs its own packages, paid in one go."),
     description_m: t("كل باقة يصمّمها مقدّم الخدمة بنفسه، وتُدفع مرة واحدة.", "Every package is designed by the provider and paid in one go."),
@@ -516,10 +354,10 @@ export const packagesBand = {
   all: t("كل الباقات", "All packages"),
   // الفلاتر — الترتيب من بداية السطر
   categories: [
-    { slug: "protection", ...t("حماية وتظليل", "Protection & tinting") },
+    { slug: "protection", ...t("حماية وتظليل", "Protection & tint") },
     { slug: "wash", ...t("غسيل وعناية", "Wash & care") },
-    { slug: "polish", ...t("تلميع وتجديد", "Polish & restore") },
-    { slug: "new-car", ...t("للسيارات الجديدة", "For new cars") },
+    { slug: "polish", ...t("تلميع وتجديد", "Polish & refresh") },
+    { slug: "new-car", ...t("للسيارات الجديدة", "New cars") },
   ] as (Text & { slug: PackageCategory })[],
   prev: t("السابق", "Previous"),
   next: t("التالي", "Next"),
@@ -528,7 +366,7 @@ export const packagesBand = {
     {
       provider: "xpel",
       discount: 14,
-      title: [t("باقة السيارة الجديدة", "New car package"), t("PPF + نانو + تظليل", "PPF + nano + tinting")],
+      title: [t("باقة السيارة الجديدة", "New Car Package"), t("PPF + نانو + تظليل", "PPF + Nano + Tint")],
       features: [
         { icon: "clock", label: t("يومان", "2 days") },
         { icon: "warranty", label: t("3 خدمات", "3 services") },
@@ -541,7 +379,7 @@ export const packagesBand = {
     {
       provider: "johnson",
       discount: 16,
-      title: [t("باقة Johnson Ceramic Pro", "Johnson Ceramic Pro package"), t("مع تلميع مجاني", "with free polishing")],
+      title: [t("باقة Johnson Ceramic Pro", "Nano Ceramic & Polish Package"), t("مع تلميع مجاني", "With free polishing")],
       features: [
         { icon: "clock", label: t("يوم واحد", "1 day") },
         { icon: "warranty", label: t("خدمتان", "2 services") },
@@ -555,7 +393,7 @@ export const packagesBand = {
     {
       provider: "llumar",
       discount: 15,
-      title: [t("باقة الحماية والتظليل", "Protection & tinting package"), t("PPF + تظليل كامل", "PPF + full tinting")],
+      title: [t("باقة الحماية والتظليل", "Protection & Tint Package"), t("PPF + تظليل كامل", "PPF + full tint")],
       features: [
         { icon: "clock", label: t("يومان", "2 days") },
         { icon: "warranty", label: t("خدمتان", "2 services") },
@@ -568,7 +406,7 @@ export const packagesBand = {
     {
       provider: "nanoshield",
       discount: 18,
-      title: [t("باقة العناية الشهرية", "Monthly care package"), t("غسيل وتلميع ونانو سيراميك", "Wash, polish and nano ceramic")],
+      title: [t("باقة العناية الشهرية", "Monthly Care Package"), t("غسيل وتلميع ونانو سيراميك", "Wash, polish & nano ceramic")],
       features: [
         { icon: "clock", label: t("يوم واحد", "1 day") },
         { icon: "warranty", label: t("3 خدمات", "3 services") },
@@ -581,7 +419,7 @@ export const packagesBand = {
     {
       provider: "johnson",
       discount: 14,
-      title: [t("باقة العناية الكاملة", "Complete care package"), t("طاردة للماء + تلميع + تفصيل", "Water repellent + polish + detailing")],
+      title: [t("باقة العناية الكاملة", "Full Care Package"), t("طاردة للماء + تلميع + تفصيل", "Water-repellent + polish + detailing")],
       features: [
         { icon: "clock", label: t("8 ساعات", "8 hours") },
         { icon: "warranty", label: t("3 خدمات", "3 services") },
@@ -594,149 +432,14 @@ export const packagesBand = {
   ] satisfies (OfferItem & { categories: PackageCategory[] })[],
 };
 
-// ---------------------------------------------------------------- V2-01 · العروض والباقات (صفحة 0:1: 37:27328 · 37:27460)
-// Listing card (37:27333) — نفس الكارت للعروض والباقات
-export type ListingSpec = { icon: "clock" | "shield" | "calendar" | "package"; label: Text };
-export type ListingItem = {
-  provider: string;
-  media: string;
-  discount: number;
-  chip: Text;
-  category: { icon: "polish" | "tint" | "package"; label: Text };
-  title: Text;
-  specs: ListingSpec[];
-  price: number;
-  old_price: number;
-  package_slug?: string;
-};
-const instant: ListingSpec = { icon: "calendar", label: t("حجز فوري", "Instant booking") };
-export const listingCopy = {
-  distance: t("{km} كم منك", "{km} km from you"),
-  save: t("وفّر {n} ر.س", "Save SAR {n}"),
-  note: t("شامل الضريبة · سيدان", "VAT included · Sedan"),
-  book_package: t("احجز الباقة", "Book package"),
-};
-export const offersV3 = {
-  // العرض المميّز (37:27429) — كارت ليموني متدرّج
-  featured: {
-    provider: "xpel",
-    discount: 15,
-    badge: t("عرض الأسبوع", "Offer of the week"),
-    title: t("حماية PPF للواجهة مع نانو سيراميك", "Front PPF protection with nano ceramic"),
-    price: 5950,
-    old_price: 7000,
-  },
-  cards: [
-    {
-      provider: "lamaa",
-      media: "lamaa",
-      discount: 20,
-      chip: t("ينتهي خلال أسبوع", "Ends in a week"),
-      category: { icon: "polish", label: t("التلميع · ثلاث مراحل", "Polishing · three stages") },
-      title: t("تلميع ثلاث مراحل + حماية سيراميك", "Three-stage polish + ceramic protection"),
-      specs: [
-        { icon: "clock", label: t("4 ساعات", "4 hours") },
-        { icon: "shield", label: t("ضمان 6 أشهر", "6-month warranty") },
-        instant,
-      ],
-      price: 720,
-      old_price: 900,
-    },
-    {
-      provider: "llumar",
-      media: "llumar",
-      discount: 15,
-      chip: t("ينتهي خلال 3 أيام", "Ends in 3 days"),
-      category: { icon: "tint", label: t("التظليل · كامل السيارة", "Tinting · full car") },
-      title: t("تظليل لومار سيراميك لكامل السيارة", "LLumar ceramic tint for the full car"),
-      specs: [
-        { icon: "clock", label: t("4 ساعات", "4 hours") },
-        { icon: "shield", label: t("ضمان 5 سنوات", "5-year warranty") },
-        instant,
-      ],
-      price: 1400,
-      old_price: 1650,
-    },
-  ] satisfies ListingItem[],
-};
-const svc = (n: 2 | 3) => (n === 3 ? t("3 خدمات", "3 services") : t("خدمتان", "2 services"));
-const pkgChip = (n: 2 | 3) => (n === 3 ? t("باقة · 3 خدمات", "Package · 3 services") : t("باقة · خدمتان", "Package · 2 services"));
-export const packagesV3 = {
-  // الترتيب من بداية الشريط في الفيجما (XPEL على الطرف)
-  cards: [
-    {
-      provider: "xpel",
-      media: "pkg-new-car",
-      discount: 14,
-      chip: pkgChip(3),
-      category: { icon: "package", label: t("باقة · PPF + نانو + تظليل", "Package · PPF + nano + tint") },
-      title: t("باقة السيارة الجديدة", "New car package"),
-      specs: [{ icon: "package", label: svc(3) }, { icon: "clock", label: t("يومان", "2 days") }, instant],
-      price: 7800,
-      old_price: 9100,
-      categories: ["new-car", "protection"],
-    },
-    {
-      provider: "johnson",
-      media: "pkg-ceramic-pro",
-      discount: 16,
-      chip: pkgChip(2),
-      category: { icon: "package", label: t("باقة · نانو سيراميك + تلميع", "Package · nano ceramic + polish") },
-      title: t("باقة Johnson Ceramic Pro", "Johnson Ceramic Pro package"),
-      specs: [{ icon: "package", label: svc(2) }, { icon: "clock", label: t("يوم واحد", "1 day") }, instant],
-      price: 1899,
-      old_price: 2250,
-      package_slug: "johnson-ceramic-pro",
-      categories: ["polish", "new-car"],
-    },
-    {
-      provider: "llumar",
-      media: "pkg-protection",
-      discount: 15,
-      chip: pkgChip(2),
-      category: { icon: "package", label: t("باقة · PPF + تظليل", "Package · PPF + tint") },
-      title: t("باقة الحماية والتظليل", "Protection & tinting package"),
-      specs: [{ icon: "package", label: svc(2) }, { icon: "clock", label: t("يومان", "2 days") }, instant],
-      price: 4950,
-      old_price: 5850,
-      categories: ["protection"],
-    },
-    {
-      provider: "nanoshield",
-      media: "pkg-monthly",
-      discount: 18,
-      chip: pkgChip(3),
-      category: { icon: "package", label: t("باقة · غسيل + تلميع + نانو", "Package · wash + polish + nano") },
-      title: t("باقة العناية الشهرية", "Monthly care package"),
-      specs: [{ icon: "package", label: svc(3) }, { icon: "clock", label: t("يوم واحد", "1 day") }, instant],
-      price: 1690,
-      old_price: 2070,
-      categories: ["wash", "polish"],
-    },
-    {
-      provider: "johnson",
-      media: "pkg-ceramic-pro",
-      discount: 14,
-      chip: pkgChip(3),
-      category: { icon: "package", label: t("باقة · حماية + تلميع + تفصيل", "Package · protection + polish + detailing") },
-      title: t("باقة العناية الكاملة", "Complete care package"),
-      specs: [{ icon: "package", label: svc(3) }, { icon: "clock", label: t("8 ساعات", "8 hours") }, instant],
-      price: 1499,
-      old_price: 1748,
-      categories: ["wash", "polish"],
-    },
-  ] satisfies (ListingItem & { categories: PackageCategory[] })[],
-};
-
-// ---------------------------------------------------------------- V2-01 · التطبيق (85:30107)
+// ---------------------------------------------------------------- V2-01 · التطبيق (202:7679)
 export const appBand = {
   overline: t("تطبيق لينكار", "Linkar app"),
-  // V2-01
   title_1: t("لينكار في جيبك", "Linkar in your pocket"),
-  title_2: t("احجز، ادفع، وتابع", "Book, pay and follow"),
+  title_2: t("احجز، ادفع، وتابع", "Book, pay and follow up"),
   description: t(
-    "احجز من جوالك في دقائق: قارن مقدّمي الخدمة، ادفع بلمسة، وتابع سيارتك حتى الاستلام — مع قسائمك وضماناتك في مكان واحد.",
-    "Book from your phone in minutes: compare providers, pay with a tap and follow your car until pickup — with your vouchers and warranties in one place.",
+    "احجز من جوالك في دقائق: قارن مقدّمي الخدمة، ادفع بلمسة، واستلم قسيمتك فوراً — مع قسائمك وضماناتك في مكان واحد.",
+    "Book from your phone in minutes: compare providers, pay with a tap and get your voucher instantly — with all your vouchers and warranties in one place.",
   ),
   description_t: t("احجز من جوالك في دقائق: قارن مقدّمي الخدمة، ادفع بلمسة، واستلم قسيمتك فوراً.", "Book from your phone in minutes: compare providers, pay with a tap and get your voucher instantly."),
   description_m: t(
@@ -745,39 +448,37 @@ export const appBand = {
   ),
   // الترتيب من بداية السطر (صفّين) — glyph = أيقونة التابلت/الموبايل (UI icon على مربع ليموني)
   features: [
-    { icon: "brand-calendar-neon", glyph: "check" as const, title: t("تأكيد فوري للحجز", "Instant booking confirmation"), body: t("يتأكد حجزك لحظة الدفع", "Your booking is confirmed the moment you pay") },
-    { icon: "feature-payment-neon", glyph: "card" as const, title: t("ادفع خلال ثوانٍ", "Pay in seconds"), body: t("مدى وApple Pay وSTC Pay والبطاقات", "mada, Apple Pay, STC Pay and cards") },
-    { icon: "brand-car-neon", glyph: "car" as const, title: t("تتبّع حالة سيارتك", "Track your car’s status"), body: t("وصلت · بدأ العمل · جاهزة", "Arrived · work started · ready") },
-    { icon: "feature-gift-neon", glyph: "gift" as const, title: t("هداياك وضماناتك", "Your gifts and warranties"), body: t("كل القسائم والضمانات في مكان واحد", "All vouchers and warranties in one place") },
+    { icon: "brand-calendar-neon", glyph: "check" as const, title: t("تأكيد فوري للحجز", "Instant confirmation"), body: t("يتأكد حجزك لحظة الدفع", "Your booking is confirmed the moment you pay") },
+    { icon: "feature-payment-neon", glyph: "card" as const, title: t("ادفع خلال ثوانٍ", "Pay in seconds"), body: t("مدى، Apple Pay، STC Pay والبطاقات", "mada, Apple Pay, STC Pay and cards") },
+    { icon: "brand-car-neon", glyph: "qr" as const, title: t("قسيمتك على جوالك", "Your voucher on your phone"), body: t("صالحة 14 يوماً · تعرضها في الفرع", "Valid 14 days · show it at the branch") },
+    { icon: "feature-gift-neon", glyph: "gift" as const, title: t("باقاتك وضماناتك", "Your packages & warranties"), body: t("كل القسائم والضمانات في مكان واحد", "All vouchers and warranties in one place") },
   ],
   chips: {
-    accepted: t("تم تأكيد حجزك — قسيمتك جاهزة", "Your booking is confirmed — your voucher is ready"),
-    gift: t("هديتك من الوكالة وصلت", "Your dealer gift has arrived"),
-    tracking: t("بدأ العمل على سيارتك · 3:10 م", "Work on your car has started · 3:10 PM"),
+    accepted: t("تم تأكيد حجزك — قسيمتك جاهزة", "Booking confirmed — your voucher is ready"),
+    gift: t("باقتك من الوكالة وصلت", "Your dealer package has arrived"),
+    tracking: t("تم تأكيد حجزك وإرسال القسيمة", "Booking confirmed and voucher sent"),
   },
   scan: t("امسح للتحميل", "Scan to download"),
-  platforms: t("آيفون وأندرويد", "iPhone and Android"),
   phones_alt: t("شاشات تطبيق لينكار: الرئيسية وقسيمة الحجز", "Linkar app screens: home and booking voucher"),
 };
 
-// ---------------------------------------------------------------- V2-01 · آراء العملاء (85:30340)
+// ---------------------------------------------------------------- V2-01 · آراء العملاء (202:7912)
 export const reviewsBand = {
   head: {
     overline: t("آراء العملاء", "Customer reviews"),
     title: t("تجارب حقيقية من حجوزات مكتملة", "Real experiences from completed bookings"),
     description: t(
-      "لا يستطيع أحد التقييم إلا بعد استلام سيارته من مقدّم الخدمة — لذلك تثق بما تقرأ.",
-      "No one can leave a review until they’ve picked up their car from the provider — so you can trust what you read.",
+      "لا يمكنك التقييم إلا بعد استلام سيارتك من مقدم الخدمة.",
+      "You can only review after collecting your car from the provider.",
     ),
   } satisfies Head,
   summary: t("تقييمات موثّقة من عملاء حقيقيين", "Verified reviews from real customers"),
-  summary_note: t("بعد حجوزات مكتملة فقط", "After completed bookings only"),
   of5: t("من 5", "of 5"),
   // الترتيب من بداية السطر؛ الكارت الغامق هو التاني
   items: [
     {
       rating: 5,
-      text: t("خدمة ممتازة والتزام بالموعد. الفيلم نظيف بدون فقاعات، والتعامل راقٍ جداً. أنصح به.", "Excellent service and right on time. The film is clean with no bubbles and the staff were very professional. Recommended."),
+      text: t("خدمة ممتازة ودقيقة. الفيلم نظيف بدون فقاعات، والتعامل راقٍ جداً. أنصح به.", "Excellent, precise work. Clean film with no bubbles and very professional staff. Recommended."),
       name: t("عبدالله ع.", "Abdullah A."),
       initial: t("ع", "A"),
       service: t("تظليل · لومار LLumar", "Tinting · LLumar"),
@@ -786,10 +487,10 @@ export const reviewsBand = {
     },
     {
       rating: 5,
-      text: t("شفت السعر لسيارتي قبل الدفع بدون مفاجآت، واستلمت السيارة في الموعد بالضبط.", "I saw the price for my car before paying, no surprises, and got the car back exactly on time."),
+      text: t("شفت السعر لسيارتي قبل الدفع بدون مفاجآت، ودفعت نفس المبلغ بالضبط.", "I saw my car's price before paying — no surprises, I paid exactly that amount."),
       name: t("نورة س.", "Noura S."),
       initial: t("ن", "N"),
-      service: t("تلميع · مركز لمعة للتلميع", "Polishing · Lamaa Polishing Center"),
+      service: t("تلميع · مركز لمعة للتلميع", "Polishing · Lamaa Center"),
       car: t("هيونداي توسان 2024", "Hyundai Tucson 2024"),
       date: t("قبل أسبوع", "1 week ago"),
     },
@@ -797,7 +498,7 @@ export const reviewsBand = {
       rating: 4,
       text: t(
         "قارنت بين أكثر من مقدّم خدمة لنفس الخدمة، واخترت الأنسب لسعري وسيارتي. الحجز تأكد مباشرة بعد الدفع.",
-        "I compared several providers for the same service and picked the best fit for my budget and car. The booking was confirmed right after payment.",
+        "I compared several providers for the same service and picked the best for my budget and car. The booking was confirmed right after payment.",
       ),
       name: t("فهد م.", "Fahad M."),
       initial: t("ف", "F"),
@@ -807,7 +508,7 @@ export const reviewsBand = {
     },
     {
       rating: 4,
-      text: t("الشغل نظيف والتزموا بالموعد بالضبط. السعر اللي شفته في لينكار هو نفسه اللي دفعته.", "Clean work and exactly on time. The price I saw on Linkar is exactly what I paid."),
+      text: t("الشغل نظيف ومرتب، والسعر اللي شفته في لينكار هو نفسه اللي دفعته.", "Clean, tidy work — and the price I saw on Linkar is exactly what I paid."),
       name: t("سلطان ع.", "Sultan A."),
       initial: t("س", "S"),
       service: t("نانو سيراميك · جونسون Johnson", "Nano ceramic · Johnson"),
@@ -816,33 +517,33 @@ export const reviewsBand = {
     },
     {
       rating: 4,
-      text: t("المقاعد رجعت كأنها جديدة، والفريق شرح لي طريقة العناية بعد الخدمة.", "The seats look brand new, and the team explained how to care for them afterwards."),
+      text: t("المقاعد رجعت كأنها جديدة، والفريق شرح لي طريقة العناية بعد الخدمة.", "The seats look brand new, and the team explained aftercare to me."),
       name: t("هند م.", "Hind M."),
       initial: t("ه", "H"),
-      service: t("تفصيل داخلي كامل · جونسون Johnson", "Full interior detailing · Johnson"),
+      service: t("تنظيف داخلي عميق · جونسون Johnson", "Full interior detailing · Johnson"),
       car: t("لكزس ES 2022", "Lexus ES 2022"),
       date: t("قبل أسبوع", "1 week ago"),
     },
     {
       rating: 4,
-      text: t("غسيل ممتاز وسريع، والتزموا بالموعد تماماً. الداخلية نظيفة جداً.", "Excellent, quick wash and fully on time. The interior is spotless."),
+      text: t("غسيل ممتاز ودقيق، والداخلية نظيفة جداً.", "Excellent, thorough wash — the interior is spotless."),
       name: t("محمد س.", "Mohammed S."),
       initial: t("م", "M"),
-      service: t("غسيل خارجي وداخلي · مغاسل بريق", "Exterior & interior wash · Bareeq"),
+      service: t("غسيل شامل · خارجي وداخلي · مغاسل بريق", "Exterior & interior wash · Bareeq"),
       car: t("تويوتا كامري 2023", "Toyota Camry 2023"),
       date: t("قبل أسبوعين", "2 weeks ago"),
     },
   ],
 };
 
-// ---------------------------------------------------------------- V2-01 · باقات الوكالات (85:30520)
+// ---------------------------------------------------------------- V2-01 · باقات الوكالات (202:8092)
 export const dealerBand = {
   badge: t("باقات وكالات السيارات", "Car dealer packages"),
   title_1: t("اشتريت سيارة جديدة؟", "Bought a new car?"),
   title_2: t("قد تكون باقتك بانتظارك", "Your package may be waiting"),
   body: t(
     "تبيع وكالات السيارات لعملائها باقات عناية من مقدّمي خدمة معتمدين عبر لينكار. سجّل دخولك برقم الجوال المسجّل لدى الوكالة، وستجد باقتك في حسابك مع قسيمتها والفرع المحدد — ثم زر الفرع واعرض القسيمة.",
-    "Car dealers sell their customers care packages from certified providers through Linkar. Sign in with the mobile number registered with the dealer and you’ll find your package in your account with its voucher and branch — then visit the branch and show the voucher.",
+    "Car dealers sell their customers care packages from certified providers through Linkar. Sign in with the mobile number registered at the dealer to find your package, voucher and branch — then visit and show the voucher.",
   ),
   body_t: t(
     "سجّل دخولك برقم الجوال المسجّل لدى الوكالة، وستجد باقتك في حسابك مع قسيمتها والفرع المحدد، ثم زر الفرع واعرض القسيمة.",
@@ -855,39 +556,31 @@ export const dealerBand = {
   step_label: t("الخطوة {n}", "Step {n}"),
   // الترتيب من بداية السطر
   steps: [
-    { icon: "brand-mail-outline", title: t("تصلك رسالة من الوكالة", "You get a message from the dealer") },
-    { icon: "brand-phone-outline", title: t("سجّل دخولك برقم جوالك", "Sign in with your mobile number") },
-    { icon: "brand-calendar-outline", title: t("اختر مقدّم الخدمة والفرع", "Choose the provider and branch") },
+    { icon: "brand-mail-outline", title: t("تصلك رسالة من الوكالة", "Get a message from the dealer") },
+    { icon: "brand-phone-outline", title: t("سجّل دخولك برقم جوالك", "Sign in with your mobile") },
+    { icon: "brand-calendar-outline", title: t("اختر مقدّم الخدمة والفرع", "Choose provider and branch") },
   ],
   cta: t("اعرض باقاتك", "View your packages"),
   how: t("كيف تعمل باقات الوكالات؟", "How do dealer packages work?"),
-  note: t("لا تُستخدم أي قسيمة إلا بعد التحقق من رقم الجوال المسجّل فى الوكالة.", "A voucher can only be used after the mobile number registered with the dealer is verified."),
+  note: t("لا تُستخدم أي قسيمة إلا بعد التحقق من رقم الجوال المسجّل فى الوكالة.", "No voucher can be used before verifying the mobile number registered at the dealer."),
   // بطاقات الهدايا في الرسم
   gift_from: t("باقة من", "Package from"),
   dealer_name: t("وكالة شريكة", "Partner dealer"),
-  dealer_initial: t("ر", "P"),
+  dealer_initial: t("ر", "R"),
   back_card: {
     status: t("محجوزة · الاثنين 12 أكتوبر", "Booked · Mon 12 Oct"),
     title: t("نانو سيراميك مجاني للهيكل", "Free body nano ceramic"),
-    details: t("باقة عناية مع سيارتك الجديدة", "A care package with your new car"),
+    details: t("باقة عناية مع سيارتك الجديدة", "Care package with your new car"),
     validity: t("صالحة حتى 30 ديسمبر 2026", "Valid until 30 Dec 2026"),
   },
   front_card: {
     status: t("جاهزة للاستخدام", "Ready to use"),
     title: t("عزل حراري مجاني للزجاج كامل", "Free full-glass heat insulation"),
-    details: t("باقة عناية مع سيارتك الجديدة", "A care package with your new car"),
-    validity: t("صالحة 90 يوماً · لدى مقدّمي الخدمة المعتمدين", "Valid for 90 days · at certified providers"),
+    details: t("باقة عناية مع سيارتك الجديدة", "Care package with your new car"),
+    validity: t("صالحة 90 يوماً · لدى مقدّمي الخدمة المعتمدين", "Valid 90 days · at certified providers"),
     cta: t("عرض القسيمة", "View voucher"),
   },
-  lock: t("تظهر بعد التحقق من رقمك", "Shown after your number is verified"),
-  // Partners (37:28236) — بلاطات لوجوهات الوكالات تحت اللوحة؛ الترتيب من بداية السطر؛ w/h = مقاس اللوجو جوه البلاطة (243×88)
-  dealers: [
-    { name: "Abdul Latif Jameel", src: "abdul-latif-jameel.png", w: 140, h: 33 },
-    { name: "Petromin", src: "petromin.svg", w: 55, h: 54 },
-    { name: "Toyota", src: "toyota.svg", w: 140, h: 23 },
-    { name: "Hyundai", src: "hyundai.svg", w: 140, h: 18 },
-    { name: "Nissan", src: "nissan.svg", w: 120, h: 27 },
-  ],
+  lock: t("تظهر بعد التحقق من رقمك", "Appears after verifying your number"),
 };
 
 // ---------------------------------------------------------------- عناوين الأقسام المستخدمة كمراجع (#)

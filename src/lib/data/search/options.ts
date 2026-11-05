@@ -105,9 +105,9 @@ export const recentSearches: RecentSearch[] = [
 export const popularServices: ServiceSlug[] = ["wash", "ppf", "tint", "polish", "nano-ceramic"];
 
 // خدمات بأسماء تجارية عند مقدّمي الخدمة — بتظهر في اقتراحات لوحة البحث
-// (من كروت W2-30/W2-30a) — Johnson Ceramic Pro مذكورة في W2-29 نفسها
+// (من كروت W2-30/W2-30a) — «طلاء نانو سيراميك · بريميوم» مذكورة في W2-29 نفسها
 export const namedServices: (ReturnType<typeof L> & { service: ServiceSlug; provider: string })[] = [
-  { ...L("‏Johnson Ceramic Pro", "Johnson Ceramic Pro"), service: "nano-ceramic", provider: "johnson" },
+  { ...L("طلاء نانو سيراميك · بريميوم", "Nano-ceramic coating · Premium"), service: "nano-ceramic", provider: "johnson" },
   { ...L("XPEL Fusion Plus", "XPEL Fusion Plus"), service: "nano-ceramic", provider: "xpel" },
   { ...L("تظليل Prime XR", "Prime XR tinting"), service: "tint", provider: "xpel" },
   { ...L("نانو سيراميك 9H", "Nano Ceramic 9H"), service: "nano-ceramic", provider: "nanoshield" },

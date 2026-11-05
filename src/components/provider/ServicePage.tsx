@@ -142,7 +142,7 @@ export function ServicePage({
     toast({ text: t.addedToCompare(next.length + 1), icon: "check" });
   };
   const compareItems = [
-    t.compareItem(sName, short),
+    t.compareItem((locale === "en" ? service.short_name_en : service.short_name_ar) ?? sName, short),
     ...otherOffers.filter((o) => compare.includes(o.provider.slug)).map((o) => t.compareItem(tx(locale, o, "name"), tx(locale, o.provider, "short_name"))),
   ];
 
@@ -227,7 +227,12 @@ export function ServicePage({
               <Link href={routes.provider(provider.slug)} className="flex items-center gap-2.5">
                 {/* Partner logo · Tile 56 (r 24.9) في العميل المعدّل */}
                 <LogoTile src={provider.logo} alt={name} size={56} radius={25} />
-                <span className="text-label-l text-deep-charcoal">{name}</span>
+                <span className="text-label-l text-deep-charcoal">
+                  {/* W2-32: «جونسون Johnson · المنتج: Johnson Ceramic Pro 9H · ضمان 9 سنوات» */}
+                  {[name, service.product && `${t.product}: ${service.product}`, service.product && service.warranty_label && tx(locale, service.warranty_label, "label")]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
               </Link>
               {/* العميل المعدّل: التصنيف بس حتى في W2-32s (اتشالت «معتمد LINKAR») */}
               <ProviderBadges locale={locale} tier={provider.tier} certified={false} surface="light" />
@@ -513,7 +518,7 @@ export function ServicePage({
               <p className="text-body-s text-state-gray">{t.otherProvidersSub}</p>
             </div>
             <Link href={routes.search({ services: [category.slug] })} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
-              {t.allProvidersOf(categoryDefinite)}
+              {t.allProviders}
               <Icon name="chevron-left" size={16} flip />
             </Link>
           </div>

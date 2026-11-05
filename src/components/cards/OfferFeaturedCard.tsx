@@ -8,7 +8,7 @@ import { RatingMeta } from "@/components/ui/Badges";
 import { ClientLogo } from "./ClientLogo";
 import { Countdown } from "./Countdown";
 
-// v2 · Offer card · Featured (1626:26019) — كارت ثابت 611×611 (r30.5). الأماكن من إحداثيات الفيجما بالظبط
+// v2 · Offer card · Featured (1626:26019 · نسخة العميل 202:7642/202:15196: كحلي سادة، الخصم والعنوان #bffa4f) — كارت ثابت 611×611 (r30.5). الأماكن من إحداثيات الفيجما بالظبط
 // (start = يمين في العربي): «مقدم من» + صندوق الشعار، التقييم، الخصم الكبير، السعر والسعر القديم،
 // عنوان العرض، عدّاد «ينتهي خلال» و«احجز العرض».
 export function OfferFeaturedCard({
@@ -36,8 +36,7 @@ export function OfferFeaturedCard({
     <>
     {/* موبايل (أقل من sm): نفس المحتوى مرصوص عادي بمقاسات مقروءة — الكارت الأصلي متثبّت بإحداثيات 611 وتصغيره كان بيخلّي النص 7–8px */}
     <article
-      className="flex w-full flex-col gap-4 overflow-hidden rounded-[24px] border border-white/10 bg-cover bg-center p-5 text-white sm:hidden"
-      style={{ backgroundImage: "url(/figma/cards/offer-featured-bg.png)" }}
+      className="flex w-full flex-col gap-4 overflow-hidden rounded-[24px] border border-white/10 bg-deep-charcoal p-5 text-white sm:hidden"
     >
       <div className="flex items-center gap-3">
         <div className="flex h-[72px] w-[120px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-v3-card-stroke bg-white">
@@ -50,7 +49,7 @@ export function OfferFeaturedCard({
         </div>
       </div>
       <div className="flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
-        <span className="text-[34px] leading-[1.3] font-bold text-neon-green">{t.discount(discount)}</span>
+        <span className="text-[34px] leading-[1.3] font-bold text-neon-title">{t.discount(discount)}</span>
         <span className="flex flex-col items-end">
           <span className="text-[24px] leading-[1.3] font-bold whitespace-nowrap text-neon-green">{formatPrice(locale, price)}</span>
           <span className="text-[14px] whitespace-nowrap">
@@ -58,7 +57,7 @@ export function OfferFeaturedCard({
           </span>
         </span>
       </div>
-      <h3 className="text-[20px] leading-[1.5] font-medium">{title}</h3>
+      <h3 className="text-[20px] leading-[1.5] font-medium text-neon-title">{title}</h3>
       <div className="flex flex-wrap justify-center">
         <Countdown locale={locale} endsAt={endsAt} />
       </div>
@@ -70,8 +69,7 @@ export function OfferFeaturedCard({
       </Link>
     </article>
     <article
-      className="relative hidden size-[611px] shrink-0 overflow-hidden rounded-[30.5px] border border-white/10 bg-cover bg-center text-white sm:block"
-      style={{ backgroundImage: "url(/figma/cards/offer-featured-bg.png)" }}
+      className="relative hidden size-[611px] shrink-0 overflow-hidden rounded-[30.5px] border border-white/10 bg-deep-charcoal text-white sm:block"
     >
       <span className="absolute start-[49.6px] top-[40.9px] text-[22.97px] leading-normal">{t.offeredBy}</span>
       <div className="absolute start-[180px] top-[52.5px] flex h-[160.9px] w-[270.6px] items-center justify-center overflow-hidden rounded-[10px] border border-v3-card-stroke bg-white">
@@ -80,7 +78,7 @@ export function OfferFeaturedCard({
       <div className="absolute start-[180px] top-[220.5px] flex h-[21px] items-center">
         <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} />
       </div>
-      <span className="absolute start-[21.8px] top-[265.7px] w-[320px] text-start text-[45.48px] leading-normal font-bold text-neon-green">
+      <span className="absolute start-[21.8px] top-[265.7px] w-[320px] text-start text-[45.48px] leading-normal font-bold text-neon-title">
         {t.discount(discount)}
       </span>
       <span className="absolute end-[42.3px] top-[281.8px] w-[260px] text-end text-[32px] leading-normal font-bold text-neon-green">
@@ -89,7 +87,7 @@ export function OfferFeaturedCard({
       <span className="absolute start-[412.6px] top-[332.1px] w-[150px] text-start text-[14px] leading-normal">
         <s>{formatNumber(oldPrice)}</s> {currency(locale)}
       </span>
-      <h3 className="absolute start-[50.3px] top-[387.6px] w-[540px] text-start text-[28.95px] leading-normal font-medium">{title}</h3>
+      <h3 className="absolute start-[50.3px] top-[387.6px] w-[540px] text-start text-[28.95px] leading-normal font-medium text-neon-title">{title}</h3>
       <Countdown locale={locale} endsAt={endsAt} variant="featured" />
       <Link
         href={bookHref}

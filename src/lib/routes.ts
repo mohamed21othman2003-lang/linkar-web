@@ -45,6 +45,7 @@ export const routes = {
   booking: (id: string) => `/account/bookings/${id}`, // W2-37
   bookingReview: (id: string) => `/account/bookings/${id}?rate=1`, // W2-63 (تقييم الخدمة فوق W2-37c)
   voucher: (id: string) => `/account/bookings/${id}/voucher`, // W2-37v
+  warranties: "/account/warranties", // W2-74 (+ P-30 شهادة الضمان)
   favorites: (tab?: string) => (tab ? `/account/favorites?tab=${tab}` : "/account/favorites"), // W2-64
   points: "/account/points", // W2-65
   dealerPackages: "/account/dealer-packages", // W2-66
@@ -76,7 +77,7 @@ export const routes = {
 
   // 09 · عن لينكار والمساعدة والسياسات
   about: "/about", // W2-95
-  aboutVision: "/about#vision",
+  aboutVision: "/about", // «رؤيتنا ورسالتنا» في قائمة «من نحن» — الكروت اتشالت من W2-95، فبتفتح أول الصفحة
   howItWorks: "/about#how-it-works",
   contact: "/contact", // W2-96
   help: "/help", // W2-97

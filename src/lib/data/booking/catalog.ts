@@ -1,15 +1,15 @@
 import type { BookingItem, ProviderDisplay } from "./types";
 
 // تخصيصات بنود الحجز (اسم الشيب على الخريطة W2-33c). الأسعار والأسماء من lib/data/provider-details (صفحة المزوّد).
-// المصدر: ملخص الحجز في W2-33…W2-35 («Johnson Ceramic Pro 1,899» + «تفصيل داخلي كامل 449»)
+// المصدر: ملخص الحجز في W2-33…W2-35 («طلاء نانو سيراميك · بريميوم 1,899» + «تنظيف داخلي عميق 449»)
 // وخريطة W2-33c (شيبس «تفصيل داخلي» و«نانو سيراميك»). باقي البنود بتيجي من العروض والباقات.
 export const bookingItems: BookingItem[] = [
   {
     id: "interior-detailing",
     provider: "johnson",
     service: "wash",
-    name_ar: "تفصيل داخلي كامل",
-    name_en: "Full interior detailing",
+    name_ar: "تنظيف داخلي عميق",
+    name_en: "Deep interior cleaning",
     chip_ar: "تفصيل داخلي",
     chip_en: "Interior detailing",
     price: 449,

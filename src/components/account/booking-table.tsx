@@ -146,18 +146,12 @@ export function BookingTable({
                 role="tab"
                 aria-selected={on}
                 onClick={() => selectTab(k)}
-                className={`flex h-10 shrink-0 items-center gap-2 rounded-[10px] ps-4 pe-3 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${
+                className={`flex h-10 shrink-0 items-center gap-2 rounded-[10px] px-4 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${
                   on ? "bg-deep-charcoal text-neon-green shadow-elevation-1" : "text-deep-charcoal hover:bg-white/70"
                 }`}
               >
-                {t.tabs[k]}
-                <span
-                  className={`flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-caption tabular-nums ${
-                    on ? "bg-neon-green text-deep-charcoal" : "bg-white text-state-gray"
-                  }`}
-                >
-                  {counts[k]}
-                </span>
+                {/* W2-38 (202:17649): العدد بين قوسين جنب اسم التبويب — «الكل (5)» */}
+                {`${t.tabs[k]} (${counts[k]})`}
               </button>
             );
           })}

@@ -15,7 +15,7 @@ export function ReviewsBand({ locale, content }: { locale: Locale; content: Home
     <section className="relative overflow-hidden bg-white py-9 md:py-16 xl:py-[104px]">
       <span
         aria-hidden
-        className="pointer-events-none absolute end-10 -top-[140px] hidden text-[520px] leading-[986px] font-bold text-neon-green opacity-35 select-none xl:block"
+        className="pointer-events-none absolute end-10 -top-[290px] hidden text-[520px] leading-[986px] font-bold text-neon-green opacity-35 select-none xl:block"
       >
         ”
       </span>
@@ -24,7 +24,6 @@ export function ReviewsBand({ locale, content }: { locale: Locale; content: Home
           rtl={locale === "ar"}
           head={<SectionHead overline={s(r.head.overline)} title={s(r.head.title)} description={s(r.head.description)} />}
           summary={s(r.summary)}
-          summaryNote={s(r.summary_note)}
           prevLabel={d.previous}
           nextLabel={d.next}
           slideLabel={d.slide}

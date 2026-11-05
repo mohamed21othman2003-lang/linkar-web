@@ -55,7 +55,7 @@ const en: typeof ar = {
   endsIn: "Ends in",
   day: "Days",
   hour: "Hours",
-  minute: "Mins",
+  minute: "Min",
   offeredBy: "Offered by",
   aiPick: "AI pick",
   findItAt: "Available at",

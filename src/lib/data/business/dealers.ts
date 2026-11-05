@@ -120,8 +120,8 @@ export const dealersPage = {
       "The customer gets a message from Linkar with your dealership’s name, the package and the branch, and finds the package and its voucher in their account. They pay nothing through Linkar and only need to show the voucher at the branch.",
     sms_from_ar: "رسالة نصية من LINKAR",
     sms_from_en: "Text message from LINKAR",
-    sms_ar: "لديك باقة Johnson Ceramic Pro من الريادة للسيارات. اعرض القسيمة عند زيارتك جونسون Johnson · فرع الزهراء: lnkr.sa/v/…",
-    sms_en: "You have a Johnson Ceramic Pro package from Al Riyada Motors. Show the voucher when you visit Johnson · Al Zahraa branch: lnkr.sa/v/…",
+    sms_ar: "لديك باقة النانو والتلميع من الريادة للسيارات. اعرض القسيمة عند زيارتك جونسون Johnson · فرع الزهراء: lnkr.sa/v/…",
+    sms_en: "You have a Nano & Polish package from Al Riyada Motors. Show the voucher when you visit Johnson · Al Zahraa branch: lnkr.sa/v/…",
   },
 
   join_title_ar: "كيف تنضم؟",

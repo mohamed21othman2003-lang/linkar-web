@@ -71,8 +71,8 @@ export const complaints: Complaint[] = [
     status_en: "Open · awaiting your reply",
     title_ar: "آثار تلميع على حواف المصابيح الأمامية",
     title_en: "Polish residue on the headlight edges",
-    meta_ar: "الحجز BK-21388 · تلميع ثلاث مراحل · مركز لمعة للتلميع · فُتحت الجمعة 9 أكتوبر",
-    meta_en: "Booking BK-21388 · 3-stage polish · Lamaa Polishing Center · opened Fri 9 Oct",
+    meta_ar: "الحجز BK-21388 · تلميع خارجي · 3 مراحل · مركز لمعة للتلميع · فُتحت الجمعة 9 أكتوبر",
+    meta_en: "Booking BK-21388 · Exterior polish · 3 stages · Lamaa Polishing Center · opened Fri 9 Oct",
     thread: [
       {
         from: "you",
@@ -114,7 +114,7 @@ export const complaints: Complaint[] = [
     status_en: "Closed · resolved",
     title_ar: "بقع ماء على الزجاج بعد الغسيل",
     title_en: "Water spots on the glass after the wash",
-    meta_ar: "الحجز BK-21302 · غسيل خارجي وداخلي · مغاسل بريق",
+    meta_ar: "الحجز BK-21302 · غسيل شامل · خارجي وداخلي · مغاسل بريق",
     meta_en: "Booking BK-21302 · exterior & interior wash · Bareeq Car Wash",
     summary: {
       text_ar: "أُغلقت: أعاد المركز الغسيل مجاناً الأربعاء 30 سبتمبر — وقيّمت الحل «ممتاز».",
@@ -205,16 +205,16 @@ export const pickerBookings: PickerBooking[] = [
   {
     id: "BK-21388",
     provider: "lamaa",
-    title_ar: "تلميع ثلاث مراحل · مركز لمعة للتلميع",
-    title_en: "3-stage polish · Lamaa Polishing Center",
+    title_ar: "تلميع خارجي · 3 مراحل · مركز لمعة للتلميع",
+    title_en: "Exterior polish · 3 stages · Lamaa Polishing Center",
     meta_ar: "‏BK-21388 · اكتمل الخميس 8 أكتوبر · لكزس ES 2022",
     meta_en: "BK-21388 · completed Thu 8 Oct · Lexus ES 2022",
   },
   {
     id: "BK-21302",
     provider: "bareeq",
-    title_ar: "غسيل خارجي وداخلي · مغاسل بريق",
-    title_en: "Exterior & interior wash · Bareeq Car Wash",
+    title_ar: "غسيل شامل · خارجي وداخلي · مغاسل بريق",
+    title_en: "Full wash · exterior & interior · Bareeq Car Wash",
     meta_ar: "‏BK-21302 · اكتمل الاثنين 28 سبتمبر · تويوتا كامري 2023",
     meta_en: "BK-21302 · completed Mon 28 Sep · Toyota Camry 2023",
     note: { text_ar: "مضى أكثر من 7 أيام — متاح لمشكلات الضمان فقط", text_en: "More than 7 days ago — warranty issues only" },

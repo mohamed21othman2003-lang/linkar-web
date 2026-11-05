@@ -16,7 +16,7 @@ export type ProviderReview = ServiceReview &
     service: string; // slug الخدمة
   };
 
-// تفاصيل صفحة الخدمة W2-32 (موجودة بالكامل في الفيجما لـ Johnson Ceramic Pro فقط)
+// تفاصيل صفحة الخدمة W2-32 (موجودة بالكامل في الفيجما لطلاء نانو سيراميك · بريميوم عند جونسون فقط)
 export type ServiceDetail = Localized<"overview"> & {
   facts: (Localized<"value"> & { kind: "duration" | "warranty" | "suitable" })[];
   includes_chips: Localized<"label">[]; // «ما تشمله الخدمة» في نظرة عامة
@@ -52,6 +52,10 @@ export type ProviderService = Localized<"name"> &
     duration_hours: number; // للمقارنة («الأفضل» = الأقصر)
     warranty_years: number | null; // للمقارنة («الأفضل» = الأطول)
     warranty_label: (Localized<"label">) | null; // «ضمان 9 سنوات»
+    // الاسم العام من غير المستوى («طلاء نانو سيراميك») — مسار التنقّل وسطر المقارنة في W2-32
+    short_name_ar?: string;
+    short_name_en?: string;
+    product?: string; // المنتج المستخدم («Johnson Ceramic Pro 9H») — بيظهر جنب اسم مقدّم الخدمة في W2-32
     // نافذة المقارنة W2-22
     compare: Localized<"type"> & Localized<"warranty"> & { package: (Localized<"label">) | null };
     addons: string[]; // الخدمات المقترحة في كارت الحجز W2-32

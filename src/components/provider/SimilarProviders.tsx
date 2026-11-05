@@ -120,7 +120,7 @@ export function SimilarProviders({
       <Container className="flex flex-col gap-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-col gap-1">
-            <h2 className="text-h3 text-white">{t.similarTitle(shortName)}</h2>
+            <h2 className="text-h3 text-neon-title">{t.similarTitle(shortName)}</h2>
             <p className="text-body-m text-white/75">{t.similarSub}</p>
           </div>
           <div role="radiogroup" aria-label={t.similarTitle(shortName)} className="hidden w-fit gap-1 rounded-full bg-white/8 p-1 md:flex">

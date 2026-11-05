@@ -6,6 +6,7 @@ import { providers } from "@/lib/data/providers";
 import { favoriteProviders, savedItems, type SavedItem } from "@/lib/data/account/favorites-data";
 import { pointsHistory, pointsSummary, POINTS_PER_SAR } from "@/lib/data/account/points-data";
 import { dealerPackages } from "@/lib/data/account/gifts-data";
+import { warranties } from "@/lib/data/account/warranties";
 import { cars } from "@/lib/data/account/cars-data";
 import { invoices, otherMethods, savedCards } from "@/lib/data/account/payment-data";
 import { complaints } from "@/lib/data/account/complaints-data";
@@ -38,6 +39,11 @@ export async function getPoints(user: DemoUser) {
 
 export async function getDealerPackages(user: DemoUser) {
   return user.is_new ? [] : dealerPackages;
+}
+
+// ضماناتي (W2-74)
+export async function getWarranties(user: DemoUser) {
+  return user.is_new ? [] : warranties;
 }
 
 // سياراتي وطرق الدفع: العميل الجديد بيشوف W2-67-0 / W2-68-0 (النسخة المعتمدة) — من غير user بترجع سيارات الديمو

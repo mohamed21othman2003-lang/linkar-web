@@ -15,7 +15,7 @@ export function ContactBand({
   return (
     <section className="flex flex-col gap-5 rounded-2xl bg-deep-charcoal px-6 py-7 md:flex-row md:items-center md:justify-between md:px-8">
       <div className="flex flex-col gap-1">
-        <h2 className="text-h4 text-white">{title}</h2>
+        <h2 className="text-h4 text-neon-title">{title}</h2>
         <p className="text-body-m text-white/80">{body}</p>
       </div>
       <div className="flex shrink-0 flex-wrap gap-2.5">

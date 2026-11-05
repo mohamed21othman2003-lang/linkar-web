@@ -57,7 +57,7 @@ export default async function ForDealersPage() {
 
         <section className="flex flex-col gap-5 rounded-2xl bg-deep-charcoal p-6 md:p-10">
           <p className="text-label-m text-neon-green">{tx(locale, p.pay, "eyebrow")}</p>
-          <h2 className="text-h4 text-white md:text-h3">{tx(locale, p.pay, "title")}</h2>
+          <h2 className="text-h4 text-neon-title md:text-h3">{tx(locale, p.pay, "title")}</h2>
           <p className="text-body-m text-white/85">{tx(locale, p.pay, "body")}</p>
           <div className="grid gap-5 md:grid-cols-2">
             {p.pay.options.map((o) => (

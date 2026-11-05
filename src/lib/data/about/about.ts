@@ -2,7 +2,7 @@ import type { UiGlyph } from "@/components/icons/Icon";
 
 // W2-95 · من نحن (تصميم العميل المعدّل 85:46926) — العربي من الفيجما بالحرف، الإنجليزي ترجمتنا (للمراجعة).
 // الترتيب في كل قائمة = ترتيب القراءة (أول عنصر من بداية السطر، يمين في العربي).
-// #vision = كروت «طموحنا/رسالتنا» و#how-it-works = «رحلتك مع لينكار» (مربوطين من قائمة «من نحن» والفوتر).
+// #how-it-works = «رحلتك مع لينكار» (مربوط من قائمة «من نحن» والفوتر) — كروت «طموحنا/رسالتنا» اتشالت في نسخة العميل (W2-95 202:24703).
 
 type T<K extends string> = { [P in `${K}_ar` | `${K}_en`]: string };
 export type AboutCard = T<"title"> & T<"body"> & { icon: UiGlyph };
@@ -31,12 +31,12 @@ export const aboutPage = {
       qr_en: "A digital QR voucher",
       confirmed_ar: "حجز مؤكد فور الدفع",
       confirmed_en: "Booking confirmed on payment",
+      compare_ar: "قارن الأسعار والضمانات بين المراكز",
+      compare_en: "Compare prices and warranties across centers",
       warranty_ar: "ضمان مزدوج على كل خدمة",
       warranty_en: "A double warranty on every service",
     },
     // رسالتنا (غامق) ثم طموحنا (أبيض)
-    mission: { icon: "car", title_ar: "رسالتنا", title_en: "Our mission", body_ar: "أن تبحث عن خدمات العناية بسيارتك وتحجزها وتدفعها وتتابع سجلّها في تجربة سلسة وآمنة.", body_en: "To let you find, book and pay for your car care and keep track of its history in one smooth, secure experience." } satisfies AboutCard,
-    vision: { icon: "star", title_ar: "طموحنا", title_en: "Our ambition", body_ar: "أن تكون لينكار المرجع الأول للعناية بالسيارات في المملكة، للعملاء ومقدّمي الخدمة معاً.", body_en: "For Linkar to be the Kingdom’s first reference for car care, for customers and service providers alike." } satisfies AboutCard,
   },
 
   // ماذا نقدّم — كروت الخدمات الست (نفس كروت الهوم)

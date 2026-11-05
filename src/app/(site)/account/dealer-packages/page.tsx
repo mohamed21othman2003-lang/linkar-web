@@ -70,7 +70,7 @@ export default async function DealerPackagesPage() {
                   </li>
                 ))}
               </ul>
-              <h2 className="text-h4 text-white md:text-h3">{tx(locale, g, "title")}</h2>
+              <h2 className="text-h4 text-neon-title md:text-h3">{tx(locale, g, "title")}</h2>
               <p className="text-body-s text-white/85">{tx(locale, g, "car")}</p>
               <p className="flex items-center gap-2 text-label-m text-neon-green">
                 <Icon name="calendar" size={16} className="shrink-0" />

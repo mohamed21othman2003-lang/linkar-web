@@ -10,7 +10,7 @@ import { Container } from "@/components/ui/Container";
 import { FigmaIcon, LogoTile, SectionLink } from "../bits";
 import { PulseTag } from "../motion";
 
-// V2-01 · Band · How it works (37:26888، صفحة 0:1؛ التابلت/الموبايل من V2-01t/m 85:34299/85:33680) — لوحة الرحلة + الخطوات
+// V2-01 · Band · How it works (202:7422؛ التابلت/الموبايل من V2-01t/m 202:11805/202:11198) — لوحة الرحلة + الخطوات
 // ديسكتوب: خط زمني · تابلت: مربعات أيقونات جنب لوحة الرحلة متصغّرة · موبايل: الخطوات في كارت كحلي من غير اللوحة
 export function HowItWorksBand({ locale, content, providers }: { locale: Locale; content: HomeContent; providers: Provider[] }) {
   const h = content.howItWorks;
@@ -74,7 +74,7 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
               {stepHead(4)}
               <p className="flex items-center gap-2 text-caption text-state-gray">
                 {s(j.rate)}
-                <span className="flex gap-[3px] text-nature-green">
+                <span className="flex gap-[3px] text-v3-rating-star">
                   {[0, 1, 2, 3, 4].map((k) => (
                     <Icon key={k} name="star-filled" size={16} />
                   ))}
@@ -103,10 +103,8 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
   );
 
   return (
-    // خلفية ليموني باهت (11% → 3% من فوق لتحت) + نقش شيفرون بماسك دائري على الشمال (37:26889)
-    <section className="relative overflow-hidden bg-linear-to-b from-[#f6fee4] to-[#fdfff8] py-9 md:py-16 xl:py-[72px]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/figma/home/chevron-pattern.webp" alt="" aria-hidden width={640} height={700} loading="lazy" className="pointer-events-none absolute top-0 left-0 hidden xl:block" />
+    // Band · How it works (202:7422) — خلفية surface/soft (cool-gray 35%) من غير نقش
+    <section className="relative overflow-hidden bg-cool-gray/35 py-9 md:py-16 xl:py-[72px]">
       <Container className="relative flex flex-col gap-[18px] max-md:px-5 md:gap-7 xl:flex-row xl:items-center xl:gap-[72px]">
         {/* Steps column */}
         <div className="flex flex-col gap-[18px] md:gap-7 xl:flex-1 xl:gap-9">

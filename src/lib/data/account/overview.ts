@@ -9,8 +9,8 @@ export const overviewNext = {
   booking_id: "BK-21452",
   provider_slug: "johnson",
   provider_name: "Johnson",
-  title_ar: "‏Johnson Ceramic Pro + تفصيل داخلي كامل",
-  title_en: "Johnson Ceramic Pro + Full interior detailing",
+  title_ar: "طلاء نانو سيراميك + تنظيف داخلي عميق",
+  title_en: "Nano-ceramic coating + deep interior cleaning",
   meta_ar: "جونسون Johnson · فرع الزهراء · تويوتا كامري 2023 · BK-21452",
   meta_en: "Johnson · Al Zahra branch · Toyota Camry 2023 · BK-21452",
   when_ar: "القسيمة صالحة حتى الأحد 25 أكتوبر",
@@ -49,8 +49,8 @@ export const overviewRate = {
   provider_slug: "lamaa",
   provider_ar: "مركز لمعة للتلميع",
   provider_en: "Lamaa Polishing Center",
-  meta_ar: "تلميع ثلاث مراحل · اكتمل الخميس 8 أكتوبر · BK-21388",
-  meta_en: "Three-stage polish · Completed Thu 8 Oct · BK-21388",
+  meta_ar: "تلميع خارجي · 3 مراحل · اكتمل الخميس 8 أكتوبر · BK-21388",
+  meta_en: "Exterior polish · 3 stages · Completed Thu 8 Oct · BK-21388",
 };
 
 export type OverviewOffer = Localized<"pill"> &
@@ -73,7 +73,7 @@ export const overviewOffers: OverviewOffer[] = [
     pill_ar: "خصم 15%",
     pill_en: "15% off",
     services: ["ppf", "nano-ceramic"],
-    title_ar: "حماية PPF للواجهة + نانو سيراميك",
+    title_ar: "باقة PPF الواجهة + طلاء نانو سيراميك",
     title_en: "Front PPF + Nano ceramic",
     provider_slug: "xpel",
     provider_ar: "‏XPEL السعودية",

@@ -33,16 +33,6 @@ function TextLink({ href, children, tone = "green", bold = false }: { href: stri
   );
 }
 
-function MissionCard({ locale, c, dark }: { locale: Locale; c: AboutCard; dark?: boolean }) {
-  return (
-    <div className={`flex min-w-0 flex-1 flex-col gap-2.5 rounded-xl p-[22px] min-[1440px]:w-[290px] min-[1440px]:flex-none ${dark ? "bg-deep-charcoal" : "border border-hairline bg-white"}`}>
-      <GlyphTile icon={c.icon} tone={dark ? "neon" : "dark"} />
-      <h3 className={`text-h5 ${dark ? "text-white" : "text-deep-charcoal"}`}>{tx(locale, c, "title")}</h3>
-      <p className={`text-body-s ${dark ? "text-v3-card-stroke" : "text-state-gray"}`}>{tx(locale, c, "body")}</p>
-    </div>
-  );
-}
-
 const tierTone = {
   platinum: { bg: "bg-[linear-gradient(to_right,#b8c3cb,#f4f7f9)]", ink: "text-deep-charcoal" },
   gold: { bg: "bg-[linear-gradient(to_right,#d9a520,#fbe7a8)]", ink: "text-[#3d2c00]" },
@@ -50,7 +40,7 @@ const tierTone = {
 } as const;
 
 // W2-95 · من نحن (85:46926) — قصتنا · رحلتك مع لينكار · كيف نختار مقدّمي الخدمة · ضمان مزدوج · ثقتك أولاً · شركاؤنا · لينكار لمن
-// #vision (طموحنا ورسالتنا) و#how-it-works (رحلتك مع لينكار) مربوطين من قائمة «من نحن» والفوتر
+// #how-it-works (رحلتك مع لينكار) مربوط من قائمة «من نحن» والفوتر (نسخة العميل شالت كروت «رسالتنا/طموحنا»)
 export default async function AboutPage() {
   const locale = await getLocale();
   const t = getCommon(locale);
@@ -72,10 +62,6 @@ export default async function AboutPage() {
               <p className="text-overline text-green-dark">{tx(locale, story, "overline")}</p>
               <h2 className="text-[30px]/[46px] font-bold text-deep-charcoal md:text-[40px]/[60px]">{tx(locale, story, "title")}</h2>
               <p className="text-body-m text-state-gray md:text-[18px]/[32px]">{tx(locale, story, "body")}</p>
-              <div id="vision" className="flex scroll-mt-28 flex-col gap-5 sm:flex-row sm:items-start">
-                <MissionCard locale={locale} c={story.mission} dark />
-                <MissionCard locale={locale} c={story.vision} />
-              </div>
             </div>
             {/* Collage 616×520 — على الشاشات الأصغر بيتصغّر كله بـzoom */}
             <div className="mx-auto shrink-0 [zoom:0.53] min-[390px]:[zoom:0.58] sm:[zoom:0.98] md:[zoom:1] xl:mx-0">
@@ -97,6 +83,13 @@ export default async function AboutPage() {
                     <Icon name="check" size={16} />
                   </span>
                   {tx(locale, story.chips, "confirmed")}
+                </span>
+                {/* Chip · قارن بين المراكز (W2-95 202:24703) */}
+                <span className={`absolute end-6 top-[182px] flex items-center gap-2.5 rounded-full bg-neon-green py-3 ps-[18px] pe-3.5 text-[15px]/[24px] font-medium whitespace-nowrap text-deep-charcoal ${chipShadow}`}>
+                  <span className="flex size-7 items-center justify-center rounded-full bg-deep-charcoal text-neon-green">
+                    <Icon name="chart" size={16} />
+                  </span>
+                  {tx(locale, story.chips, "compare")}
                 </span>
                 <span className={`absolute end-[300px] top-[452px] flex items-center gap-2.5 rounded-full bg-neon-green py-3 ps-[18px] pe-3.5 text-[15px]/[24px] font-medium whitespace-nowrap text-deep-charcoal ${chipShadow}`}>
                   <span className="flex size-7 items-center justify-center rounded-full bg-deep-charcoal text-neon-green">
@@ -219,7 +212,7 @@ export default async function AboutPage() {
         <Container className="relative flex flex-col gap-10 py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:py-[110px]">
           <div className="flex flex-col gap-3 lg:max-w-[520px] lg:min-w-0 lg:flex-1">
             <p className="text-overline text-neon-green">{tx(locale, warranty, "overline")}</p>
-            <h2 className="text-[30px]/[46px] font-bold text-white md:text-[40px]/[60px]">{tx(locale, warranty, "title")}</h2>
+            <h2 className="text-[30px]/[46px] font-bold text-neon-title md:text-[40px]/[60px]">{tx(locale, warranty, "title")}</h2>
             <p className="text-body-m text-dot md:text-body-l">{tx(locale, warranty, "body")}</p>
             <TextLink href={routes.warranty} tone="neon">
               {tx(locale, warranty, "link")}

@@ -29,7 +29,7 @@ function GiftCard({ s, d, card, ready, className, style }: { s: S; d: HomeConten
           </span>
         </div>
       </div>
-      <p className="min-h-16 text-[22px] leading-[32px] font-bold text-white">{s(card.title)}</p>
+      <p className="min-h-16 text-[22px] leading-[34px] font-bold text-neon-title">{s(card.title)}</p>
       <p className="min-h-11 text-caption text-cool-gray">{s(card.details)}</p>
       <p className="text-caption text-[#a9b2ae]">{s(card.validity)}</p>
       {"cta" in card && (
@@ -39,23 +39,22 @@ function GiftCard({ s, d, card, ready, className, style }: { s: S; d: HomeConten
   );
 }
 
-// V2-01 · Band · Dealer gifts (37:28172 — رئيسية المسجّل) — لوحة متدرّجة ليموني→أخضر وفيها رسم بطاقتين + الخطوات و«اعرض باقاتك»،
-// وتحتها بلاطات لوجوهات الوكالات. النصوص «باقات» زي باقي الموقع (85:30520) مش «هدايا».
-// تابلت (85:34816): ببطاقة واحدة · موبايل (85:34130): من غير لوحة، البطاقة بين الوصف والخطوات
+// V2-01 · Band · Dealer gifts (202:8092) — لوحة رمادي فاتح (#f2f3f2) فيها شيفرون باهت + رسم بطاقتين + الخطوات و«اعرض باقاتك»
+// تابلت (V2-01t): لوحة بيضا ببطاقة واحدة · موبايل (V2-01m): من غير لوحة، البطاقة بين الوصف والخطوات
 export function DealerBand({ locale, content }: { locale: Locale; content: HomeContent }) {
   const d = content.dealerBand;
   const s: S = (x) => tx(locale, x, "text");
   return (
     <section className="bg-tile py-9 md:py-16 xl:bg-white xl:py-[104px]">
       <Container className="max-md:px-5">
-        <div className="relative flex flex-col gap-[18px] overflow-hidden md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:bg-linear-to-r md:from-neon-green md:to-nature-green md:p-8 xl:gap-12 xl:rounded-[32px] xl:ps-14 xl:pe-12 xl:py-14">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img loading="lazy"
-            src="/figma/home/icons/brand-chevron-outline.svg"
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute -end-[9px] top-[208px] hidden h-[565px] w-[612px] xl:block"
-          />
+        <div className="relative flex flex-col gap-[18px] overflow-hidden md:flex-row md:items-center md:gap-6 md:rounded-[28px] md:bg-white md:p-8 xl:bg-[#f2f3f2] xl:gap-12 xl:rounded-[32px] xl:ps-14 xl:pe-12 xl:py-14">
+          {/* Chevron (202:8094) — أيقونة الشيفرون 720 مايلة 12° بشفافية 7% على طرف اللوحة */}
+          <div aria-hidden className="pointer-events-none absolute -end-[209.7px] -top-10 hidden size-[854px] items-center justify-center xl:flex">
+            <div className="relative size-[720px] rotate-12 opacity-7">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img loading="lazy" src="/figma/home/icons/dealer-chevron.svg" alt="" width={527} height={466} className="absolute inset-[17.66%_13.4%] h-[64.68%] w-[73.2%] max-w-none" />
+            </div>
+          </div>
           <div className="contents md:relative md:flex md:min-w-0 md:flex-1 md:flex-col md:items-start md:gap-3.5 xl:gap-[18px]">
             <div className="flex flex-col items-start gap-[18px] md:gap-3.5 xl:gap-[18px]">
               <span className="inline-flex h-[26px] items-center rounded-full bg-deep-charcoal px-2.5 text-[12px] leading-[18px] font-medium text-neon-green xl:h-6 xl:text-body-s xl:text-white">
@@ -125,15 +124,6 @@ export function DealerBand({ locale, content }: { locale: Locale; content: HomeC
             </div>
           </div>
         </div>
-        {/* Partners (37:28236) — 5 بلاطات 243×88 بيضا r16 بحد cool-gray/60، اللوجو 78% */}
-        <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5 xl:mt-8 xl:gap-4">
-          {d.dealers.map((l) => (
-            <li key={l.name} className="flex h-[72px] items-center justify-center rounded-2xl border border-cool-gray/60 bg-white px-3 max-sm:last:col-span-2 xl:h-[88px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img loading="lazy" src={`/figma/home/dealers/${l.src}`} alt={l.name} width={l.w} height={l.h} className="h-auto max-w-[80%] opacity-78" style={{ width: l.w }} />
-            </li>
-          ))}
-        </ul>
       </Container>
     </section>
   );

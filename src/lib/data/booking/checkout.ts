@@ -113,8 +113,8 @@ export const completedBookings: CompletedBooking[] = [
   {
     id: "BK-21388",
     provider: "lamaa",
-    service_ar: "تلميع ثلاث مراحل",
-    service_en: "Three-stage polishing",
+    service_ar: "تلميع خارجي · 3 مراحل",
+    service_en: "Exterior polish · 3 stages",
     completed_on_ar: "اكتمل الخميس 8 أكتوبر",
     completed_on_en: "Completed Thursday 8 October",
     customer_display_ar: "محمد س.",

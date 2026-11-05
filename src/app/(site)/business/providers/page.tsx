@@ -60,7 +60,7 @@ export default async function ForProvidersPage() {
 
         <section className="flex flex-col gap-10 rounded-[28px] bg-deep-charcoal p-6 md:p-12 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-col gap-3.5">
-            <h2 className="text-h3 text-white md:text-h2">{tx(locale, tools, "title")}</h2>
+            <h2 className="text-h3 text-neon-title md:text-h2">{tx(locale, tools, "title")}</h2>
             <p className="text-body-m text-white/80 md:text-body-l">{tx(locale, tools, "body")}</p>
             <ul className="flex flex-col gap-3.5">
               {tools.features.map((f) => (

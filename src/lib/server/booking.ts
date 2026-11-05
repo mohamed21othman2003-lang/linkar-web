@@ -50,7 +50,13 @@ export type BookingLine = {
   chip_en: string;
   service: ServiceSlug;
   price: number;
+  // الاسم العام لما الخدمات تتكتب في سطر واحد («طلاء نانو سيراميك + تنظيف داخلي عميق» — W2-36 · W2-60 · W2-37v)
+  short_ar?: string;
+  short_en?: string;
 };
+
+// اسم البند جوه سطر «خدمة + خدمة»
+export const lineShortName = (locale: "ar" | "en", l: BookingLine) => (locale === "en" ? l.short_en ?? l.name_en : l.short_ar ?? l.name_ar);
 
 export type ResolvedBooking = {
   query: BookingQuery; // بعد التطبيع (provider + branch + car)
@@ -173,6 +179,8 @@ export async function resolveBooking(input: BookingQuery, user: DemoUser | null)
         chip_en: override?.chip_en ?? svc?.name_en ?? "",
         service: ps.category,
         price: ps.prices[size],
+        short_ar: ps.short_name_ar,
+        short_en: ps.short_name_en,
       });
       continue;
     }

@@ -30,7 +30,7 @@ export function SearchHead({
           )}
           <div className="flex max-w-[560px] flex-col gap-2">
             <Breadcrumb items={crumbs} tone="dark" />
-            <h1 className="text-h3 text-white md:text-h2">{title}</h1>
+            <h1 className="text-h3 text-neon-title md:text-h2">{title}</h1>
             {description && <p className="text-body-m text-v3-card-stroke">{description}</p>}
           </div>
         </div>

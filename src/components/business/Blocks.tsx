@@ -28,7 +28,7 @@ export function BusinessHead({
     <div className={`${dark ? "bg-deep-charcoal" : "bg-pagehead"} pt-9 pb-6`}>
       <Container className="flex flex-col gap-3">
         <Breadcrumb items={crumbs} tone={tone} />
-        <h1 className={`text-h3 md:text-h2 ${dark ? "text-white" : "text-deep-charcoal"}`}>{title}</h1>
+        <h1 className={`text-h3 md:text-h2 ${dark ? "text-neon-title" : "text-deep-charcoal"}`}>{title}</h1>
         <p className={`max-w-[760px] text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>
         {children && <div className={`flex flex-wrap ${ctaGap ? "gap-2.5 pt-2" : "gap-3"}`}>{children}</div>}
       </Container>
@@ -109,7 +109,7 @@ export function DarkBand({ title, body, cta, href }: { title: string; body: stri
   return (
     <section className="flex flex-col items-start gap-6 rounded-2xl bg-deep-charcoal p-6 md:flex-row md:items-center md:justify-between md:p-8">
       <div className="flex flex-col gap-1.5">
-        <h2 className="text-h4 text-white">{title}</h2>
+        <h2 className="text-h4 text-neon-title">{title}</h2>
         <p className="text-body-s text-white/80">{body}</p>
       </div>
       <ArrowLink href={href}>{cta}</ArrowLink>

@@ -8,7 +8,7 @@ import { getCommon } from "@/i18n/dict/common";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { getSession } from "@/lib/server/session";
-import { bookingTotals, getConfirmation, getPaymentMethods, missingBooking, resolveBooking } from "@/lib/server/booking";
+import { bookingTotals, getConfirmation, getPaymentMethods, lineShortName, missingBooking, resolveBooking } from "@/lib/server/booking";
 import { getService } from "@/lib/server/content";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -49,6 +49,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
   const due = formatPrice(locale, totals.due);
   const validUntil = tx(locale, conf, "valid_until");
   const lineNames = b.lines.map((l) => tx(locale, l, "name"));
+  const lineShort = b.lines.map((l) => lineShortName(locale, l));
 
   if (referral && b.marketer) {
     const c = getCommon(locale);
@@ -87,7 +88,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                   <bdi>{conf.voucher_code}</bdi>
                 </span>
                 <span className="text-label-l">
-                  {lineNames.join(" + ")} · {t.sizes[b.size]}
+                  {lineShort.join(" + ")} · {t.sizes[b.size]}
                 </span>
                 <span className="text-body-s text-text-secondary">
                   {providerName} · {branchName}
@@ -162,7 +163,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
   }));
   const rows: [string, string][] = [
     [t.validity, t.fill(t.validUntil, { date: validUntil })],
-    [t.services, lineNames.join(" + ")],
+    [t.services, lineShort.join(" + ")],
     ...(b.car ? [[t.car, [carTitle(locale, b.car), tx(locale, b.car, "plate")].filter(Boolean).join(" · ")] as [string, string]] : []),
     [t.paid, cash ? t.fill(t.payAtBranch, { amount: due }) : `${due} · ${methodName}`],
     [t.bookingNo, conf.booking_id],

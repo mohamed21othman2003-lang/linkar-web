@@ -33,7 +33,7 @@ function SidePanel({ logoLabel, title, benefits, note }: SidePanelCopy) {
   return (
     <aside className="flex flex-col items-start gap-[18px] rounded-2xl bg-deep-charcoal p-6 lg:min-w-0 lg:flex-1 lg:p-10">
       <Logo tone="inverse" width={150} label={logoLabel} />
-      <h2 className="text-h4 text-white md:text-h3">{title}</h2>
+      <h2 className="text-h4 text-neon-title md:text-h3">{title}</h2>
       <ul className="flex flex-col gap-[18px]">
         {benefits.map((b) => (
           <li key={b.icon} className="flex items-center gap-3">

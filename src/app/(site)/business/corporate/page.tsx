@@ -105,7 +105,7 @@ export default async function CorporatePage() {
                 </div>
                 <div className="flex flex-col gap-3 px-[26px] pt-6 pb-7">
                   <GlyphTile icon={c.icon ?? "check"} size={48} glyph={24} radius={14} />
-                  <h3 className="text-h4 leading-[32px] text-white">{tx(locale, c, "title")}</h3>
+                  <h3 className="text-h4 leading-[32px] text-neon-title">{tx(locale, c, "title")}</h3>
                   <p className="text-[15px]/[26px] font-light text-v3-card-stroke">{tx(locale, c, "body")}</p>
                   <ul className="flex flex-col gap-2 pt-1.5">
                     {c.points.map((pt) => (
@@ -191,7 +191,7 @@ export default async function CorporatePage() {
         <Container className="flex flex-col gap-10 py-14 lg:py-[104px] xl:flex-row xl:items-start xl:gap-12">
           <div className="flex flex-col gap-5 xl:w-[400px] xl:shrink-0">
             <p className="text-overline text-neon-green">{tx(locale, offer, "overline")}</p>
-            <h2 className="text-[26px]/[40px] font-bold text-white md:text-h2">{tx(locale, offer, "title")}</h2>
+            <h2 className="text-[26px]/[40px] font-bold text-neon-title md:text-h2">{tx(locale, offer, "title")}</h2>
             <ol className="flex flex-col gap-3.5">
               {offer.steps.map((s, i) => (
                 <li key={s.title_ar} className="flex items-start gap-3.5">

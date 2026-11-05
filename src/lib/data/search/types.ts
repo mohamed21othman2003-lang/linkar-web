@@ -116,6 +116,7 @@ export type SearchScenario = {
   tile: ServiceSlug | null; // مربع الخدمة الليموني بجانب العنوان
   facts: Fact[];
   count: Localized<"text">; // «6 نتائج» / «9 مقدّمي خدمة»
+  count_map?: Localized<"text">; // عرض الخريطة لو مختلف (W2-30m: «6 مقدّمي خدمة»)
   ai: {
     provider: string;
     title: Localized<"text">;

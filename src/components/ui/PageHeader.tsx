@@ -52,7 +52,7 @@ export function PageHeader({
       <Container className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-3">
           <Breadcrumb items={crumbs} tone={tone} />
-          <h1 className={`text-h3 md:text-h2 ${dark ? "text-white" : ""}`}>{title}</h1>
+          <h1 className={`text-h3 md:text-h2 ${dark ? "text-neon-title" : ""}`}>{title}</h1>
           {description && <p className={`max-w-[760px] text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>}
         </div>
         {aside}

@@ -1,9 +1,10 @@
 import { routes } from "@/lib/routes";
 
-// القائمة الجانبية لحساب العميل (Account nav · 748:7865) — نفس الترتيب في كل صفحات الحساب
+// القائمة الجانبية لحساب العميل (Account nav · 202:22822) — نفس الترتيب في كل صفحات الحساب («ضماناتي» جديدة في نسخة العميل)
 export const accountNav = [
   { key: "home", label_ar: "الرئيسية", label_en: "Overview", href: routes.account },
   { key: "bookings", label_ar: "حجوزاتي", label_en: "My bookings", href: routes.bookings() },
+  { key: "warranties", label_ar: "ضماناتي", label_en: "My warranties", href: routes.warranties },
   { key: "favorites", label_ar: "المفضلة", label_en: "Favorites", href: routes.favorites() },
   { key: "points", label_ar: "النقاط", label_en: "Points", href: routes.points },
   { key: "gifts", label_ar: "الهدايا", label_en: "Gifts", href: routes.dealerPackages },

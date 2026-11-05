@@ -11,7 +11,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
       </ViewTransition>
       <Footer />
-      <Fabs side="end" />
+      <Fabs />
     </>
   );
 }

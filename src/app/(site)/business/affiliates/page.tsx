@@ -60,7 +60,7 @@ export default async function AffiliatesPage() {
         <section className="flex flex-col gap-10 rounded-2xl bg-deep-charcoal p-6 md:p-10 lg:flex-row lg:items-center">
           <div className="flex flex-1 flex-col gap-3">
             <p className="text-label-m text-neon-green">{tx(locale, c, "eyebrow")}</p>
-            <h2 className="text-h4 text-white md:text-h3">{tx(locale, c, "title")}</h2>
+            <h2 className="text-h4 text-neon-title md:text-h3">{tx(locale, c, "title")}</h2>
             <p className="text-body-m text-white/85">{tx(locale, c, "body")}</p>
             <ul className="flex flex-col gap-3">
               {c.points.map((pt) => (

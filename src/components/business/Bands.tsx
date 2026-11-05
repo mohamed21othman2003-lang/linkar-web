@@ -23,7 +23,7 @@ export function BandHead({
   return (
     <div className={`flex max-w-[820px] flex-col gap-2.5 ${className}`}>
       <p className={`text-overline ${dark ? "text-neon-green" : "text-green-dark"}`}>{overline}</p>
-      <h2 className={`text-[26px]/[40px] font-bold md:text-h2 ${dark ? "text-white" : "text-deep-charcoal"} ${titleClass}`}>{title}</h2>
+      <h2 className={`text-[26px]/[40px] font-bold md:text-h2 ${dark ? "text-neon-title" : "text-deep-charcoal"} ${titleClass}`}>{title}</h2>
       {body && <p className={`text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-state-gray"}`}>{body}</p>}
     </div>
   );

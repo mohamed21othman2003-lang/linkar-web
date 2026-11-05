@@ -29,7 +29,7 @@ export const site = {
     offers: { label_ar: "العروض", label_en: "Offers", href: routes.offers },
     packages: { label_ar: "الباقات", label_en: "Packages", href: routes.packages },
     about: { label_ar: "من نحن", label_en: "About", href: routes.about },
-    business: { label_ar: "لينكار للأعمال", label_en: "Linkar for business", href: routes.forProviders },
+    business: { label_ar: "لينكار للأعمال", label_en: "Linkar for Business", href: routes.forProviders },
   } satisfies Record<string, Link>,
 
   header: {
@@ -76,6 +76,15 @@ export const site = {
         subtitle_en: "Answers about booking, payment and vouchers",
         href: routes.help,
         icon: "/figma/icons/menu-help.svg",
+      },
+      // W2-10 (202:9102): «المدونة» جديدة تحت «مركز المساعدة»
+      {
+        title_ar: "المدونة",
+        title_en: "Blog",
+        subtitle_ar: "نصائح وأدلة للعناية بسيارتك",
+        subtitle_en: "Tips and guides for caring for your car",
+        href: routes.blog,
+        icon: "/figma/icons/menu-file.svg",
       },
     ] satisfies MenuItem[],
     about_title_ar: "عن لينكار",
@@ -199,7 +208,7 @@ export const site = {
   // v2 · Footer
   footer: {
     about_ar: "لينكار منصة سعودية تربطك بمقدّمي خدمات العناية بالسيارات المعتمدين: قارن، احجز، وادفع، وتابع سيارتك حتى الاستلام.",
-    about_en: "Linkar is a Saudi platform that connects you with certified car care providers: compare, book, pay, and follow your car until pickup.",
+    about_en: "Linkar is a Saudi platform connecting you with certified car care providers: compare, book, pay and get your voucher instantly.",
     columns: [
       {
         title_ar: "من نحن",
@@ -231,23 +240,23 @@ export const site = {
         links: [
           { label_ar: "مقدّمو الخدمة", label_en: "Service providers", href: routes.forProviders },
           { label_ar: "انضم كمقدّم خدمة", label_en: "Join as a provider", href: routes.providerJoin },
-          { label_ar: "معايير الاعتماد", label_en: "Certification criteria", href: `${routes.forProviders}#criteria` },
+          { label_ar: "معايير الاعتماد", label_en: "Accreditation criteria", href: `${routes.forProviders}#criteria` },
           { label_ar: "برنامج الوكالات", label_en: "Dealer program", href: routes.forDealers },
           { label_ar: "برامج الشركات", label_en: "Corporate programs", href: routes.corporate },
           { label_ar: "برنامج المسوّقين", label_en: "Affiliate program", href: routes.affiliates },
-          { label_ar: "دخول مقدّمي الخدمة", label_en: "Provider sign-in", href: externalPortals.provider },
-          { label_ar: "دخول الوكالات", label_en: "Dealer sign-in", href: externalPortals.dealer },
-          { label_ar: "دخول المسوّقين", label_en: "Affiliate sign-in", href: externalPortals.affiliate },
+          { label_ar: "دخول مقدّمي الخدمة", label_en: "Provider login", href: externalPortals.provider },
+          { label_ar: "دخول الوكالات", label_en: "Dealer login", href: externalPortals.dealer },
+          { label_ar: "دخول المسوّقين", label_en: "Affiliate login", href: externalPortals.affiliate },
         ],
       },
       {
         title_ar: "السياسات",
         title_en: "Policies",
         links: [
-          { label_ar: "الشروط والأحكام", label_en: "Terms and conditions", href: routes.terms },
+          { label_ar: "الشروط والأحكام", label_en: "Terms & conditions", href: routes.terms },
           { label_ar: "سياسة الخصوصية", label_en: "Privacy policy", href: routes.privacy },
-          { label_ar: "الإلغاء والاسترداد", label_en: "Cancellation and refunds", href: routes.cancellation },
-          { label_ar: "الضمان والشكاوى", label_en: "Warranty and complaints", href: routes.warranty },
+          { label_ar: "الإلغاء والاسترداد", label_en: "Cancellation & refunds", href: routes.cancellation },
+          { label_ar: "الضمان والشكاوى", label_en: "Warranty & complaints", href: routes.warranty },
           { label_ar: "شروط مقدّمي الخدمة", label_en: "Provider terms", href: routes.providerTerms },
         ],
       },
@@ -265,7 +274,7 @@ export const site = {
     copyright_ar: "© 2026 لينكار. جميع الحقوق محفوظة.",
     copyright_en: "© 2026 Linkar. All rights reserved.",
     registry_ar: "السجل التجاري: [يُضاف] · الرقم الضريبي: [يُضاف]",
-    registry_en: "CR number: [to be added] · VAT number: [to be added]",
+    registry_en: "CR: [to be added] · VAT: [to be added]",
   },
 
   // الأزرار العائمة (FAB) — مساعد لينكار وواتساب

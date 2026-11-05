@@ -77,7 +77,7 @@ function Featured({ locale, post, tag, page }: { locale: Locale; post: BlogPost;
     <article className="flex flex-col overflow-hidden rounded-[28px] bg-deep-charcoal lg:h-[420px] lg:flex-row">
       <div className="flex flex-col justify-center gap-4 p-6 md:p-10 lg:w-[620px] lg:shrink-0 lg:p-12">
         <span className="self-start rounded-full bg-neon-green px-3 py-[5px] text-[13px]/[20px] font-bold text-deep-charcoal">{tag}</span>
-        <h2 className="max-w-[524px] text-[26px]/[40px] font-bold text-white md:text-h2">{tx(locale, post, "title")}</h2>
+        <h2 className="max-w-[524px] text-[26px]/[40px] font-bold text-neon-title md:text-h2">{tx(locale, post, "title")}</h2>
         <p className="max-w-[524px] text-body-m text-v3-card-stroke">{tx(locale, post, "excerpt")}</p>
         <div className="flex flex-wrap items-center gap-2 text-[13px]/[20px] text-v3-card-stroke">
           <span className="flex size-[26px] items-center justify-center rounded-full bg-neon-green text-[12px]/[16px] font-bold text-deep-charcoal">{tx(locale, page, "author_initial")}</span>

@@ -93,9 +93,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
   const dark = variant === "hero" && !scrolled;
   const toggle = (p: Panel) => setPanel((cur) => (cur === p ? null : p));
   const close = () => setPanel(null);
-  // نسخة العميل (W2-26 85:37089 · W2-40 85:37619): «الرئيسية» في الهيدر الأبيض كمان؛
-  // هيدر الهيرو في الرئيسية (37:26642 / 37:28373) من غير «الرئيسية»
-  const navKeys: NavKey[] = variant === "hero" ? ["services", "offers", "packages", "about", "business"] : ["home", "services", "offers", "packages", "about", "business"];
+  // «الرئيسية» في كل الهيدرات — الأبيض (W2-25 202:14637 …) وهيدر الهيرو الشفاف (V2-01 202:7312)
+  const navKeys: NavKey[] = ["home", "services", "offers", "packages", "about", "business"];
 
   return (
     <div ref={ref} className={variant === "hero" ? "absolute inset-x-0 top-0 z-40" : "sticky top-0 z-40"}>
@@ -105,8 +104,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
         // الطول 80 شامل الخط اللي تحت (stroke INSIDE في الفيجما) — مش 80 + 1
         className={
           dark
-            ? // Web header · v2 (37:26642): تدرّج كحلي من فوق
-              "relative h-16 md:h-[76px] lg:h-20 lg:bg-linear-to-b lg:from-deep-charcoal/85 lg:to-deep-charcoal/0"
+            ? // Header · شفاف (V2-01 202:7312) — الظل من الهيرو نفسه (Shade · header)
+              "relative h-16 md:h-[76px] lg:h-20"
             : `${variant === "hero" ? "fixed inset-x-0 top-0" : "relative"} h-20 border-b border-cool-gray bg-white`
         }
       >
@@ -127,7 +126,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               const item = v.nav[k];
               const isMenu = k === "about" || k === "business";
               const isActive = active === k;
-              const color = dark ? (isActive ? "text-neon-green" : "text-white/85") : isActive ? "text-green-active" : "text-deep-charcoal";
+              const color = dark ? (isActive ? "text-neon-green" : "text-white") : isActive ? "text-green-active" : "text-deep-charcoal";
               const inner = (
                 <>
                   <span>{item.label}</span>
@@ -136,7 +135,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                     <Icon
                       name="chevron-down"
                       size={16}
-                      className={`transition-transform duration-200 ease-figma-out ${panel === k ? "rotate-180" : ""} ${dark ? "text-white/85" : "text-deep-charcoal"}`}
+                      className={`transition-transform duration-200 ease-figma-out ${panel === k ? "rotate-180" : ""} ${dark ? "size-3.5 text-white" : "text-deep-charcoal"}`}
                     />
                   )}
                   {isActive && !dark && <span className="absolute -bottom-[25px] start-1/2 h-[3px] w-[37px] -translate-x-1/2 rounded-[2px] bg-neon-green rtl:translate-x-1/2" />}
@@ -160,14 +159,15 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
             })}
           </nav>
 
-          <div className={`flex items-center gap-3 ${dark ? `ms-auto gap-2.5 lg:ms-0 ${v.account ? "lg:gap-4" : "lg:gap-3"}` : ""}`}>
+          <div className={`flex items-center gap-3 ${dark ? "ms-auto gap-2.5 lg:ms-0 lg:gap-3.5" : ""}`}>
             <LangSwitch
               locale={v.locale}
               label={v.langLabel}
               className={
                 dark
                   ? // V2-01t/V2-01m: مافيش زر اللغة في هيدر الهيرو تحت الديسكتوب (موجود في القائمة)
-                    `hidden h-9 items-center justify-center rounded-full border px-3 text-label-m lg:flex ${v.account ? "border-white/24 text-white" : "border-white/12 text-white/75"}`
+                    // V2-01 (202:7312 «Btn · اللغة»): دايرة 43 بحد ليموني/55 على كحلي/35
+                    "hidden size-[43px] items-center justify-center rounded-full border border-neon-green/55 bg-deep-charcoal/35 text-label-m text-white lg:flex"
                   : "flex h-control-sm items-center rounded-full border border-cool-gray px-3 text-label-m text-deep-charcoal"
               }
             />
@@ -191,20 +191,20 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                 className={`items-center gap-2 rounded-full text-label-m ${
                   dark
                     ? // موبايل: الأفاتار بس (36) · تابلت: كبسولة بحد أبيض/30 · ديسكتوب: حد ليموني
-                      // ديسكتوب (37:26645): حد أبيض/24 والأفاتار أسود بحرف ليموني
-                      "flex md:border md:border-white/30 md:py-1.5 md:ps-2 md:pe-3 lg:gap-1.5 lg:border-white/24 lg:py-1 lg:ps-3 lg:pe-1 text-white"
+                      // ديسكتوب (202:7312 «Btn · الحساب»): كحلي/35 بحد ليموني/55، الأفاتار 30 ليموني
+                      "flex md:border md:border-white/30 md:py-1.5 md:ps-2 md:pe-3 lg:gap-2 lg:border-neon-green/55 lg:bg-deep-charcoal/35 lg:py-1.5 lg:ps-1.5 lg:pe-3.5 text-white"
                     : "hidden border border-cool-gray py-1 ps-1 pe-3 text-deep-charcoal sm:flex"
                 }`}
               >
                 <span
                   className={`flex items-center justify-center rounded-full bg-neon-green text-deep-charcoal ${
-                    dark ? "size-9 text-[15px] font-bold md:size-[30px] md:text-label-m lg:size-8 lg:bg-solid-black lg:font-medium lg:text-neon-green" : "size-8 text-label-m"
+                    dark ? "size-9 text-[15px] font-bold md:size-[30px] md:text-label-m lg:font-medium" : "size-8 text-label-m"
                   }`}
                 >
                   {v.account.initial}
                 </span>
                 <span className={dark ? "max-md:hidden" : ""}>{v.firstName}</span>
-                <Icon name="chevron-down" size={dark ? 14 : 16} className={dark ? "max-md:hidden lg:size-4" : ""} />
+                <Icon name="chevron-down" size={dark ? 14 : 16} className={dark ? "max-md:hidden" : ""} />
               </button>
             ) : dark ? (
               <Link

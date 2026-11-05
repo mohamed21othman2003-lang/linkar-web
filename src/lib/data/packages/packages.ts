@@ -32,7 +32,7 @@ export type Package = Localized<"title"> &
     price: number;
     old_price: number;
     features: (Localized<"label"> & { icon: OfferFeatureIcon })[];
-    // تفاصيل W2-42 — موجودة في الفيجما لباقة Johnson Ceramic Pro فقط
+    // تفاصيل W2-42 — موجودة في الفيجما لباقة النانو والتلميع فقط
     detail: PackageDetail | null;
   };
 
@@ -89,30 +89,30 @@ export const packages: Package[] = [
     discount: 16,
     price: 1899,
     old_price: 2250,
-    title_ar: "باقة Johnson Ceramic Pro",
-    title_en: "Johnson Ceramic Pro package",
-    title_line1_ar: "باقة Johnson Ceramic Pro",
-    title_line1_en: "Johnson Ceramic Pro package",
+    title_ar: "باقة النانو والتلميع",
+    title_en: "Nano & Polish Package",
+    title_line1_ar: "باقة النانو والتلميع",
+    title_line1_en: "Nano & Polish Package",
     title_line2_ar: "مع تلميع مجاني",
     title_line2_en: "with free polishing",
-    line_name_ar: "Johnson Ceramic Pro",
-    line_name_en: "Johnson Ceramic Pro",
+    line_name_ar: "طلاء نانو سيراميك · بريميوم",
+    line_name_en: "Nano-ceramic coating · Premium",
     features: [{ icon: "clock", label_ar: "يوم واحد", label_en: "1 day" }, twoServices, oneVisit],
     detail: {
       reviews: 128,
-      description_ar: "‏Johnson Ceramic Pro مع تلميع ثلاث مراحل مجاناً، في زيارة واحدة وبقسيمة واحدة.",
-      description_en: "Johnson Ceramic Pro with free three-stage polishing, in one visit and with one voucher.",
+      description_ar: "طلاء نانو سيراميك · بريميوم مع تلميع خارجي · 3 مراحل مجاناً، في زيارة واحدة وبقسيمة واحدة.",
+      description_en: "Nano-ceramic coating · Premium with a free 3-stage exterior polish, in one visit and with one voucher.",
       duration_ar: "زيارة واحدة · يوم واحد",
       duration_en: "One visit · 1 day",
-      warranty_ar: "9 سنوات على Johnson Ceramic Pro",
-      warranty_en: "9 years on Johnson Ceramic Pro",
+      warranty_ar: "9 سنوات على طلاء نانو سيراميك · بريميوم",
+      warranty_en: "9 years on Nano-ceramic coating · Premium",
       warranty_note_ar: "للحفاظ على الضمان: صيانة دورية لدى جونسون كل 12 شهراً، وتجنّب الغسيل الآلي بالفرش أول أسبوعين.",
       warranty_note_en: "To keep the warranty: periodic maintenance at Johnson every 12 months, and avoid brush car washes for the first two weeks.",
       items: [
         {
           service: "nano-ceramic",
-          name_ar: "‏Johnson Ceramic Pro",
-          name_en: "Johnson Ceramic Pro",
+          name_ar: "طلاء نانو سيراميك · بريميوم",
+          name_en: "Nano-ceramic coating · Premium",
           description_ar: "طبقة نانو سيراميك بصلابة 9H تحمي الطلاء وتمنحه لمعاناً يدوم.",
           description_en: "A 9H nano ceramic coating that protects the paint and gives it a lasting shine.",
           price: 1899,
@@ -124,8 +124,8 @@ export const packages: Package[] = [
         },
         {
           service: "polish",
-          name_ar: "تلميع ثلاث مراحل",
-          name_en: "Three-stage polishing",
+          name_ar: "تلميع خارجي · 3 مراحل",
+          name_en: "Exterior polish · 3 stages",
           description_ar: "إزالة الخدوش الدقيقة وآثار الغسيل، وإعادة اللمعان قبل طبقة الحماية.",
           description_en: "Removes fine scratches and wash marks and restores the shine before the protective coat.",
           price: 351,

@@ -48,7 +48,7 @@ export function PackageCard({ locale, gift, variant }: { locale: Locale; gift: A
             </>
           )}
         </div>
-        <h2 className="text-h4 text-white md:text-h3">{tx(locale, gift, "package")}</h2>
+        <h2 className="text-h4 text-neon-title md:text-h3">{tx(locale, gift, "package")}</h2>
         <p className="text-body-s text-white/85">
           {full ? t.forYourCar(tx(locale, gift, "car"), gift.booking_no) : t.forYourCarShort(tx(locale, gift, "car"))}
         </p>

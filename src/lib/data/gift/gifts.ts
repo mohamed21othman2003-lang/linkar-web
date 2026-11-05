@@ -40,7 +40,7 @@ export type ActiveGift = {
 } & L<"dealer"> & // «الريادة للسيارات»
   L<"title"> &
   L<"subtitle"> &
-  L<"package"> & // «Johnson Ceramic Pro · سيدان»
+  L<"package"> & // «طلاء نانو سيراميك · بريميوم · سيدان»
   L<"car"> &
   L<"branch"> & // «جونسون Johnson · فرع الزهراء، جدة»
   L<"valid_until"> &
@@ -73,8 +73,8 @@ export const agencyGifts: AgencyGift[] = [
     title_en: "You have a package from Al Riyada Motors",
     subtitle_ar: "اشترت لك وكالة الريادة للسيارات باقة عناية لسيارتك الجديدة. تحقق من رقمك لعرض القسيمة، ثم زر الفرع المحدد.",
     subtitle_en: "Al Riyada Motors bought a care package for your new car. Verify your number to see the voucher, then visit the selected branch.",
-    package_ar: "‏Johnson Ceramic Pro · سيدان",
-    package_en: "Johnson Ceramic Pro · Sedan",
+    package_ar: "طلاء نانو سيراميك · بريميوم · سيدان",
+    package_en: "Nano-ceramic coating · Premium · Sedan",
     car_ar: "تويوتا كامري 2026",
     car_en: "Toyota Camry 2026",
     branch_ar: "جونسون Johnson · فرع الزهراء، جدة",
@@ -91,7 +91,7 @@ export const agencyGifts: AgencyGift[] = [
     includes: [
       { label_ar: "غسيل وتجهيز السطح", label_en: "Wash and surface prep" },
       { label_ar: "تلميع خفيف قبل التطبيق", label_en: "Light polish before application" },
-      { label_ar: "تطبيق طبقة Johnson Ceramic Pro", label_en: "Johnson Ceramic Pro coating" },
+      { label_ar: "تطبيق طبقة طلاء نانو سيراميك · بريميوم", label_en: "Nano-ceramic coating · Premium application" },
     ],
     steps: [
       {

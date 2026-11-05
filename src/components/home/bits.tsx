@@ -58,7 +58,7 @@ export function SectionHead({
   aside?: ReactNode;
 }) {
   const over = tone === "dark" ? "text-neon-green" : tone === "guest" ? "text-green-active" : "text-green-dark";
-  const titleColor = tone === "dark" ? "text-white" : "text-deep-charcoal";
+  const titleColor = tone === "dark" ? "text-neon-green" : "text-deep-charcoal"; // Band · Providers (202:7598): العنوان ليموني على الكحلي
   const desc = tone === "dark" ? "text-v3-card-stroke xl:text-cool-gray" : "text-state-gray";
   return (
     <div className={`flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6 ${className}`}>

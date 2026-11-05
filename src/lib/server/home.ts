@@ -1,7 +1,6 @@
 // طبقة بيانات الرئيسية (V2-01) — نفس أسلوب lib/server/content.ts:
 // دلوقتي بترجع البيانات التجريبية من lib/data/home، وبعدين هتجيبها من الـAPI.
 import * as home from "@/lib/data/home/home";
-import * as guest from "@/lib/data/home/guest";
 import type { LinkKey } from "@/lib/data/home/home";
 import { routes } from "@/lib/routes";
 
@@ -9,12 +8,6 @@ export type HomeContent = typeof home;
 
 export async function getHomeContent(): Promise<HomeContent> {
   return home;
-}
-
-// الزائر — V2-02 · Home · Icons (37:28371)
-export type GuestHomeContent = typeof guest;
-export async function getGuestHomeContent(): Promise<GuestHomeContent> {
-  return guest;
 }
 
 // روابط الأقسام — أي «كل …» أو زر في الرئيسية بيتحوّل لمسار من routes.ts

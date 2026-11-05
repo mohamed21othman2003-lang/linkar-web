@@ -49,8 +49,8 @@ export type DealerPackage = Localized<"title"> &
 export const dealerPackages: DealerPackage[] = [
   {
     booking: "BK-21414",
-    title_ar: "‏Johnson Ceramic Pro · سيدان",
-    title_en: "Johnson Ceramic Pro · Sedan",
+    title_ar: "طلاء نانو سيراميك · بريميوم · سيدان",
+    title_en: "Nano-ceramic coating · Premium · Sedan",
     car_ar: "لسيارتك تويوتا كامري 2026 · ‏BK-21414",
     car_en: "For your Toyota Camry 2026 · BK-21414",
     valid_ar: "صالحة حتى الثلاثاء 5 يناير 2027",

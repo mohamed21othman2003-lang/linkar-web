@@ -60,4 +60,4 @@ export type ServiceIcon =
   | "tint"
   | "wash";
 
-export const ICON_SPRITE_VERSION = "1f114372";
+export const ICON_SPRITE_VERSION = "f0c97a21";
