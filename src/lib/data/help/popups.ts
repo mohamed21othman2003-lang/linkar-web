@@ -44,12 +44,12 @@ export const assistantPopup = {
 export const whatsappPopup = {
   title_ar: "راسل فريق لينكار على واتساب",
   title_en: "Message the Linkar team on WhatsApp",
-  body_ar: "نرد على استفسارات الحجز والقسيمة والشكاوى. رقم واتساب لينكار: [يُضاف عند الإطلاق].",
-  body_en: "We answer questions about bookings, vouchers and complaints. Linkar WhatsApp number: [added at launch].",
+  body_ar: "نرد على استفسارات الحجز والقسيمة والشكاوى.",
+  body_en: "We answer questions about bookings, vouchers and complaints.",
   open_ar: "فتح واتساب",
   open_en: "Open WhatsApp",
   close_ar: "إغلاق",
   close_en: "Close",
-  // رقم واتساب لينكار: [يُضاف عند الإطلاق]
+  // رقم واتساب لينكار لسه ماوصلش — لما يوصل يتحط في الرابط (wa.me/966…) — النص مافيهوش placeholder (اجتماع 9 نوفمبر)
   href: "https://wa.me/",
 };
