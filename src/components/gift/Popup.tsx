@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Icon } from "@/components/icons/Icon";
+import { Icon, type UiGlyph } from "@/components/icons/Icon";
 
 // قالب نوافذ «10 · النوافذ المنبثقة» (P-07، P-08…): كارت أبيض 480، r24، ظل، زر إغلاق رمادي دائري
 export function Popup({
@@ -72,14 +72,14 @@ export function useFlash() {
   return [msg?.text ?? null, (text: string) => setMsg((m) => ({ text, n: (m?.n ?? 0) + 1 }))] as const;
 }
 
-// P-10 · رسالة قصيرة (Toast) غامقة بعلامة ✓ ليموني
-export function Toast({ message }: { message: string | null }) {
+// P-10 · رسالة قصيرة (Toast) غامقة بأيقونة ليموني في بداية السطر (✓ — و✉ لـ P-10f)
+export function Toast({ message, icon = "check" }: { message: string | null; icon?: UiGlyph }) {
   return (
     <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
       {message && (
         <p key={message} className="flex animate-dissolve items-center gap-3.5 rounded-[14px] bg-deep-charcoal px-[18px] py-3.5 text-body-s text-white shadow-[0_12px_24px_0_#14293640]">
+          <Icon name={icon} size={16} className="shrink-0 text-neon-green" />
           {message}
-          <Icon name="check" size={16} className="shrink-0 text-neon-green" />
         </p>
       )}
     </div>

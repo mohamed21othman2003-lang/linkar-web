@@ -20,7 +20,7 @@ type PanelData = {
   recent: RecentSearch[];
   popular: Service["slug"][];
   carSizes: CarSize[];
-  location: { label_ar: string; label_en: string; city_ar: string; city_en: string };
+  location: { label_ar: string; label_en: string; city_ar: string; city_en: string; options: { key: string; label_ar: string; label_en: string }[] };
 };
 
 let cache: PanelData | null = null;
@@ -155,6 +155,7 @@ export function SearchPanel({ locale, onClose }: { locale: Locale; onClose: () =
               selected={["nano-ceramic", "polish"]}
               carSizes={data.carSizes}
               location={tx(locale, data.location, "label")}
+              locations={data.location.options?.map((o) => ({ key: o.key, label: tx(locale, o, "label") }))}
               onSearch={onClose}
               variant="panel"
             />

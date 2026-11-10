@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Icon, type UiGlyph } from "@/components/icons/Icon";
 
 // عناصر نماذج الانضمام (W2-90b · W2-91b · W2-93 · W2-94b): حقل 52px، حد رمادي، أيقونة في آخر الحقل
@@ -125,6 +125,129 @@ export function SelectField({
           <Icon name="chevron-down" size={16} />
         </span>
       </div>
+      <FieldError id={`${id}-e`} error={error} />
+    </div>
+  );
+}
+
+// النطاقات الرقمية («20 – 50») تتقري من الشمال لليمين زي الفيجما حتى جوه سطر عربي
+const numDir = (label: string) => (/^[\d\s–-]+$/.test(label) ? "ltr" : undefined);
+
+// W2-DD · قائمة منسدلة بلوحة بيضاء (زي «عدد الباقات المتوقع شهرياً»): عنوان الحقل فوق الخيارات،
+// والمختار بخلفية ليموني فاتح + وزن 600 + ✓ في آخر السطر. تتقفل بالضغط برّه أو Esc، والأسهم بتتنقّل بين الخيارات.
+export function MenuSelectField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  options,
+  error,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  options: { value: string; label: string }[];
+  error?: string;
+}) {
+  const id = useId();
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const list = useRef<HTMLUListElement>(null);
+  const current = options.find((o) => o.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => !wrap.current?.contains(e.target as Node) && setOpen(false);
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  // التركيز على المختار (أو أول خيار) أول ما اللوحة تفتح
+  const openMenu = () => {
+    setOpen(true);
+    requestAnimationFrame(() => {
+      const btns = list.current?.querySelectorAll<HTMLButtonElement>('[role="option"]');
+      btns?.[Math.max(0, options.findIndex((o) => o.value === value))]?.focus();
+    });
+  };
+  const close = () => {
+    setOpen(false);
+    trigger.current?.focus();
+  };
+  const onListKey = (e: React.KeyboardEvent) => {
+    const btns = Array.from(list.current?.querySelectorAll<HTMLButtonElement>('[role="option"]') ?? []);
+    const i = btns.indexOf(document.activeElement as HTMLButtonElement);
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const n = btns.length;
+      btns[(i + (e.key === "ArrowDown" ? 1 : -1) + n) % n]?.focus();
+    } else if (e.key === "Tab") setOpen(false);
+  };
+
+  return (
+    <div ref={wrap} className="relative flex min-w-0 flex-1 flex-col gap-1.5">
+      <label htmlFor={id} className="text-label-m text-deep-charcoal">
+        {label}
+      </label>
+      <button
+        ref={trigger}
+        id={id}
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={`${id}-l`}
+        data-invalid={!!error}
+        aria-describedby={error ? `${id}-e` : undefined}
+        onClick={() => (open ? setOpen(false) : openMenu())}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            openMenu();
+          }
+        }}
+        className={`${box} ${borderOf(error)} relative pe-10 text-start ${current ? "" : "text-state-gray"} ${open ? "border-deep-charcoal" : ""}`}
+      >
+        {current ? <span dir={numDir(current.label)}>{current.label}</span> : placeholder}
+        <span className="pointer-events-none absolute inset-y-0 end-3.5 flex items-center text-state-gray">
+          <Icon name="chevron-down" size={16} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        </span>
+      </button>
+      {open && (
+        <div className="absolute inset-x-0 top-full z-30 mt-1.5 flex flex-col gap-1 rounded-2xl bg-white p-2.5 shadow-elevation-3">
+          <p aria-hidden className="px-3 pt-1 text-[16px]/[26px] font-bold text-deep-charcoal">
+            {label}
+          </p>
+          <ul ref={list} id={`${id}-l`} role="listbox" aria-label={label} onKeyDown={onListKey} className="flex flex-col">
+            {options.map((o) => {
+              const on = o.value === value;
+              return (
+                <li key={o.value}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={on}
+                    onClick={() => {
+                      onChange(o.value);
+                      close();
+                    }}
+                    className={`flex w-full items-center justify-between gap-3 rounded-[10px] px-3 py-[11px] text-start text-[15px]/[24px] text-deep-charcoal outline-none focus-visible:ring-2 focus-visible:ring-deep-charcoal ${
+                      on ? "bg-tint-lime font-semibold" : "font-normal hover:bg-tile focus-visible:bg-tile"
+                    }`}
+                  >
+                    <span dir={numDir(o.label)}>{o.label}</span>
+                    {on && <Icon name="check" size={16} className="shrink-0 text-state-gray" />}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
       <FieldError id={`${id}-e`} error={error} />
     </div>
   );
@@ -353,7 +476,7 @@ export function FileBox({
             onFile(null);
             if (ref.current) ref.current.value = "";
           }}
-          className="shrink-0 rounded-md py-0.5 text-label-m text-green-active hover:underline"
+          className="shrink-0 rounded-md py-0.5 text-label-m text-nature-green hover:underline"
         >
           {removeLabel}
         </button>

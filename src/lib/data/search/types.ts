@@ -51,6 +51,7 @@ export type SearchResult = {
   warranty: Localized<"text">;
   offer: Localized<"text"> | null;
   offer_best?: boolean;
+  compare_title?: Localized<"text">; // سطر «الخدمة» في نافذة المقارنة W2-31 لو مختلف عن عنوان الكارت
   has_offer: boolean;
   has_package: boolean;
   // الخريطة (W2-30m)

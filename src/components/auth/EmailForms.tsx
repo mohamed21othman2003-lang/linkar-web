@@ -68,7 +68,7 @@ export function EmailLoginForm({
           />
         </div>
       </Field>
-      <Link href={forgotHref} className="text-label-m text-green-active hover:underline">
+      <Link href={forgotHref} className="text-label-m text-nature-green hover:underline">
         {copy.forgot}
       </Link>
       <button type="submit" disabled={pending} className={submitClass("lg")}>
@@ -141,7 +141,7 @@ export function ResendLink({ label, toast }: { label: string; toast: string }) {
   }, [shown]);
   return (
     <>
-      <button type="button" onClick={() => setShown(Date.now())} className="text-label-m text-green-active hover:underline">
+      <button type="button" onClick={() => setShown(Date.now())} className="text-label-m text-nature-green hover:underline">
         {label}
       </button>
       {shown > 0 && <Toast key={shown} text={toast} />}

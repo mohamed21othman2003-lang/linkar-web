@@ -167,7 +167,7 @@ export function ProviderTabs({
                 <h2 className="text-h4">{t.chooseServices}</h2>
                 <p className="text-caption text-state-gray">{t.chooseServicesSub}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-caption whitespace-nowrap text-state-gray">{t.pricePerCar}</span>
                 <div role="radiogroup" aria-label={t.pricePerCar} className="flex gap-1 rounded-md bg-cool-gray/40 p-1">
                   {SIZES.map((k) => (
@@ -278,7 +278,7 @@ export function ProviderTabs({
             {detail.services.length > 1 && (
               <div className="flex flex-col gap-2 rounded-lg bg-cool-gray/30 px-[18px] py-3.5 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-body-s text-deep-charcoal">{t.compareHint}</p>
-                <button type="button" onClick={() => openCompare(detail.compare_default)} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
+                <button type="button" onClick={() => openCompare(detail.compare_default)} className="flex items-center gap-1 text-label-m text-nature-green hover:underline">
                   {t.compareServices}
                   <Icon name="chevron-left" size={16} flip />
                 </button>
@@ -292,7 +292,8 @@ export function ProviderTabs({
               <div className="flex items-center gap-3">
                 <LogoTile src={provider.logo} alt={name} size={44} radius={16} />
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-caption text-state-gray">{t.bookingAt}</span>
+                  {/* W2-21: «حجزك لدى» #999999 */}
+                  <span className="text-caption text-v3-text-meta">{t.bookingAt}</span>
                   <span className="text-h5 text-deep-charcoal">{name}</span>
                 </div>
               </div>
@@ -404,7 +405,7 @@ export function ProviderTabs({
                     <div className="flex flex-wrap items-baseline gap-2">
                       <span className="text-h4 text-deep-charcoal">{formatPrice(locale, p.price)}</span>
                       <span className="text-caption text-state-gray line-through">{p.old_price.toLocaleString("en-US")}</span>
-                      <span className="rounded-full bg-neon-green/25 px-2 py-[3px] text-caption text-green-active">
+                      <span className="rounded-full bg-neon-green/25 px-2 py-[3px] text-caption text-nature-green">
                         {t.saveAmount(formatPrice(locale, p.old_price - p.price))}
                       </span>
                     </div>
@@ -454,7 +455,7 @@ export function ProviderTabs({
                       <span className="text-caption text-state-gray">{t.kmAway(b.distance_km.toFixed(1))}</span>
                     </span>
                     <span className="text-body-s text-state-gray">{tx(locale, b, "address")}</span>
-                    <span className="text-caption text-green-active">{tx(locale, b, "hours")}</span>
+                    <span className="text-caption text-nature-green">{tx(locale, b, "hours")}</span>
                   </button>
                   <a
                     href={`https://maps.google.com/?q=${encodeURIComponent(b.maps_query)}`}

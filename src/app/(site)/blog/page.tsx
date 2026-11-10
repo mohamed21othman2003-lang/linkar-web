@@ -88,7 +88,7 @@ function Featured({ locale, post, tag, page }: { locale: Locale; post: BlogPost;
         </div>
         <Link
           href={routes.blogPost(post.slug)}
-          className="inline-flex h-[50px] items-center gap-2 self-start rounded-full bg-neon-green ps-[22px] pe-[18px] text-[15px]/[24px] font-bold text-deep-charcoal transition-colors hover:bg-bg-brand-hover"
+          className="inline-flex h-[50px] items-center gap-2 self-start rounded-full bg-neon-green ps-[22px] pe-[18px] text-[15px]/[24px] font-semibold text-deep-charcoal transition-colors hover:bg-bg-brand-hover"
         >
           {tx(locale, page, "read")}
           <Icon name="chevron-left" size={16} flip />

@@ -74,7 +74,8 @@ function DescribeStep({ title, text, c }: { title: string; text: string; c: Comp
           rows={2}
           className="w-full resize-none bg-transparent text-body-m text-deep-charcoal outline-none focus-visible:shadow-none"
         />
-        <span dir="ltr" className="self-end text-caption text-state-gray" aria-live="polite">
+        {/* W2-69b / W2-69c: العدّاد تحت النص من بداية السطر (يمين في العربي) */}
+        <span dir="ltr" className="self-start text-caption text-state-gray" aria-live="polite">
           {c.charCount.replace("{n}", String(value.length)).replace("{max}", String(c.maxLength))}
         </span>
       </div>
@@ -100,7 +101,7 @@ function DescribeStep({ title, text, c }: { title: string; text: string; c: Comp
           type="button"
           onClick={() => file.current?.click()}
           aria-label={c.addPhoto}
-          className="flex size-[72px] flex-col items-center justify-center gap-1 rounded-md border border-dashed border-nature-green text-caption text-green-active hover:bg-tint-lime"
+          className="flex size-[72px] flex-col items-center justify-center gap-1 rounded-md border border-dashed border-nature-green text-caption text-nature-green hover:bg-tint-lime"
         >
           <Icon name="plus" size={18} className="text-nature-green" />
           {c.photo}
@@ -187,7 +188,7 @@ export function ComplaintForm({
                 <span className="flex min-w-0 flex-col gap-0.5">
                   <span className={`text-label-l ${b.disabled ? "text-v3-text-meta" : "text-deep-charcoal"}`}>{b.title}</span>
                   <span className="text-caption text-v3-text-meta">{b.meta}</span>
-                  {b.note && <span className={`text-caption ${b.disabled ? "text-v3-text-meta" : "text-green-active"}`}>{b.note}</span>}
+                  {b.note && <span className={`text-caption ${b.disabled ? "text-v3-text-meta" : "text-nature-green"}`}>{b.note}</span>}
                 </span>
               </button>
             );

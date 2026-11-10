@@ -9,7 +9,7 @@ import type { Option } from "@/lib/data/business/types";
 import { Icon } from "@/components/icons/Icon";
 import { actionClass } from "@/components/gift/ui";
 import { Toast, useFlash } from "@/components/gift/Popup";
-import { clean, Consent, FieldError, FileBox, fileSize, re, Row, SearchField, SectionHead, SelectField, TextField } from "./fields";
+import { clean, Consent, FieldError, FileBox, fileSize, re, Row, SearchField, MenuSelectField, SectionHead, TextField } from "./fields";
 import { useForm } from "./useForm";
 
 type Data = typeof dealerJoin & { cities: Option[]; volumeRanges: Option[] };
@@ -145,9 +145,8 @@ export function DealerJoinForm({ locale, d, next, demo = false }: { locale: Loca
         })}
       </div>
       <Row>
-        <SelectField
+        <MenuSelectField
           label={L("volume")}
-          name="volume"
           value={v.volume}
           onChange={set("volume")}
           placeholder={L("volume_ph")}

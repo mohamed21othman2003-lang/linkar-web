@@ -76,7 +76,7 @@ export default async function DealerPackagesPage() {
                 <Icon name="calendar" size={16} className="shrink-0" />
                 {tx(locale, g, "valid")}
               </p>
-              <p className="flex items-center gap-2 text-body-s text-white/90">
+              <p className="flex items-center gap-2 text-body-s text-white">
                 <Icon name="map-pin" size={16} className="shrink-0 text-white" />
                 {tx(locale, g, "branch")}
               </p>

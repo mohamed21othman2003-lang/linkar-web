@@ -72,7 +72,7 @@ export default async function ForProvidersPage() {
             </ul>
           </div>
           <div aria-hidden className="flex w-full flex-col gap-3 rounded-xl border border-border-default bg-white p-5 md:p-6 lg:w-[420px] lg:shrink-0">
-            <p className="flex items-center gap-2 text-label-m text-green-active">
+            <p className="flex items-center gap-2 text-label-m text-nature-green">
               {tx(locale, tools.preview, "badge")}
               <span className="size-2 rounded-full bg-nature-green" />
             </p>

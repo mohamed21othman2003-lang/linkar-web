@@ -255,7 +255,7 @@ export function PaymentManager({
                     <button
                       type="button"
                       onClick={() => (setCards((cur) => cur.map((x) => ({ ...x, isDefault: x.id === card.id }))), show(c.toastDefault))}
-                      className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]"
+                      className="py-1 text-label-m text-nature-green hover:underline max-md:py-[9px]"
                     >
                       {c.makeDefault}
                     </button>
@@ -316,7 +316,7 @@ export function PaymentManager({
                   <span className="text-caption text-state-gray">{inv.date}</span>
                 </div>
                 <div className="flex items-center gap-6">
-                  <button type="button" onClick={() => show(c.toastDownload, "download")} className="inline-flex items-center gap-1.5 py-1 text-label-m text-green-active hover:underline">
+                  <button type="button" onClick={() => show(c.toastDownload, "download")} className="inline-flex items-center gap-1.5 py-1 text-label-m text-nature-green hover:underline">
                     <Icon name="download" size={16} className="text-nature-green" />
                     {c.downloadPdf}
                   </button>

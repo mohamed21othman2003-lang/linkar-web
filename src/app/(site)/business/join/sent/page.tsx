@@ -46,7 +46,7 @@ export default async function JoinSentPage() {
                   <Icon name={s.done ? "check" : "clock"} size={16} className={s.done ? "text-nature-green" : "text-state-gray"} />
                   {tx(locale, s, "label")}
                 </span>
-                <span className={`text-caption ${s.done ? "text-green-active" : "text-text-secondary"}`}>{tx(locale, s, "when")}</span>
+                <span className={`text-caption ${s.done ? "text-nature-green" : "text-text-secondary"}`}>{tx(locale, s, "when")}</span>
               </li>
             ))}
           </ol>

@@ -19,6 +19,7 @@ export function SearchBar({
   selected: initial,
   carSizes,
   location,
+  locations,
   view,
   onSearch,
   className = "",
@@ -29,6 +30,7 @@ export function SearchBar({
   selected: ServiceSlug[];
   carSizes: CarSize[];
   location: string;
+  locations?: { key: string; label: string }[]; // W2-DD · الموقع
   view?: "map";
   onSearch?: () => void;
   className?: string;
@@ -40,6 +42,8 @@ export function SearchBar({
   const router = useRouter();
   const [selected, setSelected] = useState<ServiceSlug[]>(initial);
   const [car, setCar] = useState<string | null>(null);
+  const [place, setPlace] = useState<string | null>(null);
+  const placeLabel = locations?.find((l) => l.key === place)?.label ?? location;
   const name = (s: ServiceSlug) => tx(locale, services.find((x) => x.slug === s)!, "name");
   const remaining = services.filter((s) => !selected.includes(s.slug));
   const carLabel = car ? tx(locale, carSizes.find((c) => c.key === car)!, "label") : t.carPlaceholder;
@@ -97,17 +101,39 @@ export function SearchBar({
 
       <span className="mx-3.5 h-px bg-cool-gray lg:mx-0 lg:h-9 lg:w-px" aria-hidden />
 
-      {/* الموقع أو الفرع */}
-      <div className="flex h-14 shrink-0 items-center gap-2.5 px-3.5 lg:w-[190px]">
-        <Icon name="map-pin" size={18} className="shrink-0 text-state-gray" />
-        <div className="flex min-w-0 flex-col items-start whitespace-nowrap">
-          <span className="text-caption text-state-gray">
-            {t.locationLabel}
-            {req}
-          </span>
-          <span className="text-label-m text-deep-charcoal">{location}</span>
+      {/* الموقع أو الفرع — القائمة W2-DD · الموقع («استخدام موقعي الحالي» بيرجّع الموقع الافتراضي) */}
+      {locations?.length ? (
+        <Dropdown
+          label={t.locationLabel}
+          className="shrink-0 lg:w-[190px]"
+          value={place === "current" ? null : place}
+          options={locations}
+          onChange={(k) => setPlace(k === "current" ? null : k)}
+          trigger={() => (
+            <span className="flex h-14 w-full items-center gap-2.5 px-3.5 text-start">
+              <Icon name="map-pin" size={18} className="shrink-0 text-state-gray" />
+              <span className="flex min-w-0 flex-col items-start whitespace-nowrap">
+                <span className="text-caption text-state-gray">
+                  {t.locationLabel}
+                  {req}
+                </span>
+                <span className="text-label-m text-deep-charcoal">{placeLabel}</span>
+              </span>
+            </span>
+          )}
+        />
+      ) : (
+        <div className="flex h-14 shrink-0 items-center gap-2.5 px-3.5 lg:w-[190px]">
+          <Icon name="map-pin" size={18} className="shrink-0 text-state-gray" />
+          <div className="flex min-w-0 flex-col items-start whitespace-nowrap">
+            <span className="text-caption text-state-gray">
+              {t.locationLabel}
+              {req}
+            </span>
+            <span className="text-label-m text-deep-charcoal">{location}</span>
+          </div>
         </div>
-      </div>
+      )}
 
       <span className="mx-3.5 h-px bg-cool-gray lg:mx-0 lg:h-9 lg:w-px" aria-hidden />
 

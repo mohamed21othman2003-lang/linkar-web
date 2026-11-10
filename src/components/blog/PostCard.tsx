@@ -12,7 +12,7 @@ export function PostCard({ p }: { p: PostCardView }) {
         <Image src={p.photo} alt="" fill sizes="(min-width: 1024px) 410px, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-200 ease-figma-out group-hover:scale-[1.02]" />
       </div>
       <div className="flex flex-1 flex-col gap-2.5 px-[22px] pt-5 pb-[22px]">
-        <span className="self-start rounded-full bg-cash-tint px-2.5 py-1 text-[12px]/[18px] font-medium text-green-active">{p.tag}</span>
+        <span className="self-start rounded-full bg-cash-tint px-2.5 py-1 text-[12px]/[18px] font-medium text-nature-green">{p.tag}</span>
         <h3 className="text-[19px]/[30px] font-bold text-deep-charcoal">{p.title}</h3>
         <p className="text-body-s text-state-gray">{p.excerpt}</p>
         <p className="mt-auto flex items-center gap-1.5 text-[13px]/[20px] font-light text-meta-gray">

@@ -35,7 +35,7 @@ export default async function CompletePage({ searchParams }: Props) {
   return (
     <AuthShell side={side}>
       <AuthCard>
-        <span className="flex items-center gap-1.5 rounded-full bg-nature-green/14 px-3 py-1 text-caption text-green-active">
+        <span className="flex items-center gap-1.5 rounded-full bg-nature-green/14 px-3 py-1 text-caption text-nature-green">
           {tx(locale, k, "verified")}
           <Icon name="check" size={12} className="text-nature-green" />
         </span>

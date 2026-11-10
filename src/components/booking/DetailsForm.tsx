@@ -58,7 +58,7 @@ export function DetailsForm({
           <button
             type="button"
             onClick={() => (current ? setChoosing(true) : setAdding(true))}
-            className="shrink-0 text-label-m text-green-active hover:underline"
+            className="shrink-0 text-label-m text-nature-green hover:underline"
           >
             {current ? t.change : t.addCarShort}
           </button>
@@ -69,7 +69,8 @@ export function DetailsForm({
           <textarea
             rows={3}
             placeholder={t.notePh}
-            className="min-h-24 resize-y rounded-md border border-border-default p-3.5 text-body-s outline-none placeholder:text-v3-text-meta focus:border-deep-charcoal"
+            // W2-34b: ارتفاع 96px وخلفية بيضا زي الفيجما
+            className="h-24 min-h-24 resize-y rounded-md border border-border-default bg-white p-3.5 text-body-s outline-none placeholder:text-v3-text-meta focus:border-deep-charcoal"
           />
           <div className="flex items-center gap-2.5 text-body-s">
             <Toggle on={whatsapp} onChange={setWhatsapp} label={t.whatsapp} />

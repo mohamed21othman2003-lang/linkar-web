@@ -85,7 +85,7 @@ export function RatingModal({
             {/* نسخة العميل: شارة «+50 نقطة بعد النشر» جنب العنوان */}
             <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
               <h2 className="text-h4">{t.rateTitle}</h2>
-              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-green-active">{t.fill(t.pointsAfterPublish, { n: points })}</span>
+              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-nature-green">{t.fill(t.pointsAfterPublish, { n: points })}</span>
             </div>
             <p className="text-body-s text-text-secondary">{subtitle}</p>
           </div>
@@ -135,7 +135,7 @@ export function RatingModal({
           <button
             type="button"
             onClick={() => file.current?.click()}
-            className="flex h-10 w-fit items-center gap-1.5 rounded-md border border-dashed border-nature-green px-3.5 text-label-m text-green-active hover:bg-tint-lime"
+            className="flex h-10 w-fit items-center gap-1.5 rounded-md border border-dashed border-nature-green px-3.5 text-label-m text-nature-green hover:bg-tint-lime"
           >
             <Icon name="camera" size={16} className="text-nature-green" />
             {t.addPhotos}
@@ -161,7 +161,7 @@ export function RatingModal({
 
         <div className="flex items-center justify-between gap-3 rounded-md bg-tile px-3.5 py-2.5">
           <span className="text-body-s">{t.haveNote}</span>
-          <Link href={complaintHref} className="text-label-m text-green-active hover:underline">
+          <Link href={complaintHref} className="text-label-m text-nature-green hover:underline">
             {t.openComplaint}
           </Link>
         </div>

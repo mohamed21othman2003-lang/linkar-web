@@ -17,10 +17,11 @@ const layout: Record<ServiceSlug, { icon: [number, number, number, number]; titl
   "color-change": { icon: [19.34, 29, 55.571, 49.143], title: [102.51, 53.31, 13.49] },
 };
 
-export function HomeServiceCard({ locale, service, providers }: { locale: Locale; service: Service; providers: Provider[] }) {
+// label: اسم الكارت لو مختلف عن اسم الخدمة العام (الإنجليزي من V2-EN: Wash · PPF Protection · Tinting …)
+export function HomeServiceCard({ locale, service, providers, label }: { locale: Locale; service: Service; providers: Provider[]; label?: string }) {
   const t = getCommon(locale);
   const { icon, title } = layout[service.slug];
-  const name = tx(locale, service, "name");
+  const name = label ?? tx(locale, service, "name");
   const ar = locale === "ar";
   return (
     <article className="relative size-[197.35px] overflow-hidden rounded-[15.5px] bg-v3-card-dark">

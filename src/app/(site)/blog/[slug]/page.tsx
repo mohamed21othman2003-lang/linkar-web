@@ -123,7 +123,7 @@ export default async function BlogPostPage({ params }: Props) {
                         <Icon name="info" size={18} />
                       </span>
                       <div className="flex min-w-0 flex-1 flex-col gap-1">
-                        <p className="text-[16px]/[24px] font-bold text-green-active">{tx(locale, s, "title")}</p>
+                        <p className="text-[16px]/[24px] font-bold text-nature-green">{tx(locale, s, "title")}</p>
                         <p className="text-[15px]/[26px] font-light text-tip-ink">{tx(locale, s, "text")}</p>
                       </div>
                     </aside>

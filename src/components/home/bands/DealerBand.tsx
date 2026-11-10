@@ -60,7 +60,7 @@ export function DealerBand({ locale, content }: { locale: Locale; content: HomeC
               <span className="inline-flex h-[26px] items-center rounded-full bg-deep-charcoal px-2.5 text-[12px] leading-[18px] font-medium text-neon-green xl:h-6 xl:text-body-s xl:text-white">
                 {s(d.badge)}
               </span>
-              <h2 className="text-[22px]/[34px] font-bold text-deep-charcoal md:text-[26px]/[38px] xl:text-h2 xl:text-hero-ink">
+              <h2 className="text-[22px]/[34px] font-bold text-deep-charcoal md:text-[26px]/[38px] xl:text-h2 xl:text-solid-black">
                 {s(d.title_1)}
                 <br className="max-xl:hidden" /> {s(d.title_2)}
               </h2>

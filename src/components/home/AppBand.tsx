@@ -18,10 +18,10 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
   const a = content.appBand;
   return (
     <>
-      {/* Download (37:27970): الشارتين فوق بعض على البداية وصندوق QR الأبيض على النهاية */}
-      <div className="flex w-full items-center justify-between gap-5 max-xl:hidden">
+      {/* Download (37:27970): الشارتين فوق بعض وجنبهم صندوق QR الأبيض بمسافة 20 (L-1025) — الصندوق ارتفاعه 104 (L-1367) */}
+      <div className="flex w-full items-center gap-5 max-xl:hidden">
         <StoreBadges height={48} className="flex-col gap-2.5!" />
-        <div className="flex items-center gap-3 rounded-lg bg-white p-2.5">
+        <div className="flex h-[104px] items-center gap-3 rounded-lg bg-white px-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} loading="lazy" className="size-[72px]" />
           <span className="text-[14px] leading-[22px] font-medium whitespace-nowrap text-deep-charcoal">{s(a.scan)}</span>
@@ -73,9 +73,8 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
         <div className="contents md:flex md:flex-col md:items-start md:gap-4 xl:w-[540px] xl:gap-6">
           <div className="flex flex-col items-start gap-1.5 md:gap-4 xl:gap-6">
             <p className="text-[13px]/[20px] font-medium text-neon-green md:text-overline">{s(a.overline)}</p>
-            <h2
-              className={`text-[26px]/[38px] font-bold text-neon-title md:text-[34px]/[50px] ${locale === "ar" ? "xl:text-display-l" : "xl:text-[44px]/[64px]"}`}
-            >
+            {/* الإنجليزي كمان 52 (V2-EN) */}
+            <h2 className="text-[26px]/[38px] font-bold text-neon-title md:text-[34px]/[50px] xl:text-display-l">
               {s(a.title_1)}
               <br />
               {s(a.title_2)}

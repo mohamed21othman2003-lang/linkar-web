@@ -44,7 +44,7 @@ export function PackageBookingCard({
         <span className="text-label-m">{t.yourCar}</span>
         <div className="flex h-[52px] items-center justify-between gap-2 rounded-md border border-border-default bg-white px-3.5">
           <span className="text-label-l">{current?.label}</span>
-          <button type="button" onClick={() => setDialog("choose")} className="text-label-m text-green-active hover:underline">
+          <button type="button" onClick={() => setDialog("choose")} className="text-label-m text-nature-green hover:underline">
             {t.change}
           </button>
         </div>
@@ -59,9 +59,9 @@ export function PackageBookingCard({
               <Icon name="map-pin" size={16} className="shrink-0 text-nature-green" />
               {branch.name}
             </span>
-            <span className="text-label-m text-green-active">{branch.meta}</span>
+            <span className="text-label-m text-nature-green">{branch.meta}</span>
           </div>
-          <Link href={bookingHref(routes.bookingBranch, { ...query, car: car || undefined })} className="shrink-0 text-label-m text-green-active hover:underline">
+          <Link href={bookingHref(routes.bookingBranch, { ...query, car: car || undefined })} className="shrink-0 text-label-m text-nature-green hover:underline">
             {t.change}
           </Link>
         </div>
@@ -75,7 +75,7 @@ export function PackageBookingCard({
             </span>
             <span className="text-body-s">{i.name}</span>
           </span>
-          <span className={`text-label-m ${i.free ? "text-green-active" : ""}`}>{i.price}</span>
+          <span className={`text-label-m ${i.free ? "text-nature-green" : ""}`}>{i.price}</span>
         </div>
       ))}
       <hr className="border-border-default" />

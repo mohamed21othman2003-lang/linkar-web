@@ -100,7 +100,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                     {carTitle(locale, b.car)} · {customer}
                   </span>
                 )}
-                <span className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-2.5 py-1 text-label-m text-green-active">
+                <span className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-2.5 py-1 text-label-m text-nature-green">
                   <Icon name="calendar" size={14} className="text-nature-green" />
                   {t.fill(t.validUntilBadge, { date: validUntil })}
                 </span>
@@ -112,8 +112,8 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
             <dl className="flex flex-col gap-2.5 rounded-lg border border-border-default p-5">
               {[
                 [t.servicePrice, formatPrice(locale, b.subtotal), ""],
-                [t.fill(t.marketerCredit, { code: b.marketer.code }), `−${formatPrice(locale, b.marketer.credit)}`, "text-green-active"],
-                ...(totals.points ? [[t.pointsDiscount, `−${formatPrice(locale, totals.points)}`, "text-green-active"]] : []),
+                [t.fill(t.marketerCredit, { code: b.marketer.code }), `−${formatPrice(locale, b.marketer.credit)}`, "text-nature-green"],
+                ...(totals.points ? [[t.pointsDiscount, `−${formatPrice(locale, totals.points)}`, "text-nature-green"]] : []),
                 [t.fill(t.paidVia, { method: methodName }), due, ""],
               ].map(([k, v, cls], i, arr) => (
                 <div key={k} className="flex items-center justify-between gap-3">

@@ -67,7 +67,8 @@ export default async function WarrantiesPage() {
     <div className="flex flex-col gap-6">
       <AxTitle title={t("title")} description={t("description")} />
       <WarrantiesList items={items} copy={{ view: t("view"), popupTitle: t("popup_title"), popupNote: t("popup_note"), close: t("popup_close") }} />
-      <AxNote className="rounded-[14px] px-4">{t("note")}</AxNote>
+      {/* W2-74: زوايا 14 — «!» عشان تغلب الـ20 الافتراضية في AxNote */}
+      <AxNote className="rounded-[14px]! px-4">{t("note")}</AxNote>
     </div>
   );
 }

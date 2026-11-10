@@ -12,7 +12,7 @@ export type HelpTopicView = {
   key: string;
   icon: UiGlyph;
   title: string;
-  articles: { slug: string; title: string; answer: string }[];
+  articles: { slug: string; title: string; answer: string; href: string }[];
 };
 export type HelpArticleLink = { title: string; summary: string; topic: string; href: string };
 export type HelpCenterCopy = {
@@ -151,17 +151,24 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
               const id = `help-a-${a.slug}`;
               return (
                 <div key={a.slug} className="border-t border-hairline py-4">
-                  <h3>
+                  {/* الضغط على السؤال بيفتح الإجابة مكانها، والسهم ‹ بيودّي لصفحة المقال كاملة (W2-97b) */}
+                  <h3 className="flex items-center justify-between gap-4">
                     <button
                       type="button"
                       aria-expanded={on}
                       aria-controls={id}
                       onClick={() => toggle(a.slug)}
-                      className="flex w-full items-center justify-between gap-4 text-start text-[16px]/[30px] font-medium text-deep-charcoal hover:text-green-active"
+                      className="min-w-0 flex-1 text-start text-[16px]/[30px] font-medium text-deep-charcoal hover:text-nature-green"
                     >
                       {a.title}
-                      <Icon name="chevron-left" size={14} flip className="shrink-0 text-state-gray" />
                     </button>
+                    <Link
+                      href={a.href}
+                      aria-label={a.title}
+                      className="-me-2 flex size-8 shrink-0 items-center justify-center rounded-full text-state-gray hover:bg-tile hover:text-deep-charcoal"
+                    >
+                      <Icon name="chevron-left" size={14} flip />
+                    </Link>
                   </h3>
                   <AnimatePresence initial={false}>
                     {on && (
@@ -187,7 +194,7 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
                                 aria-pressed={votes[a.slug] === v}
                                 disabled={!!votes[a.slug]}
                                 onClick={() => vote(a.slug, v)}
-                                className={`font-medium text-green-active hover:underline disabled:cursor-default disabled:no-underline ${votes[a.slug] && votes[a.slug] !== v ? "opacity-50" : ""}`}
+                                className={`font-medium text-nature-green hover:underline disabled:cursor-default disabled:no-underline ${votes[a.slug] && votes[a.slug] !== v ? "opacity-50" : ""}`}
                               >
                                 {v === "yes" ? d.yes : d.no}
                               </button>

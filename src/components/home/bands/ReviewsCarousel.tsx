@@ -67,7 +67,7 @@ export function ReviewsCarousel({
               type="button"
               aria-label={prevLabel}
               onClick={() => go(index - 1)}
-              className="flex size-11 items-center justify-center rounded-full border border-cool-gray bg-white text-state-gray hover:border-border-strong xl:size-12"
+              className="flex size-11 items-center justify-center rounded-full border border-chip-line bg-white text-state-gray hover:border-border-strong xl:size-12"
             >
               <Icon name="chevron-right" size={20} flip />
             </button>
@@ -75,7 +75,7 @@ export function ReviewsCarousel({
               type="button"
               aria-label={nextLabel}
               onClick={() => go(index + 1)}
-              className="flex size-11 items-center justify-center rounded-full border border-cool-gray bg-deep-charcoal text-neon-green hover:bg-bg-inverse-subtle xl:size-12"
+              className="flex size-11 items-center justify-center rounded-full bg-deep-charcoal text-neon-green hover:bg-bg-inverse-subtle xl:size-12"
             >
               <Icon name="chevron-left" size={20} flip />
             </button>
@@ -99,7 +99,7 @@ export function ReviewsCarousel({
               }`}
             >
               <div className="flex items-start justify-between">
-                <span className={`text-[52px] leading-[78px] font-bold ${dark ? "bg-linear-to-b from-neon-green to-nature-green bg-clip-text text-transparent" : "text-green-dark"}`}>
+                <span className={`text-[52px] leading-[78px] font-bold ${dark ? "bg-linear-to-b from-neon-green to-nature-green bg-clip-text text-transparent" : "text-nature-green"}`}>
                   ”
                 </span>
                 <span className={`pt-7 text-label-m ${dark ? "text-neon-green" : "text-deep-charcoal"}`}>{r.rating}</span>
@@ -107,7 +107,7 @@ export function ReviewsCarousel({
               <p className={`text-[18px] leading-[28px] font-bold ${dark ? "text-white" : "text-deep-charcoal"}`}>{r.text}</p>
               <span className="h-px w-full shrink-0 bg-[#b6bcb9]" />
               <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-bg-brand-subtle text-label-m text-green-dark">{r.initial}</span>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-bg-brand-subtle text-label-m text-nature-green">{r.initial}</span>
                 <div className="flex flex-col gap-0.5 text-[14px] leading-[22px]">
                   <span className={`font-medium ${dark ? "text-white" : "text-deep-charcoal"}`}>{r.name}</span>
                   <span className={`font-light ${dark ? "text-white" : "text-v3-text-meta"}`}>{r.service}</span>

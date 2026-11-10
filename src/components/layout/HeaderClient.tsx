@@ -33,6 +33,9 @@ function activeKey(pathname: string): NavKey | null {
   if (pathname === "/") return "home";
   // W2-26 (/providers) ما فيهاش عنصر نشط في الفيجما
   if (pathname.startsWith("/services") || pathname.startsWith("/search")) return "services";
+  // W2-32 (الخدمة عند المزوّد /providers/x/y): «الخدمات» نشطة
+  // و W2-42 (تفاصيل الباقة /packages/x): الفيجما معلّمة «الخدمات» مش «الباقات»
+  if (/^\/providers\/[^/]+\/[^/]+/.test(pathname) || /^\/packages\/[^/]+/.test(pathname)) return "services";
   if (pathname.startsWith("/offers")) return "offers";
   if (pathname.startsWith("/packages")) return "packages";
   if (pathname.startsWith("/about") || pathname.startsWith("/help") || pathname.startsWith("/faq") || pathname.startsWith("/contact")) return "about";
@@ -126,7 +129,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               const item = v.nav[k];
               const isMenu = k === "about" || k === "business";
               const isActive = active === k;
-              const color = dark ? (isActive ? "text-neon-green" : "text-white") : isActive ? "text-green-active" : "text-deep-charcoal";
+              const color = dark ? (isActive ? "text-neon-green" : "text-white") : isActive ? "text-nature-green" : "text-deep-charcoal";
               const inner = (
                 <>
                   <span>{item.label}</span>
@@ -210,8 +213,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               <Link
                 href={routes.login}
                 aria-label={v.signIn}
-                // ديسكتوب (37:28376): نص بس — Bold 15 أبيض/75، ارتفاع 44
-                className="flex items-center gap-2 rounded-full text-label-m whitespace-nowrap text-white max-md:size-9 max-md:justify-center max-md:bg-white/12 md:border md:border-white/30 md:px-4 md:py-2.5 lg:h-11 lg:rounded-md lg:border-0 lg:px-5 lg:py-0 lg:text-[15px] lg:leading-[22px] lg:font-bold lg:text-white/75 lg:hover:text-white"
+                // ديسكتوب (37:28376): نص بس — Bold 15 أبيض، ارتفاع 44 (L-1086)
+                className="flex items-center gap-2 rounded-full text-label-m whitespace-nowrap text-white max-md:size-9 max-md:justify-center max-md:bg-white/12 md:border md:border-white/30 md:px-4 md:py-2.5 lg:h-11 lg:rounded-md lg:border-0 lg:px-5 lg:py-0 lg:text-[15px] lg:leading-[22px] lg:font-bold lg:text-white"
               >
                 <Icon name="user" size={16} className="lg:hidden" />
                 <span className="max-md:hidden">{v.signIn}</span>
@@ -292,7 +295,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               </button>
             </div>
             {(["home", "services", "offers", "packages"] as NavKey[]).map((k) => (
-              <Link key={k} href={v.nav[k].href} className={`rounded-md px-3 py-3 text-label-l ${active === k ? "bg-tint-lime text-green-active" : "text-deep-charcoal"}`}>
+              <Link key={k} href={v.nav[k].href} className={`rounded-md px-3 py-3 text-label-l ${active === k ? "bg-tint-lime text-nature-green" : "text-deep-charcoal"}`}>
                 {v.nav[k].label}
               </Link>
             ))}

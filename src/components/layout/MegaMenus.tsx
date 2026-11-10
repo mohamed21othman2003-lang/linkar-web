@@ -58,7 +58,7 @@ export function AboutMegaMenu({ m, onNavigate }: { m: AboutMenuView; onNavigate?
           </span>
           <p className="text-body-s text-neon-green">{m.featured.eyebrow}</p>
           <p className="text-h5 text-white">{m.featured.title}</p>
-          <p className="text-body-s text-white/72">{m.featured.body}</p>
+          <p className="text-body-s text-white">{m.featured.body}</p>
           <Link
             href={m.featured.ctaHref}
             onClick={onNavigate}
@@ -75,7 +75,7 @@ export function AboutMegaMenu({ m, onNavigate }: { m: AboutMenuView; onNavigate?
           {m.policiesLabel}
         </span>
         {m.policies.map((l) => (
-          <Link key={l.href} href={l.href} onClick={onNavigate} className="text-label-m leading-[18px] font-bold text-green-active hover:underline">
+          <Link key={l.href} href={l.href} onClick={onNavigate} className="text-label-m leading-[18px] font-bold text-nature-green hover:underline">
             {l.label}
           </Link>
         ))}
@@ -104,9 +104,9 @@ function BusinessCard({ c, dark, icon, onNavigate }: { c: BizCard; dark: boolean
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={icon} alt="" width={24} height={24} />
       </span>
-      <p className={`text-label-m leading-4 font-bold ${dark ? "text-neon-green" : "text-green-active"}`}>{c.eyebrow}</p>
+      <p className={`text-label-m leading-4 font-bold ${dark ? "text-neon-green" : "text-nature-green"}`}>{c.eyebrow}</p>
       <p className={`text-h5 ${dark ? "text-white" : "text-deep-charcoal"}`}>{c.title}</p>
-      <p className={`text-body-s ${dark ? "text-white/72" : "text-v3-text-meta"}`}>{c.body}</p>
+      <p className={`text-body-s ${dark ? "text-white" : "text-v3-text-meta"}`}>{c.body}</p>
       <Link
         href={c.ctaHref}
         onClick={onNavigate}
@@ -117,7 +117,7 @@ function BusinessCard({ c, dark, icon, onNavigate }: { c: BizCard; dark: boolean
       <Link
         href={c.loginHref}
         onClick={onNavigate}
-        className={`flex items-center gap-1 text-label-m leading-[18px] font-bold ${dark ? "text-neon-green" : "text-green-active"}`}
+        className={`flex items-center gap-1 text-label-m leading-[18px] font-bold ${dark ? "text-neon-green" : "text-nature-green"}`}
       >
         {c.login}
         {/* eslint-disable-next-line @next/next/no-img-element */}

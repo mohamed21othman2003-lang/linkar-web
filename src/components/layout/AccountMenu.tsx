@@ -26,7 +26,7 @@ export function AccountMenu({ m, onNavigate }: { m: AccountMenuView; onNavigate?
         <span className="flex size-10 items-center justify-center rounded-full bg-neon-green text-label-l text-deep-charcoal">{m.initial}</span>
         <span className="flex flex-col">
           <span className="text-label-l text-deep-charcoal">{m.name}</span>
-          <span className="text-caption text-green-active" dir="auto">
+          <span className="text-caption text-nature-green" dir="auto">
             {m.meta}
           </span>
         </span>
@@ -47,7 +47,7 @@ export function AccountMenu({ m, onNavigate }: { m: AccountMenuView; onNavigate?
       <div className="flex items-center gap-2">
         <span className="text-label-l text-deep-charcoal">{m.notificationsTitle}</span>
         <span className="rounded-full bg-neon-green px-3 py-1 text-caption text-deep-charcoal">{m.newCount}</span>
-        <button type="button" className="py-0.5 text-label-m text-green-active hover:underline">
+        <button type="button" className="py-0.5 text-label-m text-nature-green hover:underline">
           {m.markAllRead}
         </button>
       </div>
@@ -66,13 +66,13 @@ export function AccountMenu({ m, onNavigate }: { m: AccountMenuView; onNavigate?
             <span className="font-light text-state-gray" dir="auto">
               {n.body}
             </span>
-            <span className={`font-light ${n.unread ? "text-green-active" : "text-state-gray"}`}>{n.time}</span>
+            <span className={`font-light ${n.unread ? "text-nature-green" : "text-state-gray"}`}>{n.time}</span>
           </span>
         </Link>
       ))}
       <div className="h-px bg-cool-gray" />
       <div className="flex items-center justify-between">
-        <Link href={m.viewAllHref} onClick={onNavigate} className="flex items-center gap-1.5 py-1 text-label-m text-green-active hover:underline">
+        <Link href={m.viewAllHref} onClick={onNavigate} className="flex items-center gap-1.5 py-1 text-label-m text-nature-green hover:underline">
           {m.viewAll}
           <Icon name="chevron-left" size={16} flip className="text-nature-green" />
         </Link>

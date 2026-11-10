@@ -65,7 +65,7 @@ export function HeroSearch(p: HeroSearchProps) {
   const carName = p.carTypes.find((c) => c.slug === car)?.label;
   // ديسكتوب: كبسولة 40 زجاجية · تابلت/موبايل: 50–52 بزوايا 14 (V2-01t/V2-01m)
   const field = (bad: boolean) =>
-    `flex h-[50px] w-full items-center gap-2.5 rounded-[14px] border bg-white/10 px-4 text-start text-[15px] leading-[24px] font-light text-white/80 hover:border-white/40 md:h-[52px] lg:h-10 lg:gap-2 lg:rounded-full lg:bg-hero-ink/60 lg:text-body-s lg:text-white/85 ${
+    `flex h-[50px] w-full items-center gap-2.5 rounded-[14px] border bg-white/10 px-4 text-start text-[15px] leading-[24px] font-light text-white/80 hover:border-white/40 md:h-[52px] lg:h-10 lg:gap-2 lg:rounded-full lg:bg-deep-charcoal/60 lg:text-body-s lg:text-white ${
       bad ? "border-[1.5px] border-hero-error" : "border-white/28 lg:border-white/22"
     }`;
   const errorText = "text-[13px] leading-[1.9] font-medium text-hero-error";
@@ -90,7 +90,7 @@ export function HeroSearch(p: HeroSearchProps) {
               className={`relative flex h-[89px] min-w-0 flex-1 flex-col items-center justify-center gap-[6.7px] overflow-hidden rounded-[13px] px-[7px] transition-colors duration-200 ease-figma-out md:h-[94px] md:gap-[7px] lg:h-[106px] lg:gap-2 lg:px-2 ${
                 on
                   ? "bg-neon-green text-deep-charcoal"
-                  : `border-[0.85px] bg-hero-ink/62 text-white lg:border ${err.service ? "border-hero-error" : "border-white/16 hover:border-white/40"}`
+                  : `border-[0.85px] bg-deep-charcoal/62 text-white lg:border ${err.service ? "border-hero-error" : "border-white/16 hover:border-white/40"}`
               }`}
             >
               <ServiceGlyph name={t.slug} size={44} className={`size-[37px] md:size-[39px] lg:size-11 ${on ? "text-deep-charcoal" : "text-neon-green"}`} />
@@ -124,7 +124,8 @@ export function HeroSearch(p: HeroSearchProps) {
 
       <form
         noValidate
-        className="mt-4 flex w-full flex-col gap-2.5 md:mt-5 md:flex-row lg:mt-7 lg:gap-[9px]"
+        // ديسكتوب: 3 أعمدة متساوية (261 · 261 · 259 في V2-EN) — الـflex كان بيدّي الخانات اللي ليها padding أوسع
+        className="mt-4 flex w-full flex-col gap-2.5 md:mt-5 md:flex-row lg:mt-7 lg:grid lg:grid-cols-3 lg:gap-[9px]"
         onSubmit={(e) => {
           e.preventDefault();
           if (missing.service || missing.city || missing.car) {
@@ -139,13 +140,13 @@ export function HeroSearch(p: HeroSearchProps) {
           type="button"
           onClick={openLocationModal}
           aria-label={p.locationLabel}
-          className={`${field(err.city)} md:w-[290px] md:shrink-0 lg:w-auto lg:flex-1`}
+          className={`${field(err.city)} md:w-[290px] md:shrink-0 lg:w-full`}
         >
           <span className={`truncate ${location ? "text-white" : ""}`}>{location ?? p.locationPlaceholder}</span>
           <Icon name="map-pin" size={18} className="ms-auto size-[18px] shrink-0 text-white lg:size-4" />
         </button>
 
-        <div ref={carRef} className="relative md:w-[250px] md:shrink-0 lg:w-auto lg:flex-1">
+        <div ref={carRef} className="relative md:w-[250px] md:shrink-0 lg:w-auto">
           <button
             type="button"
             aria-haspopup="listbox"
@@ -195,7 +196,7 @@ export function HeroSearch(p: HeroSearchProps) {
         {/* ديسكتوب: النص في البداية والعدسة في الآخر · تابلت/موبايل: النص والعدسة في النص */}
         <button
           type="submit"
-          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-neon-green px-4 text-[16px] leading-[24px] font-semibold text-deep-charcoal hover:bg-bg-brand-hover md:flex-1 lg:h-10 lg:justify-start lg:rounded-full lg:text-label-m"
+          className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-neon-green px-4 text-[16px] leading-[24px] font-semibold text-deep-charcoal hover:bg-bg-brand-hover md:flex-1 lg:h-10 lg:justify-start lg:rounded-full lg:text-label-m lg:font-medium"
         >
           {p.searchLabel}
           <Icon name="search" size={18} className="max-lg:order-first lg:ms-auto" />

@@ -249,7 +249,7 @@ export function ServicePage({
               {affiliate && (
                 <>
                   <span className="text-caption text-state-gray">·</span>
-                  <Link href={routes.provider(provider.slug)} className="flex items-center gap-0.5 text-label-m text-green-active hover:underline">
+                  <Link href={routes.provider(provider.slug)} className="flex items-center gap-0.5 text-label-m text-nature-green hover:underline">
                     {t.providerPage}
                     <Icon name="chevron-left" size={14} flip />
                   </Link>
@@ -367,7 +367,7 @@ export function ServicePage({
                     <h2 className="text-h4">{t.serviceReviewsTitle}</h2>
                     <p className="text-body-s text-state-gray">{t.serviceReviewsSub(rating.toFixed(1), reviewsCount, short)}</p>
                   </div>
-                  <Link href={routes.provider(provider.slug, "reviews")} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
+                  <Link href={routes.provider(provider.slug, "reviews")} className="flex items-center gap-1 text-label-m text-nature-green hover:underline">
                     {t.allReviews}
                     <Icon name="chevron-left" size={16} flip />
                   </Link>
@@ -402,7 +402,7 @@ export function ServicePage({
                   className="flex items-center justify-between gap-3 rounded-md border border-cool-gray bg-white px-3.5 py-3 text-start hover:border-border-strong"
                 >
                   <span className="text-label-l text-deep-charcoal">{`${car.name} · ${t.sizes[car.size]}`}</span>
-                  <span className="text-label-m text-green-active">{t.change}</span>
+                  <span className="text-label-m text-nature-green">{t.change}</span>
                 </button>
               ) : (
                 <div role="radiogroup" aria-label={t.yourCar} className="flex gap-1 rounded-md bg-cool-gray/40 p-1">
@@ -431,9 +431,9 @@ export function ServicePage({
                     <Icon name="map-pin" size={16} className="shrink-0 text-nature-green" />
                     {tx(locale, branch, "name")}
                   </span>
-                  <span className="text-label-m text-green-active">{`${t.branchDistance(branch.distance_km.toFixed(1))} · ${t.nearestSuffix}`}</span>
+                  <span className="text-label-m text-nature-green">{`${t.branchDistance(branch.distance_km.toFixed(1))} · ${t.nearestSuffix}`}</span>
                 </div>
-                <Link href={href} className="shrink-0 text-label-m text-green-active hover:underline">
+                <Link href={href} className="shrink-0 text-label-m text-nature-green hover:underline">
                   {t.change}
                 </Link>
               </div>
@@ -494,7 +494,7 @@ export function ServicePage({
               <div className="flex items-center gap-2 rounded-md bg-bg-success-subtle px-3 py-2.5">
                 <Icon name="tag" size={16} className="shrink-0 text-nature-green" />
                 <span className="min-w-0 flex-1 text-label-m text-deep-charcoal">{t.marketerCredit(marketer.voucher_code)}</span>
-                <span className="text-label-m whitespace-nowrap text-green-active">{`−${formatPrice(locale, credit)}`}</span>
+                <span className="text-label-m whitespace-nowrap text-nature-green">{`−${formatPrice(locale, credit)}`}</span>
               </div>
             )}
             <Link href={href} className="flex h-14 items-center justify-center gap-2 rounded-[14px] bg-neon-green px-5 text-label-l text-deep-charcoal hover:bg-bg-brand-hover active:bg-bg-brand-pressed transition-colors duration-200 ease-figma-out">
@@ -517,7 +517,7 @@ export function ServicePage({
               <h2 className="text-h4">{t.otherProvidersTitle(categoryDefinite)}</h2>
               <p className="text-body-s text-state-gray">{t.otherProvidersSub}</p>
             </div>
-            <Link href={routes.search({ services: [category.slug] })} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
+            <Link href={routes.search({ services: [category.slug] })} className="flex items-center gap-1 text-label-m text-nature-green hover:underline">
               {t.allProviders}
               <Icon name="chevron-left" size={16} flip />
             </Link>
@@ -557,7 +557,7 @@ export function ServicePage({
               <h2 className="text-h4">{t.otherServicesTitle(short)}</h2>
               <p className="text-body-s text-state-gray">{t.otherServicesSub}</p>
             </div>
-            <Link href={routes.provider(provider.slug)} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
+            <Link href={routes.provider(provider.slug)} className="flex items-center gap-1 text-label-m text-nature-green hover:underline">
               {t.providerPage}
               <Icon name="chevron-left" size={16} flip />
             </Link>

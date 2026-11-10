@@ -69,6 +69,7 @@ export default async function BookingBranchPage({ searchParams }: { searchParams
               total: formatPrice(locale, b.subtotal),
             }}
             hrefs={hrefs}
+            initial={b.branch.id}
           />
         </Container>
       </div>

@@ -49,7 +49,7 @@ export default async function SharedVoucherPage({ params }: Props) {
                 <p className="text-body-s text-text-secondary">{t.sharedSub(v.booking_no, tx(locale, v, "valid_until"))}</p>
               </div>
             </div>
-            <span className="flex items-center gap-1.5 rounded-full bg-nature-green/14 px-3 py-1 text-caption text-green-active">
+            <span className="flex items-center gap-1.5 rounded-full bg-nature-green/14 px-3 py-1 text-caption text-nature-green">
               {t.paidInFull}
               <Icon name="check" size={12} className="text-nature-green" />
             </span>

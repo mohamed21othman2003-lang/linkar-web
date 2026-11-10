@@ -93,7 +93,9 @@ export const routes = {
   blog: "/blog", // W2-100
   blogPost: (slug: string) => `/blog/${slug}`, // W2-100b
 
-  // صفحات الحالة (W2-500 · W2-503 · W2-410 · W2-403 · W2-401 · W2-offline) — 404 و500 تلقائية من Next
+  // صفحات الحالة (W2-500 · W2-503 · W2-410 · W2-403 · W2-401 · W2-offline) — 404 تلقائية من Next،
+  // و500 بتظهر من error.tsx لأي خطأ + رابط ثابت /500 لنفس الشاشة
+  serverError: "/500", // W2-500
   offline: "/offline", // W2-offline
   maintenance: "/maintenance", // W2-503
   linkExpired: "/link-expired", // W2-410

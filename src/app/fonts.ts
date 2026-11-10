@@ -28,4 +28,19 @@ export const notoKufiLatin = localFont({
   ],
 });
 
-export const siteFonts = `${notoKufiArabic.variable} ${notoKufiLatin.variable}`;
+// الأرقام والنص اللاتيني في نسخة العميل بـReadex Pro (300–700): ملف Google اللاتيني بنفس الـunicode-range،
+// فالحروف العربية تفضل Noto Kufi. Noto Kufi اللاتيني فاضل بعده احتياطي لأي رمز برّه مدى Readex.
+export const readexPro = localFont({
+  src: "./fonts/readex-pro-latin.woff2",
+  weight: "300 700",
+  variable: "--font-readex",
+  adjustFontFallback: false,
+  declarations: [
+    {
+      prop: "unicode-range",
+      value: "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    },
+  ],
+});
+
+export const siteFonts = `${notoKufiArabic.variable} ${readexPro.variable} ${notoKufiLatin.variable}`;

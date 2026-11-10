@@ -22,7 +22,7 @@ export function BandHead({
   const dark = tone === "dark";
   return (
     <div className={`flex max-w-[820px] flex-col gap-2.5 ${className}`}>
-      <p className={`text-overline ${dark ? "text-neon-green" : "text-green-dark"}`}>{overline}</p>
+      <p className={`text-overline ${dark ? "text-neon-green" : "text-nature-green"}`}>{overline}</p>
       <h2 className={`text-[26px]/[40px] font-bold md:text-h2 ${dark ? "text-neon-title" : "text-deep-charcoal"} ${titleClass}`}>{title}</h2>
       {body && <p className={`text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-state-gray"}`}>{body}</p>}
     </div>
@@ -58,6 +58,6 @@ export function GlyphTile({ icon, tone = "neon", size = 44, glyph = 22, radius =
 
 // زر حبّة (r999، 56 ارتفاع) — «اطلب عرضاً لشركتك ‹» و«تواصل مع فريق الأعمال»
 export const pillClass = {
-  primary: "inline-flex h-14 items-center justify-center gap-2 rounded-full bg-neon-green ps-[26px] pe-[22px] text-label-l font-bold text-deep-charcoal transition-colors hover:bg-bg-brand-hover",
+  primary: "inline-flex h-14 items-center justify-center gap-2 rounded-full bg-neon-green ps-[26px] pe-[22px] text-label-l font-semibold text-deep-charcoal transition-colors hover:bg-bg-brand-hover",
   outline: "inline-flex h-14 items-center justify-center rounded-full border border-deep-charcoal bg-white px-6 text-label-l text-deep-charcoal transition-colors hover:bg-tile",
 };

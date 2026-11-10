@@ -394,6 +394,8 @@ const oneServiceResults: SearchResult[] = [
     warranty: T("9 سنوات", "9 years"),
     offer: T("باقة: التلميع مجاناً", "Package: free polishing"),
     offer_best: true,
+    // W2-31: سطر «الخدمة» لجونسون في نافذة المقارنة
+    compare_title: T("طلاء نانو سيراميك · بريميوم", "Nano ceramic coating · Premium"),
     has_offer: false,
     has_package: true,
     map: { x: 250, y: 520 },

@@ -37,7 +37,7 @@ export default async function HelpPage() {
             title: tx(locale, tp, "title"),
             articles: tp.articles.map((s) => {
               const a = bySlug.get(s)!;
-              return { slug: s, title: tx(locale, a, "title"), answer: (locale === "en" ? a.answer_en : a.answer_ar) ?? tx(locale, a, "summary") };
+              return { slug: s, title: tx(locale, a, "title"), answer: (locale === "en" ? a.answer_en : a.answer_ar) ?? tx(locale, a, "summary"), href: routes.helpArticle(s) };
             }),
           }))}
           articles={articles.map((a) => ({

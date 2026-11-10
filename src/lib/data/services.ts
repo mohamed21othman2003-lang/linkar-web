@@ -18,7 +18,7 @@ export const services: Service[] = [
     name_ar: "حماية PPF",
     name_en: "PPF protection",
     chip_ar: "حماية PPF",
-    chip_en: "PPF",
+    chip_en: "PPF Protection", // V2-EN (شيبس كروت مقدّمي الخدمة)
     description_ar: "أفلام حماية شفافة للطلاء من الخدوش والحصى.",
     description_en: "Clear protection film that shields the paint from scratches and stone chips.",
     // الفيجما بيعرض السطر «3M • XPEL • لومار» ولومار في أول السطر (يمين)؛ الترتيب ده بيطلع نفس الشكل في المتصفح
@@ -49,7 +49,7 @@ export const services: Service[] = [
     name_ar: "نانو سيراميك",
     name_en: "Nano ceramic",
     chip_ar: "نانو سيراميك",
-    chip_en: "Nano ceramic",
+    chip_en: "Nano Ceramic",
     description_ar: "طبقة حماية سيراميك تحفظ لمعة الطلاء لسنوات.",
     description_en: "A ceramic coating that keeps the paint glossy for years.",
     featured_providers: ["johnson", "feynlab", "nanox"],
@@ -60,7 +60,7 @@ export const services: Service[] = [
     name_ar: "تغيير اللون",
     name_en: "Color change",
     chip_ar: "تغيير اللون",
-    chip_en: "Color change",
+    chip_en: "Color Change",
     description_ar: "تغليف السيارة بلون جديد بأفلام قابلة للإزالة، يحافظ على الطلاء الأصلي.",
     description_en: "Wrap your car in a new color with removable films that protect the original paint.",
     featured_providers: ["3m", "xpel", "3seven"],

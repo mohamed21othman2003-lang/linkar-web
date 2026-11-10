@@ -24,7 +24,7 @@ export function ProviderTile({ slug, alt, size, className = "" }: { slug: string
 // شارة الحالة في جدول حجوزاتي (W2-38): خلفية فاتحة + نقطة 6px
 const statusStyles: Record<BookingStatus, { pill: string; dot: string }> = {
   waiting: { pill: "bg-neon-green/20 text-deep-charcoal", dot: "bg-nature-green" },
-  in_service: { pill: "bg-nature-green/16 text-green-active", dot: "bg-nature-green" },
+  in_service: { pill: "bg-nature-green/16 text-nature-green", dot: "bg-nature-green" },
   completed: { pill: "bg-cool-gray/50 text-deep-charcoal", dot: "bg-state-gray" },
   cancelled: { pill: "bg-promotional-red/10 text-promotional-red", dot: "bg-promotional-red" },
 };

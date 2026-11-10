@@ -45,6 +45,7 @@ export function toDetailView(locale: Locale, b: Booking, user: DemoUser): Bookin
           providerSlug: b.provider_slug,
           meta: tx(locale, b.rating, "title_meta"),
           criteria: [tx(locale, b.rating, "extra_criterion")],
+          serviceCategory: tx(locale, b.rating, "service_category"),
           sample: b.rating.sample,
           comment: tx(locale, b.rating, "sample_comment"),
           // «محمد س.» — الاسم الأول + أول حرف من اسم العائلة

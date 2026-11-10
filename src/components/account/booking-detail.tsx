@@ -170,10 +170,10 @@ export function BookingDetail({
             {v.rows.map((r) => (
               <div key={r.label} className="flex items-center justify-between gap-4">
                 <span className="text-body-s text-state-gray">{r.label}</span>
-                <span className={`text-end text-label-m ${r.tone === "green" ? "text-green-active" : "text-deep-charcoal"}`}>{r.value}</span>
+                <span className={`text-end text-label-m ${r.tone === "green" ? "text-nature-green" : "text-deep-charcoal"}`}>{r.value}</span>
               </div>
             ))}
-            <button type="button" onClick={download} className="flex items-center gap-1.5 self-start text-label-m text-green-active hover:underline">
+            <button type="button" onClick={download} className="flex items-center gap-1.5 self-start text-label-m text-nature-green hover:underline">
               <BrandIcon name="feature-price" size={18} />
               {t.invoice}
             </button>

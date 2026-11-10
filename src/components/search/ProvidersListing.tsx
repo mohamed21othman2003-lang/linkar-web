@@ -85,7 +85,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
               <Icon name="map-pin" size={16} className="text-nature-green" />
               <span className="text-deep-charcoal">{location}</span>
               <span className="h-3.5 w-px bg-cool-gray" aria-hidden />
-              <Link href={routes.search()} className="text-green-active hover:underline">
+              <Link href={routes.search()} className="text-nature-green hover:underline">
                 {t.change}
               </Link>
             </span>

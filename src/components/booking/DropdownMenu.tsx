@@ -122,7 +122,7 @@ export function CarSizeMenu({ locale, value, onChange }: { locale: Locale; value
       onChange={onChange}
       align="end"
       options={order.map((s) => ({ value: s, label: t.sizes[s] }))}
-      trigger={() => <span className="text-label-m text-green-active hover:underline">{t.change}</span>}
+      trigger={() => <span className="text-label-m text-nature-green hover:underline">{t.change}</span>}
     />
   );
 }

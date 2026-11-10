@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { routes } from "@/lib/routes";
 import { scrollTrack } from "../motion";
 import type { Locale } from "@/i18n/config";
@@ -27,11 +27,10 @@ function stepOf(el: HTMLElement) {
   const first = el.children[0] as HTMLElement | undefined;
   return first ? first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || "0") : 333;
 }
-const desktop = () => window.matchMedia("(min-width: 1280px)").matches;
 
 // Band · Packages (85:30076): فلاتر + أسهم + شريط كروت يتحرك أفقياً + نقاط
-// ديسكتوب: الشريط معكوس ومعروض من آخره (XPEL على الطرف + آخر نقطة نشطة) زي الفيجما؛
-// تابلت/موبايل (85:34467/85:33788): بترتيب البيانات من البداية (XPEL أول كارت) — النقطة الأولى نشطة
+// كل المقاسات (85:30076/85:34467/85:33788): بترتيب البيانات من البداية — في العربي أول كارت (XPEL) على اليمين
+// والكارت المقطوع على الشمال، والنقطة الأولى نشطة — زي شريط «آراء العملاء» (L-0052)
 export function PackagesCarousel({
   locale,
   items,
@@ -50,7 +49,6 @@ export function PackagesCarousel({
   slideLabel: string;
 }) {
   const [index, setIndex] = useState(0);
-  const [wide, setWide] = useState(false);
   const track = useRef<HTMLDivElement>(null);
   const touched = useRef(false);
   const list = items;
@@ -66,11 +64,10 @@ export function PackagesCarousel({
       const pos = x >= max() - 2 ? n - 1 : Math.min(n - 1, Math.round(x / stepOf(el)));
       setIndex(pos);
     };
-    // ديسكتوب: الفيجما بتعرض الشريط في آخره؛ أقل من كده من أوله
+    // الشريط بيبدأ من أوله (يمين في العربي)
     const place = () => {
-      setWide(desktop());
       if (touched.current) return;
-      el.scrollLeft = desktop() ? (rtl ? -1 : 1) * max() : 0;
+      el.scrollLeft = 0;
       onScroll();
     };
     place();
@@ -134,11 +131,10 @@ export function PackagesCarousel({
         ref={track}
         className="-me-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pe-5 [scrollbar-width:none] md:-me-10 md:gap-4 md:pe-10 xl:m-0 xl:snap-none xl:gap-5 xl:p-0 xl:pt-4 [&::-webkit-scrollbar]:hidden"
       >
-        {list.map((p, i) => (
+        {list.map((p) => (
           <div
             key={p.key}
-            style={{ "--o": n - 1 - i } as CSSProperties}
-            className="w-[257px] shrink-0 snap-start md:w-[313px] xl:order-(--o) [&>*]:max-md:w-[313px] [&>*]:max-md:[zoom:0.821]"
+            className="w-[257px] shrink-0 snap-start md:w-[313px] [&>*]:max-md:w-[313px] [&>*]:max-md:[zoom:0.821]"
           >
             <OfferCard
               locale={locale}
@@ -155,7 +151,7 @@ export function PackagesCarousel({
         ))}
       </div>
 
-      <div className={`flex justify-center gap-1.5 ${wide ? "flex-row-reverse" : ""}`}>
+      <div className="flex justify-center gap-1.5">
         {list.map((p, i) => (
           <button
             key={p.key}

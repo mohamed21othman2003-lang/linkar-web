@@ -126,7 +126,7 @@ function SizeMenu({ label, sizes, value, onChange }: { label: string; sizes: { k
   }, [open]);
   return (
     <div ref={wrap} className="relative">
-      <button type="button" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="py-0.5 text-label-m text-green-active hover:underline">
+      <button type="button" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="py-0.5 text-label-m text-nature-green hover:underline">
         {label}
       </button>
       {open && (
@@ -271,7 +271,7 @@ function CarDialog({
         </div>
         {size && (
         <div className="flex items-center justify-between gap-2.5 rounded-[20px] border border-neon-green/60 bg-tint-lime px-4 py-3">
-          <p className="flex items-center gap-2 text-label-m text-green-active">
+          <p className="flex items-center gap-2 text-label-m text-nature-green">
             <Icon name="car" size={18} className="shrink-0 text-nature-green" />
             {c.sizeDetected.replace("{size}", sizeLabel)}
           </p>
@@ -356,7 +356,7 @@ export function CarsManager({
                 {car.isDefault ? (
                   <span className="inline-flex h-[30px] items-center rounded-full bg-deep-charcoal px-3 text-caption text-neon-green">{c.default}</span>
                 ) : (
-                  <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-green-active hover:underline max-md:py-[9px]">
+                  <button type="button" onClick={() => setDefault(car.id)} className="py-1 text-label-m text-nature-green hover:underline max-md:py-[9px]">
                     {c.makeDefault}
                   </button>
                 )}

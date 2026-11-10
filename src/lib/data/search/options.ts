@@ -89,7 +89,18 @@ export const carSizes = [
 ];
 
 // موقع البحث الافتراضي (شريط البحث + W2-26)
-export const searchLocation = { ...L("حي الروضة، جدة", "Al Rawdah, Jeddah"), city_ar: "جدة", city_en: "Jeddah" };
+// options = W2-DD · الموقع (قائمة حقل «الموقع أو الفرع») — بالترتيب في الفيجما؛ «current» بيرجّع الموقع الافتراضي
+export const searchLocation = {
+  ...L("حي الروضة، جدة", "Al Rawdah, Jeddah"),
+  city_ar: "جدة",
+  city_en: "Jeddah",
+  options: [
+    { key: "jeddah-rawdah", ...L("جدة · حي الروضة", "Jeddah · Al Rawdah") },
+    { key: "jeddah-zahraa", ...L("جدة · حي الزهراء", "Jeddah · Al Zahraa") },
+    { key: "riyadh-malqa", ...L("الرياض · حي الملقا", "Riyadh · Al Malqa") },
+    { key: "current", ...L("استخدام موقعي الحالي", "Use my current location") },
+  ],
+};
 
 // W2-29 · لوحة البحث (769:16533)
 export type RecentSearch = ReturnType<typeof L> &

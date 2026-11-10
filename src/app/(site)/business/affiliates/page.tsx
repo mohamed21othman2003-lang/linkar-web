@@ -76,7 +76,7 @@ export default async function AffiliatesPage() {
             <p dir="ltr" className="text-h2 text-deep-charcoal rtl:text-end">
               {c.code}
             </p>
-            <p className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-3 py-1.5 text-label-m whitespace-nowrap text-green-active max-md:text-caption">
+            <p className="flex w-fit items-center gap-1.5 rounded-full bg-bg-success-subtle px-3 py-1.5 text-label-m whitespace-nowrap text-nature-green max-md:text-caption">
               {tx(locale, c, "pill")}
               <Icon name="tag" size={14} className="text-nature-green" />
             </p>

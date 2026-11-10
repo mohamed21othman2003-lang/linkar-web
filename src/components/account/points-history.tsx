@@ -111,7 +111,7 @@ export function PointsHistory({
               <span className="text-caption text-state-gray">{r.dateLabel}</span>
             </span>
             <span className="flex shrink-0 flex-col items-end gap-0.5">
-              <span className={`text-label-l ${r.points < 0 ? "text-promotional-red" : "text-green-active"}`} dir="ltr">
+              <span className={`text-label-l ${r.points < 0 ? "text-promotional-red" : "text-nature-green"}`} dir="ltr">
                 {r.pointsLabel}
               </span>
               <span className="text-caption whitespace-nowrap text-state-gray">
@@ -136,7 +136,7 @@ export function PointsHistory({
               <tr key={r.id} className={`${cols} mt-4 border-b border-cool-gray py-3.5`}>
                 <td className="text-body-s text-deep-charcoal">{r.dateLabel}</td>
                 <td className="text-body-s text-deep-charcoal">{r.operation}</td>
-                <td className={`text-start text-label-l ${r.points < 0 ? "text-promotional-red" : "text-green-active"}`}>
+                <td className={`text-start text-label-l ${r.points < 0 ? "text-promotional-red" : "text-nature-green"}`}>
                   <span className="inline-block" dir="ltr">
                     {r.pointsLabel}
                   </span>

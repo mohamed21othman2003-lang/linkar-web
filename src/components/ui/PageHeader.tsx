@@ -18,6 +18,9 @@ export function Breadcrumb({ items, tone = "light" }: { items: Crumb[]; tone?: "
             <Link href={c.href} className={dark ? "text-v3-card-stroke hover:text-white" : "text-text-secondary hover:text-text-primary"}>
               {c.label}
             </Link>
+          ) : i < items.length - 1 ? (
+            // خطوة وسطانية من غير رابط (زي تصنيف المقال في W2-100b): نفس لون الخطوات السابقة، والأبيض للصفحة الحالية بس
+            <span className={dark ? "text-v3-card-stroke" : "text-text-secondary"}>{c.label}</span>
           ) : (
             <span className={dark ? "text-white" : "text-text-primary"} aria-current="page">
               {c.label}

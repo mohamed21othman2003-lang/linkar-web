@@ -129,10 +129,10 @@ export function SearchMap({
             <Icon name="search" size={14} />
             {t.searchThisArea}
           </button>
-          {/* 330px تحت الـ1440: زرار «ابحث في هذه المنطقة» العربي أعرض وكان راكب على آخر الملاحظة في 1280 */}
-          <p className="pointer-events-auto absolute start-5 top-5 hidden max-w-[calc(100%-330px)] items-center min-[1440px]:max-w-[calc(100%-300px)] gap-1.5 rounded-full bg-white/92 px-3 py-1.5 text-caption text-state-gray xl:flex">
+          {/* 330px تحت الـ1440: زرار «ابحث في هذه المنطقة» العربي أعرض وكان راكب على آخر الملاحظة في 1280 — فالملاحظة بتنزل سطرين هناك بدل ما تتقص */}
+          <p className="pointer-events-auto absolute start-5 top-5 hidden max-w-[calc(100%-330px)] items-center min-[1440px]:max-w-[calc(100%-300px)] gap-1.5 rounded-[14px] min-[1440px]:rounded-full bg-white/92 px-3 py-1.5 text-caption text-state-gray xl:flex">
             <Icon name="info" size={12} className="shrink-0" />
-            <span className="truncate">{tx(locale, s.map.legend, "text")}</span>
+            <span>{tx(locale, s.map.legend, "text")}</span>
           </p>
 
           {/* كارت مقدّم الخدمة المختار — تصميم العميل المعدّل: نفس كارت النتيجة الغامق بعرض 340 */}
@@ -178,7 +178,7 @@ export function SearchMap({
               <div className="flex items-center justify-between gap-1">
                 <div className="flex min-w-0 flex-col items-start">
                   <p className="text-body-s text-deep-charcoal">{tx(locale, r.map_title, "text")}</p>
-                  <p className={`text-caption ${r.map_note_tone === "green" ? "text-green-active" : "text-state-gray"}`}>{tx(locale, r.map_note, "text")}</p>
+                  <p className={`text-caption ${r.map_note_tone === "green" ? "text-nature-green" : "text-state-gray"}`}>{tx(locale, r.map_note, "text")}</p>
                 </div>
                 <div className="flex shrink-0 flex-col items-end">
                   <p className="text-caption text-state-gray">{tx(locale, r.map_price_label, "text")}</p>

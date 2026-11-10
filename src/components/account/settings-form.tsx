@@ -150,7 +150,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
                 <span dir="ltr" className="text-body-m text-deep-charcoal">
                   {phone}
                 </span>
-                <button type="button" onClick={() => setPopup("p01")} className="text-label-m text-green-active hover:underline">
+                <button type="button" onClick={() => setPopup("p01")} className="text-label-m text-nature-green hover:underline">
                   {t.change}
                 </button>
               </div>
@@ -199,7 +199,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
               </span>
             </button>
             <span className="flex items-center gap-3.5">
-              <button type="button" className="flex items-center gap-1.5 py-0.5 text-label-m text-green-active hover:underline">
+              <button type="button" className="flex items-center gap-1.5 py-0.5 text-label-m text-nature-green hover:underline">
                 <Icon name="edit" size={16} className="text-nature-green" />
                 {t.edit}
               </button>
@@ -271,7 +271,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
             {t.deleteAccount}
           </button>
         </div>
-        <p className="flex items-center gap-2.5 rounded-[20px] bg-promotional-red/5 px-4 py-3 text-body-s text-deep-charcoal">
+        <p className="flex items-center gap-2.5 rounded-[20px] bg-tint-danger px-4 py-3 text-body-s text-deep-charcoal">
           <Icon name="alert" size={16} className="shrink-0" />
           {t.deleteRule}
         </p>
@@ -357,7 +357,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
           {seconds > 0 ? (
             <p className="text-caption text-state-gray">{pp.p02.resendIn(`0:${String(seconds).padStart(2, "0")}`)}</p>
           ) : (
-            <button type="button" onClick={() => setSeconds(45)} className="self-start text-label-m text-green-active hover:underline">
+            <button type="button" onClick={() => setSeconds(45)} className="self-start text-label-m text-nature-green hover:underline">
               {pp.p02.resend}
             </button>
           )}

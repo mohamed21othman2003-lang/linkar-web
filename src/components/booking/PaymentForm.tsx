@@ -25,7 +25,7 @@ const badgeStyle: Record<PaymentMethodId, string> = {
   tabby: "bg-tabby text-pay-black",
   tamara: "bg-tamara text-pay-black",
   card: "border border-border-default bg-white",
-  cash: "border border-cool-gray bg-cash-tint text-green-active",
+  cash: "border border-cool-gray bg-cash-tint text-nature-green",
 };
 
 // W2-35 الدفع · W2-35m مدى · W2-35b فشلت العملية · W2-35s كود المسوّق — الدفع تجريبي بالكامل
@@ -149,7 +149,7 @@ export function PaymentForm({
                     setMethod(m.id);
                     setDialog(dialogFor[m.flow]);
                   }}
-                  className={`flex min-h-20 items-center justify-between gap-3 rounded-lg px-4 py-3.5 text-start transition-colors duration-200 ease-figma-out ${on ? "border-2 border-neon-green bg-neon-green/8" : "border border-border-default bg-white"}`}
+                  className={`flex min-h-20 items-center justify-between gap-3 rounded-lg px-4 py-3.5 text-start transition-colors duration-200 ease-figma-out ${on ? "border-2 border-neon-green bg-neon-green/8" : `border bg-white ${m.id === "cash" ? "border-border-cash" : "border-border-default"}`}`}
                 >
                   <span className="flex min-w-0 items-center gap-3">
                     <RadioDot on={on} />
@@ -190,7 +190,7 @@ export function PaymentForm({
                   <span className="text-label-l">
                     <bdi>{marketer.code}</bdi>
                   </span>
-                  <span className="text-caption text-green-active">{t.fill(t.marketerApplied, { name: marketer.name, amount: formatPrice(locale, marketer.credit) })}</span>
+                  <span className="text-caption text-nature-green">{t.fill(t.marketerApplied, { name: marketer.name, amount: formatPrice(locale, marketer.credit) })}</span>
                 </span>
                 <button type="button" onClick={() => setMarketer(null)} className="text-label-m underline">
                   {t.remove}

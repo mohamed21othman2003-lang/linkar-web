@@ -43,7 +43,7 @@ export function ComplaintsThread({
         {messages.map((m) => (
           <li key={m.key} className={`flex flex-col gap-1.5 rounded-lg px-4 py-3.5 ${bubble[m.from]}`}>
             <p className="flex flex-wrap items-center gap-2.5">
-              <span className={`text-label-m ${m.from === "linkar" ? "text-green-active" : "text-deep-charcoal"}`}>{m.author}</span>
+              <span className={`text-label-m ${m.from === "linkar" ? "text-nature-green" : "text-deep-charcoal"}`}>{m.author}</span>
               <span className="text-caption text-state-gray">{m.time}</span>
             </p>
             <p className="text-body-s text-deep-charcoal">{m.text}</p>

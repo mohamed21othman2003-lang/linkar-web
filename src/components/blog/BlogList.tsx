@@ -62,7 +62,6 @@ export function BlogList({
           })}
         </div>
         <label className="flex h-11 w-full shrink-0 items-center gap-2.5 rounded-full border border-chip-line bg-white px-4 focus-within:border-deep-charcoal lg:w-[320px]">
-          <Icon name="search" size={18} className="shrink-0 text-state-gray" />
           <input
             type="search"
             value={q}
@@ -71,6 +70,8 @@ export function BlogList({
             aria-label={search}
             className="min-w-0 flex-1 bg-transparent text-[15px]/[24px] font-light text-deep-charcoal outline-none placeholder:text-meta-gray [&::-webkit-search-cancel-button]:hidden"
           />
+          {/* W2-100: أيقونة البحث في آخر الحقل زي الفيجما */}
+          <Icon name="search" size={18} className="shrink-0 text-state-gray" />
         </label>
       </div>
       {showFeatured && featured}

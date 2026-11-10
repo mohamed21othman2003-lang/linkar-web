@@ -45,7 +45,7 @@ export default async function CorporatePage() {
         <GridPattern />
         <Container className="relative flex flex-col gap-10 py-12 md:py-16 lg:pt-24 lg:pb-[104px] xl:flex-row xl:items-center xl:gap-16">
           <div className="flex flex-col gap-[18px] xl:min-w-0 xl:flex-1">
-            <p className="text-overline text-green-dark">{tx(locale, intro, "overline")}</p>
+            <p className="text-overline text-nature-green">{tx(locale, intro, "overline")}</p>
             <h2 className="text-[30px]/[46px] font-bold text-deep-charcoal md:text-[40px]/[60px]">{tx(locale, intro, "title")}</h2>
             <p className="text-body-m text-state-gray md:text-[18px]/[32px]">{tx(locale, intro, "body")}</p>
             <div className="flex flex-wrap gap-3">
@@ -72,7 +72,7 @@ export default async function CorporatePage() {
             <div className="relative mt-4 flex w-full flex-col gap-3 rounded-xl bg-white p-5 shadow-[0_12px_16px_rgba(13,26,33,0.18)] md:absolute md:end-0 md:top-[196px] md:mt-0 md:w-[330px]">
               <div className="flex items-center justify-between">
                 <p className="text-[16px]/[24px] font-bold text-deep-charcoal">{tx(locale, intro.card, "title")}</p>
-                <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px]/[18px] font-medium text-green-active">{tx(locale, intro.card, "pill")}</span>
+                <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px]/[18px] font-medium text-nature-green">{tx(locale, intro.card, "pill")}</span>
               </div>
               {intro.card.rows.map((r) => (
                 <div key={r.service} className="flex items-center gap-2.5 rounded-md bg-tile px-3 py-2.5">
@@ -175,7 +175,7 @@ export default async function CorporatePage() {
                 <h3 className="text-[17px]/[26px] font-bold text-deep-charcoal">{tx(locale, c, "title")}</h3>
                 <p className="text-body-s text-state-gray">{tx(locale, c, "body")}</p>
                 {"link" in c && c.link && (
-                  <Link href={routes.forDealers} className="flex items-center gap-1.5 self-start text-label-m font-bold text-green-active hover:underline">
+                  <Link href={routes.forDealers} className="flex items-center gap-1.5 self-start text-label-m font-bold text-nature-green hover:underline">
                     {tx(locale, c.link, "text")}
                     <Icon name="chevron-left" size={14} flip className="text-nature-green" />
                   </Link>

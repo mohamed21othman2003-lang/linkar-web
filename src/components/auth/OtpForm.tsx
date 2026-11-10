@@ -167,7 +167,7 @@ export function OtpForm({
               </span>
             </p>
           ) : (
-            <button type="button" onClick={resend} className="py-0.5 text-label-m text-green-active hover:underline">
+            <button type="button" onClick={resend} className="py-0.5 text-label-m text-nature-green hover:underline">
               {copy.resend}
             </button>
           )}
@@ -185,7 +185,7 @@ export function OtpForm({
 
       {showError ? (
         !locked && (
-          <button type="button" onClick={resend} className="py-0.5 text-label-m text-green-active hover:underline">
+          <button type="button" onClick={resend} className="py-0.5 text-label-m text-nature-green hover:underline">
             {copy.resend}
           </button>
         )

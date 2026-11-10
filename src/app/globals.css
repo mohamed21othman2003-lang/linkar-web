@@ -19,7 +19,7 @@
   --shadow-*: initial;
   --text-*: initial;
 
-  --font-sans: var(--font-noto-kufi-ar), var(--font-noto-kufi-lat), system-ui, sans-serif;
+  --font-sans: var(--font-noto-kufi-ar), var(--font-readex), var(--font-noto-kufi-lat), system-ui, sans-serif;
 
   /* ---------- Linkar v2 · Brand (Final Brand Guideline 2026) ---------- */
   --color-white: #ffffff; /* base/white */
@@ -54,7 +54,7 @@
   /* ---------- قيم خام متكررة في شاشات V2 (مش متربوطة بمتغيرات في الفيجما) ---------- */
   --color-tile: #f4f6f5; /* خلفية العناصر الرمادية الفاتحة (القوائم، روابط الحساب) */
   --color-tint-lime: #f4f9e8; /* خلفية أيقونات القوائم والإشعارات غير المقروءة */
-  --color-hero-bg: #07100b; /* خلفية الهيرو تحت الصورة */
+  --color-tint-danger: #fbf3f3; /* خلفية ملاحظة «لا يمكن حذف الحساب…» (W2-72) */
   --color-hero-ink: #0b1712; /* أزرار وحقول الهيدر والهيرو الزجاجية */
   --color-shade: #040a07; /* ظلال الهيرو */
   --color-whatsapp: #25d366; /* FAB · واتساب */
@@ -131,6 +131,7 @@
 
   --color-border-default: #d9dedb;
   --color-border-subtle: #e9edeb;
+  --color-border-cash: #e6e8e6; /* W2-35: حدود صف «الدفع نقداً في الفرع» */
   --color-border-strong: #bebfbe;
   --color-border-inverse: #152935;
   --color-border-focus: #3bb34b;

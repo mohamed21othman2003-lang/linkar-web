@@ -24,7 +24,7 @@ const chipShadow = "shadow-[0_12px_16px_rgba(13,26,33,0.16)]";
 
 // رابط نصّي بسهم (15 Medium) — «تصفّح كل الخدمات» · «عرض كل مقدّمي الخدمة» · «اقرأ سياسة الضمان»
 function TextLink({ href, children, tone = "green", bold = false }: { href: string; children: React.ReactNode; tone?: "green" | "neon" | "active"; bold?: boolean }) {
-  const color = tone === "neon" ? "text-neon-green" : tone === "active" ? "text-green-active" : "text-green-dark";
+  const color = tone === "neon" ? "text-neon-green" : tone === "active" ? "text-nature-green" : "text-nature-green";
   return (
     <Link href={href} className={`flex shrink-0 items-center gap-1.5 self-start text-[15px]/[24px] hover:underline ${bold ? "font-bold" : "font-medium"} ${color}`}>
       {children}
@@ -59,7 +59,7 @@ export default async function AboutPage() {
         <Container className="relative flex flex-col gap-14 py-12 md:py-16 lg:gap-[72px] lg:py-[104px]">
           <div className="flex flex-col gap-10 xl:h-[520px] xl:flex-row xl:items-center xl:gap-16">
             <div className="flex flex-col gap-[18px] xl:min-w-0 xl:flex-1">
-              <p className="text-overline text-green-dark">{tx(locale, story, "overline")}</p>
+              <p className="text-overline text-nature-green">{tx(locale, story, "overline")}</p>
               <h2 className="text-[30px]/[46px] font-bold text-deep-charcoal md:text-[40px]/[60px]">{tx(locale, story, "title")}</h2>
               <p className="text-body-m text-state-gray md:text-[18px]/[32px]">{tx(locale, story, "body")}</p>
             </div>
@@ -105,7 +105,7 @@ export default async function AboutPage() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col gap-1.5">
-                <p className="text-overline text-green-dark">{tx(locale, p.services, "overline")}</p>
+                <p className="text-overline text-nature-green">{tx(locale, p.services, "overline")}</p>
                 <h2 className="text-[24px]/[36px] font-bold text-deep-charcoal md:text-[28px]/[42px]">{tx(locale, p.services, "title")}</h2>
               </div>
               <TextLink href={routes.services}>{tx(locale, p.services, "link")}</TextLink>
@@ -128,7 +128,7 @@ export default async function AboutPage() {
         <Container className="relative flex flex-col gap-10 py-14 lg:gap-14 lg:py-[104px]">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <BandHead tone="dark" overline={tx(locale, journey, "overline")} title={tx(locale, journey, "title")} body={tx(locale, journey, "body")} className="md:max-w-[760px]" />
-            <Link href={routes.services} className="inline-flex h-[52px] shrink-0 items-center justify-center gap-2 self-start rounded-full bg-neon-green ps-6 pe-5 text-label-l font-bold text-deep-charcoal transition-colors hover:bg-bg-brand-hover md:self-auto">
+            <Link href={routes.services} className="inline-flex h-[52px] shrink-0 items-center justify-center gap-2 self-start rounded-full bg-neon-green ps-6 pe-5 text-label-l font-semibold text-deep-charcoal transition-colors hover:bg-bg-brand-hover md:self-auto">
               {tx(locale, journey, "cta")}
               <Icon name="chevron-left" size={16} flip />
             </Link>
@@ -255,7 +255,8 @@ export default async function AboutPage() {
               <Image src={trust.photo.src} alt="" fill sizes="(min-width: 1024px) 620px, 100vw" className="object-cover" />
               <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(13_27_35/0),rgb(13_27_35/0.92))]" />
               <span className="relative self-start rounded-full bg-neon-green px-3 py-1.5 text-[13px]/[20px] font-bold text-deep-charcoal">{tx(locale, trust.photo, "tag")}</span>
-              <h3 className="relative text-[22px]/[34px] font-bold text-white md:text-[24px]/[36px]">{tx(locale, trust.photo, "title")}</h3>
+              {/* W2-95: العنوان ليموني على الصورة زي الفيجما */}
+              <h3 className="relative text-[22px]/[34px] font-bold text-neon-title md:text-[24px]/[36px]">{tx(locale, trust.photo, "title")}</h3>
               <p className="relative max-w-[540px] text-[15px]/[26px] font-light text-[#d5dbd8]">{tx(locale, trust.photo, "body")}</p>
             </div>
           </div>

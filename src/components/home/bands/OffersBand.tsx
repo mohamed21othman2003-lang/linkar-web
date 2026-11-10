@@ -4,6 +4,7 @@ import type { Provider } from "@/lib/data/types";
 import type { HomeContent } from "@/lib/server/home";
 import { homeHref } from "@/lib/server/home";
 import { routes } from "@/lib/routes";
+import { bookingHref } from "@/components/booking/query";
 import { OfferCard } from "@/components/cards/OfferCard";
 import { OfferFeaturedCard } from "@/components/cards/OfferFeaturedCard";
 import { Container } from "@/components/ui/Container";
@@ -12,6 +13,7 @@ import { Rail } from "../Rail";
 
 // V2-01 · Band · Offers (85:30070 · تابلت 85:34454 · موبايل 85:33777) — العرض المميّز (LLumar) + كارتين عروض
 // تحت xl مافيش العرض المميّز: الكروت في شريط أفقي يبدأ بـXPEL
+// «احجز العرض/احجز» بيبدأ خطوة الحجز (W2-33 · الفرع) بخدمات العرض — زي صفحة العروض (L-0045)
 export function OffersBand({ locale, content, providers, endsAt }: { locale: Locale; content: HomeContent; providers: Provider[]; endsAt: string }) {
   const b = content.offersBand;
   const s = (x: { text_ar: string; text_en: string }) => tx(locale, x, "text");
@@ -30,7 +32,7 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
       price={o.price}
       oldPrice={o.old_price}
       detailsHref={homeHref("offers")}
-      bookHref={routes.provider(p.slug)}
+      bookHref={bookingHref(routes.bookingBranch, { provider: p.slug, services: o.services })}
     />
   );
   return (
@@ -54,7 +56,7 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
                 price={b.featured.price}
                 oldPrice={b.featured.old_price}
                 endsAt={endsAt}
-                bookHref={routes.provider(fp.slug)}
+                bookHref={bookingHref(routes.bookingBranch, { provider: fp.slug, services: b.featured.services })}
               />
             </div>
           )}

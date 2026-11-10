@@ -27,15 +27,17 @@ export function BranchPicker({
   intro,
   summary,
   hrefs,
+  initial,
 }: {
   locale: Locale;
   branches: BranchView[];
   intro: string;
   summary: Omit<Parameters<typeof Summary>[0]["v"], "rows">;
   hrefs: Record<string, string>;
+  initial?: string; // الفرع المختار من P-19 في W2-32 (‎&branch=‎)
 }) {
   const t = getBookingDict(locale);
-  const [selected, setSelected] = useState(branches[0].id);
+  const [selected, setSelected] = useState(initial && branches.some((b) => b.id === initial) ? initial : branches[0].id);
   const current = branches.find((b) => b.id === selected) ?? branches[0];
   const [nearest, ...others] = branches;
 
@@ -47,10 +49,10 @@ export function BranchPicker({
           <p className="text-[14px] leading-6 font-light text-v3-text-meta">{intro}</p>
         </div>
         <div role="radiogroup" aria-label={t.chooseBranch} className="flex flex-col gap-4">
-          <BranchOption t={t} b={nearest} on={selected === nearest.id} onSelect={setSelected} nearest />
+          <BranchOption locale={locale} t={t} b={nearest} on={selected === nearest.id} onSelect={setSelected} nearest />
           {others.length > 0 && <p className="text-label-m text-v3-text-meta">{t.otherBranches}</p>}
           {others.map((b) => (
-            <BranchOption key={b.id} t={t} b={b} on={selected === b.id} onSelect={setSelected} />
+            <BranchOption key={b.id} locale={locale} t={t} b={b} on={selected === b.id} onSelect={setSelected} />
           ))}
         </div>
       </section>
@@ -76,7 +78,7 @@ type T = ReturnType<typeof getBookingDict>;
 
 // كارت فرع: الأقرب (Auto branch · 806×139) فيه وسم «الأقرب لموقعك» + العنوان كامل + المواعيد + «الاتجاهات»؛
 // الباقي (Branch · 806×104) اسم + المسافة + العنوان. المختار: حدود ليموني 2px وخلفية ليموني 10%
-function BranchOption({ t, b, on, onSelect, nearest = false }: { t: T; b: BranchView; on: boolean; onSelect: (id: string) => void; nearest?: boolean }) {
+function BranchOption({ locale, t, b, on, onSelect, nearest = false }: { locale: Locale; t: T; b: BranchView; on: boolean; onSelect: (id: string) => void; nearest?: boolean }) {
   return (
     <div
       role="radio"
@@ -93,11 +95,11 @@ function BranchOption({ t, b, on, onSelect, nearest = false }: { t: T; b: Branch
             <span className="text-label-l">{b.name}</span>
             {nearest && <span className="rounded-full bg-deep-charcoal px-2 py-0.5 text-[14px] leading-[22px] font-light text-neon-green">{t.nearestTag}</span>}
           </div>
-          <span className="text-[14px] leading-[22px] font-medium text-green-active">{t.fill(t.distanceFromYou, { d: b.distance })}</span>
+          <span className="text-[14px] leading-[22px] font-medium text-nature-green">{t.fill(t.distanceFromYou, { d: b.distance })}</span>
           <span className={`text-[14px] font-light text-v3-text-meta ${nearest ? "leading-6" : "leading-[22px]"}`}>
-            {(nearest ? [b.street, b.district, b.city] : [b.street, b.district]).filter(Boolean).join("، ")}
+            {(nearest ? [b.street, b.district, b.city] : [b.street, b.district]).filter(Boolean).join(locale === "en" ? ", " : "، ")}
           </span>
-          {nearest && b.hours && <span className="text-[14px] leading-[22px] font-light text-green-active">{b.hours}</span>}
+          {nearest && b.hours && <span className="text-[14px] leading-[22px] font-light text-nature-green">{b.hours}</span>}
         </div>
       </div>
       {nearest && (

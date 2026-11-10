@@ -78,7 +78,8 @@ export async function Footer() {
         <div className="flex flex-col-reverse gap-[18px] md:gap-3.5 xl:flex-row xl:items-center xl:justify-between xl:gap-4">
           <div className="flex flex-col gap-0.5 text-caption">
             <p className="text-text-secondary">{tx(locale, f, "copyright")}</p>
-            <p className="text-white/65">{tx(locale, f, "registry")}</p>
+            {/* السجل والرقم الضريبي: أبيض 100% زي الفيجما (L-1031) */}
+            <p className="text-white">{tx(locale, f, "registry")}</p>
           </div>
           <ul className="flex flex-wrap gap-2 max-xl:self-start rtl:justify-end" dir="ltr">
             {f.payments.map((p) => (

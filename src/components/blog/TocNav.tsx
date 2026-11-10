@@ -28,7 +28,7 @@ export function TocNav({ title, items }: { title: string; items: { id: string; l
             href={`#${it.id}`}
             aria-current={on ? "location" : undefined}
             className={`flex items-center gap-2.5 rounded-[10px] px-3 py-[9px] text-[14px]/[22px] transition-colors duration-200 ease-figma-out ${
-              on ? "bg-tip-lime font-bold text-green-active" : "font-light text-state-gray hover:bg-tile"
+              on ? "bg-tip-lime font-bold text-nature-green" : "font-light text-state-gray hover:bg-tile"
             }`}
           >
             <span aria-hidden className={`h-[18px] w-[3px] shrink-0 rounded-[2px] ${on ? "bg-green-active" : "bg-chip-line"}`} />

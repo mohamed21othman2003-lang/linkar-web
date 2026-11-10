@@ -30,7 +30,7 @@ export function StatusPage({
   return (
     <section className={`flex flex-1 flex-col items-center bg-tile px-4 pt-16 pb-20 text-center md:px-20 md:pt-24 md:pb-[120px] ${className}`}>
       <div className="flex w-full max-w-[760px] flex-col items-center gap-4">
-        {code && <p className="text-display-xl text-green-active">{code}</p>}
+        {code && <p className="text-display-xl text-nature-green">{code}</p>}
         <h1 className="text-h3 text-deep-charcoal md:text-h2">{title}</h1>
         <p className="text-body-l text-text-secondary">{body}</p>
         {children}

@@ -131,10 +131,11 @@ function ServiceOverviewCard({
       <p className="text-[12px] leading-[23px] font-medium text-v3-text-meta">{topLabel}</p>
       <ul className="flex flex-col gap-2.5">
         {providers.map((p) => (
-          <li key={p.slug} className="flex h-10 items-center justify-between gap-2.5">
+          <li key={p.slug} className="flex min-h-10 items-center justify-between gap-2.5">
             <span className="flex min-w-0 items-center gap-2.5">
-              <LogoTile src={p.logo} alt="" size={40} radius={10} className="border-0" />
-              <span className="truncate text-[14px] leading-[27px] font-medium text-v3-text-on-dark">{tx(locale, p, "name")}</span>
+              {/* W2-25: زوايا الشعار 16 */}
+              <LogoTile src={p.logo} alt="" size={40} radius={16} className="border-0" />
+              <span className="text-[14px] leading-5 font-medium sm:leading-[27px] text-v3-text-on-dark">{tx(locale, p, "name")}</span>
             </span>
             <span className="shrink-0 text-[12px] leading-[15px] text-v3-text-meta">
               <span className="text-v3-rating-star">★</span> {p.rating.toFixed(1)} · {p.distance_km.toFixed(1)} {t.km}

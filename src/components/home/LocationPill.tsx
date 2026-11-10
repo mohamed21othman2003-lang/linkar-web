@@ -26,7 +26,7 @@ export function LocationPill({ near, location, change, className = "" }: { near:
       <button
         type="button"
         onClick={openLocationModal}
-        className="shrink-0 text-[13px]/[20px] font-semibold text-green-active hover:underline xl:text-label-m"
+        className="shrink-0 text-[13px]/[20px] font-semibold text-nature-green hover:underline xl:text-label-m"
       >
         {change}
       </button>

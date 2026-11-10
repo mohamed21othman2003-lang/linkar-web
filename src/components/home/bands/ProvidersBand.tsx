@@ -25,7 +25,7 @@ export function ProvidersBand({ locale, content, providers, services }: { locale
   const n = b.certs.length;
   const chip = (on: boolean) =>
     `inline-flex h-[31px] shrink-0 items-center rounded-full px-3 text-[12px] font-medium transition-colors md:h-control-sm md:px-3.5 md:text-label-m ${
-      on ? "bg-white text-deep-charcoal max-xl:bg-solid-black max-xl:text-white" : "border border-white/12 bg-white/6 text-white hover:bg-white/12"
+      on ? "bg-white text-deep-charcoal max-xl:bg-deep-charcoal max-xl:text-white" : "border border-white/12 bg-white/6 text-white hover:bg-white/12"
     }`;
   return (
     <section className="bg-deep-charcoal py-9 md:py-16 xl:py-[104px]">
@@ -49,7 +49,7 @@ export function ProvidersBand({ locale, content, providers, services }: { locale
                 <Icon name={c.glyph} size={16} className="md:size-[22px]" />
               </span>
               <div className="flex min-w-0 flex-col gap-0.5">
-                <p className="text-[13px]/[20px] font-medium whitespace-nowrap text-white md:text-[16px]/[24px] md:whitespace-normal md:font-bold md:text-deep-charcoal xl:text-label-l xl:text-white">
+                <p className="text-[13px]/[20px] font-medium whitespace-nowrap text-white md:text-[16px]/[24px] md:whitespace-normal md:font-bold md:text-deep-charcoal xl:text-label-l xl:font-medium xl:text-white">
                   <RText d={s(c.title)} m={c.title_m && s(c.title_m)} />
                 </p>
                 <p className="text-[13px]/[20px] font-light text-state-gray max-md:hidden xl:text-caption xl:text-cool-gray">
@@ -59,14 +59,15 @@ export function ProvidersBand({ locale, content, providers, services }: { locale
             </li>
           ))}
         </ul>
-        {/* الفلاتر (Chip) بتودّي لصفحة كل مقدّمي الخدمة (W2-26) */}
+        {/* الفلاتر (Chip) بتودّي لصفحة كل مقدّمي الخدمة (W2-26) — و«الكل» كمان (L-1299) */}
         <div role="toolbar" aria-label={d.filter} className="-me-5 flex h-9 items-center gap-2 overflow-x-auto pe-5 [scrollbar-width:none] md:m-0 md:gap-2.5 md:p-0 [&::-webkit-scrollbar]:hidden">
-          <span aria-current="true" className={chip(true)}>
+          <Link href={routes.providers()} aria-current="true" className={chip(true)}>
             {s(b.all)}
-          </span>
+          </Link>
           {services.map((sv) => (
             <Link key={sv.slug} href={routes.providers()} className={chip(false)}>
-              {tx(locale, sv, "name")}
+              {/* نفس أسماء مربعات الهيرو — الإنجليزي من V2-EN (Wash · PPF Protection · Tinting …) */}
+              {s(content.hero.tiles[sv.slug])}
             </Link>
           ))}
         </div>

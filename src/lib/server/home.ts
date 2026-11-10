@@ -19,8 +19,8 @@ const linkMap: Record<LinkKey, string> = {
   search: routes.search(),
   warranty: routes.warranty,
   dealerPackages: routes.dealerPackages,
-  // ⚠ مفيش صفحة «كيف تعمل باقات الوكالات» في الفيجما — بتودّي لمركز المساعدة
-  dealerHelp: routes.help,
+  // «كيف تعمل باقات الوكالات؟» في الفيجما بيودّي لصفحة برنامج الوكالات (L-1300)
+  dealerHelp: routes.forDealers,
   privacy: routes.privacy,
 };
 

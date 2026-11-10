@@ -50,7 +50,7 @@ function CarouselCard({ locale, item }: { locale: Locale; item: CarouselData }) 
         <span className="text-label-m text-white">{p.rating.toFixed(1)}</span>
         <span className="text-white/60">{`· ${meta}`}</span>
       </p>
-      <p className="truncate text-caption text-white/75">{tx(locale, item, "services")}</p>
+      <p className="text-caption text-white/75">{tx(locale, item, "services")}</p>
       {tx(locale, item, "highlight") && (
         <p className="flex items-center gap-1.5 text-label-m text-neon-green">
           <Icon name="check" size={14} />

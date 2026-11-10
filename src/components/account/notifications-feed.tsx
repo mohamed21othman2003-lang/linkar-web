@@ -58,7 +58,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
             <Icon name="settings" size={16} />
             {t.alertSettings}
           </Link>
-          <button type="button" onClick={markAll} className="py-0.5 text-label-m text-green-active hover:underline max-md:py-[9px]">
+          <button type="button" onClick={markAll} className="py-0.5 text-label-m text-nature-green hover:underline max-md:py-[9px]">
             {t.markAllRead}
           </button>
         </div>

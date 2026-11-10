@@ -152,7 +152,7 @@ export function LightOfferCard({ locale, item, provider, providerName }: { local
             <span className="text-h5 text-deep-charcoal">{formatPrice(locale, item.price)}</span>
             <s className="text-caption text-v3-text-meta">{formatNumber(item.old_price)}</s>
           </p>
-          <span className="text-caption text-green-active">{tx(locale, item.note, "text")}</span>
+          <span className="text-caption text-nature-green">{tx(locale, item.note, "text")}</span>
         </div>
         <Link href={href} className="flex h-[38px] items-center gap-1 rounded-[10px] bg-neon-green px-3 text-label-m whitespace-nowrap text-deep-charcoal hover:bg-bg-brand-hover">
           {t.detailsAndBook}

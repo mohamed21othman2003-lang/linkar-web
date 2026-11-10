@@ -3,7 +3,7 @@ import { tx } from "@/i18n/config";
 import { getHomeDict } from "@/i18n/dict/home";
 import type { HomeContent } from "@/lib/server/home";
 import { Container } from "@/components/ui/Container";
-import { SectionHead } from "../bits";
+import { RText, SectionHead } from "../bits";
 import { ReviewsCarousel } from "./ReviewsCarousel";
 
 // V2-01 · Band · Reviews (37:27991 صفحة 0:1 · V2 85:30340 · تابلت 85:34702 · موبايل 85:34022) — علامة اقتباس ليموني كبيرة في الخلفية + كروت التقييم
@@ -22,7 +22,13 @@ export function ReviewsBand({ locale, content }: { locale: Locale; content: Home
       <Container className="relative max-md:px-5">
         <ReviewsCarousel
           rtl={locale === "ar"}
-          head={<SectionHead overline={s(r.head.overline)} title={s(r.head.title)} description={s(r.head.description)} />}
+          head={
+            <SectionHead
+              overline={s(r.head.overline)}
+              title={s(r.head.title)}
+              description={<RText d={s(r.head.description)} t={s(r.head.description_t)} />}
+            />
+          }
           summary={s(r.summary)}
           prevLabel={d.previous}
           nextLabel={d.next}

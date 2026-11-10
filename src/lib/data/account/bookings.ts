@@ -57,7 +57,7 @@ export type Booking = Localized<"provider"> &
     action: BookingRowAction;
     maps_url: string;
     // تقييم الخدمة W2-63 (للحجوزات المكتملة): معيار خاص بالخدمة بعد المعايير الأربعة الثابتة
-    rating?: Localized<"title_meta"> & Localized<"extra_criterion"> & Localized<"sample_comment"> & { sample: number[] };
+    rating?: Localized<"title_meta"> & Localized<"extra_criterion"> & Localized<"service_category"> & Localized<"sample_comment"> & { sample: number[] };
     detail?: BookingDetail;
     voucher_full?: VoucherFull;
   };
@@ -74,8 +74,8 @@ export const bookings: Booking[] = [
     branch_en: "Al Zahra branch",
     address_ar: "شارع الأمير سلطان، حي الزهراء، جدة",
     address_en: "Prince Sultan St, Al Zahra, Jeddah",
-    services_short_ar: "طلاء نانو سيراميك · بريميوم +1",
-    services_short_en: "Nano-ceramic coating · Premium +1",
+    services_short_ar: "طلاء نانو سيراميك · بريميوم +1",
+    services_short_en: "Nano-ceramic coating · Premium +1",
     car_key: "camry",
     car_short_ar: "كامري 2023",
     car_short_en: "Camry 2023",
@@ -194,8 +194,9 @@ export const bookings: Booking[] = [
     branch_en: "Al Salamah branch",
     address_ar: "حي السلامة، جدة",
     address_en: "Al Salamah, Jeddah",
-    services_short_ar: "تلميع خارجي · 3 مراحل",
-    services_short_en: "Exterior polish · 3 stages",
+    // W2-38: الجدول بيكتب الخدمة مختصرة غير سطر التفاصيل
+    services_short_ar: "تلميع ثلاث مراحل",
+    services_short_en: "Three-stage polish",
     car_key: "es",
     car_short_ar: "ES 2022",
     car_short_en: "ES 2022",
@@ -211,6 +212,9 @@ export const bookings: Booking[] = [
       title_meta_en: "Exterior polish · 3 stages · Lamaa Polishing Center · BK-21388 · Completed Thu 8 Oct",
       extra_criterion_ar: "إزالة الخدوش والدوائر",
       extra_criterion_en: "Scratch and swirl removal",
+      // W2-39: «سؤال خاص بخدمة التلميع» فوق السؤال الخاص بالخدمة
+      service_category_ar: "التلميع",
+      service_category_en: "polishing",
       sample_comment_ar: "نتيجة التلميع ممتازة واللمعان واضح، وبقيت آثار بسيطة على حواف المصابيح فتحت بخصوصها شكوى.",
       sample_comment_en: "Excellent polish with a clear shine; a few light marks were left on the headlight edges, so I opened a complaint about them.",
       // العام · جودة العمل · العناية · التعامل · القيمة · الخدوش (زي الفيجما)
@@ -279,8 +283,8 @@ export const bookings: Booking[] = [
     branch_en: "Al Rawdah branch",
     address_ar: "",
     address_en: "",
-    services_short_ar: "غسيل شامل · خارجي وداخلي",
-    services_short_en: "Full wash · exterior & interior",
+    services_short_ar: "غسيل خارجي وداخلي",
+    services_short_en: "Exterior & interior wash",
     car_key: "camry",
     car_short_ar: "كامري 2023",
     car_short_en: "Camry 2023",
@@ -303,8 +307,9 @@ export const bookings: Booking[] = [
     branch_en: "Al Hamra branch",
     address_ar: "طريق الكورنيش، حي الحمراء",
     address_en: "Corniche Rd, Al Hamra",
-    services_short_ar: "تظليل وعازل حراري",
-    services_short_en: "Tint & heat insulation",
+    // W2-38: «تظليل كامل» في الجدول — وسطر التفاصيل (W2-37d) فاضل «تظليل وعازل حراري»
+    services_short_ar: "تظليل كامل",
+    services_short_en: "Full tint",
     car_key: "es",
     car_short_ar: "ES 2022",
     car_short_en: "ES 2022",

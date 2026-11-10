@@ -86,7 +86,7 @@ export default async function PointsPage() {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {earnRules.map((r) => (
           <li key={r.points} className="flex flex-col gap-1 rounded-[20px] border border-cool-gray bg-white p-5">
-            <span className="text-h4 text-green-active">{t.points(formatNumber(r.points))}</span>
+            <span className="text-h4 text-nature-green">{t.points(formatNumber(r.points))}</span>
             <span className="text-label-l text-deep-charcoal">{tx(locale, r, "title")}</span>
             <span className="text-caption text-state-gray">{tx(locale, r, "text")}</span>
           </li>

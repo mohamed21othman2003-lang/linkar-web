@@ -83,7 +83,7 @@ function Row({ r }: { r: SummaryRow }) {
         )}
         {r.label}
       </span>
-      <span className={`text-end font-medium ${r.tone === "credit" ? "text-green-active" : "text-deep-charcoal"}`}>{r.value}</span>
+      <span className={`text-end font-medium ${r.tone === "credit" ? "text-nature-green" : "text-deep-charcoal"}`}>{r.value}</span>
     </div>
   );
 }

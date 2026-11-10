@@ -73,7 +73,7 @@ export function ApplePayModal({
         <span className="text-[14px] leading-[18px] font-normal" dir="auto">
           {t.fill(t.cardOnFile, { card })}
         </span>
-        <button type="button" onClick={onClose} className="shrink-0 text-label-m text-green-active hover:underline">
+        <button type="button" onClick={onClose} className="shrink-0 text-label-m text-nature-green hover:underline">
           {t.change}
         </button>
       </div>
@@ -241,7 +241,7 @@ export function CashPayModal({ locale, open, onConfirm, onClose }: { locale: Loc
         sub={t.cashSub}
         closeLabel={t.close}
         onClose={onClose}
-        badge={<span className={`${badgeBox} bg-cash-tint text-green-active`}>{t.cashBadge}</span>}
+        badge={<span className={`${badgeBox} bg-cash-tint text-nature-green`}>{t.cashBadge}</span>}
       />
       <ol className="flex flex-col gap-2.5">
         {t.cashSteps.map((s, i) => (

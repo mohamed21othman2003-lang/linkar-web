@@ -258,10 +258,10 @@ export const dealerJoin = {
   submit_en: "Submit application",
 };
 
-// [placeholder] نطاقات «عدد الباقات المتوقع شهرياً» مش موجودة في الفيجما
+// نطاقات «عدد الباقات المتوقع شهرياً» — من القائمة المنسدلة W2-DD في الفيجما
 export const volumeRanges: Option[] = [
   { value: "lt20", label_ar: "أقل من 20", label_en: "Fewer than 20" },
   { value: "20-50", label_ar: "20 – 50", label_en: "20 – 50" },
-  { value: "51-100", label_ar: "51 – 100", label_en: "51 – 100" },
+  { value: "50-100", label_ar: "50 – 100", label_en: "50 – 100" },
   { value: "gt100", label_ar: "أكثر من 100", label_en: "More than 100" },
 ];

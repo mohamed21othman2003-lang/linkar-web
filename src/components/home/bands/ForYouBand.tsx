@@ -61,7 +61,7 @@ export function ForYouBand({
       <Container className="flex flex-col gap-[18px] max-md:px-5 md:gap-7 xl:gap-8">
         <div className="flex flex-col gap-[18px] md:flex-row md:items-end md:justify-between md:gap-6">
           <div className="flex flex-col gap-1.5 md:gap-2 xl:gap-2.5">
-            <p className="flex items-center gap-2 text-[13px]/[20px] font-medium text-green-dark md:text-overline xl:text-green-active">
+            <p className="flex items-center gap-2 text-[13px]/[20px] font-medium text-nature-green md:text-overline xl:text-nature-green">
               <FigmaIcon name="feature-ai-dark" size={28} className="max-xl:hidden" />
               {s(f.overline)}
             </p>

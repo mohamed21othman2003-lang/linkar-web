@@ -41,6 +41,7 @@ export default async function SearchPage({ searchParams }: Params) {
             selected={selected}
             carSizes={options.carSizes}
             location={tx(locale, options.location, "label")}
+            locations={options.location.options.map((o) => ({ key: o.key, label: tx(locale, o, "label") }))}
             view={view === "map" ? "map" : undefined}
           />
         </Container>

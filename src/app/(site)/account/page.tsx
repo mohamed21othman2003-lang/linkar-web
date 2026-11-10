@@ -89,8 +89,8 @@ export default async function AccountHomePage() {
               <ProviderTile slug={data.inProgress.provider_slug} alt={data.inProgress.provider_name} size={56} />
               <span className="flex min-w-0 flex-col items-start gap-1.5">
                 <span className="flex items-center gap-2.5">
-                  <span className="text-label-m text-green-active">{o.inProgress}</span>
-                  <span className="rounded-full bg-nature-green/14 px-3 py-1 text-caption text-green-active">{t.status.in_service}</span>
+                  <span className="text-label-m text-nature-green">{o.inProgress}</span>
+                  <span className="rounded-full bg-nature-green/14 px-3 py-1 text-caption text-nature-green">{t.status.in_service}</span>
                 </span>
                 <span className="text-h5 text-deep-charcoal">{tx(locale, data.inProgress, "title")}</span>
                 <span className="text-body-s text-state-gray">{tx(locale, data.inProgress, "meta")}</span>
@@ -163,7 +163,7 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
           <h2 className="text-h4 text-deep-charcoal">{title}</h2>
           <p className="text-body-s text-v3-text-meta">{sub}</p>
         </div>
-        <Link href={routes.offers} className="flex items-center gap-1.5 px-1 py-1.5 text-label-m text-green-active hover:underline max-md:py-[9px]">
+        <Link href={routes.offers} className="flex items-center gap-1.5 px-1 py-1.5 text-label-m text-nature-green hover:underline max-md:py-[9px]">
           {allLabel}
           <Icon name="chevron-left" size={16} flip className="text-nature-green" />
         </Link>

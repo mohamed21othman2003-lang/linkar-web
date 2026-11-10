@@ -79,15 +79,20 @@ export const carSizes: (Localized<"label"> & { key: CarSize })[] = [
   { key: "large", label_ar: "كبيرة", label_en: "Large" },
 ];
 
-// قوائم نافذة الإضافة — من الموديلات الظاهرة في الفيجما فقط (القائمة الكاملة هتيجي من الـAPI)
+// قوائم نافذة الإضافة — بالترتيب في القوائم المنسدلة W2-DD (الشركة · الموديل · سنة الصنع · اللون) — القائمة الكاملة هتيجي من الـAPI
+// موديلات تويوتا من W2-DD · الموديل، و«ES» من W2-67. القائمة فيها كمان هيونداي ونيسان وكيا ومرسيدس وفورد،
+// بس الفيجما مافيهاش موديلات ليهم، فمش ظاهرين لحد ما الموديلات تيجي من الـAPI (الموديل خانة إجبارية)
 export const carMakes: (Localized<"label"> & { key: string; models: (Localized<"label"> & { key: string; size: CarSize })[] })[] = [
   {
     key: "toyota",
     label_ar: "تويوتا",
     label_en: "Toyota",
     models: [
-      { key: "landcruiser", label_ar: "لاندكروزر", label_en: "Land Cruiser", size: "large" },
       { key: "camry", label_ar: "كامري", label_en: "Camry", size: "sedan" },
+      { key: "corolla", label_ar: "كورولا", label_en: "Corolla", size: "sedan" },
+      { key: "landcruiser", label_ar: "لاندكروزر", label_en: "Land Cruiser", size: "large" },
+      { key: "yaris", label_ar: "يارس", label_en: "Yaris", size: "sedan" },
+      { key: "rav4", label_ar: "راف 4", label_en: "RAV4", size: "suv" },
     ],
   },
   {
@@ -98,13 +103,17 @@ export const carMakes: (Localized<"label"> & { key: string; models: (Localized<"
   },
 ];
 
+// W2-DD · اللون (اختياري)
 export const carColors: (Localized<"label"> & { key: string })[] = [
-  { key: "black", label_ar: "أسود", label_en: "Black" },
   { key: "white", label_ar: "أبيض", label_en: "White" },
+  { key: "black", label_ar: "أسود", label_en: "Black" },
+  { key: "silver", label_ar: "فضي", label_en: "Silver" },
   { key: "gray", label_ar: "رمادي", label_en: "Gray" },
+  { key: "red", label_ar: "أحمر", label_en: "Red" },
 ];
 
-export const carYears = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018];
+// W2-DD · سنة الصنع (5 سنين في القائمة)
+export const carYears = [2026, 2025, 2024, 2023, 2022];
 
 // القيم الظاهرة في نموذج الفيجما (W2-67b)
 export const carDraft = { make: "toyota", model: "landcruiser", year: 2024, color: "black", plate_numbers: "4417", plate_letters_ar: "ك ه ن", plate_letters_en: "K H N" };

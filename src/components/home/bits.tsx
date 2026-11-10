@@ -57,8 +57,8 @@ export function SectionHead({
   textClass?: string;
   aside?: ReactNode;
 }) {
-  const over = tone === "dark" ? "text-neon-green" : tone === "guest" ? "text-green-active" : "text-green-dark";
-  const titleColor = tone === "dark" ? "text-neon-green" : "text-deep-charcoal"; // Band · Providers (202:7598): العنوان ليموني على الكحلي
+  const over = tone === "dark" ? "text-neon-green" : tone === "guest" ? "text-nature-green" : "text-nature-green";
+  const titleColor = tone === "dark" ? "text-neon-title" : "text-deep-charcoal"; // Band · Providers (202:7598): العنوان #BFFA4F على الكحلي (L-0149)
   const desc = tone === "dark" ? "text-v3-card-stroke xl:text-cool-gray" : "text-state-gray";
   return (
     <div className={`flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6 ${className}`}>
@@ -80,7 +80,7 @@ export function SectionHead({
 export function SectionLink({ label, href, tone = "light", className = "" }: { label: string; href: string; tone?: "light" | "dark" | "guest"; className?: string }) {
   if (tone === "guest")
     return (
-      <Link href={href} className={`flex shrink-0 items-center gap-1 text-label-l text-green-active hover:underline ${className}`}>
+      <Link href={href} className={`flex shrink-0 items-center gap-1 text-label-l text-nature-green hover:underline ${className}`}>
         {label}
         <Icon name="chevron-left" size={16} flip className="text-nature-green" />
       </Link>
@@ -90,7 +90,7 @@ export function SectionLink({ label, href, tone = "light", className = "" }: { l
     <Link
       href={href}
       className={`flex shrink-0 items-center gap-1 text-[14px] leading-[22px] font-semibold hover:underline md:text-[15px] md:leading-[24px] xl:leading-[22px] xl:font-bold ${
-        dark ? "text-neon-green" : "text-green-active xl:text-green-dark"
+        dark ? "text-neon-green" : "text-nature-green xl:text-nature-green"
       } ${className}`}
     >
       {label}

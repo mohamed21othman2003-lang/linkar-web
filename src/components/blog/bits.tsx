@@ -36,7 +36,7 @@ export function BlogCta({ locale, page }: { locale: Locale; page: Page }) {
       </div>
       <Link
         href={routes.services}
-        className="inline-flex h-[52px] shrink-0 items-center gap-2 rounded-full bg-neon-green ps-6 pe-5 text-label-l font-bold text-deep-charcoal transition-colors hover:bg-bg-brand-hover"
+        className="inline-flex h-[52px] shrink-0 items-center gap-2 rounded-full bg-neon-green ps-6 pe-5 text-label-l font-semibold text-deep-charcoal transition-colors hover:bg-bg-brand-hover"
       >
         {tx(locale, page.cta, "button")}
         <Icon name="chevron-left" size={16} flip />

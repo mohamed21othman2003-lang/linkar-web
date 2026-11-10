@@ -58,7 +58,7 @@ function AccountNavCompact({
           </span>
           <Link
             href={routes.points}
-            className="text-caption text-green-active hover:underline"
+            className="text-caption text-nature-green hover:underline"
           >
             {v.points}
           </Link>
@@ -108,7 +108,7 @@ export function AccountNav({ v }: { v: AccountNavView }) {
             <span className="text-label-l text-deep-charcoal">{v.name}</span>
             <Link
               href={routes.points}
-              className="text-caption text-green-active hover:underline"
+              className="text-caption text-nature-green hover:underline"
             >
               {v.points}
             </Link>

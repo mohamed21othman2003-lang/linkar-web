@@ -106,7 +106,7 @@ export function PartnerTile({ src, alt, size = 48 }: { src: string; alt: string;
 export function AxPill({ tone, children }: { tone: "lime" | "success" | "muted" | "dark"; children: ReactNode }) {
   const tones = {
     lime: "bg-neon-green text-deep-charcoal",
-    success: "bg-nature-green/14 text-green-active",
+    success: "bg-nature-green/14 text-nature-green",
     muted: "bg-cool-gray/60 text-deep-charcoal",
     dark: "bg-deep-charcoal text-neon-green",
   } as const;

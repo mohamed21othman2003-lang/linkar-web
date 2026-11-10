@@ -38,7 +38,7 @@ export function ServicesBand({ locale, content, items }: { locale: Locale; conte
             // تابلت 834: 238 بالظبط؛ من 768 لـ833 أصغر شوية عشان التلاتة يكفّوا (min-[…] بتتطلع قبل xl فـxl بيكسب)
             <div key={service.slug} className="w-[148px] shrink-0 snap-start min-[768px]:w-[216px] min-[834px]:w-[238px] xl:w-[206px] xl:p-[4.33px]">
               <div className="w-[197.35px] [zoom:0.75] min-[768px]:[zoom:1.0945] min-[834px]:[zoom:1.206] xl:[zoom:1]">
-                <HomeServiceCard locale={locale} service={service} providers={providers} />
+                <HomeServiceCard locale={locale} service={service} providers={providers} label={s(content.hero.tiles[service.slug])} />
               </div>
             </div>
           ))}

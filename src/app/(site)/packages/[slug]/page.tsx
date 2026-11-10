@@ -141,7 +141,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               </span>
               {d && <span className="text-text-secondary">{t.fill(t.reviews, { n: formatNumber(d.reviews) })}</span>}
               <span className="text-text-secondary">·</span>
-              <Link href={routes.provider(provider.slug)} className="flex items-center gap-0.5 text-label-m text-green-active hover:underline">
+              <Link href={routes.provider(provider.slug)} className="flex items-center gap-0.5 text-label-m text-nature-green hover:underline">
                 {t.providerPage}
                 <Icon name="chevron-left" size={14} flip />
               </Link>
@@ -177,7 +177,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
                       {i.free ? (
                         <>
                           <s className="text-caption text-text-secondary">{formatPrice(locale, i.price)}</s>
-                          <span className="text-label-l text-green-active">{t.freeInPackage}</span>
+                          <span className="text-label-l text-nature-green">{t.freeInPackage}</span>
                         </>
                       ) : (
                         <span className="text-label-l">{formatPrice(locale, i.price)}</span>
@@ -196,7 +196,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               </div>
               <div className="flex items-center justify-between gap-3 text-body-s">
                 <span className="text-text-secondary">{t.yourSavings}</span>
-                <span className="font-medium text-green-active">
+                <span className="font-medium text-nature-green">
                   {formatPrice(locale, save)} · {pkg.discount}%
                 </span>
               </div>
@@ -259,7 +259,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               <h2 className="text-h4">{tx(locale, page, "other_title")}</h2>
               <p className="text-body-s text-text-secondary">{t.fill(tx(locale, page, "other_subtitle"), { provider: shortName })}</p>
             </div>
-            <Link href={routes.packages} className="flex items-center gap-1 text-label-m text-green-active hover:underline">
+            <Link href={routes.packages} className="flex items-center gap-1 text-label-m text-nature-green hover:underline">
               {t.allPackages}
               <Icon name="chevron-left" size={16} flip />
             </Link>

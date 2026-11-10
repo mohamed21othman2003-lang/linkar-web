@@ -102,7 +102,7 @@ export function Field({
           {error}
         </p>
       ) : hint ? (
-        <p className={`w-full text-caption ${hintTone === "green" ? "text-green-active" : "text-state-gray"}`}>{hint}</p>
+        <p className={`w-full text-caption ${hintTone === "green" ? "text-nature-green" : "text-state-gray"}`}>{hint}</p>
       ) : null}
     </div>
   );
@@ -214,7 +214,7 @@ export function TextLink({
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-1.5 text-label-m max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] hover:underline ${padded ? "py-0.5" : ""} ${tone === "green" ? "text-green-active" : "text-deep-charcoal"} ${className}`}
+      className={`inline-flex items-center gap-1.5 text-label-m max-lg:relative max-lg:after:absolute max-lg:after:inset-x-0 max-lg:after:-inset-y-2.5 max-lg:after:content-[''] hover:underline ${padded ? "py-0.5" : ""} ${tone === "green" ? "text-nature-green" : "text-deep-charcoal"} ${className}`}
     >
       {children}
     </Link>

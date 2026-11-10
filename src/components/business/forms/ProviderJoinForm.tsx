@@ -112,7 +112,7 @@ export function ProviderJoinForm({ locale, d, next, demo = false }: { locale: Lo
         />
         <label className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-dashed border-nature-green p-6 text-center hover:bg-tint-lime">
           <Icon name="camera" size={24} className="text-nature-green" />
-          <span className="text-label-m text-green-active">{L("photos")}</span>
+          <span className="text-label-m text-nature-green">{L("photos")}</span>
           <span className="text-caption text-text-secondary">{v.photos.length ? b.photosAttached(v.photos.length) : L("photos_hint")}</span>
           <input
             type="file"

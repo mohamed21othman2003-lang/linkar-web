@@ -58,7 +58,7 @@ const ar = {
   directions: "الاتجاهات",
   appleWallet: "إضافة إلى Apple Wallet",
   googleWallet: "إضافة إلى محفظة Google",
-  walletAdded: "أُضيفت القسيمة إلى المحفظة", // P-10u
+  walletAdded: "أُضيفت القسيمة إلى محفظتك", // P-10u
   sharedNote: "لا تحتاج حساباً لفتح هذه القسيمة. لا يعرض الرابط أي بيانات دفع، وينتهي بعد اكتمال الحجز أو إلغائه.",
   // P-07 · تواصل مع الفرع
   callBranch: "اتصال بالفرع",

@@ -50,7 +50,7 @@ export default async function ProviderJoinPage({ searchParams }: { searchParams:
           </ol>
           <hr className="border-border-default" />
           <p className="text-body-s text-text-secondary">{tx(locale, d, "have_account")}</p>
-          <a href={externalPortals.provider} className="flex items-center gap-1.5 self-start rounded-md py-0.5 text-label-m text-green-active hover:underline">
+          <a href={externalPortals.provider} className="flex items-center gap-1.5 self-start rounded-md py-0.5 text-label-m text-nature-green hover:underline">
             {tx(locale, d, "console")}
             <Icon name="chevron-left" size={16} flip />
           </a>

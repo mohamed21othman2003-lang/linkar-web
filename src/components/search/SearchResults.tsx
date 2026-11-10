@@ -47,7 +47,11 @@ export function SearchResults(props: Props) {
         key: r.provider,
         name: resultName(locale, r, p),
         logo: p.logo,
-        service: r.title ? tx(locale, r.title, "text") : r.lines.map((l) => tx(locale, l, "name")).join(" + "),
+        service: r.compare_title
+          ? tx(locale, r.compare_title, "text")
+          : r.title
+            ? tx(locale, r.title, "text")
+            : r.lines.map((l) => tx(locale, l, "name")).join(" + "),
         price: r.price,
         durationHours: r.duration_hours,
         duration: tx(locale, r.duration, "text"),
@@ -216,7 +220,7 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
               <div className={`flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between ${multi ? "pt-3" : "pt-2"}`}>
                 {tx(locale, s.results_title, "text") && <h2 className="text-h4 text-deep-charcoal">{tx(locale, s.results_title, "text")}</h2>}
                 {s.size_hint && (
-                  <p className="flex items-center gap-1.5 self-start rounded-full bg-tint-lime px-3 py-1.5 text-caption text-green-active">
+                  <p className="flex items-center gap-1.5 self-start rounded-full bg-tint-lime px-3 py-1.5 text-caption text-nature-green">
                     <Icon name="info" size={14} className="shrink-0 text-nature-green" />
                     {t.sizeHint}
                   </p>

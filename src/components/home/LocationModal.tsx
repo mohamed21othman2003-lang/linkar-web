@@ -134,7 +134,7 @@ export function LocationModal({ copy, privacyHref, currentLabel }: { copy: Locat
           <Icon name="chevron-down" size={20} className="text-state-gray" />
         </form>
         <p className="text-caption text-state-gray">{copy.hint}</p>
-        <button type="button" onClick={dismiss} className="rounded-md px-3 py-1.5 text-label-l text-green-active hover:bg-tile">
+        <button type="button" onClick={dismiss} className="rounded-md px-3 py-1.5 text-label-l text-nature-green hover:bg-tile">
           {copy.notNow}
         </button>
         <p className="text-caption text-state-gray">

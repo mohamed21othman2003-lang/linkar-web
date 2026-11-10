@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getAccountDict } from "@/i18n/dict/account";
 import { routes } from "@/lib/routes";
@@ -127,7 +127,7 @@ export function ShareVoucherPopup({
   );
 }
 
-export type RatingView = { bookingId: string; providerSlug: string; meta: string; criteria: string[]; sample: number[]; comment: string; reviewer: string };
+export type RatingView = { bookingId: string; providerSlug: string; meta: string; criteria: string[]; serviceCategory: string; sample: number[]; comment: string; reviewer: string };
 
 function Stars({ value, size, onChange, label }: { value: number; size: number; onChange: (n: number) => void; label: (n: number) => string }) {
   return (
@@ -173,7 +173,11 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <h2 className="text-h4 text-deep-charcoal">{t.title}</h2>
+            {/* W2-39: شارة «+50 نقطة بعد النشر» جنب العنوان */}
+            <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
+              <h2 className="text-h4 text-deep-charcoal">{t.title}</h2>
+              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-nature-green">{t.pointsBadge}</span>
+            </div>
             <p className="text-body-s text-state-gray">{r.meta}</p>
           </div>
           <button type="button" aria-label={d.close} onClick={onClose} className="shrink-0 rounded-md border border-cool-gray p-2.5 text-deep-charcoal hover:border-border-strong">
@@ -190,11 +194,18 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
           </div>
           <Stars value={scores[0]} size={30} onChange={(n) => set(0, n)} label={t.star} />
         </div>
+        {/* W2-39: «اضغط على النجوم…» ثم «قيّم تفاصيل الخدمة» تحت التقييم العام */}
+        <p className="text-[13px] leading-4 font-light text-state-gray">{t.hint}</p>
+        <p className="text-[14px] leading-[27px] font-medium text-deep-charcoal">{t.details}</p>
         {criteria.map((c, i) => (
-          <div key={c} className="flex items-center justify-between gap-3">
-            <span className="text-body-m text-deep-charcoal">{c}</span>
-            <Stars value={scores[i + 1] ?? 0} size={20} onChange={(n) => set(i + 1, n)} label={t.star} />
-          </div>
+          <Fragment key={c}>
+            {/* السؤال الخاص بالخدمة (بعد الأسئلة العامة) ← «سؤال خاص بخدمة التلميع» */}
+            {i === t.criteria.length && <p className="text-[12px] leading-[15px] font-light text-state-gray">{t.serviceQ(r.serviceCategory)}</p>}
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-body-m text-deep-charcoal">{c}</span>
+              <Stars value={scores[i + 1] ?? 0} size={20} onChange={(n) => set(i + 1, n)} label={t.star} />
+            </div>
+          </Fragment>
         ))}
         <textarea
           aria-label={t.commentLabel}
@@ -212,7 +223,7 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
           <button
             type="button"
             onClick={() => file.current?.click()}
-            className="flex items-center gap-1.5 rounded-md border border-dashed border-nature-green px-3.5 py-2 text-label-m text-green-active hover:bg-tint-lime"
+            className="flex items-center gap-1.5 rounded-md border border-dashed border-nature-green px-3.5 py-2 text-label-m text-nature-green hover:bg-tint-lime"
           >
             <Icon name="camera" size={16} className="text-nature-green" />
             {photos ? t.photosAdded(photos) : t.addPhotos}
@@ -221,7 +232,7 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
         <p className="text-caption text-state-gray">{t.publicNote(r.reviewer)}</p>
         <Link href={routes.complaintNew} className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-tile px-3.5 py-2.5 hover:bg-bg-muted">
           <span className="text-body-s text-deep-charcoal">{t.complaintQ}</span>
-          <span className="text-label-m text-green-active">{t.complaintCta}</span>
+          <span className="text-label-m text-nature-green">{t.complaintCta}</span>
         </Link>
         <div className="flex justify-end gap-2.5">
           <button type="submit" className="rounded-md bg-neon-green px-5 py-3 text-label-m text-deep-charcoal hover:bg-bg-brand-hover">

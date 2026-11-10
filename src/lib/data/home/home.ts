@@ -194,7 +194,7 @@ export const howItWorks = {
   ],
   // لوحة الرحلة (Responses visual) في V2-01
   journey: {
-    chips: [t("التلميع", "Polishing"), t("نانو سيراميك", "Nano ceramic")],
+    chips: [t("التلميع", "Polishing"), t("نانو سيراميك", "Nano Ceramic")], // V2-EN
     best_price: t("الأفضل سعراً", "Best price"),
     compare: [
       { provider: "nanoshield", price: 1248, best: true },
@@ -287,6 +287,8 @@ export type OfferItem = {
   price: number;
   old_price: number;
   package_slug?: string;
+  // «احجز العرض/احجز» بيبدأ خطوة الحجز بخدمات العرض (L-0045) زي صفحة العروض
+  services?: ServiceSlug[];
 };
 export const offersBand = {
   head: {
@@ -304,6 +306,7 @@ export const offersBand = {
     provider: "llumar",
     discount: 15,
     title: t("حماية PPF للواجهة مع نانو سيراميك", "Front PPF with nano ceramic"),
+    services: ["ppf", "nano-ceramic"] as ServiceSlug[],
     price: 5950,
     old_price: 7000,
     // العدّاد في الفيجما: 02 يوم · 14 ساعة · 36 دقيقة
@@ -321,6 +324,7 @@ export const offersBand = {
       ],
       price: 2199,
       old_price: 3500,
+      services: ["nano-ceramic", "tint"],
     },
     {
       provider: "xpel",
@@ -333,6 +337,7 @@ export const offersBand = {
       ],
       price: 1399,
       old_price: 2500,
+      services: ["tint"],
     },
   ] satisfies OfferItem[],
 };
@@ -471,6 +476,8 @@ export const reviewsBand = {
       "لا يمكنك التقييم إلا بعد استلام سيارتك من مقدم الخدمة.",
       "You can only review after collecting your car from the provider.",
     ),
+    // تابلت/موبايل (V2-01t/V2-01m): «مقدّم» بالشدّة
+    description_t: t("لا يمكنك التقييم إلا بعد استلام سيارتك من مقدّم الخدمة.", "You can only review after collecting your car from the provider."),
   } satisfies Head,
   summary: t("تقييمات موثّقة من عملاء حقيقيين", "Verified reviews from real customers"),
   of5: t("من 5", "of 5"),

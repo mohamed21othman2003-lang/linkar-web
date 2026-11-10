@@ -233,7 +233,8 @@ export function CompareTray({ locale, label, className = "" }: { locale: Locale;
           </span>
         ))}
       </div>
-      <button type="button" onClick={clear} className="text-label-m text-white/70 hover:text-white">
+      {/* W2-30a: «مسح» أبيض صافي */}
+      <button type="button" onClick={clear} className="text-label-m text-white hover:text-neon-green">
         {t.clear}
       </button>
       <button
@@ -308,10 +309,13 @@ function CompareModal({
           {/* عمود العناوين */}
           <div className="flex w-[160px] shrink-0 flex-col bg-cool-gray/25 sm:w-[204px]">
             <div className="flex h-[120px] items-center px-4">
-              <button type="button" onClick={onClose} className="flex h-10 items-center gap-1.5 rounded-[10px] border border-cool-gray bg-white px-3 text-caption text-deep-charcoal hover:border-border-strong">
-                <Icon name="plus" size={14} />
-                {t.addProvider}
-              </button>
+              {/* W2-31: بـ3 مقدّمي خدمة (الحد الأقصى) الخانة دي فاضية */}
+              {list.length < COMPARE_MAX && (
+                <button type="button" onClick={onClose} className="flex h-10 items-center gap-1.5 rounded-[10px] border border-cool-gray bg-white px-3 text-caption text-deep-charcoal hover:border-border-strong">
+                  <Icon name="plus" size={14} />
+                  {t.addProvider}
+                </button>
+              )}
             </div>
             {rows.map((r) => (
               <div key={r.label} className="flex h-[52px] items-center border-t border-cool-gray px-4 text-label-m text-state-gray">
@@ -337,7 +341,8 @@ function CompareModal({
                   const b = r.isBest(i);
                   return (
                     <div key={r.label} className="flex h-[52px] items-center justify-center gap-2 border-t border-cool-gray px-4 text-center">
-                      <span className={`text-deep-charcoal ${b ? "text-label-l" : "text-body-m"}`}>{r.value(i)}</span>
+                      {/* W2-31: القيمة 16 Light والأفضل 16 Regular */}
+                      <span className={`text-body-m text-deep-charcoal ${b ? "font-normal" : ""}`}>{r.value(i)}</span>
                       {b && <span className="rounded-full bg-neon-green px-2 py-0.5 text-caption text-deep-charcoal">{t.best}</span>}
                     </div>
                   );

@@ -27,7 +27,7 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
   const e = h.errors;
 
   return (
-    <section className="relative bg-hero-bg text-white lg:h-[810px]">
+    <section className="relative bg-deep-charcoal text-white lg:h-[810px]">
       <Image
         src="/figma/home/hero-coupe-2x.jpg"
         alt=""
@@ -44,13 +44,19 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
 
       <Header variant="hero" />
 
-      <div className="relative mx-auto h-full max-w-[1440px] px-4 pt-[100px] pb-10 md:px-10 md:pt-[110px] lg:p-0">
-        <div className="flex max-w-[800px] flex-col lg:absolute lg:top-[258px] lg:start-[128px] lg:w-[800px]">
-          <h1 className="text-[40px]/[56px] font-bold text-neon-title md:text-[36px]/[54px] lg:text-display-l">
+      {/* تابلت (V2-01t): تحت البحث صف واحد — «اكتشف المزيد» في البداية والمتاجر في الآخر */}
+      <div className="relative mx-auto h-full max-w-[1440px] px-4 pt-[100px] pb-10 md:px-10 md:pt-[110px] md:max-lg:grid md:max-lg:grid-cols-[1fr_auto] md:max-lg:items-end lg:p-0">
+        <div className="flex max-w-[800px] flex-col md:max-lg:col-span-2 lg:absolute lg:top-[258px] lg:start-[128px] lg:w-[800px]">
+          {/* موبايل 32/46 على سطرين (V2-01m) · تابلت 46/64 (V2-01t) */}
+          <h1 className="text-[32px]/[46px] font-bold text-neon-title md:text-[46px]/[64px] lg:text-display-l">
             {s(h.title_lead)}
+            <br className="md:hidden" />
             {s(h.title_highlight)}
           </h1>
-          <p className="mt-2 text-body-l text-white/92 max-md:text-[16px]/[28px] max-md:text-white/85">{s(h.subtitle)}</p>
+          <p className="mt-2 text-body-l text-white/92 max-md:mt-0 max-md:text-[15px]/[24px] max-md:text-white/85 lg:text-white">
+            <span className="max-lg:hidden">{s(h.subtitle)}</span>
+            <span className="lg:hidden">{s(h.subtitle_t)}</span>
+          </p>
           <div className="mt-5 md:mt-5 lg:mt-7">
             <HeroSearch
               tiles={slugs.map((slug) => ({ slug, label: s(h.tiles[slug]) }))}
@@ -80,19 +86,20 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
         </div>
 
         {/* App download · المتاجر (1314:545) — QR 80 + الشارتين فوق بعض */}
-        <div className="mt-6 flex flex-col items-start gap-2 md:mt-8 lg:absolute lg:end-20 lg:top-[668px] lg:mt-0">
-          <p className="text-caption text-white max-md:hidden">{s(h.app_label)}</p>
+        <div className="mt-6 flex flex-col items-start gap-2 md:mt-8 md:max-lg:col-start-2 md:max-lg:row-start-2 md:max-lg:items-end lg:absolute lg:end-20 lg:top-[668px] lg:mt-0">
+          <p className="text-caption text-white max-md:hidden max-lg:text-[13px]">{s(h.app_label)}</p>
           <div className="flex items-center gap-2.5">
             <StoreBadges height={36.48} className="max-md:hidden flex-col-reverse gap-2!" />
-            <StoreBadges height={46} className="md:hidden" />
+            {/* موبايل: Google Play في البداية و App Store في الآخر (V2-01m) */}
+            <StoreBadges height={46} className="flex-row-reverse md:hidden" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/figma/home/qr-code.svg" alt="" width={80} height={80} loading="lazy" className="size-20 rounded-md bg-white max-md:hidden" />
+            <img src="/figma/home/qr-code.svg" alt="" width={80} height={80} loading="lazy" className="size-20 rounded-md bg-white max-md:hidden lg:rounded-[10px]" />
           </div>
         </div>
 
         <ScrollLink
           to={nextAnchor}
-          className="mt-6 flex h-7 items-center gap-1.5 text-body-m text-neon-green hover:underline max-md:hidden lg:absolute lg:start-[128px] lg:top-[752px] lg:mt-0"
+          className="mt-6 flex h-7 items-center gap-1.5 text-body-m text-neon-green hover:underline max-md:hidden md:max-lg:col-start-1 md:max-lg:row-start-2 md:max-lg:justify-self-start lg:absolute lg:start-[128px] lg:top-[752px] lg:mt-0"
         >
           {s(h.discover)}
           <Icon name="chevron-down" size={16} />

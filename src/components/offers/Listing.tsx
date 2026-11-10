@@ -171,7 +171,7 @@ export function Listing({
             <Icon name="filter" size={18} className="text-deep-charcoal" />
             {offers ? o.filterOffers : o.filterPackages}
           </span>
-          <button type="button" onClick={clearAll} className="text-label-m text-green-active hover:underline">
+          <button type="button" onClick={clearAll} className="text-label-m text-nature-green hover:underline">
             {t.clearAll}
           </button>
         </div>

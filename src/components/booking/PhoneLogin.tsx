@@ -157,7 +157,7 @@ function PhoneCode({
           <button
             type="button"
             onClick={() => (setEditing(false), setLeft(45), setDigits(["", "", "", ""]), boxes.current[0]?.focus())}
-            className="w-fit text-label-m text-green-active hover:underline"
+            className="w-fit text-label-m text-nature-green hover:underline"
           >
             {t.sendCode}
           </button>
@@ -173,7 +173,7 @@ function PhoneCode({
                 el?.scrollIntoView({ behavior: "smooth", block: "center" });
                 el?.focus({ preventScroll: true });
               }}
-              className="text-green-active hover:underline"
+              className="text-nature-green hover:underline"
             >
               {t.editPhone}
             </button>
@@ -220,7 +220,7 @@ function PhoneCode({
           {left > 0 ? (
             <span>{t.fill(t.resendIn, { t: mmss })}</span>
           ) : (
-            <button type="button" onClick={() => setLeft(45)} className="text-green-active hover:underline">
+            <button type="button" onClick={() => setLeft(45)} className="text-nature-green hover:underline">
               {t.resend}
             </button>
           )}

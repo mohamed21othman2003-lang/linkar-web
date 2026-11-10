@@ -26,8 +26,8 @@ export const favoritesPage = {
   note_en: "Saved prices update automatically if the provider changes the price or the offer ends.",
   empty_title_ar: "لم تحفظ شيئاً بعد",
   empty_title_en: "Nothing saved yet",
-  empty_text_ar: "احفظ مقدّمي الخدمة والخدمات والباقات التي تهمك لتصلك عروضهم وتعود إليها بسرعة.",
-  empty_text_en: "Save the providers, services and packages you care about to get their offers and come back to them quickly.",
+  empty_text_ar: "احفظ مقدّمي الخدمة والخدمات والباقات التي تهمك لتعود إليها بسرعة.",
+  empty_text_en: "Save the providers, services and packages you care about to come back to them quickly.",
   empty_cta_ar: "تصفّح مقدّمي الخدمة",
   empty_cta_en: "Browse providers",
 };

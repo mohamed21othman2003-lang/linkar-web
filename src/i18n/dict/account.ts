@@ -88,6 +88,11 @@ const ar = {
     // الفيجما فيها «جيد جداً» لـ4 نجوم بس — باقي التسميات ناقصة (مذكورة في التقرير)
     labels: ["—", "—", "—", "جيد جداً", "—"],
     criteria: ["جودة العمل", "العناية بالسيارة ونظافتها", "التعامل والتواصل", "القيمة مقابل السعر"],
+    // W2-39: الشارة جنب العنوان + السطرين تحت التقييم العام + عنوان السؤال الخاص بالخدمة
+    pointsBadge: "+50 نقطة بعد النشر",
+    hint: "اضغط على النجوم لتقييم تجربتك",
+    details: "قيّم تفاصيل الخدمة",
+    serviceQ: (service: string) => `سؤال خاص بخدمة ${service}`,
     commentLabel: "اكتب رأيك",
     addPhotos: "أضف صوراً (اختياري)",
     photosAdded: (n: number) => `أُرفقت ${n} صورة`,
@@ -275,6 +280,10 @@ const en: typeof ar = {
     overall: "Your overall rating",
     labels: ["—", "—", "—", "Very good", "—"],
     criteria: ["Quality of work", "Care and cleanliness of the car", "Service and communication", "Value for money"],
+    pointsBadge: "+50 points after posting",
+    hint: "Tap the stars to rate your experience",
+    details: "Rate the service details",
+    serviceQ: (service: string) => `A question about ${service}`,
     commentLabel: "Write your review",
     addPhotos: "Add photos (optional)",
     photosAdded: (n: number) => `${n} photo(s) attached`,

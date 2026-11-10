@@ -136,7 +136,7 @@ export function BookingTable({
       {/* شريط التبويبات + الفلاتر: التبويبات كبسولة مجزّأة (كل تبويب سطر واحد والعدد في شارة)،
           والفلاتر بتنزل سطر لوحدها لما المساحة متكفيش بدل ما التبويبات تتزنق وتلف */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-[14px] bg-cool-gray/40 p-1 [scrollbar-width:none]">
+        <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-[12px] bg-cool-gray/40 p-1 [scrollbar-width:none]">
           {tabOrder.map((k) => {
             const on = k === tab;
             return (
@@ -208,7 +208,7 @@ export function BookingTable({
                   <span className="truncate font-medium text-deep-charcoal">
                     {r.provider}
                   </span>
-                  <span className="truncate font-light text-state-gray">
+                  <span className="line-clamp-2 font-light text-state-gray">
                     {r.services}
                   </span>
                 </span>

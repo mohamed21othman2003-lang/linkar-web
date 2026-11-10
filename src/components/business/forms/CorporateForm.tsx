@@ -48,7 +48,7 @@ export function CorporateForm({ locale, d, id, className = "" }: { locale: Local
           <Icon name="chevron-left" size={16} flip />
         </button>
       </div>
-      <Toast message={toast} />
+      <Toast message={toast} icon="mail" />
     </form>
   );
 }

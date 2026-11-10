@@ -28,7 +28,7 @@ export function Stepper({
             <h1 className="text-h4 md:text-h3">{title}</h1>
             <p className="text-caption text-text-secondary">{subtitle}</p>
           </div>
-          <Link href={backHref} className="flex shrink-0 items-center gap-1 text-label-m text-green-active hover:underline">
+          <Link href={backHref} className="flex shrink-0 items-center gap-1 text-label-m text-nature-green hover:underline">
             <Icon name="chevron-right" size={16} flip className="text-nature-green" />
             {backLabel}
           </Link>

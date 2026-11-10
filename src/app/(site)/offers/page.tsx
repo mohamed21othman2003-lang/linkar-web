@@ -5,6 +5,7 @@ import { getCommon } from "@/i18n/dict/common";
 import { routes } from "@/lib/routes";
 import { getListingContext, getOffers, getOffersPage } from "@/lib/server/offers";
 import { getProvider } from "@/lib/server/content";
+import { getFeaturedOfferEndsAt } from "@/lib/server/home";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getSession } from "@/lib/server/session";
 import { getDisplayCars } from "@/lib/server/booking";
@@ -22,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // W2-40 · العروض (725:6463)
 export default async function OffersPage() {
   const locale = await getLocale();
-  const [p, list, ctx] = await Promise.all([getOffersPage(), getOffers(), getListingContext()]);
+  const [p, list, ctx, featuredEndsAt] = await Promise.all([getOffersPage(), getOffers(), getListingContext(), getFeaturedOfferEndsAt()]);
   const t = getCommon(locale);
   const b = getBookingDict(locale);
   const cars = await getDisplayCars(await getSession());
@@ -38,7 +39,8 @@ export default async function OffersPage() {
     title: [tx(locale, offer, "title_line1"), tx(locale, offer, "title_line2")],
     features: offer.features.map((f) => ({ icon: f.icon, label: tx(locale, f, "label") })),
     featured: !!offer.featured,
-    endsAt: offer.ends_at,
+    // W2-40: العدّاد بيبدأ من 02 يوم · 14 ساعة · 36 دقيقة زي الهوم (التاريخ الثابت كان خلص وبيعرض 00)
+    endsAt: offer.ends_at ? featuredEndsAt : null,
     // لا توجد شاشة تفاصيل عرض في الفيجما ← «التفاصيل» تفتح صفحة مقدّم الخدمة (W2-21)
     detailsHref: routes.provider(provider.slug),
     bookHref: bookingHref(routes.bookingBranch, { provider: provider.slug, offer: offer.id }),

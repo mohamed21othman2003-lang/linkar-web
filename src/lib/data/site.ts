@@ -207,7 +207,7 @@ export const site = {
 
   // v2 · Footer
   footer: {
-    about_ar: "لينكار منصة سعودية تربطك بمقدّمي خدمات العناية بالسيارات المعتمدين: قارن، احجز، وادفع، وتابع سيارتك حتى الاستلام.",
+    about_ar: "لينكار منصة سعودية تربطك بمقدّمي خدمات العناية بالسيارات المعتمدين: قارن، واحجز، وادفع، واستلم قسيمتك فوراً.",
     about_en: "Linkar is a Saudi platform connecting you with certified car care providers: compare, book, pay and get your voucher instantly.",
     columns: [
       {
@@ -225,13 +225,14 @@ export const site = {
       {
         title_ar: "الخدمات",
         title_en: "Services",
+        // الإنجليزي من V2-EN (نفس أسماء مربعات الهيرو)
         links: [
-          { label_ar: "الغسيل", label_en: "Car wash", href: routes.search({ services: ["wash"] }) },
-          { label_ar: "حماية PPF", label_en: "PPF protection", href: routes.search({ services: ["ppf"] }) },
-          { label_ar: "التظليل", label_en: "Window tinting", href: routes.search({ services: ["tint"] }) },
+          { label_ar: "الغسيل", label_en: "Wash", href: routes.search({ services: ["wash"] }) },
+          { label_ar: "حماية PPF", label_en: "PPF Protection", href: routes.search({ services: ["ppf"] }) },
+          { label_ar: "التظليل", label_en: "Tinting", href: routes.search({ services: ["tint"] }) },
           { label_ar: "التلميع", label_en: "Polishing", href: routes.search({ services: ["polish"] }) },
-          { label_ar: "نانو سيراميك", label_en: "Nano ceramic", href: routes.search({ services: ["nano-ceramic"] }) },
-          { label_ar: "تغيير اللون", label_en: "Color change", href: routes.search({ services: ["color-change"] }) },
+          { label_ar: "نانو سيراميك", label_en: "Nano Ceramic", href: routes.search({ services: ["nano-ceramic"] }) },
+          { label_ar: "تغيير اللون", label_en: "Color Change", href: routes.search({ services: ["color-change"] }) },
         ],
       },
       {

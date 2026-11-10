@@ -2,7 +2,7 @@ import { Icon, type UiGlyph } from "@/components/icons/Icon";
 import type { PillTone } from "@/lib/data/search/types";
 
 const tones: Record<PillTone, { box: string; icon: string }> = {
-  green: { box: "bg-nature-green/14 text-green-active", icon: "text-nature-green" },
+  green: { box: "bg-nature-green/14 text-nature-green", icon: "text-nature-green" },
   dark: { box: "bg-deep-charcoal text-neon-green", icon: "text-neon-green" },
   gray: { box: "bg-tile text-deep-charcoal", icon: "text-state-gray" },
 };
