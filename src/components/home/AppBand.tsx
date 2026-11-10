@@ -20,7 +20,8 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
     <>
       {/* Download (37:27970): الشارتين فوق بعض وجنبهم صندوق QR الأبيض بمسافة 20 (L-1025) — الصندوق ارتفاعه 104 (L-1367) */}
       <div className="flex w-full items-center gap-5 max-xl:hidden">
-        <StoreBadges height={48} className="flex-col gap-2.5!" />
+        {/* الشارتين 48+8+48 = 104 = ارتفاع صندوق الـQR بالظبط (ملاحظة اجتماع 9 نوفمبر: «الطول مش واحد») */}
+        <StoreBadges height={48} className="flex-col gap-2!" />
         <div className="flex h-[104px] items-center gap-3 rounded-lg bg-white px-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/figma/home/qr-code.svg" alt="" width={72} height={72} loading="lazy" className="size-[72px]" />

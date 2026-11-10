@@ -120,6 +120,8 @@ const ar = {
   includesTitle: "ما تشمله الخدمة",
   serviceReviewsTitle: "تقييمات الخدمة",
   serviceReviewsSub: (rating: string, n: number, short: string) => `${rating} من 5 · ${n} تقييماً من حجوزات مكتملة لهذه الخدمة لدى ${short}`,
+  // تبويب التقييمات بيظهر دايماً — التقييمات المعتمدة من لينكار بتتنشر تحت الخدمة نفسها (اجتماع 9 نوفمبر)
+  serviceReviewsEmpty: "لا توجد تقييمات لهذه الخدمة بعد. تظهر هنا تقييمات العملاء بعد اكتمال حجوزاتهم.",
   yourCar: "سيارتك",
   change: "تغيير",
   priceByCar: "السعر محسوب حسب نوع سيارتك.",
@@ -290,6 +292,7 @@ const en: typeof ar = {
   includesTitle: "What the service includes",
   serviceReviewsTitle: "Service reviews",
   serviceReviewsSub: (rating, n, short) => `${rating} out of 5 · ${n} reviews from completed bookings of this service at ${short}`,
+  serviceReviewsEmpty: "No reviews for this service yet. Customer reviews appear here after their bookings are completed.",
   yourCar: "Your car",
   change: "Change",
   priceByCar: "Price is calculated for your car type.",

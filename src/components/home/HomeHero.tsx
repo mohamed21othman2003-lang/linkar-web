@@ -89,7 +89,8 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
         <div className="mt-6 flex flex-col items-start gap-2 md:mt-8 md:max-lg:col-start-2 md:max-lg:row-start-2 md:max-lg:items-end lg:absolute lg:end-20 lg:top-[668px] lg:mt-0">
           <p className="text-caption text-white max-md:hidden max-lg:text-[13px]">{s(h.app_label)}</p>
           <div className="flex items-center gap-2.5">
-            <StoreBadges height={36.48} className="max-md:hidden flex-col-reverse gap-2!" />
+            {/* 36+8+36 = 80 = ارتفاع الـQR بالظبط */}
+            <StoreBadges height={36} className="max-md:hidden flex-col-reverse gap-2!" />
             {/* موبايل: Google Play في البداية و App Store في الآخر (V2-01m) */}
             <StoreBadges height={46} className="flex-row-reverse md:hidden" />
             {/* eslint-disable-next-line @next/next/no-img-element */}

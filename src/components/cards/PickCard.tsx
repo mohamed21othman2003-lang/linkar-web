@@ -35,7 +35,7 @@ export function PickCard({
         ai ? "bg-deep-charcoal" : "border border-v3-card-stroke bg-white"
       }`}
     >
-      <LogoArea slug={provider.slug} src={provider.logo} alt={name} height={133} />
+      <LogoArea slug={provider.slug} src={provider.logo} alt={name} height={133} inBorderedCard={!ai} />
       <div className="flex flex-1 flex-col items-start px-[22px] pt-[13px] pb-4">
         {ai ? (
           <span className="flex h-[29px] items-center gap-3 text-[12px] text-neon-green">

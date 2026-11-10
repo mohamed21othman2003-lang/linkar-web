@@ -360,7 +360,13 @@ export function ServicePage({
               </div>
             )}
 
-            {active === "reviews" && (
+            {active === "reviews" && reviewsCount === 0 && (
+              <div className="flex flex-col gap-2 pb-8">
+                <h2 className="text-h4">{t.serviceReviewsTitle}</h2>
+                <p className="text-body-m text-state-gray">{t.serviceReviewsEmpty}</p>
+              </div>
+            )}
+            {active === "reviews" && reviewsCount > 0 && (
               <div className="flex flex-col gap-4 pb-8">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                   <div className="flex flex-col gap-1">

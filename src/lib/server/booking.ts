@@ -22,6 +22,7 @@ import { notFound, redirect } from "next/navigation";
 import { routes } from "@/lib/routes";
 import { getProvider, getServices } from "@/lib/server/content";
 import { getProviderDetail } from "@/lib/server/providers";
+import { getBookings } from "@/lib/server/account";
 import type { BookingQuery } from "@/components/booking/query";
 import { computeTotals, pointsValue } from "@/components/booking/pricing";
 
@@ -261,6 +262,15 @@ export async function getCompletedBooking(id?: string) {
   const b = completedBookings.find((x) => x.id === id) ?? completedBookings[0];
   const provider = await getProvider(b.provider);
   return provider ? { booking: b, provider } : null;
+}
+
+// حجز مكتمل لسه ماتقيّمش (زر «قيّم» في «حجوزاتي») — نافذة التقييم W2-39 بتفتح لوحدها مرة واحدة لما العميل يفتح الموقع تاني
+// بعد ما الخدمة تكتمل (اجتماع 9 نوفمبر: «قيّم الخدمة بتطلع بوباب بعد ما يفتح مرة تانية»). الزائر والعميل الجديد: مافيش
+export async function getPendingRating(user: DemoUser | null) {
+  if (!user) return null;
+  const mine = await getBookings(user);
+  const pending = mine.find((b) => b.status === "completed" && b.action === "rate" && completedBookings.some((c) => c.id === b.id));
+  return pending ? getCompletedBooking(pending.id) : null;
 }
 
 // سيارات «سيارتك» في كارت الحجز (W2-42 · P-15): سيارات العميل، والزائر يشوف السيارة الافتراضية من الفيجما

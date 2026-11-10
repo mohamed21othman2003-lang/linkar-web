@@ -20,12 +20,25 @@ export function ClientLogo({ slug, src, alt, scale = 1, size }: { slug: string; 
 
 // صندوق الشعار الأبيض أعلى الكروت (h 178 / 133)
 // في تصميم العميل المعدّل الصندوق الكبير (178) بيعرض الشعار بمقاس logoAreaSize (أكبر بكتير)؛ الصغير (133) زي ما هو
-export function LogoArea({ slug, src, alt, height = 178 }: { slug: string; src: string; alt: string; height?: number }) {
+// inBorderedCard: الكارت نفسه ليه بوردر (كارت الترشيح الفاتح) — خط تحتاني بس بدل بوردر كامل، عشان مايبانش «دبل بوردر»
+export function LogoArea({
+  slug,
+  src,
+  alt,
+  height = 178,
+  inBorderedCard = false,
+}: {
+  slug: string;
+  src: string;
+  alt: string;
+  height?: number;
+  inBorderedCard?: boolean;
+}) {
   const big = height >= 178 ? logoAreaSize[slug] : undefined;
   const top = big?.[2];
   return (
     <div
-      className={`flex shrink-0 justify-center overflow-hidden rounded-t-[20px] border border-v3-card-stroke bg-white ${top === undefined ? "items-center" : "items-start"}`}
+      className={`flex shrink-0 justify-center overflow-hidden bg-white ${inBorderedCard ? "border-b border-v3-card-stroke" : "rounded-t-[20px] border border-v3-card-stroke"} ${top === undefined ? "items-center" : "items-start"}`}
       style={{ height, paddingTop: top }}
     >
       <ClientLogo slug={slug} src={src} alt={alt} size={big ? [big[0], big[1]] : undefined} />

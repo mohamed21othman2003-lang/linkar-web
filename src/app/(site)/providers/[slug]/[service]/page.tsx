@@ -85,7 +85,7 @@ export default async function ProviderServicePage({ params, searchParams }: Prop
   const reviewsCount = d?.reviews_count ?? reviews.length;
   const rating = d?.rating ?? provider.rating;
   const photos = d?.photos ?? [service.photo];
-  const tabs = availableServiceTabs(service, reviewsCount, photos.length);
+  const tabs = availableServiceTabs(service, photos.length);
   const requested = typeof sp.tab === "string" ? (sp.tab as ServiceTab) : "overview";
   const initialTab = tabs.includes(requested) ? requested : "overview";
   const pkg = d?.package_banner ? detail.packages.find((p) => p.slug === d.package_banner!.package) : undefined;

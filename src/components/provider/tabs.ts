@@ -21,7 +21,9 @@ export function availableTabs(detail: ProviderDetail): ProviderTab[] {
 export type ServiceTab = "overview" | "specs" | "warranty" | "photos" | "reviews";
 export const SERVICE_TABS: ServiceTab[] = ["overview", "specs", "warranty", "photos", "reviews"];
 
-export function availableServiceTabs(service: ProviderService, reviewsCount: number, photos: number): ServiceTab[] {
+// «التقييمات» بيظهر دايماً حتى لو الخدمة لسه مالهاش تقييمات: ده المكان اللي التقييمات المعتمدة من لينكار
+// بتتنشر فيه تحت الخدمة نفسها (اجتماع 9 نوفمبر) — الفاضي بيعرض رسالة «لا توجد تقييمات بعد»
+export function availableServiceTabs(service: ProviderService, photos: number): ServiceTab[] {
   const d = service.detail;
   return SERVICE_TABS.filter(
     (k) =>
@@ -29,6 +31,6 @@ export function availableServiceTabs(service: ProviderService, reviewsCount: num
       (k === "specs" && !!d?.specs.length) ||
       (k === "warranty" && (!!d?.warranty_text || !!service.warranty_label)) ||
       (k === "photos" && photos > 0) ||
-      (k === "reviews" && reviewsCount > 0),
+      k === "reviews",
   );
 }

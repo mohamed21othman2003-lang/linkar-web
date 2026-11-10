@@ -1,4 +1,5 @@
-import { ViewTransition } from "react";
+import { Suspense, ViewTransition } from "react";
+import { PendingRating } from "@/components/booking/PendingRating";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
@@ -12,6 +13,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
       </ViewTransition>
       <Footer />
+      {/* «قيّم الخدمة» بيفتح لوحده بعد اكتمال الحجز (W2-39) — للعميل اللي عنده حجز مكتمل ماتقيّمش بس */}
+      <Suspense fallback={null}>
+        <PendingRating />
+      </Suspense>
     </>
   );
 }

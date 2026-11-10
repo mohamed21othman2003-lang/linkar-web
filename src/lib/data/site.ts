@@ -274,8 +274,12 @@ export const site = {
     payments: ["Apple Pay", "mada", "Visa", "Mastercard", "STC Pay", "tabby", "tamara"],
     copyright_ar: "© 2026 لينكار. جميع الحقوق محفوظة.",
     copyright_en: "© 2026 Linkar. All rights reserved.",
-    registry_ar: "السجل التجاري: [يُضاف] · الرقم الضريبي: [يُضاف]",
-    registry_en: "CR: [to be added] · VAT: [to be added]",
+    // السجل التجاري والرقم الضريبي — لسه ماوصلوش من لينكار. السطر مش بيظهر في الفوتر غير لما الرقمين يتحطوا هنا
+    // (ملاحظة اجتماع 9 نوفمبر: «لو مش هتبعته نشيله، مش هننشر كده»)
+    cr_number: null as string | null,
+    vat_number: null as string | null,
+    registry_ar: "السجل التجاري: {cr} · الرقم الضريبي: {vat}",
+    registry_en: "CR: {cr} · VAT: {vat}",
   },
 
   // الأزرار العائمة (FAB) — مساعد لينكار وواتساب
