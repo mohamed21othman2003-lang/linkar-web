@@ -40,6 +40,7 @@ export function PageHeader({
   aside,
   className = "",
   tone = "light",
+  descriptionWidth = "max-w-[760px]",
 }: {
   crumbs: Crumb[];
   title: string;
@@ -48,6 +49,8 @@ export function PageHeader({
   className?: string;
   // "dark": Page head الغامق في تصميم العميل المعدّل (AVbWFtRb0aHpm34oqkI5ot · W2-25 وغيرها) — خلفية #152935، عنوان أبيض، وصف #b3b3b3
   tone?: "light" | "dark";
+  // عرض الوصف (760 في الفيجما) — Noto Kufi في الفيجما أعرض ~3% من المتصفح، فصفحة ممكن تمرّر أضيق عشان السطر يلف زي الفيجما (W2-40)
+  descriptionWidth?: string;
 }) {
   const dark = tone === "dark";
   return (
@@ -56,7 +59,7 @@ export function PageHeader({
         <div className="flex flex-col gap-3">
           <Breadcrumb items={crumbs} tone={tone} />
           <h1 className={`text-h3 md:text-h2 ${dark ? "text-neon-title" : ""}`}>{title}</h1>
-          {description && <p className={`max-w-[760px] text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>}
+          {description && <p className={`${descriptionWidth} text-body-l ${dark ? "text-v3-card-stroke" : "text-text-secondary"}`}>{description}</p>}
         </div>
         {aside}
       </Container>

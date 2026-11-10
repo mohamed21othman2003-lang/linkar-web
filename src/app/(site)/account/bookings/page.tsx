@@ -13,6 +13,8 @@ import { Icon } from "@/components/icons/Icon";
 import { AccountTitle } from "@/components/account/account-ui";
 import { AxEmpty } from "@/components/account/account-extra-ui";
 import { BookingTable, type BookingRowView } from "@/components/account/booking-table";
+import type { RatingView } from "@/components/account/booking-modals";
+import { toRatingView } from "./[id]/view";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getAccountDict(await getLocale());
@@ -22,7 +24,8 @@ export async function generateMetadata(): Promise<Metadata> {
 const tabs = ["upcoming", "completed", "cancelled"] as const;
 
 // W2-38 · حجوزاتي (723:6282 → 85:40069) — التبويب من ?tab= (W2-38-t2…t4) — والعميل الجديد W2-38-0 (85:43581)
-export default async function BookingsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+// ?rate=<id> بيفتح تقييم الخدمة W2-63 (202:19621) فوق الجدول (من «قيّم واكسب 50 نقطة» في W2-60)
+export default async function BookingsPage({ searchParams }: { searchParams: Promise<{ tab?: string; rate?: string }> }) {
   const [locale, user, sp] = await Promise.all([getLocale(), getSession(), searchParams]);
   if (!user) redirect(routes.login);
   const t = getAccountDict(locale);
@@ -46,6 +49,11 @@ export default async function BookingsPage({ searchParams }: { searchParams: Pro
     action: r.action,
     hasDetail: !!r.detail,
   }));
+  const ratings: Record<string, RatingView> = {};
+  for (const r of list) {
+    const v = toRatingView(locale, r, user);
+    if (v) ratings[r.id] = v;
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -60,7 +68,7 @@ export default async function BookingsPage({ searchParams }: { searchParams: Pro
         }
       />
       {rows.length ? (
-        <BookingTable locale={locale} rows={rows} cars={cars.map((c) => ({ key: c.key, label: tx(locale, c, "label") }))} initialTab={initialTab} />
+        <BookingTable locale={locale} rows={rows} cars={cars.map((c) => ({ key: c.key, label: tx(locale, c, "label") }))} initialTab={initialTab} ratings={ratings} initialRate={sp.rate} />
       ) : (
         // W2-38-0 (85:43581): النسخة المعتمدة شالت «تصفّح العروض» — زر «ابحث عن خدمة» بس
         <AxEmpty icon="calendar" title={b.emptyTitle} text={b.emptySub} cta={{ label: b.findService, href: routes.search() }} />

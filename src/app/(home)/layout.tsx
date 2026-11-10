@@ -11,7 +11,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
       <ViewTransition>
         <main className="flex-1">{children}</main>
       </ViewTransition>
-      <Footer />
+      <Footer home />
       {/* «قيّم الخدمة» بيفتح لوحده بعد اكتمال الحجز (W2-39) — للعميل اللي عنده حجز مكتمل ماتقيّمش بس */}
       <Suspense fallback={null}>
         <PendingRating />

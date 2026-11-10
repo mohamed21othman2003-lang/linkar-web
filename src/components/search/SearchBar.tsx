@@ -104,6 +104,7 @@ export function SearchBar({
       {/* الموقع أو الفرع — القائمة W2-DD · الموقع («استخدام موقعي الحالي» بيرجّع الموقع الافتراضي) */}
       {locations?.length ? (
         <Dropdown
+          menu
           label={t.locationLabel}
           className="shrink-0 lg:w-[190px]"
           value={place === "current" ? null : place}

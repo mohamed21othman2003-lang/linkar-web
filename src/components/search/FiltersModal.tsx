@@ -87,7 +87,7 @@ export function FiltersModal({
   );
 
   return (
-    <Modal open={open} onClose={onClose} label={L(groups.title)} className="flex max-w-[480px] flex-col gap-4 rounded-2xl px-5 pt-[26px] pb-7 sm:px-7">
+    <Modal open={open} onClose={onClose} label={L(groups.title)} className="flex max-w-[480px] flex-col gap-4 rounded-2xl px-5 pt-[26px] pb-7 shadow-dialog! sm:px-7">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-h4 text-deep-charcoal">{L(groups.title)}</h2>
         <CloseCircle label={c.close} onClick={onClose} />

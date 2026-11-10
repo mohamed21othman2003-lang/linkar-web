@@ -62,8 +62,9 @@ export function ServicePicker({
       {n > 0 ? (
         <div className="flex flex-col gap-4 rounded-[20px] bg-deep-charcoal px-6 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-x-3 text-white">
-            <p className="text-label-l">{title}</p>
+            {/* W2-25: «تُحجزان معاً…» في البداية وبعدها جملة الاختيار */}
             {n > 1 && <p className="text-caption">{copy.together}</p>}
+            <p className="text-label-l">{title}</p>
           </div>
           <Link
             href={routes.search({ services: selected })}
@@ -81,8 +82,8 @@ export function ServicePicker({
 }
 
 // v2 · Service card (W2-25 المعدّل) — 410 عرض، p24 gap16، r20، #142224؛ المختار: حد ليموني 4 من جوّه.
-// الفيجما مثبّت الارتفاع على 456 فالفوتر (السعر و«احجز») بيطلع برّه الكارت ويتقص — هنا الكارت بياخد طول محتواه (499)
-// عشان السعر والزرار يبانوا كاملين. الحد الليموني (4 من جوّه) بيزوّد 8 على الطول، فكل الكروت min-h 507 عشان الاختيار مايحرّكش الصفحة.
+// الكارت 499 (طول محتواه). المختار: حد ليموني 4 من جوّه والمحتوى بيتزق 4 لجوّه، والمسافة تحت الفوتر بتقل لـ16
+// (زي الفيجما) عشان الطول يفضل 499 والاختيار مايحرّكش الصفحة.
 function ServiceOverviewCard({
   locale,
   item: { service, card, providers },
@@ -104,7 +105,7 @@ function ServiceOverviewCard({
       tabIndex={0}
       onClick={onToggle}
       onKeyDown={(e) => (e.key === " " || e.key === "Enter") && (e.preventDefault(), onToggle())}
-      className={`flex cursor-pointer flex-col gap-4 rounded-[20px] bg-v3-card-dark p-6 xl:min-h-[507px] transition-[border-color] duration-200 ease-figma-out ${on ? "border-4 border-neon-green" : ""}`}
+      className={`flex cursor-pointer flex-col gap-4 rounded-[20px] bg-v3-card-dark p-6 transition-[border-color] duration-200 ease-figma-out ${on ? "border-4 border-neon-green pb-4" : ""}`}
     >
       {/* Top: الأيقونة والاسم في البداية، والـCheckbox في الآخر */}
       <div className="flex h-[52px] items-center justify-between gap-3">

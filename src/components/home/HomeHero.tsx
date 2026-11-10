@@ -28,24 +28,39 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
 
   return (
     <section className="relative bg-deep-charcoal text-white lg:h-[810px]">
-      <Image
-        src="/figma/home/hero-coupe-2x.jpg"
-        alt=""
-        fill
-        preload
-        sizes="100vw"
-        quality={55}
-        className={`object-cover object-[30%_50%] lg:object-center ${ar ? "-scale-x-100" : ""}`}
+      {/* الصورة: ديسكتوب معكوسة في العربي · تابلت FILL مش معكوسة · موبايل CROP (34%×78% من الصورة بدءًا من 60%/8%) — V2-01m/V2-01t */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 max-md:inset-auto max-md:top-[-10.26%] max-md:left-[-176.47%] max-md:h-[128.21%] max-md:w-[294.12%]">
+          <Image
+            src="/figma/home/hero-coupe-2x.jpg"
+            alt=""
+            fill
+            preload
+            sizes="(max-width: 767px) 150vw, 100vw"
+            quality={55}
+            className={`object-cover max-md:object-fill ${ar ? "lg:-scale-x-100" : ""}`}
+          />
+        </div>
+      </div>
+      {/* موبايل: تدرّج رأسي #0D1B23 35%→72%→97% · تابلت: أفقي (الغامق ناحية النص) + رأسي */}
+      <div
+        className="absolute inset-0 md:hidden"
+        style={{ backgroundImage: "linear-gradient(180deg, rgba(13,27,35,0.35) 0%, rgba(13,27,35,0.72) 38%, rgba(13,27,35,0.97) 100%)" }}
       />
-      <div className="absolute inset-0 bg-shade/55 lg:hidden" />
+      <div
+        className="absolute inset-0 hidden md:max-lg:block"
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(13,27,35,0.5) 0%, rgba(13,27,35,0) 30%, rgba(13,27,35,0.1) 80%, rgba(13,27,35,0.8) 100%), linear-gradient(${ar ? "90deg" : "270deg"}, rgba(13,27,35,0.3) 0%, rgba(13,27,35,0.78) 60%, rgba(13,27,35,0.92) 100%)`,
+        }}
+      />
       <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: shade }} />
-      <div className="absolute inset-x-0 top-0 h-[170px] bg-linear-to-b from-shade/62 to-shade/0" />
-      <div className="absolute inset-x-0 bottom-0 h-[240px] bg-linear-to-b from-shade/0 to-shade/62" />
+      <div className="absolute inset-x-0 top-0 hidden h-[170px] bg-linear-to-b from-shade/62 to-shade/0 lg:block" />
+      <div className="absolute inset-x-0 bottom-0 hidden h-[240px] bg-linear-to-b from-shade/0 to-shade/62 lg:block" />
 
       <Header variant="hero" />
 
       {/* تابلت (V2-01t): تحت البحث صف واحد — «اكتشف المزيد» في البداية والمتاجر في الآخر */}
-      <div className="relative mx-auto h-full max-w-[1440px] px-4 pt-[100px] pb-10 md:px-10 md:pt-[110px] md:max-lg:grid md:max-lg:grid-cols-[1fr_auto] md:max-lg:items-end lg:p-0">
+      <div className="relative mx-auto h-full max-w-[1440px] px-4 pt-[100px] pb-9 md:px-10 md:pb-8 md:pt-[120px] md:max-lg:grid md:max-lg:grid-cols-[1fr_auto] md:max-lg:items-end lg:p-0">
         <div className="flex max-w-[800px] flex-col md:max-lg:col-span-2 lg:absolute lg:top-[258px] lg:start-[128px] lg:w-[800px]">
           {/* موبايل 32/46 على سطرين (V2-01m) · تابلت 46/64 (V2-01t) */}
           <h1 className="text-[32px]/[46px] font-bold text-neon-title md:text-[46px]/[64px] lg:text-display-l">
@@ -53,15 +68,16 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
             <br className="md:hidden" />
             {s(h.title_highlight)}
           </h1>
-          <p className="mt-2 text-body-l text-white/92 max-md:mt-0 max-md:text-[15px]/[24px] max-md:text-white/85 lg:text-white">
+          <p className="mt-2 text-body-l text-white/92 max-lg:mt-0 max-md:text-[15px]/[24px] max-md:text-white/85 lg:text-white">
             <span className="max-lg:hidden">{s(h.subtitle)}</span>
             <span className="lg:hidden">{s(h.subtitle_t)}</span>
           </p>
-          <div className="mt-5 md:mt-5 lg:mt-7">
+          <div className="mt-[22px] md:mt-7">
             <HeroSearch
               tiles={slugs.map((slug) => ({ slug, label: s(h.tiles[slug]) }))}
               defaultSelected={h.default_services}
               locationPlaceholder={s(signedIn ? h.location_user : h.location_guest)}
+              locationPlaceholderCompact={s(h.location_guest)}
               carPlaceholder={s(h.car_placeholder)}
               carTypes={content.carTypes.map((c) => ({ slug: c.slug, label: s(c) }))}
               searchLabel={s(h.search)}
@@ -86,15 +102,15 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
         </div>
 
         {/* App download · المتاجر (1314:545) — QR 80 + الشارتين فوق بعض */}
-        <div className="mt-6 flex flex-col items-start gap-2 md:mt-8 md:max-lg:col-start-2 md:max-lg:row-start-2 md:max-lg:items-end lg:absolute lg:end-20 lg:top-[668px] lg:mt-0">
-          <p className="text-caption text-white max-md:hidden max-lg:text-[13px]">{s(h.app_label)}</p>
+        <div className="mt-4 flex flex-col items-start gap-2 max-md:items-center md:mt-10 md:max-lg:col-start-2 md:max-lg:row-start-2 md:max-lg:items-end lg:absolute lg:end-20 lg:top-[668px] lg:mt-0">
+          <p className="text-caption text-white max-md:hidden max-lg:text-[13px]/[20px]">{s(h.app_label)}</p>
           <div className="flex items-center gap-2.5">
-            {/* 36+8+36 = 80 = ارتفاع الـQR بالظبط */}
-            <StoreBadges height={36} className="max-md:hidden flex-col-reverse gap-2!" />
+            {/* 36+8+36 = 80 = ارتفاع الـQR بالظبط · تابلت 35+6+35 = 76 (V2-01t) */}
+            <StoreBadges height={36} className="max-md:hidden flex-col-reverse gap-2! md:max-lg:gap-1.5! md:max-lg:[&_img]:h-[35px] md:max-lg:[&_img]:w-[117px]" />
             {/* موبايل: Google Play في البداية و App Store في الآخر (V2-01m) */}
-            <StoreBadges height={46} className="flex-row-reverse md:hidden" />
+            <StoreBadges height={45} className="flex-row-reverse md:hidden" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/figma/home/qr-code.svg" alt="" width={80} height={80} loading="lazy" className="size-20 rounded-md bg-white max-md:hidden lg:rounded-[10px]" />
+            <img src="/figma/home/qr-code.svg" alt="" width={80} height={80} loading="lazy" className="size-20 rounded-md bg-white max-md:hidden md:max-lg:size-[76px] md:max-lg:rounded-[9.5px] lg:rounded-[10px]" />
           </div>
         </div>
 

@@ -46,9 +46,10 @@ export function PickCard({
         ) : (
           <TagPill className={reasonTone === "green" ? "bg-nature-green! text-white!" : ""}>{reason}</TagPill>
         )}
-        <h3 className={`mt-1 text-[17px] leading-[1.5] font-bold ${ai ? "text-v3-text-on-dark" : "text-deep-charcoal"}`}>{name}</h3>
-        <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} className="mt-1.5" />
-        <p className="mt-2.5 text-body-s leading-[1.5] text-v3-text-meta">{ai ? reason : note}</p>
+        {/* الاسم 17 بارتفاع سطر AUTO (32) · النجمة على بعد 37 من أول الاسم · الوصف في سطر 27 (1669:21273) */}
+        <h3 className={`mt-[3px] text-[17px] leading-[32px] font-bold ${ai ? "text-v3-text-on-dark" : "text-deep-charcoal"}`}>{name}</h3>
+        <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} className="mt-[5px]" />
+        <p className="mt-[7px] text-body-s leading-[1.5] text-v3-text-meta">{ai ? reason : note}</p>
         <div className="mt-auto flex w-full items-center justify-between">
           <p className="flex items-baseline gap-[7px] whitespace-nowrap">
             <span className="text-body-s text-v3-text-meta">{t.startsFrom}</span>

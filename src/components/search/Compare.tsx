@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
@@ -10,7 +10,7 @@ import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons/Icon";
 import { LogoTile } from "./LogoTile";
 import { CloseCircle, Modal } from "./Modal";
-import { useToast } from "./Toast";
+import { useToast, useToastClear } from "./Toast";
 
 export const COMPARE_MAX = 3;
 
@@ -75,6 +75,11 @@ export function CompareProvider({
   const [keys, setKeys] = useState<string[]>(initial.filter((k) => items[k]));
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState<string | null>(null);
+  // P-10c «أُضيف إلى المقارنة · قارن الآن» يختفي أول ما نافذة المقارنة (W2-31) أو P-13 تفتح
+  const clearToasts = useToastClear();
+  useEffect(() => {
+    if (open || pending) clearToasts();
+  }, [open, pending, clearToasts]);
 
   const addedToast = useCallback(
     (n: number) =>
@@ -392,7 +397,7 @@ function CompareMaxModal({
   const t = getSearchDict(locale);
   const c = getCommon(locale);
   return (
-    <Modal open={!!pending} onClose={onClose} label={tx(locale, copy.title, "label")} className="flex max-w-[480px] flex-col gap-4 rounded-2xl px-7 pt-[26px] pb-7">
+    <Modal open={!!pending} onClose={onClose} label={tx(locale, copy.title, "label")} className="flex max-w-[480px] flex-col gap-4 rounded-2xl px-7 pt-[26px] pb-7 shadow-dialog!">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col items-start gap-2.5">
           <span className="flex size-[42px] items-center justify-center rounded-[14px] bg-neon-green/18 text-deep-charcoal">
@@ -418,7 +423,7 @@ function CompareMaxModal({
         ))}
       </ul>
       <div className="flex gap-2.5 pt-1.5">
-        <button type="button" onClick={onClose} className="h-[52px] flex-1 rounded-[14px] border border-cool-gray bg-white text-label-l text-deep-charcoal hover:border-border-strong">
+        <button type="button" onClick={onClose} className="h-[54px] flex-1 rounded-[14px] border border-cool-gray bg-white text-label-l text-deep-charcoal hover:border-border-strong">
           {tx(locale, copy.ok, "label")}
         </button>
         <button type="button" onClick={onOpenCompare} className="h-[52px] flex-1 rounded-[14px] bg-deep-charcoal text-label-l text-neon-green hover:bg-bg-inverse-subtle">

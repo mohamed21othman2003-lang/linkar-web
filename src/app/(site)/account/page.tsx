@@ -30,6 +30,7 @@ export default async function AccountHomePage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
+        {/* Figma W2-60 / W2-60-0: Title text gap 4 (حجوزاتي بس gap 2 — AccountTitle) */}
         <div className="flex flex-col gap-1">
           <h1 className="text-h3 text-deep-charcoal">{o.greeting(tx(locale, user, "first_name"))}</h1>
           <p className="text-body-m text-state-gray">{o.subtitle}</p>
@@ -106,7 +107,8 @@ export default async function AccountHomePage() {
           </section>
 
           {/* سياراتي · المفضلة · الهدايا · النقاط — 4 أعمدة من 1280 بس (تحتها الكروت بتتزنق والملاحظات بتلف 3 سطور) */}
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+          {/* Figma: صف الكروت محاذاته في النص (Stats align=CENTER) — كارت النقاط أطول بسطر والباقي في نصه */}
+          <div className="grid grid-cols-2 items-center gap-4 xl:grid-cols-4">
             {data.stats.map((s) => (
               <Link
                 key={s.key}
@@ -118,7 +120,7 @@ export default async function AccountHomePage() {
                   <Icon name={s.icon} size={18} className="text-nature-green" />
                 </span>
                 <span className="text-h3 text-deep-charcoal">{s.key === "points" ? formatNumber(user.points) : tx(locale, s, "value")}</span>
-                <span className="text-caption text-v3-text-meta">{tx(locale, s, "note")}</span>
+                <span className="text-caption text-v3-text-meta min-[1440px]:max-w-[190px]">{tx(locale, s, "note")}</span>
               </Link>
             ))}
           </div>
@@ -158,7 +160,7 @@ export default async function AccountHomePage() {
 function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale; title: string; sub: string; allLabel: string; offers: OverviewOffer[] }) {
   return (
     <>
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-col gap-0.5">
           <h2 className="text-h4 text-deep-charcoal">{title}</h2>
           <p className="text-body-s text-v3-text-meta">{sub}</p>
@@ -179,7 +181,10 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
             <span className="flex w-full items-center justify-between gap-2">
               <span className="flex min-w-0 items-center gap-1.5">
                 {f.services.map((s) => (
-                  <ServiceGlyph key={s} name={s} size={32} className="text-state-gray" />
+                  // Figma: Service tile 32×32 والأيقونة جوّاه 19px
+                  <span key={s} className="grid size-8 place-items-center">
+                    <ServiceGlyph name={s} size={20} className="text-state-gray" />
+                  </span>
                 ))}
               </span>
               <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-deep-charcoal px-3 py-1 text-caption whitespace-nowrap text-neon-green">
@@ -187,7 +192,8 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
                 <Icon name="tag" size={12} />
               </span>
             </span>
-            <span className="text-label-l text-deep-charcoal">{tx(locale, f, "title")}</span>
+            {/* Figma: العنوان في سطر واحد (273px) — خطنا أعرض بـ~3px، فنسيب له 4px من الحشو الجانبي على 1440 */}
+            <span className="text-label-l text-deep-charcoal min-[1440px]:-me-1">{tx(locale, f, "title")}</span>
             <span className="flex items-center gap-1.5 text-caption text-v3-text-meta">
               {tx(locale, f, "provider")}
               <ProviderTile slug={f.provider_slug} alt="" size={24} />

@@ -218,11 +218,12 @@ export function MenuSelectField({
         </span>
       </button>
       {open && (
-        <div className="absolute inset-x-0 top-full z-30 mt-1.5 flex flex-col gap-1 rounded-2xl bg-white p-2.5 shadow-elevation-3">
-          <p aria-hidden className="px-3 pt-1 text-[16px]/[26px] font-bold text-deep-charcoal">
+        // Sheet (W2-DD 202:27134): 420 عرض · p18 · gap4 · r16
+        <div className="absolute start-0 top-full z-30 mt-1.5 flex w-full flex-col gap-1 rounded-lg bg-white p-[18px] shadow-elevation-3 min-[1440px]:w-[420px]">
+          <p aria-hidden className="text-[16px]/[26px] font-bold text-deep-charcoal">
             {label}
           </p>
-          <ul ref={list} id={`${id}-l`} role="listbox" aria-label={label} onKeyDown={onListKey} className="flex flex-col">
+          <ul ref={list} id={`${id}-l`} role="listbox" aria-label={label} onKeyDown={onListKey} className="flex flex-col gap-1">
             {options.map((o) => {
               const on = o.value === value;
               return (
@@ -235,12 +236,12 @@ export function MenuSelectField({
                       onChange(o.value);
                       close();
                     }}
-                    className={`flex w-full items-center justify-between gap-3 rounded-[10px] px-3 py-[11px] text-start text-[15px]/[24px] text-deep-charcoal outline-none focus-visible:ring-2 focus-visible:ring-deep-charcoal ${
+                    className={`flex w-full items-center justify-between gap-2 rounded-[10px] px-3 py-2.5 text-start text-[14px]/[22px] text-deep-charcoal outline-none focus-visible:ring-2 focus-visible:ring-deep-charcoal ${
                       on ? "bg-tint-lime font-semibold" : "font-normal hover:bg-tile focus-visible:bg-tile"
                     }`}
                   >
                     <span dir={numDir(o.label)}>{o.label}</span>
-                    {on && <Icon name="check" size={16} className="shrink-0 text-state-gray" />}
+                    {on && <Icon name="check" size={16} className="shrink-0 text-deep-charcoal" />}
                   </button>
                 </li>
               );

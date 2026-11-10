@@ -48,7 +48,8 @@ export function WarrantiesList({
               {w.statusLabel}
             </span>
           </div>
-          <dl className="flex flex-wrap items-center gap-x-6 gap-y-2.5">
+          {/* Figma: Meta alignMIN — المجموعة في الشمال (آخر السطر في RTL) */}
+          <dl className="flex flex-wrap items-center gap-x-6 gap-y-2.5 md:justify-end">
             {w.meta.map(([k, v]) => (
               <div key={k} className="flex flex-col gap-0.5">
                 <dt className="text-[13px] leading-[20px] text-state-gray">{k}</dt>
@@ -82,7 +83,7 @@ export function WarrantiesList({
       {/* P-30 · شهادة الضمان */}
       <Dialog open={!!current} onClose={() => setOpen(null)} label={copy.popupTitle} className="max-w-[520px]">
         {current && current.status === "active" && (
-          <div className="flex flex-col gap-4 rounded-[24px] bg-white px-5 pt-[26px] pb-7 shadow-popup sm:px-7">
+          <div className="flex flex-col gap-4 rounded-[24px] bg-white px-5 pt-[26px] pb-7 shadow-dialog sm:px-7">
             <div className="flex items-start gap-3">
               <h2 className="min-w-0 flex-1 text-h4 text-deep-charcoal">{copy.popupTitle}</h2>
               <CloseButton label={copy.close} onClick={() => setOpen(null)} />
@@ -94,7 +95,8 @@ export function WarrantiesList({
               </p>
               <p className="text-[13px] leading-[20px] text-state-gray">{current.showAt}</p>
             </div>
-            <dl className="flex flex-col">
+            {/* Figma: صفوف KV كل واحد 39px بخط سفلي وبينها 16px (gap الكارت) */}
+            <dl className="flex flex-col gap-4">
               {current.rows.map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between gap-4 border-b border-[#e3e8e5] py-2 text-[14px] leading-[22px]">
                   <dt className="shrink-0 text-state-gray">{k}</dt>
@@ -103,7 +105,7 @@ export function WarrantiesList({
               ))}
             </dl>
             <p className="text-[13px] leading-[21px] text-state-gray">{copy.popupNote}</p>
-            <button type="button" onClick={() => setOpen(null)} className={`${popupBtnClass.outline} h-auto! w-full flex-none py-[11px] text-[15px]! font-medium`}>
+            <button type="button" onClick={() => setOpen(null)} className={`${popupBtnClass.outline} h-auto! w-full flex-none rounded-md! border-[#e3e8e5]! py-2.5 text-[15px]! leading-6! font-medium`}>
               {copy.close}
             </button>
           </div>

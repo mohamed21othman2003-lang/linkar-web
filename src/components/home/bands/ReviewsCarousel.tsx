@@ -99,7 +99,7 @@ export function ReviewsCarousel({
               }`}
             >
               <div className="flex items-start justify-between">
-                <span className={`text-[52px] leading-[78px] font-bold ${dark ? "bg-linear-to-b from-neon-green to-nature-green bg-clip-text text-transparent" : "text-nature-green"}`}>
+                <span className={`[font-family:var(--font-noto-kufi-lat)] text-[52px] leading-[78px] font-bold ${dark ? "bg-linear-to-b from-neon-green to-nature-green bg-clip-text text-transparent" : "text-nature-green"}`}>
                   ”
                 </span>
                 <span className={`pt-7 text-label-m ${dark ? "text-neon-green" : "text-deep-charcoal"}`}>{r.rating}</span>

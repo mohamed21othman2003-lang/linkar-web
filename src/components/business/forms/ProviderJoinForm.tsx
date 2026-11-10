@@ -110,7 +110,11 @@ export function ProviderJoinForm({ locale, d, next, demo = false }: { locale: Lo
           sizeText={(f) => fileSize(f, b.mb, b.kb)}
           error={errors.crDoc}
         />
-        <label className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-dashed border-nature-green p-6 text-center hover:bg-tint-lime">
+        {/* حدّ متقطع 6/4 زي الفيجما (W2-90b Upload · photos) — border-dashed في CSS شرطته أقصر */}
+        <label className="relative flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] px-6 py-[25px] text-center hover:bg-tint-lime">
+          <svg aria-hidden className="pointer-events-none absolute inset-0 size-full overflow-visible text-nature-green">
+            <rect x="0.5" y="0.5" rx="13.5" style={{ width: "calc(100% - 1px)", height: "calc(100% - 1px)" }} fill="none" stroke="currentColor" strokeDasharray="6 4" />
+          </svg>
           <Icon name="camera" size={24} className="text-nature-green" />
           <span className="text-label-m text-nature-green">{L("photos")}</span>
           <span className="text-caption text-text-secondary">{v.photos.length ? b.photosAttached(v.photos.length) : L("photos_hint")}</span>

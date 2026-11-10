@@ -223,10 +223,12 @@ export function ServicePage({
               </div>
             )}
             <h1 className="text-h3 md:text-h2">{sName}</h1>
-            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+            {/* الفيجما (gap 10) بيطلع برّه العمود بـ40 — gap 8 هنا عشان السطر يفضل واحد بالشعار 80 */}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
               <Link href={routes.provider(provider.slug)} className="flex items-center gap-2.5">
-                {/* Partner logo · Tile 56 (r 24.9) في العميل المعدّل */}
-                <LogoTile src={provider.logo} alt={name} size={56} radius={25} />
+                {/* Partner logo · Tile 80 (r 24.9، الشعار 70 جوّه) في W2-32 / W2-32s — 56 على الموبايل */}
+                <LogoTile src={provider.logo} alt={name} size={80} radius={25} innerRatio={0.875} className="hidden md:flex" />
+                <LogoTile src={provider.logo} alt={name} size={56} radius={25} className="md:hidden" />
                 <span className="text-label-l text-deep-charcoal">
                   {/* W2-32: «جونسون Johnson · المنتج: Johnson Ceramic Pro 9H · ضمان 9 سنوات» */}
                   {[name, service.product && `${t.product}: ${service.product}`, service.product && service.warranty_label && tx(locale, service.warranty_label, "label")]
@@ -239,21 +241,23 @@ export function ServicePage({
               {reviewsCount > 0 && (
                 <>
                   <span className="text-caption text-state-gray">·</span>
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1">
                     <Icon name="star-filled" size={14} className="text-v3-rating-star" />
                     <span className="text-label-m text-deep-charcoal">{rating.toFixed(1)}</span>
                     <span className="text-caption text-state-gray">{t.serviceReviewsCount(reviewsCount)}</span>
                   </span>
                 </>
               )}
+              {/* W2-32s 202:14981: الرابط في الفيجما على نفس السطر بس طالع برّه العمود (x 338، تحت كارت الحجز) فمش ظاهر —
+                  على الديسكتوب بنخفيه عشان السطر ما يلفّش (الشعار/الاسم و«خدمات أخرى» بيودّوا لصفحة المزوّد) */}
               {affiliate && (
-                <>
+                <span className="contents lg:hidden">
                   <span className="text-caption text-state-gray">·</span>
                   <Link href={routes.provider(provider.slug)} className="flex items-center gap-0.5 text-label-m text-nature-green hover:underline">
                     {t.providerPage}
                     <Icon name="chevron-left" size={14} flip />
                   </Link>
-                </>
+                </span>
               )}
             </div>
           </div>
@@ -585,7 +589,8 @@ export function ServicePage({
                   <span className="flex min-w-0 items-center gap-2.5">
                     <ServiceTile name={s.icon} size={44} />
                     <span className="flex min-w-0 flex-col gap-0.5">
-                      <span className="text-label-l text-deep-charcoal">{tx(locale, s, "name")}</span>
+                      {/* W2-32 202:14027: العنوان سطر واحد (hug) — الكارت بارتفاع ثابت 84 */}
+                      <span className="truncate text-label-l text-deep-charcoal" title={tx(locale, s, "name")}>{tx(locale, s, "name")}</span>
                       <span className="text-caption text-v3-text-meta">{meta}</span>
                     </span>
                   </span>

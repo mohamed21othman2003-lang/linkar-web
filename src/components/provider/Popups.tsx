@@ -272,7 +272,7 @@ export function ChooseCarModal({
       <div className="grid grid-cols-2 gap-2.5 pt-1.5">
         <Link
           href={routes.cars}
-          className="flex h-[52px] items-center justify-center rounded-[14px] border border-cool-gray bg-white text-label-l text-deep-charcoal hover:border-border-strong"
+          className="flex h-[54px] items-center justify-center rounded-[14px] border border-cool-gray bg-white text-label-l text-deep-charcoal hover:border-border-strong"
         >
           {t.addCar}
         </Link>

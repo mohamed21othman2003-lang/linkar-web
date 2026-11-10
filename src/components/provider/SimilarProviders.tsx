@@ -115,8 +115,9 @@ export function SimilarProviders({
     if (!el) return;
     setPage(Math.min(pages - 1, Math.round(Math.abs(el.scrollLeft) / Math.max(1, el.clientWidth - 40))));
   };
+  // W2-21: القسم p80 فوق و24 تحت (ديسكتوب)
   return (
-    <section className="theme-dark bg-deep-charcoal pt-10 pb-2">
+    <section className="theme-dark bg-deep-charcoal pt-10 pb-2 md:pt-20 md:pb-6">
       <Container className="flex flex-col gap-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-col gap-1">
@@ -146,7 +147,7 @@ export function SimilarProviders({
         {/* العميل المعدّل (85:35696): كروت الشعار (v2 · Provider card · Logo) زي W2-26 — 4 على الديسكتوب · 2×2 تحت 1280 */}
         <div key={filter} className={`hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4 xl:gap-[25.3px] ${switched ? "animate-dissolve" : ""}`}>
           {sets[filter].map((card) => (
-            <ProviderCard key={card.provider.slug} locale={locale} provider={card.provider} services={services} showBadges showCertified={false} />
+            <ProviderCard key={card.provider.slug} locale={locale} provider={card.provider} services={services} showBadges showCertified={false} chipFit />
           ))}
         </div>
         {/* موبايل: الكاروسيل */}

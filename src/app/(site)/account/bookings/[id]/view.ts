@@ -5,6 +5,7 @@ import type { Booking } from "@/lib/data/account/bookings";
 import type { DemoUser } from "@/lib/data/types";
 import { routes } from "@/lib/routes";
 import type { BookingDetailView, ManageView } from "@/components/account/booking-detail";
+import type { RatingView } from "@/components/account/booking-modals";
 
 // رابط مشاركة القسيمة (P-08): linkarksa.com/v/LK-…  → صفحة W2-81
 const SHARE_HOST = "linkarksa.com";
@@ -39,19 +40,7 @@ export function toDetailView(locale: Locale, b: Booking, user: DemoUser): Bookin
     manage,
     rows: det.rows.map((r) => ({ label: tx(locale, r, "label"), value: tx(locale, r, "value"), tone: r.tone })),
     log: det.log.map((l) => ({ time: tx(locale, l, "time"), text: tx(locale, l, "text"), tone: l.tone })),
-    rating: b.rating
-      ? {
-          bookingId: b.id,
-          providerSlug: b.provider_slug,
-          meta: tx(locale, b.rating, "title_meta"),
-          criteria: [tx(locale, b.rating, "extra_criterion")],
-          serviceCategory: tx(locale, b.rating, "service_category"),
-          sample: b.rating.sample,
-          comment: tx(locale, b.rating, "sample_comment"),
-          // «محمد س.» — الاسم الأول + أول حرف من اسم العائلة
-          reviewer: `${tx(locale, user, "first_name")} ${tx(locale, user, "name").split(" ").slice(-1)[0].charAt(0)}.`,
-        }
-      : undefined,
+    rating: toRatingView(locale, b, user),
     // القسيمة كاملة (W2-37v) موجودة في الفيجما لـBK-21452 بس — للقسائم المستخدمة بنعرض المتاح و«—» للناقص
     voucherFull:
       det.voucher.state === "cancelled"
@@ -71,5 +60,21 @@ export function toDetailView(locale: Locale, b: Booking, user: DemoUser): Bookin
             mapsUrl: b.maps_url,
             shareLink: `${SHARE_HOST}${routes.sharedVoucher(det.voucher.code)}`,
           },
+  };
+}
+
+// تقييم الخدمة W2-63 — بيفتح فوق متابعة الحجز (?rate=1) أو فوق «حجوزاتي» (?rate=<id>) زي الفيجما
+export function toRatingView(locale: Locale, b: Booking, user: DemoUser): RatingView | undefined {
+  if (!b.rating) return undefined;
+  return {
+    bookingId: b.id,
+    providerSlug: b.provider_slug,
+    meta: tx(locale, b.rating, "title_meta"),
+    criteria: [tx(locale, b.rating, "extra_criterion")],
+    serviceCategory: tx(locale, b.rating, "service_category"),
+    sample: b.rating.sample,
+    comment: tx(locale, b.rating, "sample_comment"),
+    // «محمد س.» — الاسم الأول + أول حرف من اسم العائلة
+    reviewer: `${tx(locale, user, "first_name")} ${tx(locale, user, "name").split(" ").slice(-1)[0].charAt(0)}.`,
   };
 }

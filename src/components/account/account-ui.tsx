@@ -54,7 +54,7 @@ export function Card({ children, className = "" }: { children: ReactNode; classN
 export function AccountTitle({ title, subtitle, aside }: { title: string; subtitle?: string; aside?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
-      <div className="flex min-w-0 flex-col gap-1">
+      <div className="flex min-w-0 flex-col gap-0.5">
         <h1 className="text-h3 text-deep-charcoal">{title}</h1>
         {subtitle && <p className="text-body-m text-state-gray">{subtitle}</p>}
       </div>

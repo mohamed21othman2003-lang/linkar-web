@@ -14,6 +14,7 @@ import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
 import { ProviderTile, StatusDotPill } from "./account-ui";
 import { FilterDropdown } from "./booking-dropdown";
+import { RatingModal, type RatingView } from "./booking-modals";
 
 export type BookingRowView = {
   id: string;
@@ -56,14 +57,25 @@ export function BookingTable({
   rows,
   cars,
   initialTab,
+  ratings,
+  initialRate,
 }: {
   locale: Locale;
   rows: BookingRowView[];
   cars: { key: BookingCar; label: string }[];
   initialTab: TabKey;
+  // W2-63: «قيّم» بيفتح تقييم الخدمة فوق الجدول نفسه زي الفيجما (ومن برّه: ?rate=<id>)
+  ratings?: Record<string, RatingView>;
+  initialRate?: string;
 }) {
   const t = getAccountDict(locale).bookings;
   const [tab, setTab] = useState<TabKey>(initialTab);
+  const [rateId, setRateId] = useState(initialRate && ratings?.[initialRate] ? initialRate : null);
+  const rating = rateId ? ratings?.[rateId] : undefined;
+  const closeRating = () => {
+    setRateId(null);
+    window.history.replaceState(null, "", routes.bookings(tab === "all" ? undefined : tab));
+  };
   const [period, setPeriod] = useState<Period>("3m");
   const [car, setCar] = useState<BookingCar | "all">("all");
 
@@ -108,9 +120,13 @@ export function BookingTable({
         ? routes.paymentMethods
         : r.action === "voucher"
         ? routes.voucher(r.id)
-        : r.action === "rate"
-          ? routes.bookingReview(r.id)
-          : routes.booking(r.id);
+        : routes.booking(r.id);
+    if (r.action === "rate" && ratings?.[r.id])
+      return (
+        <button type="button" onClick={() => setRateId(r.id)} className={cls}>
+          {t.actions[r.action]}
+        </button>
+      );
     return (
       <Link href={href} className={cls}>
         {t.actions[r.action]}
@@ -146,7 +162,7 @@ export function BookingTable({
                 role="tab"
                 aria-selected={on}
                 onClick={() => selectTab(k)}
-                className={`flex h-10 shrink-0 items-center gap-2 rounded-[10px] px-4 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${
+                className={`flex h-[38px] shrink-0 items-center gap-2 rounded-[9px] px-3.5 text-label-m whitespace-nowrap transition-colors duration-200 ease-figma-out ${
                   on ? "bg-deep-charcoal text-neon-green shadow-elevation-1" : "text-deep-charcoal hover:bg-white/70"
                 }`}
               >
@@ -208,7 +224,7 @@ export function BookingTable({
                   <span className="truncate font-medium text-deep-charcoal">
                     {r.provider}
                   </span>
-                  <span className="line-clamp-2 font-light text-state-gray">
+                  <span className="truncate font-light text-state-gray" title={r.services}>
                     {r.services}
                   </span>
                 </span>
@@ -320,6 +336,7 @@ export function BookingTable({
           </button>
         </div>
       </div>
+      {rating && <RatingModal key={rateId} locale={locale} open onClose={closeRating} r={rating} />}
     </div>
   );
 }

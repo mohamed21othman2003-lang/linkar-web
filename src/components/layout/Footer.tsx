@@ -10,7 +10,7 @@ import { Container } from "@/components/ui/Container";
 
 // v2 · Footer (85:30640) — غامق (Brand Dark)، 4 أعمدة روابط + عمود الهوية، وتحت: وسائل الدفع والحقوق
 // تابلت (Footer · تابلت 85:34859): الهوية بعرض كامل والأعمدة الأربعة تحتها · موبايل (85:34172): الأعمدة أكورديون
-export async function Footer() {
+export async function Footer({ home = false }: { home?: boolean }) {
   const [locale, site] = await Promise.all([getLocale(), getSite()]);
   const f = site.footer;
   const link = "text-body-s text-text-secondary hover:text-white";
@@ -22,10 +22,23 @@ export async function Footer() {
             <div className="max-md:[&_img]:w-[150px]!">
               <Logo tone="inverse" width={240} label={tx(locale, site, "brand_name")} />
             </div>
-            <p className="text-[13px]/[24px] text-text-secondary md:text-body-s">{tx(locale, f, "about")}</p>
+            {/* الهوم ديسكتوب (V2-01): «…واستلم قسيمتك فوراً» · باقي الصفحات والهوم تابلت/موبايل: «…وتابع سيارتك حتى الاستلام» */}
+            <p className="text-[13px]/[24px] text-text-secondary md:text-body-s">
+              {home ? (
+                <>
+                  <span className="max-xl:hidden">{tx(locale, f, "about")}</span>
+                  <span className="xl:hidden">{tx(locale, f, "about_pages")}</span>
+                </>
+              ) : (
+                tx(locale, f, "about_pages")
+              )}
+            </p>
             <StoreBadges className="max-md:order-2" />
             <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 text-body-s text-text-secondary hover:text-white max-md:order-3">
-              <Icon name="mail" size={16} />
+              {/* Glyph=mail Outline: الظرف 9.5×7.6 أبيض جوه مربع 16 (Mail · v2 Footer 202:8212) */}
+              <span className="flex size-4 shrink-0 items-center justify-center">
+                <Icon name="mail" size={10.5} className="text-white" />
+              </span>
               <span dir="ltr">{site.email}</span>
             </a>
             <div className="flex gap-2.5 max-md:order-4">
@@ -63,7 +76,8 @@ export async function Footer() {
                   {tx(locale, col, "title")}
                   <Icon name="chevron-down" size={16} className="transition-transform duration-200 ease-figma-out group-open:rotate-180" />
                 </summary>
-                <div className="flex flex-col gap-3 pb-4">
+                {/* مقفول = display:none (مش بس content-visibility) عشان الروابط المخفية ماتتحسبش فوق الإيميل في فحص التداخل */}
+                <div className="hidden flex-col gap-3 pb-4 group-open:flex">
                   {col.links.map((l) => (
                     <Link key={l.label_ar} href={l.href} className={link}>
                       {tx(locale, l, "label")}

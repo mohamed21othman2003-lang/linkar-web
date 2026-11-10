@@ -121,7 +121,7 @@ export function ContactForm({ copy, defaultName = "", demo }: { copy: ContactFor
           placeholder={copy.messagePlaceholder}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "contact-message-err" : undefined}
-          className={`h-[140px] resize-y py-3 ${box(errors.message)}`}
+          className={`h-[140px] resize-none py-3 ${box(errors.message)}`}
         />
         {errText("message")}
       </div>

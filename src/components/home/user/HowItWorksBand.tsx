@@ -103,15 +103,15 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
   );
 
   return (
-    // Band · How it works (202:7422) — خلفية surface/soft (cool-gray 35%) من غير نقش
-    <section className="relative overflow-hidden bg-tile py-9 md:py-16 xl:bg-cool-gray/35 xl:py-[72px]">
+    // Band · How it works (202:7422) — خلفية surface/soft (cool-gray 35%) من غير نقش · ارتفاع ثابت 773 والمحتوى في النص (في الإنجليزي النص أطول والفيجما بيقلّل الهامش لـ44 · V2-EN 202:9635)
+    <section className="relative overflow-hidden bg-tile py-9 md:py-16 xl:flex xl:min-h-[773px] xl:items-center xl:bg-cool-gray/35 xl:py-11">
       <Container className="relative flex flex-col gap-[18px] max-md:px-5 md:gap-7 xl:flex-row xl:items-center xl:gap-[72px]">
         {/* Steps column */}
         <div className="flex flex-col gap-[18px] md:gap-7 xl:flex-1 xl:gap-9">
           <div className="flex flex-col gap-1.5 md:gap-2 xl:gap-2.5">
             <p className="text-[13px]/[20px] font-medium text-nature-green md:text-overline">{s(h.overline)}</p>
             <h2 className="text-[22px]/[34px] font-bold text-deep-charcoal md:text-[28px]/[42px] xl:text-[32px] xl:leading-[61px] xl:font-medium">{s(h.title)}</h2>
-            <p className="text-[16px]/[27px] font-light text-state-gray max-md:hidden xl:text-[18px] xl:leading-[34px] xl:font-medium">{s(h.description)}</p>
+            <p className="text-[16px]/[27px] font-light text-state-gray max-md:hidden xl:max-w-[650px] xl:text-[18px] xl:leading-[34px] xl:font-medium">{s(h.description)}</p>
           </div>
           {/* تابلت/موبايل: «1 · ابحث» + مربع أيقونة — كارت كحلي على الموبايل */}
           <div className="flex flex-col gap-[18px] md:flex-row md:items-start md:gap-7 xl:hidden">

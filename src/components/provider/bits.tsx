@@ -25,8 +25,9 @@ export function BrandIcon({ name, size = 16 }: { name: BrandIconName; size?: num
 }
 
 // Partner logo · Tile — مربع أبيض بحدود والشعار جوّه (r16 في 96، أصغر في المقاسات الصغيرة)
-export function LogoTile({ src, alt, size, radius = 16, className = "" }: { src: string; alt: string; size: number; radius?: number; className?: string }) {
-  const inner = Math.round(size * 0.8);
+// innerRatio: مساحة الشعار من الصندوق (هوية W2-21: 84 من 96 = 0.875)
+export function LogoTile({ src, alt, size, radius = 16, className = "", innerRatio = 0.8 }: { src: string; alt: string; size: number; radius?: number; className?: string; innerRatio?: number }) {
+  const inner = Math.round(size * innerRatio);
   return (
     <span
       className={`relative flex shrink-0 items-center justify-center overflow-hidden border border-cool-gray bg-white ${className}`}

@@ -15,7 +15,9 @@ export type AccountNavView = {
   signOut: string;
 };
 
-function isActive(pathname: string, href: string) {
+function isActive(rawPathname: string, href: string) {
+  // W2-39 (/booking/rate) بيظهر فوق متابعة الحجز، فـ«حجوزاتي» تفضل نشطة زي الفيجما
+  const pathname = rawPathname.startsWith(routes.bookingRate("").split("?")[0]) ? routes.bookings() : rawPathname;
   const path = href.split("?")[0];
   return path === routes.account
     ? pathname === path

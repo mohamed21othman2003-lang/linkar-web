@@ -273,7 +273,8 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
         </div>
         <p className="flex items-center gap-2.5 rounded-[20px] bg-tint-danger px-4 py-3 text-body-s text-deep-charcoal">
           <Icon name="alert" size={16} className="shrink-0" />
-          {t.deleteRule}
+          {/* Figma (Delete rule 202:19453): النص بيلف سطرين و«التراجع.» في السطر التاني — خطنا أضيق بـ1px فبنحدّه على 1440 */}
+          <span className="min-[1440px]:max-w-[860px]">{t.deleteRule}</span>
         </p>
       </SettingsCard>
 
@@ -306,7 +307,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
                 value={newPhone}
                 onChange={(e) => setNewPhone(e.target.value.replace(/[^\d ]/g, ""))}
                 placeholder={pp.p01.placeholder}
-                className="min-w-0 flex-1 bg-transparent text-body-m text-deep-charcoal outline-none placeholder:text-v3-text-meta"
+                className="min-w-0 flex-1 bg-transparent text-body-m text-deep-charcoal outline-none placeholder:text-v3-text-meta focus-visible:shadow-none"
               />
             </span>
           </label>
@@ -399,7 +400,14 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
         >
           <p className="text-body-s text-state-gray">{pp.p03b.body(v.points)}</p>
           <label className="flex cursor-pointer items-center gap-2 text-body-s text-deep-charcoal">
-            <input ref={agreeBox} type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="size-[18px] rounded-[6px] accent-promotional-red" />
+            {/* Box 18 · r6 · حد #d9dedb (الفيجما) — المختار أحمر بعلامة صح */}
+            <input ref={agreeBox} type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="peer sr-only" />
+            <span
+              aria-hidden
+              className="flex size-[18px] shrink-0 items-center justify-center rounded-[6px] border border-cool-gray bg-white text-white peer-checked:border-promotional-red peer-checked:bg-promotional-red peer-focus-visible:shadow-focus-ring"
+            >
+              {agree && <Icon name="check" size={12} />}
+            </span>
             {pp.p03b.confirm}
           </label>
           <PopupActions>

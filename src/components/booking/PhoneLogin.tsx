@@ -212,7 +212,7 @@ function PhoneCode({
               onChange={(e) => setDigit(i, e.target.value)}
               onKeyDown={(e) => e.key === "Backspace" && !d && i > 0 && boxes.current[i - 1]?.focus()}
               autoFocus={i === Math.min(3, typed.length)}
-              className="size-16 rounded-[14px] border border-cool-gray bg-white text-center text-[26px] leading-10 font-bold outline-none focus:border-2 focus:border-deep-charcoal"
+              className="size-16 rounded-[14px] border border-cool-gray bg-white text-center text-[26px] leading-10 font-bold outline-none focus:border-2 focus:border-deep-charcoal focus-visible:shadow-none!"
             />
           ))}
         </div>

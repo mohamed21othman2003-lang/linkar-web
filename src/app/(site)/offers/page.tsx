@@ -47,7 +47,14 @@ export default async function OffersPage() {
   }));
   return (
     <>
-      <PageHeader tone="dark" crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "crumb") }]} title={tx(locale, p, "title")} description={tx(locale, p, "description")} />
+      {/* W2-40: الوصف في الفيجما سطرين («…واضح قبل أن / تحجز.») — 730 هنا بيكسر نفس الكسرة */}
+      <PageHeader
+        tone="dark"
+        descriptionWidth="max-w-[730px]"
+        crumbs={[{ label: t.home, href: routes.home }, { label: tx(locale, p, "crumb") }]}
+        title={tx(locale, p, "title")}
+        description={tx(locale, p, "description")}
+      />
       <Container className="pt-8 pb-24">
         <Listing
           locale={locale}

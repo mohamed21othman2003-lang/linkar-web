@@ -20,10 +20,10 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
   const hours = tx(locale, detail, "hours");
   return (
     <>
-      {/* Identity (العميل المعدّل AVbWFtRb0aHpm34oqkI5ot · 85:35696): من غير غلاف — الهوية · التقييمات · «حفظ / مشاركة» في سطر واحد */}
-      <Container className="flex flex-col gap-6 pt-7 pb-5 lg:flex-row lg:items-center lg:justify-between">
+      {/* Identity (W2-21 202:13272): من غير غلاف — الهوية في البداية، وفي الآخر عمود «حفظ / مشاركة» وتحته التقييمات (gap 14) */}
+      <Container className="flex flex-col gap-6 pt-7 pb-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex items-start gap-4 md:gap-5">
-          <LogoTile src={provider.logo} alt={name} size={96} className="hidden md:flex" />
+          <LogoTile src={provider.logo} alt={name} size={96} innerRatio={0.875} className="hidden md:flex" />
           <LogoTile src={provider.logo} alt={name} size={64} radius={12} className="md:hidden" />
           <div className="flex min-w-0 flex-col gap-2">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
@@ -49,7 +49,9 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
             </div>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3.5 lg:items-end">
+        <HeroActions locale={locale} slug={provider.slug} shortName={short} />
+        <div className="flex items-start gap-3">
           <ScrollTabLink
             href={routes.provider(provider.slug, "reviews")}
             className="flex flex-col items-start gap-0.5 rounded-[14px] border border-neon-green bg-neon-green/16 px-4 py-2.5 transition-colors duration-200 ease-figma-out hover:bg-neon-green/25"
@@ -75,7 +77,7 @@ export function ProviderHero({ locale, provider, detail }: { locale: Locale; pro
             </ScrollTabLink>
           )}
         </div>
-        <HeroActions locale={locale} slug={provider.slug} shortName={short} />
+        </div>
       </Container>
 
       {/* Trust */}

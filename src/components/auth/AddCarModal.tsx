@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { finishSignup } from "@/app/actions/auth";
 import { Icon } from "@/components/icons/Icon";
+import { MenuSelect } from "@/components/ui/MenuSelect";
 import { inputBoxClass, inputClass } from "./ui";
 
 export type AddCarCopy = Record<
@@ -130,27 +131,21 @@ function Select({
 }) {
   return (
     <div className="flex min-w-0 flex-col items-start gap-1.5">
-      <label htmlFor={id} className="text-label-m text-deep-charcoal">
+      <label id={`${id}-label`} htmlFor={id} className="text-label-m text-deep-charcoal">
         {label}
       </label>
-      <div className={`${inputBoxClass()} relative gap-2`}>
-        <select
-          id={id}
-          name={id}
-          value={value}
-          defaultValue={defaultValue}
-          autoFocus={autoFocus}
-          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-          className={`${inputClass} appearance-none pe-6`}
-        >
-          {items.map((i) => (
-            <option key={i.value} value={i.value}>
-              {i.label}
-            </option>
-          ))}
-        </select>
-        <Icon name="chevron-down" size={16} className="pointer-events-none absolute end-3.5 text-deep-charcoal" />
-      </div>
+      {/* القائمة W2-DD (بدل <select>): لوحة بيضاء بعرض الحقل */}
+      <MenuSelect
+        id={id}
+        name={id}
+        items={items}
+        value={value}
+        defaultValue={defaultValue}
+        autoFocus={autoFocus}
+        onChange={onChange}
+        aria-labelledby={`${id}-label`}
+        className={`${inputBoxClass()} gap-2 pe-10 text-body-m text-deep-charcoal`}
+      />
     </div>
   );
 }

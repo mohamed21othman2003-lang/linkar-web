@@ -57,8 +57,9 @@ export function PhotoViewer({
         <div className="relative aspect-[992/540] max-h-[540px] w-full overflow-hidden rounded-lg">
           {/* CHANGE_TO Photo=n · DISSOLVE 200ms EASE_OUT */}
           <Image key={index} src={photos[index]} alt={t.photoAlt(title, index + 1)} fill sizes="(min-width: 1040px) 992px, 100vw" className="animate-dissolve object-cover" />
-          <span className="absolute start-4 top-4 rounded-full bg-deep-charcoal/70 px-3 py-1.5 text-label-m text-white" dir="ltr">
-            {t.photoOf(index + 1, n)}
+          {/* العدّاد في بداية السطر (يمين في العربي) — dir=ltr على الـ bdi بس عشان start يتبع اتجاه الصفحة */}
+          <span className="absolute start-4 top-4 rounded-full bg-deep-charcoal/70 px-3 py-1.5 text-label-m text-white">
+            <bdi dir="ltr">{t.photoOf(index + 1, n)}</bdi>
           </span>
           <button
             type="button"
@@ -96,7 +97,7 @@ export function PhotoViewer({
               onClick={() => onIndex(Math.min(n - 1, start + 3))}
               className="flex h-16 w-24 shrink-0 items-center justify-center rounded-[10px] bg-white/12 text-label-l text-white hover:bg-white/20"
             >
-              {t.morePhotosShort(rest)}
+              <bdi dir="ltr">{t.morePhotosShort(rest)}</bdi>
             </button>
           )}
         </div>

@@ -47,11 +47,11 @@ export function IncompleteSearchDialog({
       <div className="relative flex w-[480px] max-w-full animate-dissolve flex-col gap-4 rounded-[20px] bg-white px-7 pt-[26px] pb-7 text-deep-charcoal shadow-[0_12px_24px_#14293640] max-sm:px-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col items-start gap-2">
-            <span className="rounded-[10px] bg-alert-red-bg px-3 py-1.5 text-[15px] leading-[1.4] font-bold text-alert-red">{copy.badge}</span>
-            <h2 id="incomplete-title" className="text-[22px] leading-[1.4] font-bold">
+            <span className="rounded-[10px] bg-alert-red-bg px-3 py-1.5 text-[15px] leading-[28px] font-bold text-alert-red">{copy.badge}</span>
+            <h2 id="incomplete-title" className="text-[22px] leading-[42px] font-bold">
               {copy.title}
             </h2>
-            <p className="max-w-[360px] text-[14px] leading-[1.25] text-state-gray">{copy.body}</p>
+            <p className="max-w-[360px] text-[14px] leading-[18px] font-normal text-state-gray">{copy.body}</p>
           </div>
           <button
             type="button"
@@ -66,7 +66,7 @@ export function IncompleteSearchDialog({
           {rows.map((k) => (
             <li key={k} className="flex items-start gap-2.5">
               <span className="flex size-[26px] shrink-0 items-center justify-center rounded-full bg-alert-red-bg text-[13px] font-bold text-alert-red">!</span>
-              <p className="flex-1 pt-0.5 text-[14px] leading-[1.35]">
+              <p className="flex-1 pt-0.5 text-[14px] leading-[1.35] font-normal">
                 <span className="font-semibold">{copy[k][0]}</span> {copy[k][1]}
               </p>
             </li>
@@ -76,7 +76,7 @@ export function IncompleteSearchDialog({
           ref={ok}
           type="button"
           onClick={onClose}
-          className="flex w-full items-center justify-center rounded-full bg-neon-green py-3.5 text-[15px] leading-[1.4] font-bold text-v3-text-on-lime hover:bg-bg-brand-hover"
+          className="flex w-full items-center justify-center rounded-full bg-neon-green py-3.5 text-[15px] leading-[28px] font-bold text-v3-text-on-lime hover:bg-bg-brand-hover"
         >
           {copy.ok}
         </button>

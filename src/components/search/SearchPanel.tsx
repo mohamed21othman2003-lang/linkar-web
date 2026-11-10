@@ -100,8 +100,9 @@ export function SearchPanel({ locale, onClose }: { locale: Locale; onClose: () =
 
   return (
     <div className="fixed inset-x-0 top-20 bottom-0 z-50" role="dialog" aria-modal="true" aria-label={t.search}>
-      <div className="absolute inset-0 animate-dissolve bg-deep-charcoal/72" onClick={onClose} />
-      <div className="relative max-h-full animate-dissolve overflow-y-auto rounded-b-[32px] bg-white shadow-elevation-2">
+      {/* W2-29 202:14276: Scrim fill 72% × layer 70% ≈ 50% · اللوحة r 0/24 وظل 0 12 24 #00000024 */}
+      <div className="absolute inset-0 animate-dissolve bg-deep-charcoal/50" onClick={onClose} />
+      <div className="relative max-h-full animate-dissolve overflow-y-auto rounded-b-2xl bg-white shadow-[0_12px_24px_0_#00000024]">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-[18px] px-4 pt-5 pb-7 md:px-10 xl:px-20">
           <div className="flex flex-col gap-2">
             <form

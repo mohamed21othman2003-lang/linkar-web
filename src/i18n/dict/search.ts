@@ -80,6 +80,7 @@ const ar = {
   change: "تغيير",
   allServices: "كل الخدمات",
   hasOffers: "لديه عروض",
+  availableToday: "متاح اليوم",
   showMore: "عرض المزيد",
   showing: (n: number, total: number) => `تعرض ${n} من ${total} مقدّم خدمة`,
   // لوحة البحث W2-29
@@ -170,6 +171,7 @@ const en: typeof ar = {
   change: "Change",
   allServices: "All services",
   hasOffers: "Has offers",
+  availableToday: "Available today",
   showMore: "Show more",
   showing: (n: number, total: number) => `Showing ${n} of ${total} providers`,
   orPick: "Or choose services, location and car type",

@@ -471,14 +471,15 @@ export function CarsManager({
           title={c.lockedTitle}
           text={(() => {
             const [before, after = ""] = c.lockedText.replace("{car}", confirm.name).split("{booking}");
+            // P-04b: الفيجما بيلف النص 3 سطور («(BK-…)» أول السطر التاني) — لاتيني Readex أضيق فبنحدّ العرض
             return (
-              <>
+              <span className="block sm:max-w-[412px]">
                 {before}
                 <span className="whitespace-nowrap">
                   (<bdi>{confirm.upcomingBooking}</bdi>)
                 </span>
                 {after}
-              </>
+              </span>
             );
           })()}
           closeLabel={c.close}

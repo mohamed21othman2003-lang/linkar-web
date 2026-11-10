@@ -51,7 +51,7 @@ export function ApplePayModal({
 }) {
   const t = getBookingDict(locale);
   return (
-    <Modal open={open} onClose={onClose} label={t.applePayTitle} className="rounded-xl!">
+    <Modal open={open} onClose={onClose} label={t.applePayTitle} className="rounded-xl!" shadow="shadow-popup">
       <PayHead
         title={t.applePayTitle}
         sub={t.applePaySub}
@@ -133,7 +133,7 @@ export function CardPayModal({
   const input = "min-w-0 flex-1 bg-transparent text-[15px] font-normal outline-none placeholder:text-[#9aa29e]";
   const label = "text-[13px] leading-[25px] font-medium";
   return (
-    <Modal open={open} onClose={onClose} label={t.cardTitle} className="rounded-xl!">
+    <Modal open={open} onClose={onClose} label={t.cardTitle} className="rounded-xl!" shadow="shadow-popup">
       <PayHead
         title={t.cardTitle}
         sub={t.cardSub}
@@ -235,7 +235,7 @@ export function CardPayModal({
 export function CashPayModal({ locale, open, onConfirm, onClose }: { locale: Locale; open: boolean; onConfirm: () => void; onClose: () => void }) {
   const t = getBookingDict(locale);
   return (
-    <Modal open={open} onClose={onClose} label={t.cashTitle} className="rounded-xl!">
+    <Modal open={open} onClose={onClose} label={t.cashTitle} className="rounded-xl!" shadow="shadow-popup">
       <PayHead
         title={t.cashTitle}
         sub={t.cashSub}

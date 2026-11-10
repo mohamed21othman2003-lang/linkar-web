@@ -11,6 +11,7 @@ export function BandHead({
   tone = "light",
   className = "",
   titleClass = "",
+  bodyClass = "",
 }: {
   overline: string;
   title: ReactNode;
@@ -18,13 +19,15 @@ export function BandHead({
   tone?: "light" | "dark";
   className?: string;
   titleClass?: string;
+  /** عرض فقرة الوصف لما الفيجما بيكسر السطر قبلنا (W2-95 «كيف نختار») */
+  bodyClass?: string;
 }) {
   const dark = tone === "dark";
   return (
     <div className={`flex max-w-[820px] flex-col gap-2.5 ${className}`}>
       <p className={`text-overline ${dark ? "text-neon-green" : "text-nature-green"}`}>{overline}</p>
       <h2 className={`text-[26px]/[40px] font-bold md:text-h2 ${dark ? "text-neon-title" : "text-deep-charcoal"} ${titleClass}`}>{title}</h2>
-      {body && <p className={`text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-state-gray"}`}>{body}</p>}
+      {body && <p className={`text-body-m md:text-body-l ${dark ? "text-v3-card-stroke" : "text-state-gray"} ${bodyClass}`}>{body}</p>}
     </div>
   );
 }

@@ -15,7 +15,7 @@ export function ReviewsBand({ locale, content }: { locale: Locale; content: Home
     <section className="relative overflow-hidden bg-white py-9 md:py-16 xl:py-[104px]">
       <span
         aria-hidden
-        className="pointer-events-none absolute end-10 -top-[290px] hidden text-[520px] leading-[986px] font-bold text-neon-green opacity-35 select-none xl:block"
+        className="pointer-events-none absolute end-10 -top-[290px] hidden [font-family:var(--font-noto-kufi-lat)] text-[520px] leading-[986px] font-bold text-neon-green opacity-35 select-none xl:block"
       >
         ”
       </span>

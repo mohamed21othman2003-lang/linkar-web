@@ -23,10 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const chipShadow = "shadow-[0_12px_16px_rgba(13,26,33,0.16)]";
 
 // رابط نصّي بسهم (15 Medium) — «تصفّح كل الخدمات» · «عرض كل مقدّمي الخدمة» · «اقرأ سياسة الضمان»
-function TextLink({ href, children, tone = "green", bold = false }: { href: string; children: React.ReactNode; tone?: "green" | "neon" | "active"; bold?: boolean }) {
+function TextLink({ href, children, tone = "green", bold = false, className = "self-start" }: { href: string; children: React.ReactNode; tone?: "green" | "neon" | "active"; bold?: boolean; className?: string }) {
   const color = tone === "neon" ? "text-neon-green" : tone === "active" ? "text-nature-green" : "text-nature-green";
   return (
-    <Link href={href} className={`flex shrink-0 items-center gap-1.5 self-start text-[15px]/[24px] hover:underline ${bold ? "font-bold" : "font-medium"} ${color}`}>
+    <Link href={href} className={`flex shrink-0 items-center gap-1.5 text-[15px]/[24px] hover:underline ${bold ? "font-bold" : "font-medium"} ${color} ${className}`}>
       {children}
       <Icon name="chevron-left" size={16} flip className={tone === "neon" ? "text-neon-green" : "text-nature-green"} />
     </Link>
@@ -108,7 +108,9 @@ export default async function AboutPage() {
                 <p className="text-overline text-nature-green">{tx(locale, p.services, "overline")}</p>
                 <h2 className="text-[24px]/[36px] font-bold text-deep-charcoal md:text-[28px]/[42px]">{tx(locale, p.services, "title")}</h2>
               </div>
-              <TextLink href={routes.services}>{tx(locale, p.services, "link")}</TextLink>
+              <TextLink href={routes.services} className="self-start md:self-end">
+                {tx(locale, p.services, "link")}
+              </TextLink>
             </div>
             <div className="-mx-4 flex gap-[10.4px] overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:px-0 min-[1440px]:overflow-hidden [&::-webkit-scrollbar]:hidden">
               {serviceItems.map(({ service, providers }) => (
@@ -152,13 +154,14 @@ export default async function AboutPage() {
       <section className="relative overflow-hidden bg-white">
         <GridPattern />
         <Container className="relative flex flex-col gap-10 py-14 lg:gap-14 lg:py-[104px]">
-          <BandHead overline={tx(locale, selection, "overline")} title={tx(locale, selection, "title")} body={tx(locale, selection, "body")} />
+          <BandHead overline={tx(locale, selection, "overline")} title={tx(locale, selection, "title")} body={tx(locale, selection, "body")} bodyClass="min-[1440px]:max-w-[780px]" />
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start">
             <ol className="flex flex-col lg:min-w-0 lg:flex-[0_1_640px]">
               {selection.stages.map((s, i) => {
                 const last = i === selection.stages.length - 1;
                 return (
-                  <li key={s.title_ar} className="flex gap-4 md:gap-5">
+                  // Stage: في الفيجما الخط (Rail) على يسار النص في RTL والنص 560 بفراغ 8 على الطرف
+                  <li key={s.title_ar} className="flex flex-row-reverse gap-4 md:gap-5">
                     <div className="flex w-[52px] shrink-0 flex-col items-center">
                       <span
                         className={`flex size-[52px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-deep-charcoal ${i === 0 ? "bg-deep-charcoal text-neon-green" : "bg-white text-deep-charcoal"}`}
@@ -167,7 +170,7 @@ export default async function AboutPage() {
                       </span>
                       {!last && <span aria-hidden className="w-0.5 flex-1 bg-[#cfd6d2]" />}
                     </div>
-                    <div className="flex min-w-0 flex-1 flex-col gap-1.5 pt-2.5 pb-7">
+                    <div className="flex min-w-0 flex-1 flex-col gap-1.5 pt-2.5 pb-7 min-[1440px]:max-w-[560px]">
                       <h3 className="text-[18px]/[28px] font-bold text-deep-charcoal md:text-[20px]/[30px]">{tx(locale, s, "title")}</h3>
                       <p className="text-[15px]/[26px] font-light text-state-gray">{tx(locale, s, "body")}</p>
                     </div>
@@ -222,7 +225,7 @@ export default async function AboutPage() {
             {warranty.cards.map((c) => (
               <article key={c.title_ar} className="flex items-start gap-4 rounded-xl border border-white/18 bg-white/8 p-[22px] backdrop-blur-[12px]">
                 <GlyphTile icon={c.icon} size={48} glyph={24} radius={14} />
-                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5 min-[1440px]:max-w-[410px]">
                   <h3 className="text-[20px]/[30px] font-bold text-white">{tx(locale, c, "title")}</h3>
                   <p className="text-[15px]/[26px] font-light text-dot">{tx(locale, c, "body")}</p>
                 </div>
@@ -268,7 +271,7 @@ export default async function AboutPage() {
         <Container className="flex flex-col gap-8 py-14 lg:gap-11 lg:py-[104px]">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <BandHead tone="dark" overline={tx(locale, partners, "overline")} title={tx(locale, partners, "title")} body={tx(locale, partners, "body")} className="md:max-w-[760px]" />
-            <TextLink href={routes.providers()} tone="neon">
+            <TextLink href={routes.providers()} tone="neon" className="self-start md:self-end">
               {tx(locale, partners, "link")}
             </TextLink>
           </div>

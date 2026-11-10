@@ -64,12 +64,13 @@ function AppPhone({ screen }: { screen: string }) {
 // V2-01 · Band · App (202:7679 · تابلت/موبايل من V2-01t/V2-01m) — «لينكار في جيبك / احجز، ادفع، وتابع» (#bffa4f) على كحلي سادة
 // + جوالين مايلين ±13° وشيبس. الجوال هيكل HTML وشاشته صورة مصدّرة من الفيجما (202:7686 / 202:7783 · الإنجليزي من V2-EN 202:10543 / 202:10640)
 // تحت xl مسرح الجوالين بنص المقاس (350×360) — تابلت: جنب النص · موبايل: بين العنوان والمميزات
+// ديسكتوب: الشريط ثابت 912 والمحتوى في النص (V2-EN 202:10486: العنوان الإنجليزي أطول فالهامش بيقل بدل ما الشريط يطول)
 export function AppBand({ locale, content, id }: { locale: Locale; content: HomeContent; id: string }) {
   const a = content.appBand;
   const s: S = (x) => tx(locale, x, "text");
   const chip = "flex h-14 items-center gap-2.5 rounded-full ps-4 pe-3.5 text-label-m whitespace-nowrap shadow-[0_24px_24px_#0b0d0a33]";
   return (
-    <section id={id} className="relative scroll-mt-20 overflow-hidden bg-deep-charcoal py-9 md:py-16 xl:py-24">
+    <section id={id} className="relative scroll-mt-20 overflow-hidden bg-deep-charcoal py-9 md:py-16 xl:flex xl:min-h-[912px] xl:items-center xl:py-5">
       <Container className="grid grid-cols-1 gap-[18px] max-md:px-5 md:grid-cols-[1fr_350px] md:items-center md:gap-6 xl:flex xl:items-center xl:justify-between xl:gap-10">
         <div className="contents md:flex md:flex-col md:items-start md:gap-4 xl:w-[540px] xl:gap-6">
           <div className="flex flex-col items-start gap-1.5 md:gap-4 xl:gap-6">
@@ -97,7 +98,7 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
                   <Icon name={f.glyph} size={16} />
                 </span>
                 <div className="flex flex-col gap-1">
-                  <p className="text-[13px]/[20px] font-medium text-white xl:text-label-l">{s(f.title)}</p>
+                  <p className="text-[13px]/[20px] font-medium whitespace-nowrap text-white xl:text-label-l xl:whitespace-normal">{s(f.title)}</p>
                   <p className="text-caption text-cool-gray max-xl:hidden">{s(f.body)}</p>
                 </div>
               </li>

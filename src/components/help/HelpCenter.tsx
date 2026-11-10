@@ -129,7 +129,7 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
                 >
                   <span className="flex flex-col">
                     <span className={`text-[15px]/[28px] whitespace-nowrap text-deep-charcoal ${on ? "font-bold" : "font-medium"}`}>{tp.title}</span>
-                    <span className="text-[12px]/[15px] font-light text-state-gray">{count(tp.articles.length)}</span>
+                    <span className="text-[12px]/[15px] font-normal text-state-gray">{count(tp.articles.length)}</span>
                   </span>
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-[11px] bg-neon-green text-deep-charcoal">
                     <Icon name={tp.icon} size={17} />
@@ -142,7 +142,7 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
           <section aria-live="polite" className="flex min-w-0 flex-1 flex-col rounded-xl border border-hairline bg-white px-4 pt-6 pb-3 md:px-7">
             <div className="flex flex-col gap-1 pb-3">
               <h2 className="text-[22px]/[40px] font-bold text-deep-charcoal md:text-[24px]/[46px]">{topic.title}</h2>
-              <p className="text-[14px]/[18px] font-light text-state-gray">
+              <p className="text-[14px]/[18px] font-normal text-state-gray">
                 {count(topic.articles.length)} · {copy.hint}
               </p>
             </div>
@@ -165,7 +165,7 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
                     <Link
                       href={a.href}
                       aria-label={a.title}
-                      className="-me-2 flex size-8 shrink-0 items-center justify-center rounded-full text-state-gray hover:bg-tile hover:text-deep-charcoal"
+                      className="-me-2 flex h-[30px] w-8 shrink-0 items-center justify-center rounded-full text-state-gray hover:bg-tile hover:text-deep-charcoal"
                     >
                       <Icon name="chevron-left" size={14} flip />
                     </Link>
@@ -182,11 +182,11 @@ export function HelpCenter({ locale, topics, articles, initial, copy }: { locale
                         className="overflow-hidden"
                       >
                         <div className="flex flex-col gap-2.5 pt-2.5">
-                          <p className="text-[15px]/[19px] font-light text-state-gray max-md:leading-[26px]">
+                          <p className="text-[15px]/[19px] font-normal text-state-gray max-md:leading-[26px]">
                             {a.answer}
                           </p>
                           <div className="flex items-center gap-3 text-[14px]/[27px]">
-                            <span className="font-light text-state-gray">{copy.helpful}</span>
+                            <span className="font-normal text-state-gray">{copy.helpful}</span>
                             {(["yes", "no"] as const).map((v) => (
                               <button
                                 key={v}

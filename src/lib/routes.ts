@@ -43,7 +43,7 @@ export const routes = {
   account: "/account", // W2-60
   bookings: (tab?: string) => (tab ? `/account/bookings?tab=${tab}` : "/account/bookings"), // W2-38
   booking: (id: string) => `/account/bookings/${id}`, // W2-37
-  bookingReview: (id: string) => `/account/bookings/${id}?rate=1`, // W2-63 (تقييم الخدمة فوق W2-37c)
+  bookingReview: (id: string) => `/account/bookings?rate=${encodeURIComponent(id)}`, // W2-63 (تقييم الخدمة فوق W2-38 زي الفيجما 202:19621)
   voucher: (id: string) => `/account/bookings/${id}/voucher`, // W2-37v
   warranties: "/account/warranties", // W2-74 (+ P-30 شهادة الضمان)
   favorites: (tab?: string) => (tab ? `/account/favorites?tab=${tab}` : "/account/favorites"), // W2-64

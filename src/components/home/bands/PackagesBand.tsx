@@ -37,9 +37,10 @@ export function PackagesBand({ locale, content, providers }: { locale: Locale; c
       <img loading="lazy"
         src="/figma/home/icons/brand-chevron-outline.svg"
         alt=""
-        width={320}
-        height={326}
-        className="pointer-events-none absolute end-[60px] top-[700px] hidden w-80 opacity-18 xl:block"
+        width={373}
+        height={380}
+        // 202:7649: مستطيل الأيقونة المايلة 373×380 عند x-7 y700 من القسم — رأس السهم بيبان تحت الكارت الأول
+        className="pointer-events-none absolute end-[-7px] top-[700px] hidden w-[373px] max-w-none opacity-18 xl:block"
       />
       <Container className="relative flex flex-col gap-[18px] max-md:px-5 md:gap-7 xl:gap-8">
         <SectionHead

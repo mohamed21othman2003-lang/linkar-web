@@ -13,6 +13,8 @@ export type HeroSearchProps = {
   tiles: { slug: ServiceSlug; label: string }[];
   defaultSelected: ServiceSlug[];
   locationPlaceholder: string;
+  /** تابلت/موبايل (V2-01t/V2-01m): «الموقع أو الفرع» حتى للعميل المسجّل */
+  locationPlaceholderCompact?: string;
   carPlaceholder: string;
   carTypes: { slug: string; label: string }[];
   searchLabel: string;
@@ -65,7 +67,7 @@ export function HeroSearch(p: HeroSearchProps) {
   const carName = p.carTypes.find((c) => c.slug === car)?.label;
   // ديسكتوب: كبسولة 40 زجاجية · تابلت/موبايل: 50–52 بزوايا 14 (V2-01t/V2-01m)
   const field = (bad: boolean) =>
-    `flex h-[50px] w-full items-center gap-2.5 rounded-[14px] border bg-white/10 px-4 text-start text-[15px] leading-[24px] font-light text-white/80 hover:border-white/40 md:h-[52px] lg:h-10 lg:gap-2 lg:rounded-full lg:bg-deep-charcoal/60 lg:text-body-s lg:text-white ${
+    `flex h-[50px] w-full items-center gap-2.5 rounded-[14px] border bg-white/10 px-4 text-start text-[15px] leading-[24px] font-light text-white/80 hover:border-white/40 md:h-[52px] lg:h-10 lg:gap-2 lg:rounded-full lg:bg-deep-charcoal/60 lg:text-body-s lg:text-white/85 ${
       bad ? "border-[1.5px] border-hero-error" : "border-white/28 lg:border-white/22"
     }`;
   const errorText = "text-[13px] leading-[1.9] font-medium text-hero-error";
@@ -79,7 +81,6 @@ export function HeroSearch(p: HeroSearchProps) {
       >
         {p.tiles.map((t) => {
           const on = selected.includes(t.slug);
-          const long = t.slug === "color-change";
           return (
             <button
               key={t.slug}
@@ -98,9 +99,7 @@ export function HeroSearch(p: HeroSearchProps) {
                 className={`whitespace-nowrap font-medium ${
                   p.compactLabels
                     ? "text-[12px] leading-[20px] lg:text-label-m"
-                    : long
-                      ? "text-[11.3px] leading-[18.4px] md:text-[12.6px] md:leading-[20.4px] lg:text-label-l"
-                      : "text-[13.45px] leading-[21.9px] md:text-[14.2px] md:leading-[23px] lg:text-label-l"
+                    : "text-[13.45px] leading-[21.9px] md:text-[14.2px] md:leading-[23px] lg:text-label-l"
                 }`}
               >
                 {t.label}
@@ -142,7 +141,16 @@ export function HeroSearch(p: HeroSearchProps) {
           aria-label={p.locationLabel}
           className={`${field(err.city)} md:w-[290px] md:shrink-0 lg:w-full`}
         >
-          <span className={`truncate ${location ? "text-white" : ""}`}>{location ?? p.locationPlaceholder}</span>
+          {location ? (
+            <span className="truncate text-white">{location}</span>
+          ) : p.locationPlaceholderCompact && p.locationPlaceholderCompact !== p.locationPlaceholder ? (
+            <>
+              <span className="truncate lg:hidden">{p.locationPlaceholderCompact}</span>
+              <span className="truncate max-lg:hidden">{p.locationPlaceholder}</span>
+            </>
+          ) : (
+            <span className="truncate">{p.locationPlaceholder}</span>
+          )}
           <Icon name="map-pin" size={18} className="ms-auto size-[18px] shrink-0 text-white lg:size-4" />
         </button>
 
@@ -210,7 +218,7 @@ export function HeroSearch(p: HeroSearchProps) {
 
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 md:gap-x-5 lg:mt-3.5 lg:gap-x-8">
         {p.trust.map((item) => (
-          <li key={item} className="flex items-center gap-1.5 text-[13px] leading-[20px] font-medium text-white md:text-label-m lg:gap-2 lg:text-white/92">
+          <li key={item} className="flex items-center gap-1.5 text-[13px] leading-[20px] font-medium text-white md:text-label-m md:max-lg:leading-[22px] lg:gap-2 lg:text-white/92">
             <Icon name="check" size={16} className="text-neon-green lg:hidden" />
             <FigmaIcon name="shield-check-neon" size={18} className="max-lg:hidden" />
             {item}

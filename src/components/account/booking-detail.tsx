@@ -128,8 +128,8 @@ export function BookingDetail({
                 <span className={`h-[3px] flex-1 ${i === v.tracker.length - 1 ? "" : halfColor[s.state]}`} />
               </span>
               <span
-                className={`text-[16px] leading-[26px] ${
-                  s.state === "current" ? "font-medium text-deep-charcoal" : s.state === "cancelled" ? "font-medium text-promotional-red" : s.state === "todo" ? "font-light text-state-gray" : "font-light text-deep-charcoal"
+                className={`text-[16px] ${
+                  s.state === "current" ? "font-medium leading-[26px] text-deep-charcoal" : s.state === "cancelled" ? "font-medium leading-[26px] text-promotional-red" : s.state === "todo" ? "font-light leading-[28px] text-state-gray" : "font-light leading-[28px] text-deep-charcoal"
                 }`}
               >
                 {s.label}
@@ -164,6 +164,8 @@ export function BookingDetail({
                 className="flex items-center gap-1.5 rounded-[10px] border border-cool-gray px-3 py-2 text-label-m text-deep-charcoal hover:border-border-strong"
               >
                 {t.directions}
+                {/* Figma (202:17707 Directions 108×40): خانة أيقونة 16px فاضية بعد النص */}
+                <span className="size-4" aria-hidden />
               </a>
             </div>
             <div className="h-px bg-cool-gray" />

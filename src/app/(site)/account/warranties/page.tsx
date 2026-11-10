@@ -30,11 +30,12 @@ export default async function WarrantiesPage() {
           statusLabel: L(statusLabels.active),
           title: L(w.title),
           provider: L(w.provider),
+          // ترتيب الفيجما (Meta 202:22768) من اليمين: رقم الشهادة · السيارة · صالح حتى · الحجز — والمجموعة لازقة في الشمال
           meta: [
-            [t("booking"), w.booking],
-            [t("valid_until"), L(w.valid_until)],
-            [t("car"), L(w.car)],
             [t("certificate_no"), w.certificate],
+            [t("car"), L(w.car)],
+            [t("valid_until"), L(w.valid_until)],
+            [t("booking"), w.booking],
           ],
           remaining: w.remaining,
           certificate: w.certificate,
@@ -55,9 +56,9 @@ export default async function WarrantiesPage() {
           title: L(w.title),
           provider: L(w.provider),
           meta: [
-            [t("booking"), w.booking],
-            [t("car"), L(w.car)],
             [t("expected"), L(w.expected)],
+            [t("car"), L(w.car)],
+            [t("booking"), w.booking],
           ],
           note: L(w.note),
         },
@@ -68,7 +69,8 @@ export default async function WarrantiesPage() {
       <AxTitle title={t("title")} description={t("description")} />
       <WarrantiesList items={items} copy={{ view: t("view"), popupTitle: t("popup_title"), popupNote: t("popup_note"), close: t("popup_close") }} />
       {/* W2-74: زوايا 14 — «!» عشان تغلب الـ20 الافتراضية في AxNote */}
-      <AxNote className="rounded-[14px]! px-4">{t("note")}</AxNote>
+      {/* Figma Note (202:22768): الأيقونة في آخر السطر (الشمال) والنص مالي العرض ومحاذي يمين */}
+      <AxNote className="flex-row-reverse rounded-[14px]! px-4 [&>p]:flex-1">{t("note")}</AxNote>
     </div>
   );
 }

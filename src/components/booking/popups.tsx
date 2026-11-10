@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
 import type { CarSize } from "@/lib/data/booking/types";
 import { Icon } from "@/components/icons/Icon";
+import { MenuSelect, type MenuSelectItem } from "@/components/ui/MenuSelect";
 import { Modal, ModalActions, PopupHead, btnDark, btnPrimary, btnSecondary } from "./Modal";
 
 // P-09 · التحقق الآمن من البنك · P-09b · التحقق عبر STC Pay
@@ -45,7 +46,7 @@ export function VerifyPaymentModal({
           </span>
         }
       />
-      <p className="text-body-s text-text-secondary">{bank ? t.bankBody : t.fill(t.stcBody, { phone })}</p>
+      <p className="text-body-s text-text-secondary">{bank ? t.bankBody : t.fill(t.stcBody, { phone: phone.replace(/^0(?=\d)/, "+966 ") })}</p>
       <dl className="flex flex-col gap-2.5 rounded-[14px] bg-tile px-4 py-3.5 text-[14px] leading-[22px]">
         {[
           [t.merchant, t.merchantName],
@@ -108,7 +109,7 @@ export function InstallmentModal({
   const t = getBookingDict(locale);
   const tabby = kind === "tabby";
   return (
-    <Modal open={open} onClose={onClose} width={440} label={tabby ? t.tabbyTitle : t.tamaraTitle}>
+    <Modal open={open} onClose={onClose} width={440} label={tabby ? t.tabbyTitle : t.tamaraTitle} shadow="shadow-popup">
       <PopupHead
         title={tabby ? t.tabbyTitle : t.tamaraTitle}
         closeLabel={t.close}
@@ -251,15 +252,22 @@ export type CarCatalog = {
   colors: { ar: string; en: string }[];
 };
 
-function SelectField({ label, children }: { label: string; children: React.ReactNode }) {
+// حقل P-24 بقائمة W2-DD (بدل <select>): عنوان + زر بشكل الحقل + لوحة بيضاء بعرضه
+function SelectField({ id, label, items, value, onChange }: { id: string; label: string; items: MenuSelectItem[]; value: string; onChange: (v: string) => void }) {
   return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-label-m">{label}</span>
-      <span className="relative">
-        {children}
-        <Icon name="chevron-down" size={16} className="pointer-events-none absolute end-3.5 top-[19px] text-state-gray" />
+    <div className="flex flex-col gap-1.5">
+      <span id={`${id}-label`} className="text-label-m">
+        {label}
       </span>
-    </label>
+      <MenuSelect
+        id={id}
+        items={items}
+        value={value}
+        onChange={onChange}
+        aria-labelledby={`${id}-label`}
+        className="flex h-[54px] w-full items-center rounded-md border border-border-default bg-white ps-3.5 pe-10 text-[16px] font-light outline-none focus-visible:border-deep-charcoal"
+      />
+    </div>
   );
 }
 
@@ -289,9 +297,8 @@ export function AddCarModal({
   const md = m.models[model] ?? m.models[0];
   const L = (o: { ar: string; en: string }) => (locale === "en" ? o.en : o.ar);
   const years = Array.from({ length: 12 }, (_, i) => String(2026 - i));
-  const select = "h-[54px] w-full appearance-none rounded-md border border-border-default bg-white ps-3.5 pe-10 text-[16px] font-light outline-none focus:border-deep-charcoal";
   return (
-    <Modal open={open} onClose={onClose} width={520} label={t.addYourCar} className="sm:p-7!">
+    <Modal open={open} onClose={onClose} width={520} label={t.addYourCar} className="sm:p-7!" shadow="shadow-[0_12px_24px_0_rgb(8_20_28/0.25)]">
       <div className="flex items-center justify-between">
         {accountCreated ? (
           <span className="flex items-center gap-1.5 rounded-md bg-bg-success-subtle px-2.5 py-1 text-label-m text-nature-green">
@@ -307,41 +314,11 @@ export function AddCarModal({
       </div>
       <h2 className="text-h4">{t.addYourCar}</h2>
       <p className="text-body-s text-text-secondary">{t.addCarBody}</p>
-      <div className="grid grid-cols-2 gap-3">
-        <SelectField label={t.make}>
-          <select className={select} value={make} onChange={(e) => (setMake(Number(e.target.value)), setModel(0))}>
-            {catalog.makes.map((v, i) => (
-              <option key={v.key} value={i}>
-                {L(v)}
-              </option>
-            ))}
-          </select>
-        </SelectField>
-        <SelectField label={t.model}>
-          <select className={select} value={model} onChange={(e) => setModel(Number(e.target.value))}>
-            {m.models.map((x, i) => (
-              <option key={x.en} value={i}>
-                {L(x)}
-              </option>
-            ))}
-          </select>
-        </SelectField>
-        <SelectField label={t.year}>
-          <select className={select} value={year} onChange={(e) => setYear(e.target.value)}>
-            {years.map((y) => (
-              <option key={y}>{y}</option>
-            ))}
-          </select>
-        </SelectField>
-        <SelectField label={t.color}>
-          <select className={select} value={color} onChange={(e) => setColor(Number(e.target.value))}>
-            {catalog.colors.map((c, i) => (
-              <option key={c.en} value={i}>
-                {L(c)}
-              </option>
-            ))}
-          </select>
-        </SelectField>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-4">
+        <SelectField id="add-car-make" label={t.make} value={String(make)} onChange={(v) => (setMake(Number(v)), setModel(0))} items={catalog.makes.map((v, i) => ({ value: String(i), label: L(v) }))} />
+        <SelectField id="add-car-model" label={t.model} value={String(model)} onChange={(v) => setModel(Number(v))} items={m.models.map((x, i) => ({ value: String(i), label: L(x) }))} />
+        <SelectField id="add-car-year" label={t.year} value={year} onChange={setYear} items={years.map((y) => ({ value: y, label: y }))} />
+        <SelectField id="add-car-color" label={t.color} value={String(color)} onChange={(v) => setColor(Number(v))} items={catalog.colors.map((c, i) => ({ value: String(i), label: L(c) }))} />
       </div>
       <label className="flex flex-col gap-1.5">
         <span className="text-label-m">{t.plate}</span>

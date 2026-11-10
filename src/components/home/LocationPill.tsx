@@ -17,7 +17,8 @@ export function LocationPill({ near, location, change, className = "" }: { near:
     <div
       className={`flex h-9 max-w-full items-center gap-2 rounded-full bg-tile px-3 md:h-[38px] md:px-3.5 xl:h-12 xl:gap-2.5 xl:border xl:border-cool-gray xl:bg-white xl:px-[18px] ${className}`}
     >
-      <span className="size-2.5 shrink-0 rounded-full border-[3px] border-neon-green bg-nature-green max-xl:hidden" />
+      {/* نقطة 10 خضرا بحد ليموني 3 من برّه (Ellipse 202:7408) — الحد مابياخدش مكان */}
+      <span className="size-2.5 shrink-0 rounded-full bg-nature-green shadow-[0_0_0_3px_var(--color-neon-green)] max-xl:hidden" />
       <Icon name="map-pin" size={16} className="shrink-0 text-nature-green xl:hidden" />
       <span className="truncate text-[13px]/[20px] font-medium text-deep-charcoal xl:text-label-l">
         {near} {label}

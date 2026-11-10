@@ -64,7 +64,8 @@ export function Popup({
 }) {
   return (
     <Dialog open={open} onClose={onClose} label={title} className="max-w-[480px]">
-      <div className="flex flex-col gap-4 rounded-[24px] bg-white px-5 pt-[26px] pb-7 shadow-popup sm:px-7">
+      {/* ظل P-xx: 0 12 24 #142936 18% (shadow-dialog) — shadow-popup 25% للتوست */}
+      <div className="flex flex-col gap-4 rounded-[24px] bg-white px-5 pt-[26px] pb-7 shadow-dialog sm:px-7">
         <div className="flex items-start gap-3">
           <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5">
             {icon && (

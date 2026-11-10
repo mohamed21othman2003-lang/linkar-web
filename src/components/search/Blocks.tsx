@@ -15,7 +15,7 @@ import { DarkResultCard } from "./ResultCard";
 import { ClientLogo } from "@/components/cards/ClientLogo";
 import { logoAreaSize } from "@/lib/data/providers";
 
-// AI pick (تصميم العميل المعدّل · W2-30 / W2-30a): شريط كحلي 165 — صندوق شعار أبيض 200×129 (الشعار أكبر منه وبيتقص)،
+// AI pick (W2-30 202:12801 / W2-30a): شريط كحلي 165، p18 24 18 18 — صندوق شعار أبيض 200×129 والشعار جوّاه على قده (عرض 183)،
 // العنوان + سطر التقييم + الوصف + شيبس، وفي الآخر السعر و«التفاصيل والحجز»
 export function AiPick({
   locale,
@@ -42,18 +42,17 @@ export function AiPick({
 }) {
   const t = getSearchDict(locale);
   const big = logoAreaSize[logoSlug];
+  // الفيجما: الشعار FIT جوّه 183 عرض (جونسون 183×57) — بنصغّر مقاس الصندوق الكبير لحد ما يدخل
+  const fit = big ? Math.min(1, 183 / big[0], 113 / big[1]) : 1;
   return (
-    <div className="flex flex-col gap-4 rounded-[22px] bg-deep-charcoal p-[18px] md:min-h-[165px] md:flex-row md:items-center md:gap-5 md:ps-[18px] md:pe-6">
+    <div className="flex flex-col gap-4 rounded-[22px] bg-deep-charcoal p-[18px] md:min-h-[165px] md:flex-row md:items-center md:gap-5 md:ps-6 md:pe-[18px]">
       <span className="hidden h-[129px] w-[200px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white md:flex">
-        {/* الشعار أعرض من الصندوق (230 جوه 200) وبيتقص زي الفيجما — الغلاف عشان max-width:100% */}
-        <span className="flex shrink-0 justify-center" style={{ width: big?.[0] }}>
-          <ClientLogo slug={logoSlug} src={logo} alt={name} size={big ? [big[0], big[1]] : undefined} />
-        </span>
+        <ClientLogo slug={logoSlug} src={logo} alt={name} size={big ? [big[0] * fit, big[1] * fit] : undefined} />
       </span>
       <div className="flex min-w-0 flex-col items-start gap-1">
         <span className="flex items-center gap-2 text-label-m text-neon-green">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/figma/glyphs/ai.svg" alt="" width={24} height={24} className="size-6" />
+          <img src="/figma/glyphs/ai-wand.svg" alt="" width={24} height={24} className="size-6" />
           {t.aiLabel}
         </span>
         <p className="text-[18px] leading-[28px] font-bold text-white">{title}</p>

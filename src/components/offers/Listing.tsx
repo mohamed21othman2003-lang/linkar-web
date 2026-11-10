@@ -300,12 +300,12 @@ export function Listing({
         </div>
 
         {ordered.length ? (
-          // W2-40: الصف الأول في الفيجما = العرض المميّز (620 وجوّاه الكارت 611 بإزاحة 4.5) + كارت بفاصل 18.9
-          // الـ3 أعمدة الثابتة (313×3 + 18.9×2 = 977) بس لما مساحة النتايج تكفّيها (container query) — أضيق من كده عمودين
-          <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 @min-[977px]:grid-cols-[repeat(3,313px)] @min-[977px]:gap-x-[18.9px]">
-            {ordered.map((i, k) =>
+          // W2-40 (202:15196): الصف الأول = العرض المميّز (646 وجوّاه الكارت 611 عند x 417 = لاصق ناحية النهاية بإزاحة ~4.5) + كارت لمعة عند x 80 بفاصل 18
+          // الـ3 أعمدة الثابتة (313×3 + 18.9×2 = 977؛ من 940 بتصغر لحد 301 عشان شريط التمرير في ويندوز بياكل 15px عند 1440) بس لما مساحة النتايج تكفّيها (container query) — أضيق من كده عمودين
+          <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 @min-[940px]:grid-cols-[repeat(3,minmax(0,313px))] @min-[940px]:gap-x-[18.9px]">
+            {ordered.map((i) =>
               i.featured ? (
-                <div key={i.id} className="flex justify-center sm:col-span-2 sm:max-md:[zoom:0.9] @min-[977px]:relative @min-[977px]:top-1 @min-[977px]:justify-start @min-[977px]:ps-[4.5px]">
+                <div key={i.id} className="flex justify-center sm:col-span-2 sm:max-md:[zoom:0.9] @min-[940px]:relative @min-[940px]:top-1 @min-[940px]:justify-end @min-[940px]:pe-[4.5px]">
                   <OfferFeaturedCard
                     locale={locale}
                     provider={i.provider}
@@ -318,7 +318,7 @@ export function Listing({
                   />
                 </div>
               ) : (
-                <div key={i.id} className={k === 1 && ordered[0].featured ? "@min-[977px]:rtl:translate-x-[25px] @min-[977px]:ltr:-translate-x-[25px]" : undefined}>
+                <div key={i.id}>
                   <Card i={i} locale={locale} onOpen={offers ? undefined : () => router.push(i.detailsHref)} />
                 </div>
               ),

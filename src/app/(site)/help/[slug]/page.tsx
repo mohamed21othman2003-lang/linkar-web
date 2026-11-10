@@ -89,7 +89,7 @@ export default async function HelpArticlePage({ params }: Props) {
               {related.map((r) => (
                 <Link key={r.slug} href={routes.helpArticle(r.slug)} className="flex items-center justify-between gap-1 rounded-md bg-tile px-4 py-3 text-body-m text-deep-charcoal hover:bg-bg-muted">
                   <span>{tx(locale, r, "title")}</span>
-                  <Icon name="chevron-left" size={14} flip className="shrink-0 text-state-gray" />
+                  <Icon name="chevron-left" size={14} flip className="shrink-0 text-deep-charcoal" />
                 </Link>
               ))}
             </aside>

@@ -79,13 +79,14 @@ export function RatingModal({
 
   return (
     <>
-      <Modal open={open} onClose={onClose} width={640} label={t.rateTitle} className="gap-5! sm:p-8!">
-        <div className="flex items-start justify-between gap-3">
+      <Modal open={open} onClose={onClose} width={640} label={t.rateTitle} className="gap-5! sm:p-8!" shadow="shadow-elevation-3">
+        {/* W2-39: زر الإغلاق في نص ارتفاع الرأس (62px)، والشارة نازلة 4px عن نص سطر العنوان */}
+        <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col gap-1">
             {/* نسخة العميل: شارة «+50 نقطة بعد النشر» جنب العنوان */}
             <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
               <h2 className="text-h4">{t.rateTitle}</h2>
-              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-nature-green">{t.fill(t.pointsAfterPublish, { n: points })}</span>
+              <span className="relative top-1 rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-nature-green">{t.fill(t.pointsAfterPublish, { n: points })}</span>
             </div>
             <p className="text-body-s text-text-secondary">{subtitle}</p>
           </div>
@@ -131,7 +132,8 @@ export function RatingModal({
           className="min-h-[83px] resize-none rounded-md border-[1.5px] border-deep-charcoal px-3.5 py-3 text-body-m outline-none"
         />
 
-        <div className="flex flex-wrap items-center gap-2">
+        {/* W2-39: «أضف صوراً» في نص عرض النافذة */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => file.current?.click()}

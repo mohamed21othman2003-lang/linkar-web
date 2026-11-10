@@ -99,7 +99,7 @@ export function PackagesCarousel({
   };
   const chip = (on: boolean) =>
     `inline-flex h-[31px] shrink-0 items-center rounded-full px-3 text-[12px] font-medium transition-colors md:h-control-sm md:px-3.5 md:text-label-m ${
-      on ? "bg-deep-charcoal text-white max-xl:bg-solid-black" : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
+      on ? "bg-deep-charcoal text-white" : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"
     }`;
   const arrow = "flex size-control-md items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong";
 

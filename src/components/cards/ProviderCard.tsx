@@ -22,7 +22,10 @@ export function ProviderCard({
   tagLabel,
   aiLabel = false,
   meta,
+  chipFit = false,
 }: {
+  // شارات الخدمات على قد الكلمة (W2-26 كل مقدّمي الخدمة) بدل العرض الأدنى بتاع الهوم
+  chipFit?: boolean;
   // بديل عدد الفروع في سطر التقييم (اسم الفرع في المفضلة)
   meta?: string;
   locale: Locale;
@@ -66,7 +69,7 @@ export function ProviderCard({
         <RatingMeta locale={locale} rating={provider.rating} distanceKm={provider.distance_km} branches={provider.branches} meta={meta} className="mt-2" />
         <div className="mt-[19px] flex flex-wrap gap-[6.4px]">
           {chips.map((s) => (
-            <DarkChip key={s.slug}>{tx(locale, s, "chip")}</DarkChip>
+            <DarkChip key={s.slug} fit={chipFit}>{tx(locale, s, "chip")}</DarkChip>
           ))}
         </div>
         {showBadges && (

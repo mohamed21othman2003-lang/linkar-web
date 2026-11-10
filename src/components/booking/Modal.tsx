@@ -24,6 +24,7 @@ export function Modal({
   width = 480,
   label,
   className = "",
+  shadow = "shadow-dialog",
 }: {
   open: boolean;
   onClose: () => void;
@@ -31,6 +32,8 @@ export function Modal({
   width?: number;
   label?: string;
   className?: string;
+  /** ظل الكارت: P-09 · P-15 · P-25 = #142936 18% (shadow-dialog)، P-23 · P-26 = 25% (shadow-popup) */
+  shadow?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const mounted = useMounted();
@@ -62,7 +65,7 @@ export function Modal({
             aria-modal="true"
             aria-label={label}
             tabIndex={-1}
-            className={`my-auto flex w-full flex-col gap-4 rounded-2xl bg-white px-5 pt-6 pb-6 shadow-elevation-3 outline-none sm:px-7 sm:pt-[26px] sm:pb-7 ${className}`}
+            className={`my-auto flex w-full flex-col gap-4 rounded-2xl bg-white px-5 pt-6 pb-6 ${shadow} outline-none sm:px-7 sm:pt-[26px] sm:pb-7 ${className}`}
             style={{ maxWidth: width }}
           >
             {children}
@@ -114,7 +117,7 @@ export function Toast({ message, onDone }: { message: string | null; onDone: () 
     <AnimatePresence>
       {message && (
         <motion.div key={message} {...dissolve} role="status" className="fixed inset-x-0 bottom-8 z-[110] flex justify-center px-4">
-          <div className="flex items-center gap-3.5 rounded-[14px] bg-deep-charcoal px-[18px] py-3.5 text-body-s text-white shadow-elevation-3">
+          <div className="flex items-center gap-3.5 rounded-[14px] bg-deep-charcoal px-[18px] py-3.5 text-body-s text-white shadow-popup">
             <Icon name="check" size={16} className="text-neon-green" />
             {message}
           </div>

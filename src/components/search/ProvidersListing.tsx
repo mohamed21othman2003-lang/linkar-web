@@ -55,6 +55,8 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
   const toast = useToast();
   const [service, setService] = useState<ServiceSlug | null>(null);
   const [offers, setOffers] = useState(false);
+  // «متاح اليوم» (W2-26): كل مقدّمي الخدمة في الديمو عندهم مواعيد النهارده، فالفلتر مابيشيلش حد
+  const [today, setToday] = useState(false);
   const [sort, setSort] = useState<SortKey>("nearest");
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState(mapSelected);
@@ -124,6 +126,10 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
             <Icon name="tag" size={16} className={offers ? "text-neon-green" : "text-nature-green"} />
             {t.hasOffers}
           </button>
+          <button type="button" aria-pressed={today} onClick={() => setToday(!today)} className={chip(today)}>
+            <Icon name="clock" size={16} className={today ? "text-neon-green" : "text-nature-green"} />
+            {t.availableToday}
+          </button>
         </div>
       </Container>
 
@@ -132,7 +138,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
           <Container className="py-2">
             <div className="grid gap-x-[25px] gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {visible.map((p) => (
-                <ProviderCard key={p.slug} locale={locale} provider={p} services={services} showBadges showCertified={false} />
+                <ProviderCard key={p.slug} locale={locale} provider={p} services={services} showBadges showCertified={false} chipFit />
               ))}
             </div>
             {visible.length === 0 && <p className="py-10 text-center text-body-m text-state-gray">{t.noMatches}</p>}
@@ -216,7 +222,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
                 {/* W2-26m (المعدّل): الكارت المختار على بعد 307 من فوق الخريطة و20 من طرفها */}
                 {sel && (
                   <div className="pointer-events-auto absolute top-5 hidden w-[301px] sm:block lg:top-[307px]" style={{ right: 20 }}>
-                    <ProviderCard locale={locale} provider={sel} services={services} showBadges showCertified={false} />
+                    <ProviderCard locale={locale} provider={sel} services={services} showBadges showCertified={false} chipFit />
                   </div>
                 )}
               </div>

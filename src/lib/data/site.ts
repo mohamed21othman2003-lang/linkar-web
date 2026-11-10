@@ -209,6 +209,9 @@ export const site = {
   footer: {
     about_ar: "لينكار منصة سعودية تربطك بمقدّمي خدمات العناية بالسيارات المعتمدين: قارن، واحجز، وادفع، واستلم قسيمتك فوراً.",
     about_en: "Linkar is a Saudi platform connecting you with certified car care providers: compare, book, pay and get your voucher instantly.",
+    // نص الفوتر في باقي الصفحات (≈100 فريم) وفي الهوم تابلت/موبايل (V2-01t/V2-01m) — «about» فوق للهوم ديسكتوب بس (V2-01)
+    about_pages_ar: "لينكار منصة سعودية تربطك بمقدّمي خدمات العناية بالسيارات المعتمدين: قارن، احجز، وادفع، وتابع سيارتك حتى الاستلام.",
+    about_pages_en: "Linkar is a Saudi platform connecting you with certified car care providers: compare, book, pay and follow your car until pickup.",
     columns: [
       {
         title_ar: "من نحن",

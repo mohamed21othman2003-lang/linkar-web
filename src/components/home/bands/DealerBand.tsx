@@ -12,7 +12,7 @@ type S = (x: { text_ar: string; text_en: string }) => string;
 type Card = HomeContent["dealerBand"]["front_card"] | HomeContent["dealerBand"]["back_card"];
 
 // Gift card (Status=Ready / محجوزة) — كحلي r24 p20
-function GiftCard({ s, d, card, ready, className, style }: { s: S; d: HomeContent["dealerBand"]; card: Card; ready: boolean; className: string; style?: React.CSSProperties }) {
+function GiftCard({ s, d, card, ready, className, style, whiteTitle }: { s: S; d: HomeContent["dealerBand"]; card: Card; ready: boolean; className: string; style?: React.CSSProperties; whiteTitle?: boolean }) {
   return (
     <div className={`flex w-[360px] flex-col gap-3.5 rounded-2xl bg-deep-charcoal p-5 ${className}`} style={style}>
       <div className="flex flex-col items-start gap-2.5">
@@ -29,7 +29,7 @@ function GiftCard({ s, d, card, ready, className, style }: { s: S; d: HomeConten
           </span>
         </div>
       </div>
-      <p className="min-h-16 text-[22px] leading-[34px] font-bold text-neon-title">{s(card.title)}</p>
+      <p className={`min-h-16 text-[22px] leading-[34px] font-bold ${whiteTitle ? "text-white" : "text-neon-title"}`}>{s(card.title)}</p>
       <p className="min-h-11 text-caption text-cool-gray">{s(card.details)}</p>
       <p className="text-caption text-[#a9b2ae]">{s(card.validity)}</p>
       {"cta" in card && (
@@ -110,17 +110,18 @@ export function DealerBand({ locale, content }: { locale: Locale; content: HomeC
 
           {/* Visual (ديسكتوب) — بطاقتين مايلين + شريحة «تظهر بعد التحقق من رقمك» */}
           <div className="relative hidden h-[440px] w-[500px] shrink-0 xl:block" aria-hidden>
-            <GiftCard s={s} d={d} card={d.back_card} ready={false} className="absolute end-[102px] top-[30px] rotate-7 opacity-95" />
+            <GiftCard s={s} d={d} card={d.back_card} ready={false} className="absolute end-[102px] top-[30px] h-[414px] rotate-7 opacity-95" />
             <GiftCard s={s} d={d} card={d.front_card} ready className="absolute end-[42px] top-[67px] -rotate-4" />
             <span className="absolute end-[98px] top-[452px] flex h-14 rotate-3 items-center gap-2 rounded-full bg-white ps-3.5 pe-4 text-label-m whitespace-nowrap text-deep-charcoal shadow-[0_12px_24px_#0b0d0a33]">
               <FigmaIcon name="brand-phone-outline" size={36} />
               {s(d.lock)}
             </span>
           </div>
-          {/* تابلت/موبايل: بطاقة «محجوزة» بس، مايلة (288×331 · 223×257 = 360×414 × 0.8 · 0.62) */}
-          <div className="flex justify-center max-md:order-1 md:w-[300px] md:shrink-0 xl:hidden" aria-hidden>
+          {/* تابلت/موبايل: بطاقة «محجوزة» بس، مايلة (288×331 · 223×257 = 360×414 × 0.8 · 0.62) وعنوانها أبيض */}
+          {/* إطار البطاقة المايلة يبدأ من أول الـVisual ومركزها مزاح ناحية الشمال: موبايل 12.5/16 (V2-01m) · تابلت 16.5/27 (V2-01t) */}
+          <div className="flex justify-center max-md:order-1 max-md:translate-y-[12.5px] max-md:ps-8 md:w-[300px] md:max-xl:translate-y-[16.5px] md:max-xl:ps-[54px] md:shrink-0 xl:hidden" aria-hidden>
             <div className="w-[360px] rotate-7 [zoom:0.62] md:[zoom:0.8]">
-              <GiftCard s={s} d={d} card={d.back_card} ready={false} className="h-[414px]" />
+              <GiftCard s={s} d={d} card={d.back_card} ready={false} className="h-[414px] opacity-95" whiteTitle />
             </div>
           </div>
         </div>

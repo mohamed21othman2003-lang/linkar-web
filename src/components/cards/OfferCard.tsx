@@ -68,9 +68,10 @@ export function OfferCard({
             </li>
           ))}
         </ul>
-        <div className="mt-[16px] flex items-end justify-between">
+        {/* السعر القديم في نص ارتفاع السعر الكبير (W2-30 Offer card: منتصفهم على نفس الخط) */}
+        <div className="mt-[16px] flex items-center justify-between">
           <span className="text-[32px] leading-[1.4] font-bold text-neon-green">{formatPrice(locale, price)}</span>
-          <span className="pb-2 text-[14px] text-white">
+          <span className="text-[14px] text-white">
             <s>{formatNumber(oldPrice)}</s> {currency(locale)}
           </span>
         </div>

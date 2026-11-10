@@ -12,9 +12,10 @@ export function TagPill({ children, className = "" }: { children: React.ReactNod
 }
 
 // شيبس الخدمات على الكروت الغامقة (v3/chip-dark)
-export function DarkChip({ children }: { children: React.ReactNode }) {
+// fit: عرض الكلمة بس (p0,11 من غير حد أدنى) زي كروت W2-26 / W2-21
+export function DarkChip({ children, fit = false }: { children: React.ReactNode; fit?: boolean }) {
   return (
-    <span className="inline-flex h-[24.5px] min-w-[84.7px] items-center justify-center rounded-full bg-v3-chip-dark px-3 text-body-s leading-none text-v3-text-on-dark">
+    <span className={`inline-flex h-[24.5px] items-center justify-center rounded-full bg-v3-chip-dark text-body-s leading-none text-v3-text-on-dark ${fit ? "px-[11px]" : "min-w-[84.7px] px-3"}`}>
       {children}
     </span>
   );

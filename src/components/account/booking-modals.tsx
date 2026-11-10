@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getAccountDict } from "@/i18n/dict/account";
 import { routes } from "@/lib/routes";
@@ -107,15 +107,16 @@ export function ShareVoucherPopup({
           {p.copy}
         </button>
       </div>
-      <div className="flex flex-wrap gap-3">
-        <button type="button" onClick={copy} className="flex flex-col items-center gap-2 text-caption text-deep-charcoal">
+      {/* Options 424: الأربع دوائر موزّعة على العرض كله (زي P-08b / P-08c) */}
+      <div className="flex items-start justify-between gap-3">
+        <button type="button" onClick={copy} className="flex flex-col items-center gap-2 text-caption whitespace-nowrap text-deep-charcoal">
           <span className="flex rounded-full bg-neon-green/16 p-4">
             <Icon name="copy" size={20} />
           </span>
           {p.copyLink}
         </button>
         {opts.map((o) => (
-          <a key={o.key} href={o.href} target="_blank" rel="noopener noreferrer" onClick={onClose} className="flex flex-col items-center gap-2 text-caption text-deep-charcoal">
+          <a key={o.key} href={o.href} target="_blank" rel="noopener noreferrer" onClick={onClose} className="flex flex-col items-center gap-2 text-caption whitespace-nowrap text-deep-charcoal">
             <span className="flex rounded-full bg-neon-green/16 p-4">
               <Icon name={o.icon} size={20} />
             </span>
@@ -173,11 +174,8 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-col gap-1">
-            {/* W2-39: شارة «+50 نقطة بعد النشر» جنب العنوان */}
-            <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
-              <h2 className="text-h4 text-deep-charcoal">{t.title}</h2>
-              <span className="rounded-full bg-cash-tint px-2.5 py-1 text-[12px] leading-[23px] font-medium text-nature-green">{t.pointsBadge}</span>
-            </div>
+            {/* W2-63 (202:19621): من غير شارة النقاط ولا سطور W2-39 تحت التقييم العام */}
+            <h2 className="text-h4 text-deep-charcoal">{t.title}</h2>
             <p className="text-body-s text-state-gray">{r.meta}</p>
           </div>
           <button type="button" aria-label={d.close} onClick={onClose} className="shrink-0 rounded-md border border-cool-gray p-2.5 text-deep-charcoal hover:border-border-strong">
@@ -194,18 +192,11 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
           </div>
           <Stars value={scores[0]} size={30} onChange={(n) => set(0, n)} label={t.star} />
         </div>
-        {/* W2-39: «اضغط على النجوم…» ثم «قيّم تفاصيل الخدمة» تحت التقييم العام */}
-        <p className="text-[13px] leading-4 font-light text-state-gray">{t.hint}</p>
-        <p className="text-[14px] leading-[27px] font-medium text-deep-charcoal">{t.details}</p>
         {criteria.map((c, i) => (
-          <Fragment key={c}>
-            {/* السؤال الخاص بالخدمة (بعد الأسئلة العامة) ← «سؤال خاص بخدمة التلميع» */}
-            {i === t.criteria.length && <p className="text-[12px] leading-[15px] font-light text-state-gray">{t.serviceQ(r.serviceCategory)}</p>}
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-body-m text-deep-charcoal">{c}</span>
-              <Stars value={scores[i + 1] ?? 0} size={20} onChange={(n) => set(i + 1, n)} label={t.star} />
-            </div>
-          </Fragment>
+          <div key={c} className="flex items-center justify-between gap-3">
+            <span className="text-body-m text-deep-charcoal">{c}</span>
+            <Stars value={scores[i + 1] ?? 0} size={20} onChange={(n) => set(i + 1, n)} label={t.star} />
+          </div>
         ))}
         <textarea
           aria-label={t.commentLabel}
