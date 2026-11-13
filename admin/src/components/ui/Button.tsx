@@ -16,11 +16,12 @@ const VARIANT: Record<ButtonVariant, string> = {
   link: "text-success underline-offset-4 hover:underline",
 };
 
-// L = أزرار النماذج والنوافذ (52 / r12) · M = أزرار الصفحة (44 / r12) · S = أزرار الصفوف (32 / r8)
+// من Figma: L = زر صفحات الدخول (52 / r12 / 16 Medium · 3114:28801) · M = أزرار النوافذ والصفحات (48 / r12 / 14 Medium · 3114:28715)
+// S = أزرار الصفوف والبطاقات (32 / r8 / حشو 6·12 / 12 Medium · 3114:28658)
 const SIZE: Record<ButtonSize, string> = {
-  L: "h-[52px] rounded-12 px-6 text-16 font-bold",
-  M: "h-11 rounded-12 px-4 text-14 font-bold",
-  S: "h-8 rounded-8 px-3 text-13 font-medium",
+  L: "h-[52px] rounded-12 px-6 text-16 font-medium",
+  M: "h-12 rounded-12 px-4 text-14 font-medium",
+  S: "h-8 rounded-8 px-3 text-12 font-medium",
 };
 
 function classes(variant: ButtonVariant, size: ButtonSize, className?: string) {

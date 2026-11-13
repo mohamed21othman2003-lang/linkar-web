@@ -27,11 +27,11 @@ export function AccountView() {
         {me ? (
           <>
             <span className="flex size-16 items-center justify-center rounded-full bg-lime text-24 font-bold text-ink">{me.initial}</span>
-            <h2 className="mt-3 text-18 font-bold">{me.name}</h2>
-            <p className="mt-2 text-13 text-muted">
+            <h2 className="mt-3 text-18 font-bold text-ink">{me.name}</h2>
+            <p className="mt-3 text-13 font-light text-muted">
               {me.role} · {me.scope}
             </p>
-            <dl className="mt-5 flex flex-col gap-3">
+            <dl className="mt-3 flex flex-col gap-3">
               <KV k="البريد" v={<span dir="ltr">{me.email}</span>} />
               <KV k="الجوال" v={<span dir="ltr" className="num">{me.phoneMasked}</span>} />
               <KV k="عضو منذ" v={arDate(me.memberSince)} />
@@ -50,7 +50,7 @@ export function AccountView() {
       <Card title="الأمان">
         <div className="flex flex-col gap-3">
           <Row label="كلمة المرور">
-            {me ? <span className="text-13 text-muted">{me.passwordChangedDaysAgo ? `آخر تغيير قبل ${me.passwordChangedDaysAgo} يوماً` : "تغيّرت اليوم"}</span> : null}
+            {me ? <span className="text-13 font-light text-muted">{me.passwordChangedDaysAgo ? `آخر تغيير قبل ${me.passwordChangedDaysAgo} يوماً` : "تغيّرت اليوم"}</span> : null}
             <Button variant="secondary" size="S" onClick={() => setDialog("password")}>
               تغيير
             </Button>
@@ -69,7 +69,7 @@ export function AccountView() {
         <div className="flex flex-col gap-3">
           {sessions.data
             ? sessions.data.map((s) => (
-                <Row key={s.id} label={<span className="text-13 font-normal text-muted">{s.device} · {s.city}</span>}>
+                <Row key={s.id} label={<span className="text-13 font-light text-muted">{s.device} · {s.city}</span>}>
                   <span className="text-13 font-medium text-ink">{s.current ? "هذا الجهاز" : relative(s.lastSeen)}</span>
                 </Row>
               ))
@@ -109,7 +109,7 @@ const twoOrMore = (n: number) => (n === 1 ? "جلسة واحدة" : n === 2 ? "�
 function KV({ k, v }: { k: string; v: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-3 text-13">
-      <dt className="text-muted">{k}</dt>
+      <dt className="font-light text-muted">{k}</dt>
       <dd className="font-medium text-ink">{v}</dd>
     </div>
   );
@@ -118,8 +118,8 @@ function KV({ k, v }: { k: string; v: ReactNode }) {
 function Row({ label, children }: { label: ReactNode; children: ReactNode }) {
   return (
     <div className="flex min-h-8 items-center justify-between gap-4">
-      <span className="text-14 font-medium text-ink">{label}</span>
-      <span className="flex items-center gap-3">{children}</span>
+      <span className="text-13 font-medium text-ink">{label}</span>
+      <span className="flex items-center gap-2.5">{children}</span>
     </div>
   );
 }
@@ -159,10 +159,10 @@ function ChangePasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       title="تغيير كلمة المرور"
       footer={
         <>
-          <Button size="L" loading={m.isPending} onClick={save}>
+          <Button size="M" loading={m.isPending} onClick={save}>
             حفظ
           </Button>
-          <Button variant="secondary" size="L" onClick={onClose}>
+          <Button variant="secondary" size="M" onClick={onClose}>
             إلغاء
           </Button>
         </>
@@ -214,10 +214,10 @@ function ConfirmModal({
       description={body}
       footer={
         <>
-          <Button variant="danger" size="L" loading={m.isPending} onClick={() => m.mutate()}>
+          <Button variant="danger" size="M" loading={m.isPending} onClick={() => m.mutate()}>
             {confirm}
           </Button>
-          <Button variant="secondary" size="L" onClick={onClose}>
+          <Button variant="secondary" size="M" onClick={onClose}>
             إلغاء
           </Button>
         </>

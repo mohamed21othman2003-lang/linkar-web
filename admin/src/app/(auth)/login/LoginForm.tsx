@@ -37,11 +37,12 @@ export function LoginForm() {
 
   const { errors, isSubmitting } = formState;
   return (
-    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-5">
-      <Field label="البريد المؤسسي" error={errors.email?.message}>
-        {(id) => <TextInput id={id} type="email" autoComplete="username" ltr placeholder="name@linkar.sa" icon={<Icon name="mail" size={18} />} invalid={!!errors.email || !!serverError} {...register("email")} />}
+    <form onSubmit={onSubmit} noValidate className="mt-[18px] flex flex-col gap-[18px]">
+      <Field strong label="البريد المؤسسي" error={errors.email?.message}>
+        {(id) => <TextInput id={id} type="email" size="L" autoComplete="username" ltr placeholder="name@linkar.sa" icon={<Icon name="mail" size={18} />} invalid={!!errors.email || !!serverError} {...register("email")} />}
       </Field>
       <Field
+        strong
         label="كلمة المرور"
         error={errors.password?.message ?? serverError}
         aside={
@@ -50,10 +51,10 @@ export function LoginForm() {
           </button>
         }
       >
-        {(id) => <TextInput id={id} type="password" autoComplete="current-password" placeholder="••••••••" icon={<Icon name="lock" size={18} />} invalid={!!errors.password || !!serverError} {...register("password")} />}
+        {(id) => <TextInput id={id} type="password" size="L" autoComplete="current-password" placeholder="••••••••" icon={<Icon name="lock" size={18} />} invalid={!!errors.password || !!serverError} {...register("password")} />}
       </Field>
       <Checkbox label="تذكّرني على هذا الجهاز" {...register("remember")} />
-      <Button type="submit" size="L" loading={isSubmitting} className="mt-2 w-full">
+      <Button type="submit" size="L" loading={isSubmitting} className="w-full">
         تسجيل الدخول
       </Button>
       <ForgotPasswordModal open={forgot} onOpenChange={setForgot} />

@@ -67,7 +67,7 @@ export function Sidebar() {
                   aria-current={active ? "page" : undefined}
                   className={`flex h-[26px] items-center gap-2 rounded-8 px-3 text-14 ${active ? "bg-lime font-bold text-ink" : "text-white hover:bg-white/8"}`}
                 >
-                  <Icon name={it.icon} size={18} />
+                  <Icon name={it.icon} size={20} />
                   <span className="flex-1">{it.label}</span>
                   {it.badge ? <span className="num rounded-full bg-lime px-2 text-12 font-medium text-ink">{it.badge}</span> : null}
                 </Link>

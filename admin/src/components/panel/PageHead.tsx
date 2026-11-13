@@ -16,7 +16,7 @@ export function PageHead({
 }) {
   return (
     <div className="flex items-end justify-between gap-6">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-0.5">
         {crumbs?.length ? (
           <nav aria-label="مسار الصفحة" className="flex items-center gap-1 text-12 text-muted">
             {crumbs.map((c, i) => (
@@ -34,7 +34,7 @@ export function PageHead({
           </nav>
         ) : null}
         <h1 className="text-24 font-bold text-ink">{title}</h1>
-        {description ? <p className="text-13 text-muted">{description}</p> : null}
+        {description ? <p className="text-13 font-light text-muted">{description}</p> : null}
       </div>
       {actions ? <div className="flex shrink-0 items-center gap-3">{actions}</div> : null}
     </div>
@@ -46,7 +46,7 @@ export function Card({ title, actions, children, className }: { title?: ReactNod
   return (
     <section className={`rounded-16 border border-border bg-white p-5 ${className ?? ""}`}>
       {title || actions ? (
-        <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="mb-3 flex items-center justify-between gap-4">
           {title ? <h2 className="text-18 font-bold text-ink">{title}</h2> : <span />}
           {actions}
         </div>

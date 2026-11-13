@@ -28,7 +28,7 @@ export function Topbar() {
         className="flex h-10 w-[460px] items-center gap-2 rounded-10 border border-border px-3.5"
       >
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث باسم مركز أو رقم طلب أو حجز أو عميل" aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 outline-none placeholder:text-muted" />
-        <Icon name="search" size={18} className="text-muted" />
+        <Icon name="search" size={16} className="text-muted" />
       </form>
 
       <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export function Topbar() {
         footer={
           <>
             <Button
-              size="L"
+              size="M"
               onClick={async () => {
                 await api.auth.logout();
                 router.replace("/login");
@@ -74,7 +74,7 @@ export function Topbar() {
             >
               تسجيل الخروج
             </Button>
-            <Button variant="secondary" size="L" onClick={() => setLogout(false)}>
+            <Button variant="secondary" size="M" onClick={() => setLogout(false)}>
               إلغاء
             </Button>
           </>
@@ -87,7 +87,7 @@ export function Topbar() {
 function IconDot({ label, icon }: { label: string; icon: "bell" | "message" }) {
   return (
     <button type="button" aria-label={label} title={label} className="relative flex size-10 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1">
-      <Icon name={icon} size={20} />
+      <Icon name={icon} size={18} />
       <span className="absolute top-2 left-2.5 size-2 rounded-full border border-white bg-danger" />
     </button>
   );

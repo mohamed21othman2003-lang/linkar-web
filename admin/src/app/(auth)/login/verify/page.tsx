@@ -33,12 +33,13 @@ function VerifyForm() {
   }
 
   return (
-    <form onSubmit={submit} noValidate className="mt-8 flex flex-col gap-5">
-      <Field label={recovery ? "رمز الاسترداد" : "رمز التحقق"} error={error}>
+    <form onSubmit={submit} noValidate className="mt-[18px] flex flex-col gap-[18px]">
+      <Field strong label={recovery ? "رمز الاسترداد" : "رمز التحقق"} error={error}>
         {(id) => (
           <TextInput
             id={id}
             autoFocus
+            size="L"
             inputMode={recovery ? "text" : "numeric"}
             autoComplete="one-time-code"
             ltr
@@ -72,7 +73,7 @@ export default function VerifyPage() {
   return (
     <>
       <h1 className="text-24 font-bold text-ink">رمز التحقق</h1>
-      <p className="mt-2 text-13 text-muted">أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة.</p>
+      <p className="mt-1.5 text-14 font-light text-muted">أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة.</p>
       <Suspense>
         <VerifyForm />
       </Suspense>

@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <h1 className="text-24 font-bold text-ink">تسجيل الدخول</h1>
-      <p className="mt-2 text-13 text-muted">لفريق لينكار فقط · ادخل ببريدك المؤسسي وكلمة المرور.</p>
+      <p className="mt-1.5 text-14 font-light text-muted">لفريق لينكار فقط · ادخل ببريدك المؤسسي وكلمة المرور.</p>
       <LoginForm />
     </>
   );

@@ -1,13 +1,16 @@
 import { forwardRef, useId, type ComponentProps, type ReactNode } from "react";
 
-// حقل نص (القسم 3.5 + 2.7): إطار #D9DEDB · ارتفاع 48 · r10 · خطأ = إطار أحمر ونص تحت الحقل
+// حقل نص (القسم 3.5 + 2.7 · Figma CON5-24M 3114:28715): M = 44 · r10 · حشو 12 · نص 13 Medium
+// L = حقول صفحات الدخول (CON5-L1 3114:28801): 50 · r12 · حشو 14 · نص 14 Light. خطأ = إطار أحمر ونص تحت الحقل
 export const TextInput = forwardRef<
   HTMLInputElement,
-  ComponentProps<"input"> & { icon?: ReactNode; invalid?: boolean; ltr?: boolean }
->(function TextInput({ icon, invalid, ltr, className, ...rest }, ref) {
+  Omit<ComponentProps<"input">, "size"> & { icon?: ReactNode; invalid?: boolean; ltr?: boolean; size?: "M" | "L" }
+>(function TextInput({ icon, invalid, ltr, size = "M", className, ...rest }, ref) {
   return (
     <div
-      className={`flex h-12 items-center gap-2.5 rounded-10 border bg-white px-3.5 focus-within:border-ink focus-within:ring-1 focus-within:ring-ink ${
+      className={`flex items-center gap-2 border bg-white focus-within:border-[1.5px] focus-within:border-ink ${
+        size === "L" ? "h-[50px] rounded-12 px-3.5 [&_input]:text-14 [&_input]:font-light" : "h-11 rounded-10 px-3 [&_input]:text-13 [&_input]:font-medium"
+      } ${
         invalid ? "border-danger" : "border-border"
       } ${className ?? ""}`}
     >
@@ -17,7 +20,7 @@ export const TextInput = forwardRef<
         dir={ltr ? "ltr" : undefined}
         aria-invalid={invalid || undefined}
         {...rest}
-        className={`min-w-0 flex-1 bg-transparent text-14 text-ink outline-none placeholder:text-muted ${ltr ? "text-right" : ""}`}
+        className={`min-w-0 flex-1 bg-transparent text-ink outline-none placeholder:font-light placeholder:text-muted ${ltr ? "text-right" : ""}`}
       />
     </div>
   );
@@ -30,7 +33,10 @@ export function Field({
   aside,
   children,
   className,
+  strong,
 }: {
+  /** عناوين حقول صفحات الدخول 13 Medium كحلي — باقي اللوحة 12 Medium رمادي */
+  strong?: boolean;
   label: string;
   error?: string;
   hint?: string;
@@ -40,9 +46,9 @@ export function Field({
 }) {
   const id = useId();
   return (
-    <div className={`flex flex-col gap-2 ${className ?? ""}`}>
+    <div className={`flex flex-col gap-1.5 ${className ?? ""}`}>
       <div className="flex items-center justify-between gap-2">
-        <label htmlFor={id} className="text-13 font-medium text-ink">
+        <label htmlFor={id} className={strong ? "text-13 font-medium text-ink" : "text-12 font-medium text-muted"}>
           {label}
         </label>
         {aside}

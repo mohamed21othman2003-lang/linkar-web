@@ -16,32 +16,46 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <Image src="/logo-primary.svg" alt="Linkar" width={128} height={20} priority className="mb-10 h-5 w-auto self-start" />
           {children}
         </div>
-        <p className="mt-10 text-12 text-muted">
-          © <span className="num">2026</span> لينكار · لوحة تحكم لينكار
-        </p>
+        {/* زر English ظاهر في التصميم بس مش مربوط — اللوحة عربية بس في المرحلة الأولى (CON5-L1) */}
+        <div className="mt-10 flex w-full max-w-[400px] items-center justify-between">
+          <p className="text-13 font-light text-muted">
+            © <span className="num">2026</span> لينكار · لوحة تحكم لينكار
+          </p>
+          <span aria-disabled className="inline-flex h-[34px] items-center rounded-16 border border-border px-3.5 text-13 font-medium text-ink">
+            English
+          </span>
+        </div>
       </main>
 
       <aside className="relative hidden overflow-hidden bg-ink lg:block">
-        {/* شيفرون لينكار الزخرفي — TODO(Figma): تصدير الشكل الأصلي من الإطار 3114-28801 */}
+        {/* شعار لينكار الزخرفي (Figma 3114:28803 · v2logo__Mark بشفافية 6%) */}
         <svg aria-hidden className="absolute inset-0 h-full w-full" viewBox="0 0 720 900" preserveAspectRatio="xMinYMin slice">
           <defs>
-            <linearGradient id="chev" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stopColor="#1E3F33" />
-              <stop offset="1" stopColor="#1A3433" />
+            <linearGradient id="lm0" x1="-6.1" y1="279" x2="443.9" y2="0" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#ABF907" />
+              <stop offset="1" stopColor="#3BB34B" />
+            </linearGradient>
+            <linearGradient id="lm1" x1="-6.1" y1="279" x2="443.9" y2="558" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#ABF907" />
+              <stop offset="1" stopColor="#3BB34B" />
             </linearGradient>
           </defs>
-          <polygon points="140,361 420,361 150,640 430,900 150,900 0,752 0,497" fill="url(#chev)" opacity="0.9" />
+          <g opacity="0.06" transform="translate(0 360)">
+            <path d="M140.6 1.09375L-4.9299 136.454L149.69 280.364L449.84 1.09375H140.6Z" fill="url(#lm0)" />
+            <path d="M-4.9299 424.285L141.68 560.635H450.92L149.69 280.375L-4.9299 424.285Z" fill="url(#lm1)" />
+            <path d="M149.69 280.379L-4.9299 136.469L-159.55 280.379L-4.9299 424.289L149.69 280.379Z" fill="#ABF907" />
+          </g>
         </svg>
         <div className="relative ms-auto flex w-[620px] max-w-full flex-col items-start pt-[150px] pe-[100px]">
-          <span className="inline-flex h-8 items-center gap-2 rounded-full bg-white/8 px-3 text-13 text-lime">
+          <span className="inline-flex h-8 items-center gap-2 rounded-14 bg-white/8 px-3 text-13 font-medium text-lime">
             <span className="size-1.5 rounded-full bg-lime" />
             لوحة تحكم لينكار
           </span>
-          <h1 className="mt-5 text-[34px] leading-[50px] font-bold text-white">نظّم شبكة مقدّمي الخدمة من مكان واحد</h1>
-          <p className="mt-5 text-13 text-white/70">أدر الطلبات والحجوزات والأسعار ومستحقات المزوّدين، وتابع الجودة والفروع والقنوات.</p>
-          <ul className="mt-6 flex flex-col gap-3">
+          <h1 className="mt-[18px] text-[32px] leading-[48px] font-bold text-white">نظّم شبكة مقدّمي الخدمة من مكان واحد</h1>
+          <p className="mt-[18px] text-14 font-light text-white/72">أدر الطلبات والحجوزات والأسعار ومستحقات المزوّدين، وتابع الجودة والفروع والقنوات.</p>
+          <ul className="mt-7 flex flex-col gap-3">
             {POINTS.map((p) => (
-              <li key={p} className="flex items-center gap-2.5 text-14 text-white">
+              <li key={p} className="flex items-center gap-2.5 text-14 font-medium text-white/90">
                 <span className="flex size-[22px] items-center justify-center rounded-full bg-lime">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                     <path d="M2.5 6.2 4.9 8.5 9.5 3.7" stroke="#152935" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

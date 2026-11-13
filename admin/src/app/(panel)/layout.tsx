@@ -12,7 +12,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
       </Suspense>
       <div className="ms-60 flex min-h-screen flex-col">
         <Topbar />
-        <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-5 px-8 pt-9 pb-12">{children}</main>
+        <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-5 px-8 pt-7 pb-12">{children}</main>
       </div>
     </div>
   );

@@ -36,10 +36,10 @@ export function ForgotPasswordModal({ open, onOpenChange }: { open: boolean; onO
       description="نرسل رابط إعادة التعيين إلى بريدك في لينكار"
       footer={
         <>
-          <Button variant="accent" size="L" loading={busy} onClick={send}>
+          <Button variant="accent" size="M" loading={busy} onClick={send}>
             إرسال الرابط
           </Button>
-          <Button variant="secondary" size="L" onClick={() => onOpenChange(false)}>
+          <Button variant="secondary" size="M" onClick={() => onOpenChange(false)}>
             إلغاء
           </Button>
         </>
