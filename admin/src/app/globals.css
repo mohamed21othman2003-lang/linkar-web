@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   لوحة تحكم لينكار — نظام التصميم (دليل الواجهة الأمامية · القسم 3)
+   التصميم: ملف Jg1QS1kTQMFGU99S6LIu3R · صفحة linkar-control-panel v3
+   أي لون أو مقاس خارج الملف ده يعتبر غلط — ضيفه هنا الأول.
+   ===================================================================== */
+
+@theme static {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --text-*: initial;
+
+  --font-sans: var(--font-noto-kufi), system-ui, sans-serif;
+
+  /* 3.1 الألوان */
+  --color-ink: #152935; /* القائمة الجانبية، الزر الرئيسي، العناوين، الشريحة المختارة */
+  --color-white: #ffffff; /* خلفية الصفحة والبطاقات */
+  --color-muted: #66706b; /* العناوين الصغيرة والنص الثانوي */
+  --color-lime: #abf907; /* التمييز، الحالة النشطة، شارة العدد، الزر المميز */
+  --color-surface-2: #eef1ef; /* سطح رمادي فاتح */
+  --color-surface-1: #f4f6f5; /* أفتح سطح */
+  --color-border: #d9dedb; /* حدود الحقول والجداول والأزرار الثانوية */
+  --color-border-strong: #b8c0bc; /* حدود قوية، العناصر المعطلة */
+  --color-success: #3a6932;
+  --color-success-tint: #eaf7ec;
+  --color-danger: #a13434; /* الحذف والأخطاء */
+  --color-danger-strong: #b42b2b; /* زر الحذف */
+  --color-warning: #9a5b00; /* الحالات المعلقة */
+  --color-warning-tint: #fbf1d6;
+  --color-info: #2b5c8a;
+  --color-info-tint: #e7f0f8;
+  --color-lime-tint: #f7fbe9; /* خلفية التمييز */
+  --color-star: #f5a623; /* نجوم التقييم */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* 3.2 الخط والأحجام (الحجم / ارتفاع السطر) */
+  --text-30: 30px;
+  --text-30--line-height: 46px;
+  --text-24: 24px;
+  --text-24--line-height: 38px;
+  --text-18: 18px;
+  --text-18--line-height: 30px;
+  --text-16: 16px;
+  --text-16--line-height: 26px;
+  --text-14: 14px;
+  --text-14--line-height: 24px;
+  --text-13: 13px;
+  --text-13--line-height: 22px;
+  --text-12: 12px;
+  --text-12--line-height: 20px;
+
+  /* 3.3 الزوايا */
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-14: 14px;
+  --radius-16: 16px;
+  --radius-full: 999px;
+
+  /* 3.3 الظلال */
+  --shadow-card: 0 8px 24px rgba(13, 26, 36, 0.16); /* البطاقات والنوافذ */
+  --shadow-menu: 0 8px 24px rgba(20, 41, 54, 0.14); /* القوائم المنسدلة */
+  --shadow-drawer: -8px 0 32px rgba(13, 26, 36, 0.2); /* الدرج الجانبي */
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+  /* الأرقام إنجليزية بفاصل الآلاف (القسم 2.6) */
+  .num {
+    font-variant-numeric: tabular-nums;
+    unicode-bidi: isolate;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}

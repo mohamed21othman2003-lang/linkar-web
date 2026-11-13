@@ -1,10 +1,11 @@
 # تشغيل موقع لينكار على السيرفر:
 #   docker compose up -d --build     ← بناء وتشغيل
-#   docker compose logs -f web       ← متابعة اللوج
+#   docker compose logs -f web       ← متابعة اللوج (أو admin للوحة التحكم)
 #   docker compose down              ← إيقاف (كاش الصور بيفضل في الـvolume)
 #
 # الإعدادات من ملف .env جنب الملف ده (انسخ .env.example → .env وعدّل).
-# الموقع لسه ببيانات تجريبية جوه الكود (مفيش باك إند ولا قاعدة بيانات)، فهو خدمة واحدة بس.
+# خدمتين: web = موقع العملاء · admin = لوحة تحكم لينكار (admin.linkarksa.com).
+# الاتنين لسه ببيانات تجريبية جوه الكود (مفيش باك إند ولا قاعدة بيانات).
 
 services:
   web:
@@ -22,6 +23,18 @@ services:
     volumes:
       # كاش الصور المحسّنة (AVIF/WebP) يفضل بين عمليات النشر
       - next_image_cache:/app/.next/cache/images
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ./admin
+      args:
+        # رابط الـAPI لما الخادم يجهز (فاضي = بيانات تجريبية)
+        NEXT_PUBLIC_API_URL: ${ADMIN_API_URL:-}
+    image: linkar-admin:latest
+    container_name: linkar-admin
+    ports:
+      - "${BIND_ADDR:-127.0.0.1}:${ADMIN_PORT:-3001}:3000"
     restart: unless-stopped
 
 volumes:

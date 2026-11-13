@@ -1,0 +1,63 @@
+// Generated from Figma (UI icon set 665:3031 and v2 Service icon set 1308:420)
+// by scripts/build-icons.mjs. Do not edit by hand; rerun `node scripts/build-icons.mjs`.
+// The glyphs themselves live in the sprites public/icons/ui.svg and public/icons/service.svg.
+
+export type UiGlyph =
+  | "alert"
+  | "bell"
+  | "calendar"
+  | "camera"
+  | "car"
+  | "card"
+  | "chart"
+  | "check"
+  | "chevron-down"
+  | "chevron-left"
+  | "chevron-right"
+  | "clock"
+  | "copy"
+  | "download"
+  | "edit"
+  | "file"
+  | "filter"
+  | "gift"
+  | "globe"
+  | "grid"
+  | "heart-filled"
+  | "heart"
+  | "home"
+  | "info"
+  | "lock"
+  | "logout"
+  | "mail"
+  | "map-pin"
+  | "menu"
+  | "message"
+  | "navigation"
+  | "package"
+  | "phone"
+  | "plus"
+  | "qr"
+  | "receipt"
+  | "search"
+  | "settings"
+  | "share"
+  | "star-filled"
+  | "star"
+  | "store"
+  | "tag"
+  | "trash"
+  | "user"
+  | "users"
+  | "wallet"
+  | "x";
+
+export type ServiceIcon =
+  | "color-change"
+  | "nano-ceramic"
+  | "polish"
+  | "ppf"
+  | "tint"
+  | "wash";
+
+export const ICON_SPRITE_VERSION = "f0c97a21";

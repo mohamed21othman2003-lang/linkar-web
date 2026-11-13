@@ -17,3 +17,4 @@ docs
 *.tsbuildinfo
 Dockerfile
 docker-compose.yml
+admin
