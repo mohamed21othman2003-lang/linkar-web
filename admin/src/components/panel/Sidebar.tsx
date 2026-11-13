@@ -75,7 +75,7 @@ export function Sidebar() {
       <nav className="flex flex-col">
         {GROUPS.map((g, gi) => (
           <div key={gi} className="flex flex-col">
-            {g.title ? <span className="px-3 pt-0.5 text-12 font-medium text-white/50">{g.title}</span> : null}
+            {g.title ? <span className="px-3 pt-2 text-12 xl:pt-0.5 font-medium text-white/50">{g.title}</span> : null}
             {g.items.map((it) => {
               const active = isActive(it);
               return (
@@ -83,7 +83,7 @@ export function Sidebar() {
                   key={it.label}
                   href={it.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex h-[26px] items-center gap-2.5 rounded-8 px-3 text-14 font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white hover:bg-white/8"}`}
+                  className={`flex h-10 items-center gap-2.5 rounded-8 px-3 text-14 xl:h-[26px] font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white hover:bg-white/8"}`}
                 >
                   <Icon name={it.icon} size={20} />
                   <span className="flex-1">{it.label}</span>

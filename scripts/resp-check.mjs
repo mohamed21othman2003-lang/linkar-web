@@ -153,20 +153,32 @@ for (const w of widths) {
       { name: "locale", value: locale, domain: host, path: "/" },
       ...(s === "admin" ? [{ name: "linkar_admin_session", value: "demo", domain: host, path: "/" }] : s ? [{ name: "linkar_session", value: s, domain: host, path: "/" }] : []),
     ]);
-    await ctx.addInitScript(() => localStorage.setItem("linkar_location_prompt", "dismissed"));
+    await ctx.addInitScript(() => {
+      localStorage.setItem("linkar_location_prompt", "dismissed");
+      // نافذة «قيّم خدمتك» بتفتح لوحدها للعميل المسجّل (W2-39) — نعلّمها إنها اتعرضت عشان ماتتحسبش تداخل
+      for (const id of ["BK-21388", "BK-21280", "BK-21431", "BK-21452"]) localStorage.setItem(`linkar_rate_prompted_${id}`, "1");
+    });
     const page = await ctx.newPage();
     for (const { p } of list) {
       await page.goto(base + p, { waitUntil: "networkidle" }).catch(() => {});
       await page.waitForLoadState("networkidle").catch(() => {});
-      await page.evaluate(async () => {
+      // صفحات بتحوّل لوحدها بعد التحميل (redirect) بتكسر evaluate — نستنى ونجرّب تاني بدل ما الفحص كله يقع
+      const scroll = () => page.evaluate(async () => {
         for (let y = 0; y < document.body.scrollHeight; y += 700) {
           window.scrollTo({ top: y, behavior: "instant" });
           await new Promise((r) => setTimeout(r, 60));
         }
         window.scrollTo({ top: 0, behavior: "instant" });
       });
+      await scroll().catch(async () => {
+        await page.waitForLoadState("networkidle").catch(() => {});
+        await scroll().catch(() => {});
+      });
       await page.waitForTimeout(250);
-      const r = await page.evaluate(detect);
+      const r = await page.evaluate(detect).catch(async () => {
+        await page.waitForLoadState("networkidle").catch(() => {});
+        return page.evaluate(detect).catch(() => ({ overflow: 0, offscreen: [], overlap: [], clipped: [] }));
+      });
       if (process.env.RESP_DEBUG) console.log(p, w, JSON.stringify(r).slice(0, 200));
       const key = `${p}${s ? " [user]" : ""}`;
       const n = (r.overflow ? 1 : 0) + r.offscreen.length + r.overlap.length + r.clipped.length;

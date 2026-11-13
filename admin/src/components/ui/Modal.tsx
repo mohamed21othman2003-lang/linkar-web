@@ -54,7 +54,7 @@ export function Modal({
           </div>
           {description ? <Dialog.Description className="text-13 font-light text-muted">{description}</Dialog.Description> : <Dialog.Description className="sr-only">{title}</Dialog.Description>}
           {children}
-          {footer ? <div className="flex gap-2.5 [&>*]:flex-1">{footer}</div> : null}
+          {footer ? <div className="flex flex-wrap gap-2.5 [&>*]:min-w-[120px] [&>*]:flex-1">{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

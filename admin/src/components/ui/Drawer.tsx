@@ -40,7 +40,7 @@ export function Drawer({
             </Dialog.Close>
           </div>
           <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto px-5 pt-1 pb-6 sm:px-7">{children}</div>
-          {footer ? <div className="flex gap-2.5 border-t border-border px-5 pt-4 pb-5 sm:px-7 sm:pb-7 [&>*]:flex-1">{footer}</div> : null}
+          {footer ? <div className="flex flex-wrap gap-2.5 border-t border-border [&>*]:min-w-[120px] px-5 pt-4 pb-5 sm:px-7 sm:pb-7 [&>*]:flex-1">{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
