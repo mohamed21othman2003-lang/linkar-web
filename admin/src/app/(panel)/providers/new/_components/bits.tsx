@@ -25,9 +25,9 @@ export function Stepper({ step }: { step: 1 | 2 | 3 }) {
         const state = n === step ? "current" : n < step ? "done" : "next";
         return (
           <li key={label} className={`flex items-center gap-2 ${i < 2 ? "flex-1" : ""}`} aria-current={state === "current" ? "step" : undefined}>
-            <span className={`text-13 leading-5 whitespace-nowrap ${state === "current" ? "font-bold text-ink" : state === "done" ? "font-medium text-ink" : "font-medium text-muted"}`}>{label}</span>
+            <span className={`text-13 leading-5 whitespace-nowrap ${state === "current" ? "" : "max-sm:hidden"} ${state === "current" ? "font-bold text-ink" : state === "done" ? "font-medium text-ink" : "font-medium text-muted"}`}>{label}</span>
             <span className={`num flex size-7 shrink-0 items-center justify-center rounded-full text-13 font-bold ${state === "current" ? "bg-ink text-white" : state === "done" ? "bg-lime text-ink" : "bg-surface-2 text-muted"}`}>{state === "done" ? <Icon name="check" size={14} /> : n}</span>
-            {i < 2 ? <span aria-hidden className={`h-0.5 flex-1 ${state === "done" ? "bg-lime" : "bg-[#e3e7e5]"}`} /> : null}
+            {i < 2 ? <span aria-hidden className={`h-0.5 min-w-3 flex-1 ${state === "done" ? "bg-lime" : "bg-[#e3e7e5]"}`} /> : null}
           </li>
         );
       })}

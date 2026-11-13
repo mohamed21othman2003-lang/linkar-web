@@ -136,33 +136,96 @@ export function DataTable<T extends RowData>({
     ));
   };
 
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full table-fixed border-separate border-spacing-0" style={{ minWidth }}>
-        <colgroup>
-          {columns.map((c, i) => (
-            <col key={c.id} style={c.width ? { width: c.width + (i === 0 || i === columns.length - 1 ? edge + gap / 2 : gap) } : undefined} />
-          ))}
-        </colgroup>
-        <thead>
-          {table.getHeaderGroups().map((g) => (
-            <tr key={g.id}>
-              {g.headers.map((h, i) => (
-                <th
-                  key={h.id}
-                  scope="col"
-                  style={pad(i, columns.length)}
-                  className={`bg-surface-1 py-[9px] text-12 font-medium whitespace-nowrap text-muted ${headRadius === 10 ? "first:rounded-s-10 last:rounded-e-10" : "first:rounded-s-8 last:rounded-e-8"} ${ALIGN[h.column.columnDef.meta?.align ?? "start"]}`}
-                >
-                  <table.FlexRender header={h} />
-                </th>
+  // أقل من md: كل صف كارت (العمود الأول عنوان، والباقي «العنوان: القيمة»، والإجراءات تحت) بدل جدول بتمرير جانبي
+  const stateNode = () => {
+    if (error)
+      return <EmptyState title="تعذّر تحميل البيانات" body="حدث خطأ أثناء التحميل. حاول مرة أخرى." action={onRetry ? <Button variant="secondary" size="S" onClick={onRetry}>إعادة المحاولة</Button> : null} />;
+    if (!rows.length)
+      return filtered ? (
+        <EmptyState title="لا توجد نتائج" body="جرّب كلمة بحث أخرى أو غيّر الفلاتر." action={onClearFilters ? <Button variant="secondary" size="S" onClick={onClearFilters}>مسح الفلاتر</Button> : null} />
+      ) : (
+        <EmptyState title={empty?.title ?? "لا توجد بيانات بعد"} body={empty?.body} action={empty?.action} />
+      );
+    return null;
+  };
+  const cards = () => {
+    if (loading) return Array.from({ length: Math.min(skeletonRows, 4) }, (_, r) => <Skeleton key={r} className="h-28 w-full rounded-12" />);
+    const st = stateNode();
+    if (st) return st;
+    return table.getRowModel().rows.map((row) => {
+      const cells = row.getAllCells();
+      const [first, ...rest] = cells;
+      const actions = rest.filter((c) => c.column.columnDef.meta?.actions);
+      const fields = rest.filter((c) => !c.column.columnDef.meta?.actions);
+      return (
+        <div
+          key={row.id}
+          onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+          onKeyDown={onRowClick ? (e) => e.key === "Enter" && e.target === e.currentTarget && onRowClick(row.original) : undefined}
+          tabIndex={onRowClick ? 0 : undefined}
+          aria-label={rowLabel?.(row.original)}
+          className={`flex flex-col gap-2.5 rounded-12 border border-border bg-white p-3.5 ${onRowClick ? "cursor-pointer focus-visible:bg-surface-1" : ""}`}
+        >
+          <div className="text-13 text-ink">
+            <table.FlexRender cell={first} />
+          </div>
+          {fields.length ? (
+            <dl className="flex flex-col gap-1.5 border-t border-divider pt-2.5">
+              {fields.map((c) => {
+                const col = columns.find((x) => x.id === c.column.id);
+                return (
+                  <div key={c.id} className="flex items-start justify-between gap-3 text-13">
+                    <dt className="shrink-0 font-light text-muted">{col?.header}</dt>
+                    <dd className="min-w-0 text-end font-light text-ink">
+                      <table.FlexRender cell={c} />
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
+          ) : null}
+          {actions.length ? (
+            <div className="flex flex-wrap items-center justify-end gap-1.5 border-t border-divider pt-2.5" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+              {actions.map((c) => (
+                <table.FlexRender key={c.id} cell={c} />
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>{body()}</tbody>
-      </table>
-    </div>
+            </div>
+          ) : null}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <>
+      <div className="flex flex-col gap-2.5 md:hidden">{cards()}</div>
+      <div className="hidden overflow-x-auto md:block">
+        <table className="w-full table-fixed border-separate border-spacing-0" style={{ minWidth }}>
+          <colgroup>
+            {columns.map((c, i) => (
+              <col key={c.id} style={c.width ? { width: c.width + (i === 0 || i === columns.length - 1 ? edge + gap / 2 : gap) } : undefined} />
+            ))}
+          </colgroup>
+          <thead>
+            {table.getHeaderGroups().map((g) => (
+              <tr key={g.id}>
+                {g.headers.map((h, i) => (
+                  <th
+                    key={h.id}
+                    scope="col"
+                    style={pad(i, columns.length)}
+                    className={`bg-surface-1 py-[9px] text-12 font-medium whitespace-nowrap text-muted ${headRadius === 10 ? "first:rounded-s-10 last:rounded-e-10" : "first:rounded-s-8 last:rounded-e-8"} ${ALIGN[h.column.columnDef.meta?.align ?? "start"]}`}
+                  >
+                    <table.FlexRender header={h} />
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>{body()}</tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

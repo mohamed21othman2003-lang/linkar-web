@@ -21,9 +21,9 @@ export function AccountView() {
   const [dialog, setDialog] = useState<Dialog>(null);
 
   return (
-    <div className="grid grid-cols-[360px_1fr] gap-4">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_1fr]">
       {/* بطاقة الملف */}
-      <section className="row-span-2 self-start rounded-16 border border-border bg-white p-5">
+      <section className="self-start lg:row-span-2 rounded-16 border border-border bg-white p-5">
         {me ? (
           <>
             <span className="flex size-16 items-center justify-center rounded-full bg-lime text-24 font-bold text-ink">{me.initial}</span>

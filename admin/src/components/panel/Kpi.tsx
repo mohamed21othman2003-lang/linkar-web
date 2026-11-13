@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/Spinner";
 // صف بطاقات الأرقام (القسم 3.5 «KPIs» · Figma CON5-07 3114:48542): بطاقات بيضا r16 · حشو 16 · مسافة 6 · بينها 12
 // الرأس: العنوان 14 Medium ثم مربع أيقونة 32 على #EEF1EF r8 (أيقونة 16) على شماله · الرقم 30 Bold
 export function KpiRow({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={`grid auto-cols-fr grid-flow-col gap-3 ${className ?? ""}`}>{children}</div>;
+  return <div className={`grid grid-cols-2 gap-3 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none ${className ?? ""}`}>{children}</div>;
 }
 
 export function KpiCard({ label, icon, value, hint, loading }: { label: string; icon: UiGlyph; value: ReactNode; hint?: ReactNode; loading?: boolean }) {

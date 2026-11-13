@@ -305,7 +305,7 @@ function CompanyStep() {
       </WCard>
 
       <WCard title="العلامة التجارية والمنشأة">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {text("brand", "العلامة التجارية (تظهر للعملاء)", { placeholder: "مركز الواحة للعناية" })}
           {text("brandEn", "العلامة بالإنجليزية", { ltr: true, placeholder: "Al Waha Car Care" })}
           {text("legalName", "الاسم القانوني كما في السجل")}
@@ -313,12 +313,12 @@ function CompanyStep() {
             {(id) => <Controller control={control} name="city" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={CITY_OPTS} className={W_SELECT} />} />}
           </Field>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {digitsField("cr", "السجل التجاري", 10)}
           {digitsField("vat", "الرقم الضريبي", 15)}
           {digitsField("unified", "الرقم الوطني الموحد", 10)}
         </div>
-        <div className="grid grid-cols-2 items-start gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-start gap-3">
           <Field label="كود مقدّم الخدمة" error={err("code")}>
             {(id) => (
               <TextInput
@@ -342,7 +342,7 @@ function CompanyStep() {
       </WCard>
 
       <WCard title="المالك والتواصل">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {text("ownerName", "اسم المالك")}
           <Field label="جوال المالك" error={err("ownerPhone")}>
             {(id) => <TextInput id={id} {...register("ownerPhone", { onBlur: (ev) => setValue("ownerPhone", fmtPhone(ev.target.value)) })} ltr inputMode="tel" placeholder="05X XXX XXXX" invalid={!!e.ownerPhone} className={`num ${W_INPUT}`} />}
@@ -367,7 +367,7 @@ function CompanyStep() {
                 </Button>
               </div>
             ) : null}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="البنك" error={e.accounts?.[i]?.bank?.message}>
                 {(id) => <Controller control={control} name={`accounts.${i}.bank`} render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={BANK_OPTS} className={W_SELECT} />} />}
               </Field>

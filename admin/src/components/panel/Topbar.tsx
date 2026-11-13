@@ -2,7 +2,7 @@
 
 import * as Menu from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
@@ -16,18 +16,37 @@ export function Topbar() {
   const { data: me } = useMe();
   const [q, setQ] = useState("");
   const [logout, setLogout] = useState(false);
+  // نص البحث الكامل مابيكفّيش الموبايل — «ابحث» بس تحت 1024
+  const wide = useSyncExternalStore(
+    (cb) => {
+      const m = window.matchMedia("(min-width: 1024px)");
+      m.addEventListener("change", cb);
+      return () => m.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(min-width: 1024px)").matches,
+    () => true,
+  );
 
   return (
-    <header className="sticky top-0 z-20 flex h-[72px] items-center justify-between gap-6 border-b border-border bg-white px-8">
+    <header className="sticky top-0 z-20 flex h-[72px] items-center justify-between gap-3 border-b border-border bg-white px-4 sm:gap-6 md:px-6 xl:px-8">
+      <button
+        type="button"
+        aria-label="القائمة"
+        aria-controls="panel-sidebar"
+        onClick={() => window.dispatchEvent(new Event("panel:menu"))}
+        className="flex size-10 shrink-0 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1 xl:hidden"
+      >
+        <Icon name="menu" size={20} />
+      </button>
       <form
         role="search"
         onSubmit={(e) => {
           e.preventDefault();
           router.push(`/providers${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
         }}
-        className="flex h-10 w-[460px] items-center gap-2 rounded-10 border border-border px-3.5"
+        className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-10 border border-border px-3.5 xl:max-w-[460px] xl:flex-none xl:basis-[460px]"
       >
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث باسم مركز أو رقم طلب أو حجز أو عميل" aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 outline-none placeholder:text-muted" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={wide ? "ابحث باسم مركز أو رقم طلب أو حجز أو عميل" : "ابحث"} aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 outline-none placeholder:text-muted" />
         <Icon name="search" size={16} className="text-muted" />
       </form>
 
@@ -35,9 +54,9 @@ export function Topbar() {
         <IconDot label="الرسائل" icon="message" />
         <IconDot label="الإشعارات" icon="bell" />
         <Menu.Root dir="rtl">
-          <Menu.Trigger className="ms-2 flex items-center gap-2.5 rounded-10 px-1 py-1 hover:bg-surface-1" aria-label="قائمة المستخدم">
+          <Menu.Trigger className="flex items-center gap-2.5 rounded-10 px-1 py-1 hover:bg-surface-1 sm:ms-2" aria-label="قائمة المستخدم">
             <span className="flex size-9 items-center justify-center rounded-full bg-lime text-16 font-bold text-ink">{me?.initial ?? ""}</span>
-            <span className="flex flex-col items-start">
+            <span className="hidden flex-col items-start md:flex">
               <span className="text-14 font-bold leading-5">{me?.name ?? "…"}</span>
               <span className="text-12 text-muted">{me?.role}</span>
             </span>

@@ -34,7 +34,17 @@ const user = [
   "/account/complaints", "/account/complaints/new", "/account/reviews", "/account/settings", "/account/notifications",
   "/booking/branch", "/booking/details", "/booking/payment", "/booking/confirmed",
 ];
-const pages = [...guest.map((p) => ({ p, s: "" })), ...user.map((p) => ({ p, s: "user" }))].filter(({ p }) => !only || p.startsWith(only));
+// --admin: صفحات لوحة التحكم (admin/ على 3200) بجلسة تجريبية
+const admin = [
+  "/login", "/reset-password?token=x", "/account", "/coming-soon?s=home",
+  "/settings/users", "/settings/users?user=u-2", "/settings/roles", "/settings/roles/operations", "/settings/audit-log",
+  "/providers", "/providers?provider=johnson", "/providers/new?step=1", "/providers/new?step=2", "/providers/new?step=3",
+];
+const isAdmin = args.includes("--admin");
+const pages = (isAdmin
+  ? admin.map((p) => ({ p, s: p.startsWith("/login") || p.startsWith("/reset") ? "" : "admin" }))
+  : [...guest.map((p) => ({ p, s: "" })), ...user.map((p) => ({ p, s: "user" }))]
+).filter(({ p }) => !only || p.startsWith(only));
 
 const detect = () => {
   const vw = window.innerWidth;
@@ -141,12 +151,13 @@ for (const w of widths) {
     const host = new URL(base).hostname;
     await ctx.addCookies([
       { name: "locale", value: locale, domain: host, path: "/" },
-      ...(s ? [{ name: "linkar_session", value: s, domain: host, path: "/" }] : []),
+      ...(s === "admin" ? [{ name: "linkar_admin_session", value: "demo", domain: host, path: "/" }] : s ? [{ name: "linkar_session", value: s, domain: host, path: "/" }] : []),
     ]);
     await ctx.addInitScript(() => localStorage.setItem("linkar_location_prompt", "dismissed"));
     const page = await ctx.newPage();
     for (const { p } of list) {
       await page.goto(base + p, { waitUntil: "networkidle" }).catch(() => {});
+      await page.waitForLoadState("networkidle").catch(() => {});
       await page.evaluate(async () => {
         for (let y = 0; y < document.body.scrollHeight; y += 700) {
           window.scrollTo({ top: y, behavior: "instant" });

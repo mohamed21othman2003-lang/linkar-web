@@ -3,16 +3,16 @@ import { Sidebar } from "@/components/panel/Sidebar";
 import { Topbar } from "@/components/panel/Topbar";
 
 // هيكل اللوحة (القسم 4): القائمة الجانبية 240 يمين + عمود المحتوى 1200 (الشريط العلوي + المحتوى بحشو 32).
-// اللوحة لسطح المكتب: قابلة للاستخدام من 1280 وأكبر، والجداول العريضة بتمرير أفقي داخلي (القسم 3.4).
+// التصميم لسطح المكتب 1440 (القسم 3.4)؛ تحت 1280 القائمة الجانبية بتبقى درج، والمحتوى بيترص، والجداول العريضة بتمرير أفقي داخلي.
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen min-w-[1280px] bg-surface-1">
+    <div className="min-h-screen bg-surface-1">
       <Suspense>
         <Sidebar />
       </Suspense>
-      <div className="ms-60 flex min-h-screen flex-col">
+      <div className="flex min-h-screen min-w-0 flex-col xl:ms-60">
         <Topbar />
-        <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-5 px-8 pt-7 pb-12">{children}</main>
+        <main className="mx-auto flex w-full max-w-[1200px] flex-1 min-w-0 flex-col gap-5 px-4 pt-5 pb-12 md:px-6 md:pt-7 xl:px-8">{children}</main>
       </div>
     </div>
   );

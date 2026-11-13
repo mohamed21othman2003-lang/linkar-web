@@ -148,7 +148,7 @@ function PauseModal({ p, close }: P) {
         <Field label="السبب" error={e.reason?.message}>
           {(id) => <Controller control={f.control} name="reason" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={PAUSE_REASONS} className={M_SELECT} invalid={!!e.reason} />} />}
         </Field>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <Field label="من" error={e.from?.message}>
             {(id) => <Controller control={f.control} name="from" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} todayLabel min={today} />} />}
           </Field>
@@ -367,7 +367,7 @@ function EditModal({ p, close }: P) {
       subtitle={`${sub(p)} · تعديل لينكار المباشر يُسجّل في السجل ويُبلَّغ المزوّد`}
     >
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3.5" noValidate>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-3.5">
           {field("brand", "الاسم التجاري")}
           {field("legalName", "الاسم القانوني")}
           {field("cr", "السجل التجاري", true)}
@@ -429,7 +429,7 @@ function AddBranchModal({ p, close }: P) {
       }
     >
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
-        <div className="grid grid-cols-2 gap-x-2.5 gap-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2.5 gap-y-3">
           <Field label="اسم الفرع" error={e.name?.message}>
             {(id) => <TextInput id={id} {...f.register("name")} placeholder="اسم الفرع على لينكار" invalid={!!e.name} className={M_INPUT} />}
           </Field>
@@ -473,7 +473,7 @@ function AddBranchModal({ p, close }: P) {
             </fieldset>
           )}
         />
-        <div className="grid grid-cols-2 gap-x-2.5 gap-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2.5 gap-y-3">
           <Field label="زيارة ميدانية" error={e.visit?.message}>
             {(id) => <Controller control={f.control} name="visit" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} withTime min={today} invalid={!!e.visit} />} />}
           </Field>

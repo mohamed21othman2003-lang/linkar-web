@@ -15,7 +15,7 @@ export function PageHead({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex items-end justify-between gap-6">
+    <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
       <div className="flex flex-col gap-0.5">
         {crumbs?.length ? (
           <nav aria-label="مسار الصفحة" className="flex items-center gap-1 text-12 text-muted">
@@ -36,7 +36,7 @@ export function PageHead({
         <h1 className="text-24 font-bold text-ink">{title}</h1>
         {description ? <p className="text-13 font-light text-muted">{description}</p> : null}
       </div>
-      {actions ? <div className="flex shrink-0 items-center gap-2.5">{actions}</div> : null}
+      {actions ? <div className="flex max-w-full flex-wrap items-center gap-2.5">{actions}</div> : null}
     </div>
   );
 }

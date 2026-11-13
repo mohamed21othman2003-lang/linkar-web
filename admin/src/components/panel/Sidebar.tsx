@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Icon, type UiGlyph } from "@/components/ui/Icon";
 
 // القائمة الجانبية (القسم 4.1): 240px يمين الشاشة، كحلي. في المرحلة الأولى شغّالين بس:
@@ -46,10 +47,27 @@ const GROUPS: { title?: string; items: Item[] }[] = [
 export function Sidebar() {
   const path = usePathname();
   const section = useSearchParams().get("s");
+  // أقل من 1280: القائمة مخفية وبتتفتح كدرج من زر القائمة في الشريط العلوي (حدث panel:menu)
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const toggle = () => setOpen((o) => !o);
+    window.addEventListener("panel:menu", toggle);
+    return () => window.removeEventListener("panel:menu", toggle);
+  }, []);
+  const [prevPath, setPrevPath] = useState(path);
+  if (prevPath !== path) {
+    setPrevPath(path);
+    setOpen(false);
+  }
   const isActive = (it: Item) => (it.match ? path.startsWith(it.match) || (it.match === "/providers" && path.startsWith("/branches")) : path === "/coming-soon" && it.href.endsWith(`s=${section}`));
 
   return (
-    <aside className="fixed inset-y-0 right-0 z-30 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-3.5 pb-6 text-white">
+    <>
+    {open ? <button type="button" aria-label="إغلاق القائمة" onClick={() => setOpen(false)} className="fixed inset-0 z-30 bg-ink/45 xl:hidden" /> : null}
+    <aside
+      id="panel-sidebar"
+      className={`fixed inset-y-0 right-0 z-40 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-3.5 pb-6 text-white transition-transform xl:z-30 xl:translate-x-0 ${open ? "translate-x-0 shadow-drawer" : "translate-x-full"}`}
+    >
       <Link href="/providers" className="flex flex-col items-start gap-1 px-3 pb-3">
         <Image src="/logo-inverse.svg" alt="Linkar" width={112} height={17} className="h-[17px] w-auto" priority />
         <span className="text-16 font-medium">لوحة تحكم لينكار</span>
@@ -77,5 +95,6 @@ export function Sidebar() {
         ))}
       </nav>
     </aside>
+    </>
   );
 }

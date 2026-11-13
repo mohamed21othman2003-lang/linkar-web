@@ -181,7 +181,7 @@ function InviteModal({ roles, onClose }: { roles: Role[]; onClose: () => void })
   return (
     <Modal open onOpenChange={(o) => !o && tryClose()} title="دعوة مستخدم" width={560}>
       <form onSubmit={form.handleSubmit((v) => m.mutate(v))} noValidate className="flex flex-col gap-3.5">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="الاسم" error={errors.name?.message}>
             {(id) => <TextInput id={id} placeholder="مازن الشهري" invalid={!!errors.name} {...form.register("name")} />}
           </Field>
@@ -247,7 +247,7 @@ function EditModal({ user, roles, onClose }: { user: PanelUser; roles: Role[]; o
   return (
     <Modal open onOpenChange={(o) => !o && tryClose()} title={`تعديل ${user.name}`} width={500}>
       <form onSubmit={form.handleSubmit((v) => m.mutate(v))} noValidate className="flex flex-col gap-3.5">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="الاسم" error={errors.name?.message}>
             {(id) => <TextInput id={id} invalid={!!errors.name} {...form.register("name")} />}
           </Field>

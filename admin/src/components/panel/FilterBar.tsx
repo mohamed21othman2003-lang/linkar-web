@@ -31,7 +31,7 @@ export function SearchInput({
   iconEnd?: boolean;
 }) {
   return (
-    <label className={`flex h-10 items-center gap-2 rounded-10 border border-border bg-white px-3 focus-within:border-ink ${className ?? "w-[280px]"}`}>
+    <label className={`flex h-10 items-center gap-2 rounded-10 border border-border bg-white px-3 focus-within:border-ink ${className ?? "w-full sm:w-[280px]"}`}>
       {iconEnd ? null : <Icon name="search" size={16} className="shrink-0 text-muted" />}
       <input
         type="search"

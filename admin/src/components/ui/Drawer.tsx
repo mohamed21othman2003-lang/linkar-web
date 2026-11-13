@@ -30,7 +30,7 @@ export function Drawer({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/45" />
         <Dialog.Content dir="rtl" style={{ width }} onOpenAutoFocus={keepFocusQuiet} className="fixed inset-y-0 right-0 z-50 flex max-w-full flex-col bg-white shadow-drawer focus:outline-none">
-          <div className="flex items-center justify-between gap-2.5 px-7 pt-7 pb-3.5">
+          <div className="flex items-center justify-between gap-2.5 px-5 pt-5 pb-3.5 sm:px-7 sm:pt-7">
             <div className="flex min-w-0 flex-col gap-0.5">
               <Dialog.Title className="text-18 font-bold text-ink">{title}</Dialog.Title>
               {subtitle ? <Dialog.Description className="text-13 font-light text-muted">{subtitle}</Dialog.Description> : <Dialog.Description className="sr-only">{title}</Dialog.Description>}
@@ -39,8 +39,8 @@ export function Drawer({
               <Icon name="x" size={18} />
             </Dialog.Close>
           </div>
-          <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto px-7 pt-1 pb-6">{children}</div>
-          {footer ? <div className="flex gap-2.5 border-t border-border px-7 pt-4 pb-7 [&>*]:flex-1">{footer}</div> : null}
+          <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto px-5 pt-1 pb-6 sm:px-7">{children}</div>
+          {footer ? <div className="flex gap-2.5 border-t border-border px-5 pt-4 pb-5 sm:px-7 sm:pb-7 [&>*]:flex-1">{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

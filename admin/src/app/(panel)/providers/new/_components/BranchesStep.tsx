@@ -179,7 +179,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
       </h2>
 
       <SubTitle>هوية الفرع</SubTitle>
-      <div role="radiogroup" aria-label="هوية الفرع" className="grid grid-cols-2 gap-3">
+      <div role="radiogroup" aria-label="هوية الفرع" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <RadioCard checked={b.identity === "brand-district"} onSelect={() => setValue(`${p}.identity`, "brand-district", { shouldDirty: true })}>
           اسم المنشأة + الحي
         </RadioCard>
@@ -188,7 +188,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
         </RadioCard>
       </div>
       {b.identity === "custom" ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {input("customName", "اسم الفرع", { placeholder: "مثل فرع يعمل بعلامة أخرى" })}
           <p className="self-end pb-3 text-12 font-light text-muted">
             يظهر للعميل «{b.customName.trim() || `${shortBrand(brand)} · ${b.district || "الحي"}`}»
@@ -199,7 +199,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
           يظهر للعميل «{shortBrand(brand)} · {b.district}»
         </p>
       ) : null}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label="كود الفرع" error={e?.code?.message}>
           {(id) => (
             <TextInput
@@ -227,7 +227,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
       </label>
 
       <SubTitle>الموقع</SubTitle>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label="المدينة" error={e?.city?.message}>
           {(id) => (
             <Controller
@@ -266,7 +266,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
       </div>
 
       <SubTitle>التواصل</SubTitle>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {input("manager", "مدير الفرع")}
         {input("managerPhone", "جوال المدير", { ltr: true, tel: true, placeholder: "05X XXX XXXX" })}
         {input("phone", "الجوال", { ltr: true, tel: true, placeholder: "05X XXX XXXX" })}
@@ -275,14 +275,14 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
       </div>
 
       <SubTitle>التشغيل</SubTitle>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Field label="ساعات العمل" error={e?.hours?.message}>
           {(id) => <Controller control={control} name={`${p}.hours`} render={({ field }) => <Select id={id} value={field.value || undefined} onChange={field.onChange} options={HOUR_OPTS} icon="clock" invalid={!!e?.hours} className={W_SELECT} />} />}
         </Field>
         {input("slots", "فتحات العمل", { ltr: true, num: true })}
         {input("technicians", "عدد الفنيين", { ltr: true, num: true })}
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label="قدرة الاستيعاب (تُحسب تلقائياً)">{(id) => <TextInput id={id} value="—" readOnly disabled className={`bg-[#f1f3f2]! ${W_INPUT}`} />}</Field>
         <Field label="موعد الزيارة الميدانية" error={e?.visitDate?.message}>
           {(id) => <Controller control={control} name={`${p}.visitDate`} render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} min="2026-10-15" invalid={!!e?.visitDate} className="h-11" noIcon />} />}

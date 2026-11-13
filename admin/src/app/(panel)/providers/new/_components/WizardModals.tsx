@@ -155,7 +155,7 @@ export function AddServiceModal({
         {(id) => <Select id={id} value={type} onChange={setType} options={options} className={M_SELECT} invalid={!!err.type} placeholder="كل الخدمات مضافة" />}
       </Field>
       {c ? <CriteriaLink block label={`معايير الاعتماد: ${type} · ${c.items.length} معياراً · ${criticalCount(type)} حرجة`} onClick={() => onCriteria(type)} /> : null}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <Field label="مدة التنفيذ من" error={err.from}>
           {(id) => <TextInput id={id} value={from} onChange={(e) => setFrom(e.target.value)} placeholder="3 ساعات" invalid={!!err.from} className={M_INPUT} />}
         </Field>
@@ -203,7 +203,7 @@ export function ApproveModal({
   const r = +rating;
   return (
     <Modal open onOpenChange={(o) => !o && !busy && onClose()} width={640} title={`اعتماد ونشر بدون زيارة · ${short}`} subtitle={`${name} · ${code}`}>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label="الفئة">{(id) => <Select id={id} value={tier} onChange={(v) => setTier(v as Tier)} options={TIERS} className="[&>span]:text-14! [&>span]:font-normal!" />}</Field>
         <Field label="التقييم الظاهر حتى أول 5 تقييمات">{(id) => <Select id={id} value={rating} onChange={setRating} options={RATING_OPTS} className="[&>span]:text-14! [&>span]:font-normal!" />}</Field>
       </div>
