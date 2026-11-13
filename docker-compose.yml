@@ -1,0 +1,28 @@
+# تشغيل موقع لينكار على السيرفر:
+#   docker compose up -d --build     ← بناء وتشغيل
+#   docker compose logs -f web       ← متابعة اللوج
+#   docker compose down              ← إيقاف (كاش الصور بيفضل في الـvolume)
+#
+# الإعدادات من ملف .env جنب الملف ده (انسخ .env.example → .env وعدّل).
+# الموقع لسه ببيانات تجريبية جوه الكود (مفيش باك إند ولا قاعدة بيانات)، فهو خدمة واحدة بس.
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        # الدومين النهائي — بيتدمج وقت البناء في sitemap.xml و robots.txt
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://linkar-web.vercel.app}
+    image: linkar-web:latest
+    container_name: linkar-web
+    ports:
+      # الافتراضي على loopback بس (يتنشر عن طريق nginx / reverse proxy).
+      # لو مفيش proxy خلّي BIND_ADDR=0.0.0.0 في .env
+      - "${BIND_ADDR:-127.0.0.1}:${WEB_PORT:-3000}:3000"
+    volumes:
+      # كاش الصور المحسّنة (AVIF/WebP) يفضل بين عمليات النشر
+      - next_image_cache:/app/.next/cache/images
+    restart: unless-stopped
+
+volumes:
+  next_image_cache:

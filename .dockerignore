@@ -1,0 +1,19 @@
+# سياق بناء الصورة — استبعد اللي مش لازم عشان البناء يبقى أسرع والصورة أصغر
+node_modules
+.next
+.git
+.gitignore
+.env*
+!.env.example
+npm-debug.log*
+yarn-error.log*
+.vercel
+.playwright-mcp
+.claude
+.cursor
+scripts
+docs
+*.md
+*.tsbuildinfo
+Dockerfile
+docker-compose.yml
