@@ -15,6 +15,7 @@ export function Modal({
   children,
   footer,
   width = 460,
+  className,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -25,6 +26,8 @@ export function Modal({
   children?: ReactNode;
   footer?: ReactNode;
   width?: number;
+  /** تعديل الحشو/المسافة لنوافذ مرسومة بقيم مختلفة (CON5-07M: حشو 22 · مسافة 12) — مثال: "p-[22px]! gap-3!" */
+  className?: string;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -34,7 +37,7 @@ export function Modal({
           dir="rtl"
           onOpenAutoFocus={keepFocusQuiet}
           style={{ width }}
-          className="fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] max-w-[calc(100vw-32px)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3.5 overflow-y-auto rounded-[20px] bg-white p-6 shadow-card focus:outline-none"
+          className={`fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] max-w-[calc(100vw-32px)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3.5 overflow-y-auto rounded-[20px] bg-white p-6 shadow-card focus:outline-none ${className ?? ""}`}
         >
           <div className="flex items-center justify-between gap-2">
             {subtitle ? (

@@ -20,16 +20,19 @@ export function SearchInput({
   placeholder,
   className,
   label,
+  iconEnd,
 }: {
   value: string;
   onChange: (v: string) => void;
   placeholder: string;
   className?: string;
   label?: string;
+  /** العدسة على الشمال (CON5-07 3114:48542) بدل اليمين */
+  iconEnd?: boolean;
 }) {
   return (
     <label className={`flex h-10 items-center gap-2 rounded-10 border border-border bg-white px-3 focus-within:border-ink ${className ?? "w-[280px]"}`}>
-      <Icon name="search" size={16} className="shrink-0 text-muted" />
+      {iconEnd ? null : <Icon name="search" size={16} className="shrink-0 text-muted" />}
       <input
         type="search"
         value={value}
@@ -43,6 +46,7 @@ export function SearchInput({
           <Icon name="x" size={14} />
         </button>
       ) : null}
+      {iconEnd ? <Icon name="search" size={16} className="shrink-0 text-ink" /> : null}
     </label>
   );
 }

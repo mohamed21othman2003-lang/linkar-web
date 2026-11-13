@@ -3,6 +3,7 @@
 import type { Me, Session } from "./types";
 import { auditApi, rolesApi, usersApi } from "./users";
 import { exportsApi } from "./exports";
+import { providersApi } from "./providers";
 export type * from "./types";
 export { ApiError, isApiError } from "./errors";
 
@@ -55,6 +56,8 @@ export const api = {
   roles: rolesApi,
   audit: auditApi,
   exports: exportsApi,
+  // القسم 7 و 8 · مقدّمو الخدمة
+  providers: providersApi,
 };
 
 // صلاحيات (القسم 2.5): لكل وحدة أربعة إجراءات + صلاحيات حساسة. «*» = كل الصلاحيات.

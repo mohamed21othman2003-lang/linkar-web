@@ -43,6 +43,7 @@ export function DataTable<T extends RowData>({
   headRadius = 8,
   rowClassName = "border-border",
   skeletonRows = 6,
+  rowPadY = 10,
 }: {
   columns: Column<T>[];
   data: T[] | undefined;
@@ -64,6 +65,8 @@ export function DataTable<T extends RowData>({
   /** لون فاصل الصفوف (border-border أو border-divider) */
   rowClassName?: string;
   skeletonRows?: number;
+  /** حشو الصف فوق وتحت (10 هنا، 12 في CON5-07) */
+  rowPadY?: number;
 }) {
   const helper = useMemo(() => createColumnHelper<typeof features, T>(), []);
   const defs = useMemo(
@@ -120,10 +123,10 @@ export function DataTable<T extends RowData>({
           return (
             <td
               key={cell.id}
-              style={pad(i, columns.length)}
+              style={{ ...pad(i, columns.length), paddingBlock: rowPadY }}
               onClick={m?.actions ? (e) => e.stopPropagation() : undefined}
               onKeyDown={m?.actions ? (e) => e.stopPropagation() : undefined}
-              className={`border-b py-2.5 align-middle ${rowClassName} text-13 font-light text-ink ${ALIGN[m?.align ?? "start"]}`}
+              className={`border-b align-middle ${rowClassName} text-13 font-light text-ink ${ALIGN[m?.align ?? "start"]}`}
             >
               {m?.actions ? <div className="flex items-center justify-end gap-1.5">{<table.FlexRender cell={cell} />}</div> : <table.FlexRender cell={cell} />}
             </td>
