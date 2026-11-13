@@ -1,7 +1,10 @@
 // طبقة الـAPI (القسم 2.4). الـAPI لسه بيتبني، فكل الدوال هنا بترجع بيانات تجريبية بنفس شكل الخادم
 // بعد تأخير بسيط. لما الخادم يجهز: نغيّر جسم الدوال لـfetch من غير ما الشاشات تتغيّر.
 import type { Me, Session } from "./types";
+import { auditApi, rolesApi, usersApi } from "./users";
+import { exportsApi } from "./exports";
 export type * from "./types";
+export { ApiError, isApiError } from "./errors";
 
 const delay = <T,>(v: T, ms = 350) => new Promise<T>((r) => setTimeout(() => r(v), ms));
 
@@ -47,6 +50,11 @@ export const api = {
       return delay({ ok: true });
     },
   },
+  // القسم 6 · المستخدمون والصلاحيات وسجل التدقيق
+  users: usersApi,
+  roles: rolesApi,
+  audit: auditApi,
+  exports: exportsApi,
 };
 
 // صلاحيات (القسم 2.5): لكل وحدة أربعة إجراءات + صلاحيات حساسة. «*» = كل الصلاحيات.

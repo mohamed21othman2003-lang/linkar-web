@@ -25,7 +25,7 @@ const SIZE: Record<ButtonSize, string> = {
 };
 
 function classes(variant: ButtonVariant, size: ButtonSize, className?: string) {
-  const base = "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap transition-colors disabled:cursor-not-allowed";
+  const base = "inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap transition-colors disabled:cursor-not-allowed";
   return `${base} ${variant === "link" ? "text-13 font-medium" : SIZE[size]} ${VARIANT[variant]} ${className ?? ""}`;
 }
 

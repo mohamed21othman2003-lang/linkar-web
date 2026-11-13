@@ -52,12 +52,12 @@ export function Sidebar() {
     <aside className="fixed inset-y-0 right-0 z-30 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-3.5 pb-6 text-white">
       <Link href="/providers" className="flex flex-col items-start gap-1 px-3 pb-3">
         <Image src="/logo-inverse.svg" alt="Linkar" width={112} height={17} className="h-[17px] w-auto" priority />
-        <span className="text-16 font-bold">لوحة تحكم لينكار</span>
+        <span className="text-16 font-medium">لوحة تحكم لينكار</span>
       </Link>
       <nav className="flex flex-col">
         {GROUPS.map((g, gi) => (
           <div key={gi} className="flex flex-col">
-            {g.title ? <span className="px-3 pt-1 text-12 text-white/50">{g.title}</span> : null}
+            {g.title ? <span className="px-3 pt-0.5 text-12 font-medium text-white/50">{g.title}</span> : null}
             {g.items.map((it) => {
               const active = isActive(it);
               return (
@@ -65,7 +65,7 @@ export function Sidebar() {
                   key={it.label}
                   href={it.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex h-[26px] items-center gap-2 rounded-8 px-3 text-14 ${active ? "bg-lime font-bold text-ink" : "text-white hover:bg-white/8"}`}
+                  className={`flex h-[26px] items-center gap-2.5 rounded-8 px-3 text-14 font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white hover:bg-white/8"}`}
                 >
                   <Icon name={it.icon} size={20} />
                   <span className="flex-1">{it.label}</span>

@@ -3,31 +3,32 @@
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
 import { Icon } from "./Icon";
 
-// رسائل التأكيد (القسم 16): عنوان + نص، بتختفي لوحدها
+// رسائل التأكيد (القسم 16 · Figma CON5-T2301 3114:25307): شريط كحلي r12 · حشو 12·18 · مسافة 10 · علامة ✓ 18 أخضر فاتح
+// + نص الرسالة 13 Medium أبيض. مكانها فوق في نص منطقة المحتوى (تحت الشريط العلوي بـ20) وبتختفي لوحدها.
+// toast(title, body): العنوان للقارئ الصوتي، والظاهر هو نص الرسالة (أو العنوان لو مفيش نص) زي التصميم.
 type Toast = { id: number; title: string; body?: string };
 const Ctx = createContext<(title: string, body?: string) => void>(() => {});
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<Toast[]>([]);
+  // القائمة الجانبية 240 على اليمين: الرسالة في نص المحتوى مش نص الشاشة
+  const [offset, setOffset] = useState(0);
   const seq = useRef(0);
   const show = useCallback((title: string, body?: string) => {
     const id = ++seq.current;
+    setOffset(document.querySelector("aside")?.getBoundingClientRect().width ?? 0);
     setItems((l) => [...l, { id, title, body }]);
     setTimeout(() => setItems((l) => l.filter((t) => t.id !== id)), 4000);
   }, []);
   return (
     <Ctx.Provider value={show}>
       {children}
-      <div aria-live="polite" className="pointer-events-none fixed bottom-6 left-6 z-[60] flex flex-col gap-2">
+      <div aria-live="polite" style={{ right: offset }} className="pointer-events-none fixed top-[92px] left-0 z-[60] flex flex-col items-center gap-2">
         {items.map((t) => (
-          <div key={t.id} role="status" className="pointer-events-auto flex min-w-[320px] max-w-[440px] items-start gap-3 rounded-12 bg-ink px-4 py-3 text-white shadow-card">
-            <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-lime text-ink">
-              <Icon name="check" size={14} />
-            </span>
-            <div className="flex flex-col">
-              <span className="text-14 font-bold">{t.title}</span>
-              {t.body ? <span className="text-13 text-white/80">{t.body}</span> : null}
-            </div>
+          <div key={t.id} role="status" className="pointer-events-auto flex max-w-[560px] items-center gap-2.5 rounded-12 bg-ink px-[18px] py-3 text-13 font-medium text-white shadow-card">
+            <Icon name="check" size={18} className="shrink-0 text-lime" />
+            <span className="sr-only">{t.title} — </span>
+            <span>{t.body ?? t.title}</span>
           </div>
         ))}
       </div>

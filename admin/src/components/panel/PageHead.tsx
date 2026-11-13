@@ -36,7 +36,7 @@ export function PageHead({
         <h1 className="text-24 font-bold text-ink">{title}</h1>
         {description ? <p className="text-13 font-light text-muted">{description}</p> : null}
       </div>
-      {actions ? <div className="flex shrink-0 items-center gap-3">{actions}</div> : null}
+      {actions ? <div className="flex shrink-0 items-center gap-2.5">{actions}</div> : null}
     </div>
   );
 }
