@@ -1,6 +1,7 @@
 // تبويبات ملف المزوّد المؤجّلة (القسم 15) + أرقام تبويب «الفروع».
 // القسم 1.5: الحجوزات والتحليلات والمستحقات والجودة = «الشكل فقط بلا بيانات» في المرحلة الأولى — الدوال هنا بترجع
 // نفس شكل رد الخادم بقوائم فاضية وأرقام صفر، ولما الخادم يجهز يتغيّر جسم الدالة بس.
+import { bookingsApi, type Booking } from "./bookings";
 import { delay } from "./errors";
 import { branchesOf } from "./profile";
 import { providersApi } from "./providers";
@@ -10,12 +11,44 @@ export interface ProviderBookingRow {
   code: string;
   customer: string;
   branch: string;
+  branchCode: string;
+  /** «الخدمة · الحجم» */
   service: string;
+  serviceName: string;
+  /** «14 أكتوبر 2026» */
   doneAt: string;
+  /** «أكتوبر 2026» (قائمة الفترة) */
+  month: string;
+  /** يوم التنفيذ للترتيب (الأحدث أولاً) */
+  day: number;
   sale: number;
   cost: number;
   margin: number;
   status: "pending-approval" | "approved";
+}
+/** صفوف كل صفحة في تبويب الحجوزات (Figma 3114:38407 بيرسم أول 8) */
+export const PROVIDER_BOOKINGS_PAGE = 8;
+const BOOKINGS_API_PAGE = 10;
+const AR_MONTHS = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+function toProviderRow(b: Booking): ProviderBookingRow {
+  // تاريخ التنفيذ = تاريخ مسح القسيمة («استُخدمت 14 أكتوبر 2026»)
+  const m = b.voucher.match(/(\d+) (\S+) (\d{4})/);
+  const [d, mon, y] = m ? [+m[1], m[2], +m[3]] : [0, "", 0];
+  return {
+    code: b.id,
+    customer: b.customer.name,
+    branch: b.branch,
+    branchCode: b.branchCode,
+    service: `${b.service} · ${b.size}`,
+    serviceName: b.service,
+    doneAt: m ? `${d} ${mon} ${y}` : "—",
+    month: m ? `${mon} ${y}` : "",
+    day: y * 10000 + (AR_MONTHS.indexOf(mon) + 1) * 100 + d,
+    sale: b.sale,
+    cost: b.cost,
+    margin: b.sale - b.cost,
+    status: b.status === "approved" ? "approved" : "pending-approval",
+  };
 }
 export type BookingFilters = { branch?: string; status?: string; period?: string; service?: string };
 
@@ -83,11 +116,25 @@ const BRANCH_STATS: Record<string, { monthMargin: number; yearBookings: number }
 const MONTHS_BACK = ["يوليو", "أغسطس", "سبتمبر", "أكتوبر"];
 
 export const providerTabsApi = {
-  /** GET /providers/:id/bookings?branch=&status=&period=&service= → { items, total, counts } */
-  bookings: async (providerId: string, f: BookingFilters = {}) => {
-    void providerId;
-    void f;
-    return delay({ items: [] as ProviderBookingRow[], total: 0, counts: {} as Record<string, number> });
+  /** GET /providers/:id/bookings?branch=&status=&period=&service=&page= → { items, total, counts }
+   *  الحجوزات المنفّذة (بانتظار الاعتماد + المعتمدة) من نفس مخزن قسم الحجوزات (api.bookings) — أي اعتماد هناك يظهر هنا. */
+  bookings: async (providerId: string, f: BookingFilters & { page?: number } = {}) => {
+    const first = await bookingsApi.list({ provider: providerId });
+    const pages = Math.ceil(first.total / BOOKINGS_API_PAGE);
+    const rest = await Promise.all(Array.from({ length: Math.max(0, pages - 1) }, (_, i) => bookingsApi.list({ provider: providerId, page: i + 2 })));
+    const done = [first, ...rest]
+      .flatMap((r) => r.items)
+      .filter((b) => b.status === "completed" || b.status === "approved")
+      .map(toProviderRow);
+    const rows = done
+      .filter((r) => !f.branch || r.branchCode.toLowerCase() === f.branch.toLowerCase())
+      .filter((r) => !f.status || r.status === f.status)
+      .filter((r) => !f.period || r.month === f.period)
+      .filter((r) => !f.service || r.serviceName === f.service)
+      .sort((a, b) => b.day - a.day || b.code.localeCompare(a.code));
+    const page = Math.max(1, f.page ?? 1);
+    const counts = { "pending-approval": rows.filter((r) => r.status === "pending-approval").length, approved: rows.filter((r) => r.status === "approved").length };
+    return delay({ items: rows.slice((page - 1) * PROVIDER_BOOKINGS_PAGE, page * PROVIDER_BOOKINGS_PAGE), total: rows.length, counts }, 120);
   },
   analytics: async (providerId: string, f: { period?: string; city?: string; type?: string; branch?: string } = {}): Promise<ProviderAnalytics> => {
     void f;

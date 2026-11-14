@@ -12,6 +12,27 @@ import { providerTabsApi } from "./provider-tabs";
 import { sharedApi } from "./shared";
 import { offersApi } from "./offers";
 import { bankApi } from "./bank";
+import { linkarOffersApi, requestsApi } from "./requests";
+import { overviewApi } from "./overview";
+import { analyticsApi } from "./analytics";
+import { reportsApi } from "./reports";
+import { bookingsApi } from "./bookings";
+import { customersApi } from "./customers";
+import { couponsApi } from "./coupons";
+import { agenciesApi } from "./agencies";
+import { agencyExtraApi, agencyRequestsApi } from "./agency-extra";
+import { vouchersApi as agencyVouchersApi } from "./agency-vouchers";
+import { agencyProfileApi } from "./agency-profile";
+import { marketersApi } from "./marketers";
+import { centersApi, fieldVisitsApi, practicalApi } from "./field-evaluation";
+import { qualityApi } from "./reviews";
+import { paymentsApi } from "./payments";
+import { invoicesApi } from "./invoices";
+import { duesApi } from "./dues";
+import { messagesApi } from "./messages";
+import { policiesApi } from "./policies";
+import { paidFeaturesApi } from "./paid-features";
+import { referenceApi } from "./reference";
 export type * from "./types";
 export { ApiError, isApiError } from "./errors";
 
@@ -80,6 +101,48 @@ export const api = {
   // القسم 11 · العروض والباقات · القسم 13 · الحساب البنكي
   offers: offersApi,
   bank: bankApi,
+  // المرحلة 2 · الطلبات CON5-03 (+ عروض لينكار CON5-12D اللي بتتفتح منها)
+  requests: requestsApi,
+  linkarOffers: linkarOffersApi,
+  // المرحلة 2 · الرئيسية «نظرة عامة» CON5-01
+  overview: overviewApi,
+  // المرحلة 2 · التحليلات CON5-02
+  analytics: analyticsApi,
+  // المرحلة 2 · التقارير CON5-02R
+  reports: reportsApi,
+  // المرحلة 2 · الحجوزات CON5-04
+  bookings: bookingsApi,
+  // المرحلة 2 · العملاء CON5-05
+  customers: customersApi,
+  coupons: couponsApi,
+  // المرحلة 2 · الشركاء · الوكالات CON5-09
+  agencies: agenciesApi,
+  agencyExtra: agencyExtraApi,
+  agencyRequests: agencyRequestsApi,
+  agencyVouchers: agencyVouchersApi,
+  agencyProfile: agencyProfileApi,
+  // المرحلة 2 · الشركاء · المسوّقون CON5-10
+  marketers: marketersApi,
+  // المرحلة 2 · التقييم الميداني والتصنيف CON5-17
+  fieldVisits: fieldVisitsApi,
+  centers: centersApi,
+  practical: practicalApi,
+  // المرحلة 2 · التقييمات والشكاوى CON5-18
+  quality: qualityApi,
+  // المرحلة 2 · المدفوعات والاستردادات CON5-15
+  payments: paymentsApi,
+  // المرحلة 2 · الفواتير والقسائم CON5-16
+  invoices: invoicesApi,
+  // المرحلة 2 · مستحقات المزوّدين CON5-14
+  dues: duesApi,
+  // المرحلة 2 · الرسائل CON5-19
+  messages: messagesApi,
+  // المرحلة 2 · الإعدادات · السياسات CON5-21
+  policies: policiesApi,
+  // المرحلة 2 · الإعدادات · الميزات المدفوعة CON5-22
+  paidFeatures: paidFeaturesApi,
+  // المرحلة 2 · البيانات المرجعية CON5-20
+  reference: referenceApi,
 };
 
 // صلاحيات (القسم 2.5): لكل وحدة أربعة إجراءات + صلاحيات حساسة. «*» = كل الصلاحيات.

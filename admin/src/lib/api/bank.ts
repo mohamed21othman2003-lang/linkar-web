@@ -124,6 +124,20 @@ async function ensure(providerId: string) {
   });
 }
 
+/** قرار طلب حساب من «الطلبات» (CON5-03D): REQ-2026-0427 = الأهلي يبقى الافتراضي · REQ-2026-0435 = المحفظة تتعتمد */
+export function resolveAccountRequest(requestId: string, approved: boolean) {
+  const a = accounts.find((x) => x.requestId === requestId);
+  if (!a) return;
+  if (!approved) {
+    accounts = accounts.filter((x) => x !== a);
+    return;
+  }
+  if (requestId === "REQ-2026-0427") accounts.forEach((x) => x.providerId === a.providerId && (x.isDefault = x === a));
+  a.status = "verified";
+  a.requestId = undefined;
+  a.requestNote = undefined;
+}
+
 const clone = <T>(v: T): T => structuredClone(v);
 /** صيغة الآيبان السعودي: SA + 22 رقم */
 export const isSaudiIban = (v: string) => /^SA\d{22}$/.test(v.replace(/\s/g, "").toUpperCase());

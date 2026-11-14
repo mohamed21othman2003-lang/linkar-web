@@ -34,6 +34,11 @@ const DOCS: Record<string, PreviewDoc> = {
   },
 };
 
+/** مستندات تانية بتتسجّل من مناطق تانية (الطلبات CON5-03D: العنوان الوطني · عقد الإيجار) */
+export function registerDocs(docs: PreviewDoc[]) {
+  for (const d of docs) DOCS[d.id] ??= d;
+}
+
 /** قائمة «القسم» و«المسؤول» و«مهلة الرد» في «إسناد لمسؤول» (CON5-M00 3114:65356) */
 export const ASSIGN_DEPARTMENTS = [
   { value: "pricing", label: "التسعير" },

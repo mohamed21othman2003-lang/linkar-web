@@ -88,7 +88,7 @@ export default function BankTab({ profile, canEdit }: ProfileTabProps) {
                   {pill ? <span className={`inline-flex h-6 shrink-0 items-center rounded-full px-2.5 text-12 leading-[18px] font-medium ${pill[1]}`}>{pill[0]}</span> : null}
                   {a.status === "request" && a.requestId ? (
                     // CON5-03D · الطلبات (القسم 4) لسه ما اتبنتش — الرابط بيفتح صفحة الطلبات على رقم الطلب
-                    <ButtonLink href={`/coming-soon?s=requests&req=${a.requestId}`} variant="secondary" className="h-[46px] px-4">
+                    <ButtonLink href={`/requests?request=${a.requestId}`} variant="secondary" className="h-[46px] px-4">
                       مراجعة الطلب
                     </ButtonLink>
                   ) : null}

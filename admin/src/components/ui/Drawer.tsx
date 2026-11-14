@@ -17,6 +17,7 @@ export function Drawer({
   footer,
   width = 600,
   tight = false,
+  footerClassName,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -27,6 +28,8 @@ export function Drawer({
   width?: number;
   /** رأس الإطارات الأحدث (3260:251028 · 3312:197286 · 3114:55444): سطر فرعي 13/20 والزر فوق — الأقدم (3114:24902): 13/22 والزر في النص */
   tight?: boolean;
+  /** تعديل حشو الذيل لإطارات مرسومة بقيم مختلفة (CON5-03D: حشو سفلي 24 → "sm:pb-6!") */
+  footerClassName?: string;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -43,7 +46,7 @@ export function Drawer({
             </Dialog.Close>
           </div>
           <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto px-5 pt-1 pb-6 sm:px-7">{children}</div>
-          {footer ? <div className="flex flex-wrap gap-2.5 border-t border-border [&>*]:min-w-[120px] px-5 pt-4 pb-5 sm:px-7 sm:pb-7 [&>*]:flex-1">{footer}</div> : null}
+          {footer ? <div className={`flex flex-wrap gap-2.5 border-t border-border [&>*]:min-w-[120px] px-5 pt-4 pb-5 sm:px-7 sm:pb-7 [&>*]:flex-1 ${footerClassName ?? ""}`}>{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

@@ -29,7 +29,7 @@ export function Tabs<K extends string>({
         const active = t.key === value;
         const cls =
           variant === "underline"
-            ? `-mb-px flex items-center gap-1.5 px-3.5 pt-2.5 text-14 font-medium ${active ? "border-b-[3px] border-ink pb-3 text-ink" : "pb-3 text-muted hover:text-ink"}`
+            ? `-mb-px flex shrink-0 items-center gap-1.5 px-3.5 pt-2.5 text-14 font-medium whitespace-nowrap ${active ? "border-b-[3px] border-ink pb-3 text-ink" : "pb-3 text-muted hover:text-ink"}`
             : `flex h-10 items-center gap-1.5 rounded-10 px-3.5 text-14 ${active ? "bg-ink font-semibold text-white" : "border border-border bg-white font-medium text-ink hover:bg-surface-1"}`;
         const content = (
           <>

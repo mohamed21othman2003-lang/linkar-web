@@ -45,6 +45,7 @@ export function DataTable<T extends RowData>({
   skeletonRows = 6,
   rowPadY = 10,
   rowClass,
+  emptyNode,
 }: {
   columns: Column<T>[];
   data: T[] | undefined;
@@ -70,6 +71,8 @@ export function DataTable<T extends RowData>({
   rowPadY?: number;
   /** كلاس إضافي للصف (خلفية الصف المحدد في وضع التحديد · CON5-08 3114:61752) */
   rowClass?: (row: T) => string | undefined;
+  /** حالة فاضية مرسومة بشكل مختلف (CON5-04 · الحجز اليدوي: سطر نص رمادي بس) — بتحل محل EmptyState لما مفيش فلتر */
+  emptyNode?: ReactNode;
 }) {
   const helper = useMemo(() => createColumnHelper<typeof features, T>(), []);
   const defs = useMemo(
@@ -107,6 +110,8 @@ export function DataTable<T extends RowData>({
         <StateRow span={columns.length}>
           {filtered ? (
             <EmptyState title="لا توجد نتائج" body="جرّب كلمة بحث أخرى أو غيّر الفلاتر." action={onClearFilters ? <Button variant="secondary" size="S" onClick={onClearFilters}>مسح الفلاتر</Button> : null} />
+          ) : emptyNode ? (
+            emptyNode
           ) : (
             <EmptyState title={empty?.title ?? "لا توجد بيانات بعد"} body={empty?.body} action={empty?.action} />
           )}
@@ -146,6 +151,8 @@ export function DataTable<T extends RowData>({
     if (!rows.length)
       return filtered ? (
         <EmptyState title="لا توجد نتائج" body="جرّب كلمة بحث أخرى أو غيّر الفلاتر." action={onClearFilters ? <Button variant="secondary" size="S" onClick={onClearFilters}>مسح الفلاتر</Button> : null} />
+      ) : emptyNode ? (
+        emptyNode
       ) : (
         <EmptyState title={empty?.title ?? "لا توجد بيانات بعد"} body={empty?.body} action={empty?.action} />
       );
