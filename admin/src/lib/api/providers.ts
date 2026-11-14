@@ -833,6 +833,7 @@ export const providersApi = {
     p.branchCount += 1;
     p.pendingBranches += 1;
     p.branchesLine = `${p.branchesLine} · +1 بانتظار الزيارة`;
+    providerEvents.branchAdded.forEach((fn) => fn(p, v));
     return delay({ ok: true, name: v.name });
   },
   create: async (v: NewProviderInput) => {
@@ -932,6 +933,19 @@ export const providersApi = {
       },
     };
     providers = [...providers, p];
+    providerEvents.created.forEach((fn) => fn(p, v));
     return delay({ id: p.id, code: p.code, name: p.name, short, dates, branches: n });
   },
+};
+
+// ───────────── للفروع (القسم 12 · src/lib/api/branches.ts) ─────────────
+// الفروع بتقرا وتكتب نفس مخزن المنشآت (عدد الفروع وسطر الفروع)، وبتسمع لإنشاء منشأة أو إضافة فرع من نوافذ مقدّمي الخدمة.
+export type AddBranchInput = Parameters<typeof providersApi.addBranch>[1];
+export const providerStore = {
+  all: () => providers,
+  find: (id: string) => providers.find((p) => p.id === id),
+};
+export const providerEvents = {
+  created: [] as ((p: Provider, v: NewProviderInput) => void)[],
+  branchAdded: [] as ((p: Provider, v: AddBranchInput) => void)[],
 };

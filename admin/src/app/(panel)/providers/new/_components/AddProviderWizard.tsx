@@ -264,7 +264,8 @@ function toInput(v: WizardValues, publish?: { tier: Tier; rating: number; review
 }
 
 // ───────────── الخطوة 1 · CON5-07N1 المنشأة والمالك (3114-51246) ─────────────
-function CompanyStep() {
+// مُصدَّر عشان صفحة «تعديل بيانات المنشأة» (CON5-07E1 · /providers/[id]/edit) بتستخدم نفس الخطوة
+export function CompanyStep({ edit }: { edit?: boolean } = {}) {
   const toast = useToast();
   const { control, register, setValue, getValues, formState } = useFormContext<WizardValues>();
   const e = formState.errors;
@@ -332,6 +333,7 @@ function CompanyStep() {
             )}
           </Field>
           <LogoField
+            asField={edit}
             value={logo}
             onChange={(name) => {
               setValue("logo", name, { shouldDirty: true });
@@ -396,18 +398,30 @@ function CompanyStep() {
       </WCard>
 
       <WCard title="مستندات المنشأة">
-        <DocRow label="السجل التجاري" status={docs.cr ? "مرفوع" : ""} onFile={uploaded("cr", "مرفوع")} />
-        <DocRow label="شهادة ضريبة القيمة المضافة" status={docs.vat ? "مرفوعة" : ""} onFile={uploaded("vat", "مرفوعة")} />
-        <DocRow label="الاتفاقية مع لينكار" status={docs.agreement ? "مرفوعة" : ""} onFile={uploaded("agreement", "مرفوعة")} />
+        <DocRow label="السجل التجاري" status={docs.cr} onFile={uploaded("cr", "مرفوع")} />
+        <DocRow label="شهادة ضريبة القيمة المضافة" status={docs.vat} onFile={uploaded("vat", "مرفوعة")} />
+        <DocRow label="الاتفاقية مع لينكار" status={docs.agreement} onFile={uploaded("agreement", "مرفوعة")} />
       </WCard>
     </>
   );
 }
 
 /** الشعار: مربع 132 بإطار متقطع · صورة 84 r18.7 + «تغيير الشعار» 12 Medium أخضر */
-function LogoField({ value, onChange }: { value: string; onChange: (name: string) => void }) {
+function LogoField({ value, onChange, asField }: { value: string; onChange: (name: string) => void; asField?: boolean }) {
   const ref = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string>();
+  // في «تعديل بيانات المنشأة» (CON5-07E1) الشعار حقل بعرض العمود: اسم الملف · المقاس + سهم
+  if (asField)
+    return (
+      <div className="flex flex-col gap-1.5">
+        <span className="text-12 font-medium text-muted">الشعار</span>
+        <button type="button" onClick={() => ref.current?.click()} className="flex h-11 items-center gap-2 rounded-10 border border-border bg-white px-3 text-14 text-ink hover:bg-surface-1">
+          <span dir="ltr" className="min-w-0 flex-1 truncate text-right">{value || "رفع الشعار"}</span>
+          <Icon name="chevron-down" size={16} className="shrink-0" />
+        </button>
+        <input ref={ref} type="file" accept="image/png,image/jpeg,image/svg+xml" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onChange(f.name); e.target.value = ""; }} />
+      </div>
+    );
   return (
     <div className="flex flex-col gap-1.5">
       <span className="text-12 font-medium text-muted">الشعار</span>

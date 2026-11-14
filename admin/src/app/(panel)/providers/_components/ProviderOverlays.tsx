@@ -83,7 +83,7 @@ function actionsFor(p: Provider): [Act[], Act[]] {
   const stop: Act[] = [{ key: "pause", label: "إيقاف مؤقت", icon: "clock", danger: true }, { key: "disable", label: "تعطيل", icon: "lock", danger: true }, del];
   switch (p.menu) {
     case "full":
-      return [[edit, branch, { key: "add-service", label: "إضافة خدمة", icon: "plus", href: `/providers/${p.id}?tab=services` }, doc], stop];
+      return [[edit, branch, { key: "add-service", label: "إضافة خدمة", icon: "plus", href: `/providers/${p.id}?tab=services&modal=service-new` }, doc], stop];
     case "cost":
       return [[edit, branch, { key: "cost", label: "أسعار التكلفة", icon: "tag", href: `/providers/${p.id}?tab=services` }], stop];
     case "new":

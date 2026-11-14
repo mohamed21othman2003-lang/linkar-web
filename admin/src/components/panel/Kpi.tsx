@@ -8,7 +8,7 @@ export function KpiRow({ children, className }: { children: ReactNode; className
   return <div className={`grid grid-cols-2 gap-3 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none ${className ?? ""}`}>{children}</div>;
 }
 
-export function KpiCard({ label, icon, value, hint, loading }: { label: string; icon: UiGlyph; value: ReactNode; hint?: ReactNode; loading?: boolean }) {
+export function KpiCard({ label, icon, value, hint, loading, hintClassName }: { label: string; icon: UiGlyph; value: ReactNode; hint?: ReactNode; loading?: boolean; /** لون/حجم السطر الفرعي (CON5-08: 13 Light ملوّن) */ hintClassName?: string }) {
   return (
     <section className="flex flex-col gap-1.5 rounded-16 bg-white p-4">
       <div className="flex items-center gap-2">
@@ -18,7 +18,7 @@ export function KpiCard({ label, icon, value, hint, loading }: { label: string; 
         </span>
       </div>
       {loading ? <Skeleton className="my-2 h-[30px] w-16" /> : <p className="num text-30 font-bold text-ink">{value}</p>}
-      {hint ? <p className="text-12 font-light text-muted">{hint}</p> : null}
+      {hint ? <p className={hintClassName ?? "text-12 font-light text-muted"}>{hint}</p> : null}
     </section>
   );
 }

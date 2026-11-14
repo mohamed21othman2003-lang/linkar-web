@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { EmptyState, PageHead } from "@/components/panel/PageHead";
-import { ButtonLink } from "@/components/ui/Button";
+import { Suspense } from "react";
+import { ProfileView } from "./_components/ProfileView";
 
 export const metadata: Metadata = { title: "ملف المزوّد" };
 
-// CON5-07a · ملف المزوّد (3114-48595 …) — القسم 9، يبنيه الوكيل التالي. مكان مؤقت عشان روابط الدرج والإجراءات ما توديش لصفحة 404.
+// CON5-07a · ملف المزوّد — القسم 9 (نظرة عامة 3114-48595) والقسم 10 (الخدمات والأسعار 3114-50957)
+// الرابط: /providers/[id]?tab=overview|bookings|analytics|services|branches|dues|bank|users|quality (القسم 2.3)
 export default async function ProviderProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   return (
-    <>
-      <PageHead title="ملف المزوّد" crumbs={[{ label: "مقدّمو الخدمة", href: "/providers" }, { label: id.toUpperCase() }]} />
-      <div className="rounded-16 border border-border bg-white">
-        <EmptyState title="قيد التنفيذ" body="ملف مقدّم الخدمة هو الخطوة الجاية في بناء اللوحة." action={<ButtonLink href="/providers" variant="secondary" size="S">العودة لمقدّمي الخدمة</ButtonLink>} />
-      </div>
-    </>
+    <Suspense>
+      <ProfileView id={id} />
+    </Suspense>
   );
 }

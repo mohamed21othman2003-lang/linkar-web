@@ -44,6 +44,7 @@ export function DataTable<T extends RowData>({
   rowClassName = "border-border",
   skeletonRows = 6,
   rowPadY = 10,
+  rowClass,
 }: {
   columns: Column<T>[];
   data: T[] | undefined;
@@ -67,6 +68,8 @@ export function DataTable<T extends RowData>({
   skeletonRows?: number;
   /** حشو الصف فوق وتحت (10 هنا، 12 في CON5-07) */
   rowPadY?: number;
+  /** كلاس إضافي للصف (خلفية الصف المحدد في وضع التحديد · CON5-08 3114:61752) */
+  rowClass?: (row: T) => string | undefined;
 }) {
   const helper = useMemo(() => createColumnHelper<typeof features, T>(), []);
   const defs = useMemo(
@@ -116,7 +119,7 @@ export function DataTable<T extends RowData>({
         onKeyDown={onRowClick ? (e) => e.key === "Enter" && e.target === e.currentTarget && onRowClick(row.original) : undefined}
         tabIndex={onRowClick ? 0 : undefined}
         aria-label={rowLabel?.(row.original)}
-        className={`${onRowClick ? "cursor-pointer hover:bg-surface-1/60 focus-visible:bg-surface-1" : ""}`}
+        className={`${onRowClick ? "cursor-pointer hover:bg-surface-1/60 focus-visible:bg-surface-1" : ""} ${rowClass?.(row.original) ?? ""}`}
       >
         {row.getAllCells().map((cell, i) => {
           const m = cell.column.columnDef.meta;
@@ -164,7 +167,7 @@ export function DataTable<T extends RowData>({
           onKeyDown={onRowClick ? (e) => e.key === "Enter" && e.target === e.currentTarget && onRowClick(row.original) : undefined}
           tabIndex={onRowClick ? 0 : undefined}
           aria-label={rowLabel?.(row.original)}
-          className={`flex flex-col gap-2.5 rounded-12 border border-border bg-white p-3.5 ${onRowClick ? "cursor-pointer focus-visible:bg-surface-1" : ""}`}
+          className={`flex flex-col gap-2.5 rounded-12 border border-border bg-white p-3.5 ${onRowClick ? "cursor-pointer focus-visible:bg-surface-1" : ""} ${rowClass?.(row.original) ?? ""}`}
         >
           <div className="text-13 text-ink">
             <table.FlexRender cell={first} />
