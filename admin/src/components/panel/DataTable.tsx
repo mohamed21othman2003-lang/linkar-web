@@ -202,7 +202,7 @@ export function DataTable<T extends RowData>({
   return (
     <>
       <div className="flex flex-col gap-2.5 md:hidden">{cards()}</div>
-      <div className="hidden overflow-x-auto md:block">
+      <div className="relative hidden overflow-x-auto md:block">
         <table className="w-full table-fixed border-separate border-spacing-0" style={{ minWidth }}>
           <colgroup>
             {columns.map((c, i) => (

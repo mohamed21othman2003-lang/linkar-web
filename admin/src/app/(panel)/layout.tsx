@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { SharedOverlays } from "@/components/panel/SharedModals";
 import { Sidebar } from "@/components/panel/Sidebar";
 import { Topbar } from "@/components/panel/Topbar";
 
@@ -14,6 +15,10 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
         <Topbar />
         <main className="mx-auto flex w-full max-w-[1200px] flex-1 min-w-0 flex-col gap-5 px-4 pt-5 pb-12 md:px-6 md:pt-7 xl:px-8">{children}</main>
       </div>
+      {/* النوافذ المشتركة CON5-M00 (?modal=m00-…) */}
+      <Suspense>
+        <SharedOverlays />
+      </Suspense>
     </div>
   );
 }

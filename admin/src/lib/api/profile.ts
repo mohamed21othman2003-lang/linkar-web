@@ -25,6 +25,13 @@ export interface ProviderUser {
   /** null = كل الفروع */
   branchId: string | null;
   kind: "owner" | "manager" | "technician";
+  /** تبويب «المستخدمون» (القسم 14 · CON5-07a 3114:54076) — الجوال 10 أرقام · آخر دخول ISO أو null · الحالة */
+  phone?: string;
+  lastLogin?: string | null;
+  /** active = نشط · new = أُضيف ولم يدخل بعد (شارة «نشط» صفرا) · paused = موقوف */
+  status?: "active" | "new" | "paused";
+  /** ترتيب الإضافة — الجدول بيترتّب بيه (أقدم الأول) */
+  createdAt?: string;
 }
 
 export interface ProfileDoc {
@@ -156,6 +163,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "المالك · كل الفروع",
       branchId: null,
       kind: "owner",
+      phone: "0554102290",
+      lastLogin: "2026-10-14T10:00:00",
+      status: "active",
+      createdAt: "2026-01-04T09:00:00",
     },
     {
       id: "u-khalid",
@@ -163,6 +174,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "مدير فرع الزهراء",
       branchId: "lk-jn-zh-001",
       kind: "manager",
+      phone: "0553182207",
+      lastLogin: "2026-10-14T10:00:00",
+      status: "active",
+      createdAt: "2026-01-08T09:00:00",
     },
     {
       id: "u-abdullah",
@@ -170,6 +185,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "مدير فرع الحمراء",
       branchId: "lk-jn-hm-002",
       kind: "manager",
+      phone: "0556421180",
+      lastLogin: "2026-10-14T10:00:00",
+      status: "active",
+      createdAt: "2026-01-09T09:00:00",
     },
     {
       id: "u-yasser",
@@ -177,6 +196,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "مدير فرع المحمدية",
       branchId: "lk-jn-mh-003",
       kind: "manager",
+      phone: "0549802234",
+      lastLogin: "2026-10-13T10:00:00",
+      status: "active",
+      createdAt: "2026-01-10T09:00:00",
     },
     {
       id: "u-majed",
@@ -184,6 +207,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "فني · فرع الزهراء",
       branchId: "lk-jn-zh-001",
       kind: "technician",
+      phone: "0502217781",
+      lastLogin: "2026-10-13T10:00:00",
+      status: "active",
+      createdAt: "2026-01-05T09:00:00",
     },
     {
       id: "u-faisal",
@@ -191,6 +218,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "فني · فرع المحمدية",
       branchId: "lk-jn-mh-003",
       kind: "technician",
+      phone: "0553180942",
+      lastLogin: "2026-10-12T10:00:00",
+      status: "active",
+      createdAt: "2026-01-06T09:00:00",
     },
     {
       id: "u-sultan",
@@ -198,6 +229,10 @@ const USERS: Record<string, ProviderUser[]> = {
       role: "فني · فرع الحمراء",
       branchId: "lk-jn-hm-002",
       kind: "technician",
+      phone: "0506123390",
+      lastLogin: null,
+      status: "new",
+      createdAt: "2026-10-14T10:00:00",
     },
   ],
 };
@@ -211,6 +246,10 @@ function deriveUsers(p: Provider): ProviderUser[] {
           role: "المالك · كل الفروع",
           branchId: null,
           kind: "owner",
+          phone: (p.company.owner !== "—" ? p.company.owner : p.company.contact).split(" · ")[1]?.replace(/\D/g, "") || undefined,
+          lastLogin: null,
+          status: "new",
+          createdAt: p.joinedAt,
         },
       ]
     : [];
@@ -259,7 +298,8 @@ const EXTRA: Record<
 };
 
 export const branchesOf = (p: Provider) => BRANCHES[p.id] ?? deriveBranches(p);
-export const usersOf = (p: Provider) => USERS[p.id] ?? deriveUsers(p);
+// متخزّنة عشان إضافة/تعديل المستخدمين (provider-users.ts) تفضل ظاهرة في كل مكان
+export const usersOf = (p: Provider) => (USERS[p.id] ??= deriveUsers(p));
 
 export const profileApi = {
   get: async (id: string): Promise<ProviderProfile> => {

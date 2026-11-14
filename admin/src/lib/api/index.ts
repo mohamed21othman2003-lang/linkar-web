@@ -7,6 +7,11 @@ import { providersApi } from "./providers";
 import { profileApi } from "./profile";
 import { servicesApi } from "./services";
 import { branchesApi } from "./branches";
+import { providerUsersApi } from "./provider-users";
+import { providerTabsApi } from "./provider-tabs";
+import { sharedApi } from "./shared";
+import { offersApi } from "./offers";
+import { bankApi } from "./bank";
 export type * from "./types";
 export { ApiError, isApiError } from "./errors";
 
@@ -59,13 +64,22 @@ export const api = {
   roles: rolesApi,
   audit: auditApi,
   exports: exportsApi,
+  // القسم 15 · النوافذ المشتركة CON5-M00 (معاينة مستند · اتصال · إسناد · ملاحظة داخلية)
+  shared: sharedApi,
   // القسم 7 و 8 · مقدّمو الخدمة
   providers: providersApi,
   // القسم 9 و 10 · ملف المزوّد والخدمات والأسعار
   profile: profileApi,
   services: servicesApi,
+  // القسم 14 · مستخدمو لوحة المزوّد
+  providerUsers: providerUsersApi,
+  // القسم 15 · تبويبات الملف المؤجّلة (الشكل فقط) + أرقام تبويب الفروع
+  providerTabs: providerTabsApi,
   // القسم 12 · الفروع
   branches: branchesApi,
+  // القسم 11 · العروض والباقات · القسم 13 · الحساب البنكي
+  offers: offersApi,
+  bank: bankApi,
 };
 
 // صلاحيات (القسم 2.5): لكل وحدة أربعة إجراءات + صلاحيات حساسة. «*» = كل الصلاحيات.
