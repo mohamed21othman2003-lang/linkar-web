@@ -38,10 +38,10 @@ export function LoginForm() {
   const { errors, isSubmitting } = formState;
   return (
     <form onSubmit={onSubmit} noValidate className="mt-[18px] flex flex-col gap-[18px]">
-      <Field strong label="البريد المؤسسي" error={errors.email?.message}>
+      <Field required strong label="البريد المؤسسي" error={errors.email?.message}>
         {(id) => <TextInput id={id} type="email" size="L" autoComplete="username" ltr placeholder="name@linkar.sa" icon={<Icon name="mail" size={18} />} invalid={!!errors.email || !!serverError} {...register("email")} />}
       </Field>
-      <Field
+      <Field required
         strong
         label="كلمة المرور"
         error={errors.password?.message ?? serverError}

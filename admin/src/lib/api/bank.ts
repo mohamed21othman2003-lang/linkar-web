@@ -1,6 +1,7 @@
 // الحساب البنكي (القسم 13) — حسابات استلام المستحقات لكل مزوّد + إعدادات التسوية.
 // المصدر: Figma CON5-07a الحساب البنكي 3260:204545 · إضافة حساب استلام 3114:54387 · إعدادات تسوية 3114:54442.
 // الحساب الافتراضي لباقي المنشآت مأخوذ من نفس مخزن المنشآت (company.bank / legalName في providers.ts).
+import { ltr } from "../format";
 import { ApiError, delay } from "./errors";
 import { providersApi } from "./providers";
 import { branchesOf } from "./profile";
@@ -47,7 +48,7 @@ const digits = (s: string) => s.replace(/\D/g, "");
 export const last4 = (s: string) => digits(s).slice(-4);
 /** «مصرف الراجحي •••• 4471» · «‏STC Pay أعمال · 055 410 2290» */
 export const accountTitle = (a: Pick<ReceivingAccount, "type" | "provider" | "number">) =>
-  a.type === "wallet" ? `‏${a.provider} · ${digits(a.number).replace(/^(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3")}` : `${a.provider} •••• ${last4(a.number)}`;
+  a.type === "wallet" ? `‏${a.provider} · ${ltr(digits(a.number).replace(/^(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3"))}` : `${a.provider} ${ltr(`•••• ${last4(a.number)}`)}`;
 /** «الراجحي» من «مصرف الراجحي» (للتسوية) · «البنك الأهلي» من «البنك الأهلي السعودي» (للرسائل) */
 export const bankShort = (b: string) => b.replace(/^(مصرف|بنك) /, "").replace(/^البنك (.+) السعودي$/, "$1");
 export const bankToastName = (b: string) => b.replace(/ السعودي$/, "");
@@ -163,7 +164,7 @@ export const bankApi = {
         ...(settlements[providerId] ?? { rule: SETTLEMENT_RULES[0], method: "grouped" as const }),
         vat: p.company.vat,
         branchCount: branchesOf(p).filter((b) => b.status === "approved").length,
-        defaultAccount: def ? `${bankShort(def.provider)} •••• ${last4(def.number)}` : null,
+        defaultAccount: def ? `${bankShort(def.provider)} ${ltr(`•••• ${last4(def.number)}`)}` : null,
       },
       150,
     );

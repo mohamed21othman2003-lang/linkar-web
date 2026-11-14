@@ -152,7 +152,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
   const p = `branches.${i}` as const;
   const districts = (DISTRICTS[b.city] ?? []).map((d) => ({ value: d, label: d }));
   const input = (name: "manager" | "managerPhone" | "phone" | "email" | "contact" | "slots" | "technicians" | "address" | "customName", label: string, opts: { ltr?: boolean; placeholder?: string; tel?: boolean; num?: boolean } = {}) => (
-    <Field label={label} error={e?.[name]?.message}>
+    <Field required label={label} error={e?.[name]?.message}>
       {(id) => (
         <TextInput
           id={id}
@@ -200,7 +200,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
         </p>
       ) : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Field label="كود الفرع" error={e?.code?.message}>
+        <Field required label="كود الفرع" error={e?.code?.message}>
           {(id) => (
             <TextInput
               id={id}
@@ -228,7 +228,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
 
       <SubTitle>الموقع</SubTitle>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Field label="المدينة" error={e?.city?.message}>
+        <Field required label="المدينة" error={e?.city?.message}>
           {(id) => (
             <Controller
               control={control}
@@ -248,11 +248,11 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
             />
           )}
         </Field>
-        <Field label="الحي" error={e?.district?.message}>
+        <Field required label="الحي" error={e?.district?.message}>
           {(id) => <Controller control={control} name={`${p}.district`} render={({ field }) => <Select id={id} value={field.value || undefined} onChange={field.onChange} options={districts} invalid={!!e?.district} className={W_SELECT} />} />}
         </Field>
       </div>
-      <Field label="العنوان" error={e?.address?.message}>
+      <Field required label="العنوان" error={e?.address?.message}>
         {(id) => (
           <div className="relative">
             <TextInput id={id} {...register(`${p}.address`)} placeholder="الشارع، الحي" invalid={!!e?.address} className={`pe-9! ${W_INPUT}`} />
@@ -260,10 +260,15 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
           </div>
         )}
       </Field>
-      {/* TODO(API): اختيار الموقع من الخريطة وتعبئة العنوان منه (القسم 18.1) */}
-      <div aria-hidden className="flex h-[120px] items-center justify-center rounded-12 bg-[#e7efe9] text-ink">
+      {/* اختيار الموقع من الخريطة يعبّي العنوان (القسم 18.1) — TODO(map provider): لحد ما يتحدد مزوّد الخرائط الضغط يحط الحي والمدينة المختارين */}
+      <button
+        type="button"
+        aria-label="تحديد الموقع على الخريطة"
+        onClick={() => setValue(`${p}.address`, [b.district ? `حي ${b.district}` : "", b.city].filter(Boolean).join("، ") || "الموقع المحدد على الخريطة", { shouldDirty: true, shouldValidate: true })}
+        className="flex h-[120px] cursor-crosshair items-center justify-center rounded-12 bg-[#e7efe9] text-ink"
+      >
         <Icon name="map-pin" size={28} />
-      </div>
+      </button>
 
       <SubTitle>التواصل</SubTitle>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -276,7 +281,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
 
       <SubTitle>التشغيل</SubTitle>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Field label="ساعات العمل" error={e?.hours?.message}>
+        <Field required label="ساعات العمل" error={e?.hours?.message}>
           {(id) => <Controller control={control} name={`${p}.hours`} render={({ field }) => <Select id={id} value={field.value || undefined} onChange={field.onChange} options={HOUR_OPTS} icon="clock" invalid={!!e?.hours} className={W_SELECT} />} />}
         </Field>
         {input("slots", "فتحات العمل", { ltr: true, num: true })}
@@ -284,7 +289,7 @@ function BranchCard({ i, brand, onMain, openModal }: { i: number; brand: string;
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field label="قدرة الاستيعاب (تُحسب تلقائياً)">{(id) => <TextInput id={id} value="—" readOnly disabled className={`bg-[#f1f3f2]! ${W_INPUT}`} />}</Field>
-        <Field label="موعد الزيارة الميدانية" error={e?.visitDate?.message}>
+        <Field required label="موعد الزيارة الميدانية" error={e?.visitDate?.message}>
           {(id) => <Controller control={control} name={`${p}.visitDate`} render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} min="2026-10-15" invalid={!!e?.visitDate} className="h-11" noIcon />} />}
         </Field>
       </div>

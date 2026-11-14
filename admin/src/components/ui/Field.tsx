@@ -34,9 +34,12 @@ export function Field({
   children,
   className,
   strong,
+  required,
 }: {
   /** عناوين حقول صفحات الدخول 13 Medium كحلي — باقي اللوحة 12 Medium رمادي */
   strong?: boolean;
+  /** حقل إلزامي حسب قواعد الخادم → علامة * حمراء بعد العنوان (القسم 18.2 · 3) */
+  required?: boolean;
   label: string;
   error?: string;
   hint?: string;
@@ -50,6 +53,11 @@ export function Field({
       <div className="flex items-center justify-between gap-2">
         <label htmlFor={id} className={strong ? "text-13 font-medium text-ink" : "text-12 font-medium text-muted"}>
           {label}
+          {required ? (
+            <span aria-hidden className="ms-0.5 text-danger">
+              *
+            </span>
+          ) : null}
         </label>
         {aside}
       </div>

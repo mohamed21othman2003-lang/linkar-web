@@ -213,7 +213,7 @@ export function OfferFormModal({ profile, branches, offer, onClose }: { profile:
       {/* بيانات العرض */}
       <SCard>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <Field label="اسم العرض للعملاء" error={e.name?.message}>
+          <Field required label="اسم العرض للعملاء" error={e.name?.message}>
             {(id) => <TextInput id={id} {...register("name")} placeholder="عرض نهاية العام · خصم 12% على حماية PPF" invalid={!!e.name} className={IN} />}
           </Field>
           <Field label="نوع الخصم">
@@ -225,7 +225,7 @@ export function OfferFormModal({ profile, branches, offer, onClose }: { profile:
               />
             )}
           </Field>
-          <Field label="القيمة" error={e.value?.message}>
+          <Field required label="القيمة" error={e.value?.message}>
             {(id) => (
               <Controller
                 control={control}
@@ -250,7 +250,7 @@ export function OfferFormModal({ profile, branches, offer, onClose }: { profile:
               />
             )}
           </Field>
-          <Field label="الفترة" error={e.to?.message ?? e.from?.message}>
+          <Field required label="الفترة" error={e.to?.message ?? e.from?.message}>
             {(id) => (
               <Select
                 id={id}

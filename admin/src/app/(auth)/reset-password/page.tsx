@@ -44,10 +44,10 @@ function ResetForm() {
 
   return (
     <form onSubmit={submit} noValidate className="mt-[18px] flex flex-col gap-[18px]">
-      <Field strong label="كلمة المرور الجديدة" error={errors.pw}>
+      <Field required strong label="كلمة المرور الجديدة" error={errors.pw}>
         {(id) => <TextInput id={id} type="password" autoComplete="new-password" placeholder="••••••••••••" value={pw} invalid={!!errors.pw} onChange={(e) => setPw(e.target.value)} />}
       </Field>
-      <Field strong label="تأكيد كلمة المرور" error={errors.confirm}>
+      <Field required strong label="تأكيد كلمة المرور" error={errors.confirm}>
         {(id) => <TextInput id={id} type="password" autoComplete="new-password" placeholder="••••••••••••" value={confirm} invalid={!!errors.confirm} onChange={(e) => setConfirm(e.target.value)} />}
       </Field>
       <InfoNote>12 حرفاً على الأقل، وتُغلق الجلسات الأخرى بعد التغيير.</InfoNote>

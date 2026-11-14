@@ -66,16 +66,16 @@ export function Sidebar() {
     {open ? <button type="button" aria-label="إغلاق القائمة" onClick={() => setOpen(false)} className="fixed inset-0 z-30 bg-ink/45 xl:hidden" /> : null}
     <aside
       id="panel-sidebar"
-      className={`fixed inset-y-0 right-0 z-40 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-3.5 pb-6 text-white transition-transform xl:z-30 xl:translate-x-0 ${open ? "translate-x-0 shadow-drawer" : "translate-x-full"}`}
+      className={`fixed inset-y-0 right-0 z-40 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-4 pb-6 text-white transition-transform xl:z-30 xl:translate-x-0 ${open ? "translate-x-0 shadow-drawer" : "translate-x-full"}`}
     >
       <Link href="/providers" className="flex flex-col items-start gap-1 px-3 pb-3">
-        <Image src="/logo-inverse.svg" alt="Linkar" width={112} height={17} className="h-[17px] w-auto" priority />
+        <Image src="/logo-inverse.svg" alt="Linkar" width={112} height={15} className="h-[15px] w-[112px]" priority />
         <span className="text-16 font-medium">لوحة تحكم لينكار</span>
       </Link>
       <nav className="flex flex-col">
         {GROUPS.map((g, gi) => (
           <div key={gi} className="flex flex-col">
-            {g.title ? <span className="px-3 pt-2 text-12 xl:pt-0.5 font-medium text-white/50">{g.title}</span> : null}
+            {g.title ? <span className="px-3 pt-2 text-12 xl:pt-0 font-medium text-white/50">{g.title}</span> : null}
             {g.items.map((it) => {
               const active = isActive(it);
               return (
@@ -83,7 +83,7 @@ export function Sidebar() {
                   key={it.label}
                   href={it.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex h-10 items-center gap-2.5 rounded-8 px-3 text-14 xl:h-[26px] font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white hover:bg-white/8"}`}
+                  className={`flex h-10 items-center gap-2.5 rounded-10 px-3 text-14 xl:h-[26px] font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white/88 hover:bg-white/8"}`}
                 >
                   <Icon name={it.icon} size={20} />
                   <span className="flex-1">{it.label}</span>

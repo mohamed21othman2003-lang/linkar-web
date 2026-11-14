@@ -207,10 +207,10 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
       {/* بيانات الباقة */}
       <SCard>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <Field label="اسم الباقة للعملاء" error={e.name?.message}>
+          <Field required label="اسم الباقة للعملاء" error={e.name?.message}>
             {(id) => <TextInput id={id} {...register("name")} placeholder="باقة الحماية الكاملة" invalid={!!e.name} className={IN} />}
           </Field>
-          <Field label="الفترة" error={e.to?.message ?? e.from?.message}>
+          <Field required label="الفترة" error={e.to?.message ?? e.from?.message}>
             {(id) => (
               <Select
                 id={id}
@@ -240,7 +240,7 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
             </div>
           ) : null}
         </div>
-        <Field label="الوصف للعميل" error={e.description?.message}>
+        <Field required label="الوصف للعميل" error={e.description?.message}>
           {(id) => (
             <textarea
               id={id}

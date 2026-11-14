@@ -179,15 +179,15 @@ function EditModal({ b, close }: P) {
     <M title="تعديل بيانات الفرع" sub={modalSub(b)} onClose={leave} busy={m.isPending}>
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
         <div className={grid2}>
-          <Field label="مدير الفرع" error={e.manager?.message}>{(id) => <TextInput id={id} {...f.register("manager")} invalid={!!e.manager} className={M_INPUT} />}</Field>
-          <Field label="جوال المدير" error={e.managerPhone?.message}>{(id) => <TextInput id={id} {...f.register("managerPhone")} invalid={!!e.managerPhone} inputMode="tel" ltr className={M_INPUT} />}</Field>
+          <Field required label="مدير الفرع" error={e.manager?.message}>{(id) => <TextInput id={id} {...f.register("manager")} invalid={!!e.manager} className={M_INPUT} />}</Field>
+          <Field required label="جوال المدير" error={e.managerPhone?.message}>{(id) => <TextInput id={id} {...f.register("managerPhone")} invalid={!!e.managerPhone} inputMode="tel" ltr className={M_INPUT} />}</Field>
         </div>
-        <Field label="ساعات العمل" error={e.hours?.message}>
+        <Field required label="ساعات العمل" error={e.hours?.message}>
           {(id) => <Controller control={f.control} name="hours" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={opts(hours)} icon="clock" className={M_SELECT} />} />}
         </Field>
         <div className={grid2}>
-          <Field label="فتحات العمل" error={e.slots?.message}>{(id) => <TextInput id={id} {...f.register("slots")} invalid={!!e.slots} className={M_INPUT} />}</Field>
-          <Field label="الفنيون" error={e.technicians?.message}>{(id) => <TextInput id={id} {...f.register("technicians")} invalid={!!e.technicians} inputMode="numeric" className={M_INPUT} />}</Field>
+          <Field required label="فتحات العمل" error={e.slots?.message}>{(id) => <TextInput id={id} {...f.register("slots")} invalid={!!e.slots} className={M_INPUT} />}</Field>
+          <Field required label="الفنيون" error={e.technicians?.message}>{(id) => <TextInput id={id} {...f.register("technicians")} invalid={!!e.technicians} inputMode="numeric" className={M_INPUT} />}</Field>
         </div>
         <MNote>يُسجَّل التعديل في سجل الفرع ويصل المزوّد إشعار. تغيير الموقع أو إضافة خدمة يتطلب زيارة ميدانية.</MNote>
         <Actions onCancel={leave} busy={m.isPending}>
@@ -224,7 +224,7 @@ function AddServiceModal({ b, close }: P) {
   return (
     <M title={`إضافة خدمة لـ${b.name}`} sub={`${b.provider.label} · ${codeLabel(b)}`} onClose={close} busy={m.isPending}>
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
-        <Field label="نوع الخدمة" error={e.type?.message}>
+        <Field required label="نوع الخدمة" error={e.type?.message}>
           {(id) => (
             <Controller
               control={f.control}
@@ -247,11 +247,11 @@ function AddServiceModal({ b, close }: P) {
         </Field>
         <CriteriaLink className="w-full! rounded-10! px-3! py-2!">معايير الاعتماد: {type} · {crit(type).criteria} ↗</CriteriaLink>
         <div className={grid2}>
-          <Field label="مدة التنفيذ من" error={e.from?.message}>{(id) => <TextInput id={id} {...f.register("from")} invalid={!!e.from} className={M_INPUT} />}</Field>
-          <Field label="إلى" error={e.to?.message}>{(id) => <TextInput id={id} {...f.register("to")} invalid={!!e.to} className={M_INPUT} />}</Field>
+          <Field required label="مدة التنفيذ من" error={e.from?.message}>{(id) => <TextInput id={id} {...f.register("from")} invalid={!!e.from} className={M_INPUT} />}</Field>
+          <Field required label="إلى" error={e.to?.message}>{(id) => <TextInput id={id} {...f.register("to")} invalid={!!e.to} className={M_INPUT} />}</Field>
         </div>
         <div className={grid2}>
-          <Field label="زيارة موديول الخدمة" error={e.visitAt?.message}>
+          <Field required label="زيارة موديول الخدمة" error={e.visitAt?.message}>
             {(id) => <Controller control={f.control} name="visitAt" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} withTime min={TODAY} invalid={!!e.visitAt} />} />}
           </Field>
           <Field label="المقيّم">{(id) => <Controller control={f.control} name="assessor" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={opts(ASSESSORS)} className={M_SELECT} />} />}</Field>
@@ -309,14 +309,14 @@ function PauseModal({ b, close }: P) {
   return (
     <M title="إيقاف الفرع مؤقتاً" sub={modalSub(b)} onClose={close} busy={m.isPending}>
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
-        <Field label="السبب" error={e.reason?.message}>
+        <Field required label="السبب" error={e.reason?.message}>
           {(id) => <Controller control={f.control} name="reason" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={opts(PAUSE_REASONS)} className={M_SELECT} />} />}
         </Field>
         <div className={grid2}>
-          <Field label="من" error={e.from?.message}>
+          <Field required label="من" error={e.from?.message}>
             {(id) => <Controller control={f.control} name="from" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} todayLabel min={TODAY} />} />}
           </Field>
-          <Field label="حتى" error={e.until?.message}>
+          <Field required label="حتى" error={e.until?.message}>
             {(id) => <Controller control={f.control} name="until" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} min={TODAY} invalid={!!e.until} />} />}
           </Field>
         </div>
@@ -407,7 +407,7 @@ function DeleteModal({ b, close }: P) {
     <M title="حذف الفرع" sub={modalSub(b)} onClose={close} busy={m.isPending}>
       <ModalKV k="الحجوزات">لا حجوزات · لا مستحقات معلّقة</ModalKV>
       <MNote tone="danger">الحذف أرشفة نهائية: يختفي الفرع من كل القوائم، ويبقى سجله في «المحذوفة».</MNote>
-      <Field label="اكتب اسم الفرع للتأكيد" error={touched && wrong ? "الاسم غير مطابق" : undefined}>
+      <Field required label="اكتب اسم الفرع للتأكيد" error={touched && wrong ? "الاسم غير مطابق" : undefined}>
         {(id) => <TextInput id={id} value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setTouched(true)} placeholder={b.name} invalid={touched && wrong} className={M_INPUT} />}
       </Field>
       <Actions onCancel={close} busy={m.isPending}>
@@ -429,7 +429,7 @@ function SurpriseModal({ b, close }: P) {
   return (
     <M title="جدولة زيارة مفاجئة" sub={modalSub(b)} onClose={close} busy={m.isPending}>
       <div className={grid2}>
-        <Field label="التاريخ" error={!date ? "اختر التاريخ" : undefined}>{(id) => <DateField id={id} value={date} onChange={setDate} min={TODAY} invalid={!date} />}</Field>
+        <Field required label="التاريخ" error={!date ? "اختر التاريخ" : undefined}>{(id) => <DateField id={id} value={date} onChange={setDate} min={TODAY} invalid={!date} />}</Field>
         <Field label="المقيّم">{(id) => <Select id={id} value={assessor} onChange={setAssessor} options={opts(ASSESSORS)} className={M_SELECT} />}</Field>
       </div>
       <Field label="القالب">{(id) => <Select id={id} value={template} onChange={setTemplate} options={opts(TEMPLATES)} className={M_SELECT} />}</Field>
@@ -459,7 +459,7 @@ function RescheduleModal({ b, close, first }: P & { first?: boolean }) {
     <M title={first ? "جدولة الزيارة الميدانية" : "إعادة جدولة الزيارة الميدانية"} sub={modalSub(b)} onClose={close} busy={m.isPending}>
       {b.visitAt && !first ? <ModalKV k="الموعد الحالي">{`${slotLabel(b.visitAt)} · ${b.assessor ?? "—"}`}</ModalKV> : null}
       <div className={grid2}>
-        <Field label={first ? "الموعد" : "الموعد الجديد"} error={!visitAt ? "اختر الموعد" : undefined}>{(id) => <DateField id={id} value={visitAt} onChange={setVisitAt} withTime min={TODAY} invalid={!visitAt} />}</Field>
+        <Field required label={first ? "الموعد" : "الموعد الجديد"} error={!visitAt ? "اختر الموعد" : undefined}>{(id) => <DateField id={id} value={visitAt} onChange={setVisitAt} withTime min={TODAY} invalid={!visitAt} />}</Field>
         <Field label="المقيّم">{(id) => <Select id={id} value={assessor} onChange={setAssessor} options={opts(ASSESSORS)} className={M_SELECT} />}</Field>
       </div>
       {first ? null : <Field label="السبب">{(id) => <Select id={id} value={reason} onChange={setReason} options={opts(REQUEST_REASONS)} className={M_SELECT} />}</Field>}
@@ -510,7 +510,7 @@ function SecondVisitModal({ b, close }: P) {
     <M title="جدولة زيارة ثانية" sub={modalSub(b)} onClose={close} busy={m.isPending}>
       <ModalKV k="سبب الرفض">{b.rejectReason ?? b.statusLine ?? "—"}</ModalKV>
       <div className={grid2}>
-        <Field label="الموعد" error={!visitAt ? "اختر الموعد" : undefined}>{(id) => <DateField id={id} value={visitAt} onChange={setVisitAt} withTime min={TODAY} invalid={!visitAt} />}</Field>
+        <Field required label="الموعد" error={!visitAt ? "اختر الموعد" : undefined}>{(id) => <DateField id={id} value={visitAt} onChange={setVisitAt} withTime min={TODAY} invalid={!visitAt} />}</Field>
         <Field label="المقيّم">{(id) => <Select id={id} value={assessor} onChange={setAssessor} options={opts(ASSESSORS)} className={M_SELECT} />}</Field>
       </div>
       <label className="flex items-center justify-between gap-2.5">

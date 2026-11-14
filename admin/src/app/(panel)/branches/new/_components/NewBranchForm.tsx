@@ -169,7 +169,7 @@ export function NewBranchForm({ providerId }: { providerId?: string }) {
             )}
           />
           {nameMode === "custom" ? (
-            <Field label="اسم الفرع على لينكار" error={e.customName?.message}>{(id) => <TextInput id={id} {...f.register("customName")} invalid={!!e.customName} className={W_INPUT} />}</Field>
+            <Field required label="اسم الفرع على لينكار" error={e.customName?.message}>{(id) => <TextInput id={id} {...f.register("customName")} invalid={!!e.customName} className={W_INPUT} />}</Field>
           ) : null}
           <Row cols={2}>
             <Field label="كود الفرع (تولّده لينكار)">{(id) => <TextInput id={id} value={district ? d.code : d.code.replace(/-[A-Z]{2}-(?=\d+$)/, "-··-")} readOnly ltr className={`${W_INPUT} bg-surface-1!`} aria-readonly />}</Field>
@@ -186,7 +186,7 @@ export function NewBranchForm({ providerId }: { providerId?: string }) {
             )}
           />
           <Row cols={3}>
-            <Field label="المدينة" error={e.city?.message}>
+            <Field required label="المدينة" error={e.city?.message}>
               {(id) => (
                 <Ctl
                   f={f}
@@ -207,21 +207,21 @@ export function NewBranchForm({ providerId }: { providerId?: string }) {
                 />
               )}
             </Field>
-            <Field label="الحي" error={e.district?.message}>
+            <Field required label="الحي" error={e.district?.message}>
               {(id) => <Ctl f={f} name="district" render={(v, set) => <Select id={id} value={v} onChange={set} options={(BRANCH_DISTRICTS[city] ?? []).map((x) => ({ value: x, label: x }))} invalid={!!e.district} placeholder="اختر الحي" className={W_SELECT} />} />}
             </Field>
             <AddressField f={f} error={e.address?.message} />
           </Row>
           <Row cols={4}>
-            <Field label="مدير الفرع" error={e.manager?.message}>{(id) => <TextInput id={id} {...f.register("manager")} invalid={!!e.manager} className={W_INPUT} />}</Field>
-            <Field label="جوال المدير" error={e.managerPhone?.message}>{(id) => <TextInput id={id} {...f.register("managerPhone")} invalid={!!e.managerPhone} inputMode="tel" ltr placeholder="05X XXX XXXX" className={W_INPUT} />}</Field>
-            <Field label="مسؤول التواصل مع لينكار" error={e.liaison?.message}>{(id) => <TextInput id={id} {...f.register("liaison")} invalid={!!e.liaison} className={W_INPUT} />}</Field>
-            <Field label="جوال الفرع" error={e.phone?.message}>{(id) => <TextInput id={id} {...f.register("phone")} invalid={!!e.phone} inputMode="tel" ltr placeholder="05X XXX XXXX" className={W_INPUT} />}</Field>
+            <Field required label="مدير الفرع" error={e.manager?.message}>{(id) => <TextInput id={id} {...f.register("manager")} invalid={!!e.manager} className={W_INPUT} />}</Field>
+            <Field required label="جوال المدير" error={e.managerPhone?.message}>{(id) => <TextInput id={id} {...f.register("managerPhone")} invalid={!!e.managerPhone} inputMode="tel" ltr placeholder="05X XXX XXXX" className={W_INPUT} />}</Field>
+            <Field required label="مسؤول التواصل مع لينكار" error={e.liaison?.message}>{(id) => <TextInput id={id} {...f.register("liaison")} invalid={!!e.liaison} className={W_INPUT} />}</Field>
+            <Field required label="جوال الفرع" error={e.phone?.message}>{(id) => <TextInput id={id} {...f.register("phone")} invalid={!!e.phone} inputMode="tel" ltr placeholder="05X XXX XXXX" className={W_INPUT} />}</Field>
           </Row>
           <Row cols={3}>
-            <Field label="ساعات العمل" error={e.hours?.message}>{(id) => <Ctl f={f} name="hours" render={(v, set) => <Select id={id} value={v} onChange={set} options={HOURS_OPTIONS.map((h) => ({ value: h, label: h }))} icon="clock" className={W_SELECT} />} />}</Field>
-            <Field label="فتحات العمل" error={e.slots?.message}>{(id) => <TextInput id={id} {...f.register("slots")} invalid={!!e.slots} inputMode="numeric" className={W_INPUT} />}</Field>
-            <Field label="عدد الفنيين" error={e.technicians?.message}>{(id) => <TextInput id={id} {...f.register("technicians")} invalid={!!e.technicians} inputMode="numeric" className={W_INPUT} />}</Field>
+            <Field required label="ساعات العمل" error={e.hours?.message}>{(id) => <Ctl f={f} name="hours" render={(v, set) => <Select id={id} value={v} onChange={set} options={HOURS_OPTIONS.map((h) => ({ value: h, label: h }))} icon="clock" className={W_SELECT} />} />}</Field>
+            <Field required label="فتحات العمل" error={e.slots?.message}>{(id) => <TextInput id={id} {...f.register("slots")} invalid={!!e.slots} inputMode="numeric" className={W_INPUT} />}</Field>
+            <Field required label="عدد الفنيين" error={e.technicians?.message}>{(id) => <TextInput id={id} {...f.register("technicians")} invalid={!!e.technicians} inputMode="numeric" className={W_INPUT} />}</Field>
           </Row>
           <h3 className="text-14 leading-[22px] font-bold text-ink">الخدمات في هذا الفرع</h3>
           {d.services.map((s) => {
@@ -250,8 +250,8 @@ export function NewBranchForm({ providerId }: { providerId?: string }) {
         <section className="flex flex-col gap-2.5 rounded-16 border border-border bg-white px-5 py-4">
           <h2 className="text-[15px] leading-6 font-bold text-ink">الزيارة الميدانية (إلزامية حتى لو أضافته لينكار)</h2>
           <Row cols={2}>
-            <Field label="الموعد" error={e.visitAt?.message}>{(id) => <Ctl f={f} name="visitAt" render={(v, set) => <DateField id={id} value={v} onChange={set} withTime min={TODAY} invalid={!!e.visitAt} className="h-11" />} />}</Field>
-            <Field label="المقيّم" error={e.assessor?.message}>{(id) => <Ctl f={f} name="assessor" render={(v, set) => <Select id={id} value={v} onChange={set} options={ASSESSORS.map((a) => ({ value: a, label: `${a} · الجودة` }))} className={W_SELECT} />} />}</Field>
+            <Field required label="الموعد" error={e.visitAt?.message}>{(id) => <Ctl f={f} name="visitAt" render={(v, set) => <DateField id={id} value={v} onChange={set} withTime min={TODAY} invalid={!!e.visitAt} className="h-11" />} />}</Field>
+            <Field required label="المقيّم" error={e.assessor?.message}>{(id) => <Ctl f={f} name="assessor" render={(v, set) => <Select id={id} value={v} onChange={set} options={ASSESSORS.map((a) => ({ value: a, label: `${a} · الجودة` }))} className={W_SELECT} />} />}</Field>
           </Row>
         </section>
         <div className="flex flex-wrap items-center gap-2.5">
@@ -317,7 +317,7 @@ function NameOption({ on, onClick, title, sub }: { on: boolean; onClick: () => v
 function AddressField({ f, error }: { f: UseFormReturn<Form>; error?: string }) {
   const [map, setMap] = useState(false);
   return (
-    <Field label="العنوان" error={error}>
+    <Field required label="العنوان" error={error}>
       {(id) => (
         <div className="flex flex-col gap-2">
           <TextInput
@@ -331,7 +331,21 @@ function AddressField({ f, error }: { f: UseFormReturn<Form>; error?: string }) 
               </button>
             }
           />
-          {map ? <MapBox className="h-[160px]" /> : null}
+          {map ? (
+            // اختيار الموقع يعبّي العنوان (القسم 18.1) — لحد ما يتحدد مزوّد الخرائط: الضغط على الخريطة يحط عنوان الحي والمدينة المختارين
+            <button
+              type="button"
+              aria-label="تحديد الموقع على الخريطة"
+              onClick={() => {
+                const [city, district] = f.getValues(["city", "district"]);
+                f.setValue("address", [district ? `حي ${district}` : "", city].filter(Boolean).join("، ") || "الموقع المحدد على الخريطة", { shouldDirty: true, shouldValidate: true });
+                setMap(false);
+              }}
+              className="block w-full cursor-crosshair"
+            >
+              <MapBox className="h-[160px]" />
+            </button>
+          ) : null}
         </div>
       )}
     </Field>
@@ -343,7 +357,7 @@ function FileField({ f, name, label, error, sample }: { f: UseFormReturn<Form>; 
   const ref = useRef<HTMLInputElement>(null);
   const v = useWatch({ control: f.control, name });
   return (
-    <Field label={label} error={error}>
+    <Field required label={label} error={error}>
       {(id) => (
         <>
           <button
@@ -387,7 +401,7 @@ function ApproveModal({ title, sub, review: initialReview, close, onApprove }: {
           ))}
         </span>
       </div>
-      <Field label="مراجعة لينكار · تظهر في صفحة الفرع على الموقع والتطبيق" error={!review.trim() ? "اكتب المراجعة" : undefined}>
+      <Field required label="مراجعة لينكار · تظهر في صفحة الفرع على الموقع والتطبيق" error={!review.trim() ? "اكتب المراجعة" : undefined}>
         {(id) => <TextArea id={id} value={review} onChange={setReview} invalid={!review.trim()} className="h-[72px]! text-14! font-normal!" rows={2} />}
       </Field>
       <div className="flex flex-wrap items-center justify-end gap-2">

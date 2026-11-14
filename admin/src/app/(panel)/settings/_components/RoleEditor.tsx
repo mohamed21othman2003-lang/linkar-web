@@ -146,7 +146,7 @@ function Editor({ id, initial, system, description, members }: { id: string | nu
 
       <Card title="بيانات الدور">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Field label="اسم الدور" error={nameError}>
+          <Field required label="اسم الدور" error={nameError}>
             {(fid) => (
               <TextInput
                 id={fid}

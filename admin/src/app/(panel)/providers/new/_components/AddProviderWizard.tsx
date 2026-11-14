@@ -109,7 +109,7 @@ export function AddProviderWizard() {
         toast("اعتُمد ونُشر", `اعتُمد ${r.short} ونُشر ${r.branches === 1 ? "الفرع" : r.branches === 2 ? "الفرعان" : "الفروع"} · ${tier} · ★${publish.rating} · زيارة تحقّق خلال 60 يوماً`);
         router.push(`/providers?tab=${v.type}`);
       } else {
-        toast(`أُنشئ ${r.short} · ${branchWord(r.branches)} بانتظار الزيارة`, `أُنشئ ${r.name} ${r.code} · ${branchWord(r.branches)} بانتظار الزيارة الميدانية (${r.dates})`);
+        toast(`أُنشئ ${r.short} · ${branchWord(r.branches)} بانتظار الزيارة`, `أُنشئ ${r.name} (${r.code}) · ${branchWord(r.branches)} بانتظار الزيارة الميدانية (${r.dates})`);
         router.push("/providers?tab=pending-visit");
       }
     },
@@ -289,12 +289,12 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
   };
   const err = (k: keyof WizardValues) => (e[k] as { message?: string } | undefined)?.message;
   const text = (name: "brand" | "brandEn" | "legalName" | "ownerName" | "email", label: string, opts: { ltr?: boolean; placeholder?: string } = {}) => (
-    <Field label={label} error={err(name)}>
+    <Field required label={label} error={err(name)}>
       {(id) => <TextInput id={id} {...register(name)} ltr={opts.ltr} placeholder={opts.placeholder} invalid={!!e[name]} className={W_INPUT} />}
     </Field>
   );
   const digitsField = (name: "cr" | "vat" | "unified", label: string, max: number) => (
-    <Field label={label} error={err(name)}>
+    <Field required label={label} error={err(name)}>
       {(id) => <TextInput id={id} {...register(name, { onChange: (ev) => setValue(name, ev.target.value.replace(/\D/g, "").slice(0, max)) })} ltr inputMode="numeric" invalid={!!e[name]} className={`num ${W_INPUT}`} />}
     </Field>
   );
@@ -310,7 +310,7 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
           {text("brand", "العلامة التجارية (تظهر للعملاء)", { placeholder: "مركز الواحة للعناية" })}
           {text("brandEn", "العلامة بالإنجليزية", { ltr: true, placeholder: "Al Waha Car Care" })}
           {text("legalName", "الاسم القانوني كما في السجل")}
-          <Field label="المدينة الرئيسية" error={err("city")}>
+          <Field required label="المدينة الرئيسية" error={err("city")}>
             {(id) => <Controller control={control} name="city" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={CITY_OPTS} className={W_SELECT} />} />}
           </Field>
         </div>
@@ -320,7 +320,7 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
           {digitsField("unified", "الرقم الوطني الموحد", 10)}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 items-start gap-3">
-          <Field label="كود مقدّم الخدمة" error={err("code")}>
+          <Field required label="كود مقدّم الخدمة" error={err("code")}>
             {(id) => (
               <TextInput
                 id={id}
@@ -346,7 +346,7 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
       <WCard title="المالك والتواصل">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {text("ownerName", "اسم المالك")}
-          <Field label="جوال المالك" error={err("ownerPhone")}>
+          <Field required label="جوال المالك" error={err("ownerPhone")}>
             {(id) => <TextInput id={id} {...register("ownerPhone", { onBlur: (ev) => setValue("ownerPhone", fmtPhone(ev.target.value)) })} ltr inputMode="tel" placeholder="05X XXX XXXX" invalid={!!e.ownerPhone} className={`num ${W_INPUT}`} />}
           </Field>
           {text("email", "البريد", { ltr: true, placeholder: "name@company.sa" })}
@@ -370,14 +370,14 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
               </div>
             ) : null}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Field label="البنك" error={e.accounts?.[i]?.bank?.message}>
+              <Field required label="البنك" error={e.accounts?.[i]?.bank?.message}>
                 {(id) => <Controller control={control} name={`accounts.${i}.bank`} render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={BANK_OPTS} className={W_SELECT} />} />}
               </Field>
-              <Field label="اسم صاحب الحساب" error={e.accounts?.[i]?.accountName?.message}>
+              <Field required label="اسم صاحب الحساب" error={e.accounts?.[i]?.accountName?.message}>
                 {(id) => <TextInput id={id} {...register(`accounts.${i}.accountName`)} invalid={!!e.accounts?.[i]?.accountName} className={W_INPUT} />}
               </Field>
             </div>
-            <Field label="رقم الآيبان (IBAN)" error={e.accounts?.[i]?.iban?.message}>
+            <Field required label="رقم الآيبان (IBAN)" error={e.accounts?.[i]?.iban?.message}>
               {(id) => (
                 <TextInput
                   id={id}
@@ -458,7 +458,7 @@ function NationalIdField({ value, onChange, onBlur, error }: { value: string; on
   const [focused, setFocused] = useState(false);
   const show = focused || !/^\d{10}$/.test(value) ? value : maskId(value);
   return (
-    <Field label="رقم الهوية" error={error}>
+    <Field required label="رقم الهوية" error={error}>
       {(id) => (
         <TextInput
           id={id}

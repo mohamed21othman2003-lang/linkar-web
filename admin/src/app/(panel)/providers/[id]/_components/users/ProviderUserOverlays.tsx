@@ -151,13 +151,13 @@ function UserFormModal({ profile, user, close }: { profile: ProviderProfile; use
       subtitle={user ? undefined : brand(profile)}
     >
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3.5" noValidate>
-        <Field label="الاسم" error={e.name?.message}>
+        <Field required label="الاسم" error={e.name?.message}>
           {(id) => <TextInput id={id} {...f.register("name")} placeholder="الاسم الكامل" invalid={!!e.name} className={INPUT} autoComplete="off" />}
         </Field>
-        <Field label="رقم الجوال" error={e.phone?.message}>
+        <Field required label="رقم الجوال" error={e.phone?.message}>
           {(id) => <TextInput id={id} {...f.register("phone")} placeholder="05XXXXXXXX" invalid={!!e.phone} inputMode="tel" ltr className={INPUT} autoComplete="off" />}
         </Field>
-        <Field label="الدور" error={e.kind?.message}>
+        <Field required label="الدور" error={e.kind?.message}>
           {(id) => (
             <Controller
               control={f.control}
@@ -167,7 +167,7 @@ function UserFormModal({ profile, user, close }: { profile: ProviderProfile; use
           )}
         </Field>
         {showBranch ? (
-          <Field label="الفرع" error={e.branchId?.message}>
+          <Field required label="الفرع" error={e.branchId?.message}>
             {(id) => (
               <Controller
                 control={f.control}
@@ -331,7 +331,7 @@ function PhoneModal({ profile, user, close }: P) {
               </div>
             )}
           </Field>
-          <Field label="الجوال الجديد" error={err}>
+          <Field required label="الجوال الجديد" error={err}>
             {(id) => (
               <TextInput
                 id={id}

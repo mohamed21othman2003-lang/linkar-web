@@ -257,7 +257,7 @@ export function NoteModal({ refId, onClose }: { refId: string; onClose: () => vo
   return (
     <Modal open onOpenChange={(o) => !o && !m.isPending && leave()} width={520} title="ملاحظة داخلية" subtitle="لفريق لينكار فقط">
       <form onSubmit={(e) => (e.preventDefault(), note.trim() ? m.mutate() : setErr("اكتب الملاحظة"))} className="flex flex-col gap-3.5" noValidate>
-        <Field label="الملاحظة" error={err}>
+        <Field required label="الملاحظة" error={err}>
           {(id) => (
             <TextInput
               id={id}

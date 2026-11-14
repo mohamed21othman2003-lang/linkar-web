@@ -24,7 +24,7 @@ export function Tabs<K extends string>({
   className?: string;
 }) {
   return (
-    <div role="tablist" aria-label={label} className={`flex ${variant === "underline" ? "items-end gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]" : "flex-wrap items-center gap-2"} ${className ?? ""}`}>
+    <div role="tablist" aria-label={label} className={`flex ${variant === "underline" ? "items-end gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]" : "items-center gap-2 max-md:-mx-1 max-md:overflow-x-auto max-md:px-1 max-md:pb-1 max-md:[scrollbar-width:none] md:flex-wrap [&>*]:shrink-0"} ${className ?? ""}`}>
       {items.map((t) => {
         const active = t.key === value;
         const cls =

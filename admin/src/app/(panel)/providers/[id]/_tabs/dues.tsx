@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/Spinner";
 import { api } from "@/lib/api";
 import { CURRENT_MONTH, MONTH_OPTIONS, type DuesRow } from "@/lib/api/provider-tabs";
 import { arDate, num } from "@/lib/format";
+import { useCan } from "@/lib/use-me";
 import { useUrlState } from "@/lib/use-url-state";
 import { SectionTitle } from "../_components/tab-bits";
 import type { ProfileTabProps } from "./types";
@@ -22,6 +23,8 @@ import type { ProfileTabProps } from "./types";
 const MONTHS = MONTH_OPTIONS.map((m) => ({ value: m.value, label: `المستحقات · ${m.label}` }));
 
 export default function DuesTab({ profile }: ProfileTabProps) {
+  // «إصدار فاتورة وتحويل» لمن يملك صرف المستحقات فقط (القسم 19.1 · 7)
+  const canPay = useCan("payouts", "edit");
   const url = useUrlState();
   const id = profile.provider.id;
   const month = url.get("month") ?? CURRENT_MONTH;
@@ -72,10 +75,12 @@ export default function DuesTab({ profile }: ProfileTabProps) {
             {`كشف ${monthName}`}
             <Icon name="file" size={16} />
           </ButtonLink>
-          <ButtonLink href={`/coming-soon?s=invoices&transfer=${id}`} variant="secondary" size="S" className="gap-1! px-2.5">
-            إصدار فاتورة وتحويل
-            <Icon name="settings" size={14} />
-          </ButtonLink>
+          {canPay ? (
+            <ButtonLink href={`/coming-soon?s=invoices&transfer=${id}`} variant="secondary" size="S" className="gap-1! px-2.5">
+              إصدار فاتورة وتحويل
+              <Icon name="settings" size={14} />
+            </ButtonLink>
+          ) : null}
         </div>
         <div className="flex items-center justify-between gap-3 py-1.5 text-13 leading-5">
           <span className="font-light text-muted">خدمات معتمدة</span>

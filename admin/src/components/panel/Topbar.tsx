@@ -44,23 +44,23 @@ export function Topbar() {
           e.preventDefault();
           router.push(`/providers${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
         }}
-        className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-10 border border-border px-3.5 xl:max-w-[460px] xl:flex-none xl:basis-[460px]"
+        className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-10 border border-border px-3 xl:h-[38px] xl:max-w-[460px] xl:flex-none xl:basis-[460px]"
       >
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={wide ? "ابحث باسم مركز أو رقم طلب أو حجز أو عميل" : "ابحث"} aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 outline-none placeholder:text-muted" />
-        <Icon name="search" size={16} className="text-muted" />
+        <Icon name="search" size={16} className="shrink-0 text-muted" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={wide ? "ابحث باسم مركز أو رقم طلب أو حجز أو عميل" : "ابحث"} aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 font-light outline-none placeholder:text-muted" />
       </form>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 sm:gap-3">
         <IconDot label="الرسائل" icon="message" />
         <IconDot label="الإشعارات" icon="bell" />
         <Menu.Root dir="rtl">
-          <Menu.Trigger className="flex items-center gap-2.5 rounded-10 px-1 py-1 hover:bg-surface-1 sm:ms-2" aria-label="قائمة المستخدم">
-            <span className="flex size-9 items-center justify-center rounded-full bg-lime text-16 font-bold text-ink">{me?.initial ?? ""}</span>
+          <Menu.Trigger className="flex items-center gap-2.5 rounded-12 py-1 ps-1.5 pe-1 hover:bg-surface-1" aria-label="قائمة المستخدم">
+            <span className="flex size-9 items-center justify-center rounded-full bg-lime text-14 font-medium text-ink">{me?.initial ?? ""}</span>
             <span className="hidden flex-col items-start md:flex">
-              <span className="text-14 font-bold leading-5">{me?.name ?? "…"}</span>
-              <span className="text-12 text-muted">{me?.role}</span>
+              <span className="text-13 font-medium">{me?.name ?? "…"}</span>
+              <span className="text-12 font-medium text-muted">{me?.role}</span>
             </span>
-            <Icon name="chevron-down" size={16} className="ms-2 text-ink" />
+            <Icon name="chevron-down" size={16} className="text-ink" />
           </Menu.Trigger>
           <Menu.Portal>
             <Menu.Content align="end" sideOffset={8} className="z-40 min-w-48 rounded-12 border border-border bg-white p-1.5 shadow-menu">
@@ -107,7 +107,7 @@ function IconDot({ label, icon }: { label: string; icon: "bell" | "message" }) {
   return (
     <button type="button" aria-label={label} title={label} className="relative flex size-10 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1">
       <Icon name={icon} size={18} />
-      <span className="absolute top-2 left-2.5 size-2 rounded-full border border-white bg-danger" />
+      <span className="absolute top-[9px] right-2 size-2 rounded-full bg-danger" />
     </button>
   );
 }

@@ -52,7 +52,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             لوحة تحكم لينكار
           </span>
           <h1 className="mt-[18px] text-[32px] leading-[48px] font-bold text-white">نظّم شبكة مقدّمي الخدمة من مكان واحد</h1>
-          <p className="mt-[18px] text-14 font-light text-white/72">أدر الطلبات والحجوزات والأسعار ومستحقات المزوّدين، وتابع الجودة والفروع والقنوات.</p>
+          <p className="mt-[18px] text-14 font-light text-white/72">أدِر الطلبات والحجوزات والأسعار ومستحقات المزوّدين، وتابع الجودة والفروع والقنوات.</p>
           <ul className="mt-7 flex flex-col gap-3">
             {POINTS.map((p) => (
               <li key={p} className="flex items-center gap-2.5 text-14 font-medium text-white/90">

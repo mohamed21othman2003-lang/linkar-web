@@ -182,17 +182,17 @@ function InviteModal({ roles, onClose }: { roles: Role[]; onClose: () => void })
     <Modal open onOpenChange={(o) => !o && tryClose()} title="دعوة مستخدم" width={560}>
       <form onSubmit={form.handleSubmit((v) => m.mutate(v))} noValidate className="flex flex-col gap-3.5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Field label="الاسم" error={errors.name?.message}>
+          <Field required label="الاسم" error={errors.name?.message}>
             {(id) => <TextInput id={id} placeholder="مازن الشهري" invalid={!!errors.name} {...form.register("name")} />}
           </Field>
-          <Field label="الجوال" error={errors.phone?.message}>
+          <Field required label="الجوال" error={errors.phone?.message}>
             {(id) => <TextInput id={id} ltr inputMode="tel" placeholder="056 210 3344" className="num" invalid={!!errors.phone} {...form.register("phone")} />}
           </Field>
         </div>
-        <Field label="البريد المؤسسي" error={errors.email?.message} hint="نطاق @linkar.sa فقط">
+        <Field required label="البريد المؤسسي" error={errors.email?.message} hint="نطاق @linkar.sa فقط">
           {(id) => <TextInput id={id} ltr type="email" placeholder="mazen@linkar.sa" invalid={!!errors.email} {...form.register("email")} />}
         </Field>
-        <Field label="الدور" error={errors.roleId?.message}>
+        <Field required label="الدور" error={errors.roleId?.message}>
           {(id) => (
             <Controller
               control={form.control}
@@ -248,14 +248,14 @@ function EditModal({ user, roles, onClose }: { user: PanelUser; roles: Role[]; o
     <Modal open onOpenChange={(o) => !o && tryClose()} title={`تعديل ${user.name}`} width={500}>
       <form onSubmit={form.handleSubmit((v) => m.mutate(v))} noValidate className="flex flex-col gap-3.5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Field label="الاسم" error={errors.name?.message}>
+          <Field required label="الاسم" error={errors.name?.message}>
             {(id) => <TextInput id={id} invalid={!!errors.name} {...form.register("name")} />}
           </Field>
-          <Field label="الجوال" error={errors.phone?.message}>
+          <Field required label="الجوال" error={errors.phone?.message}>
             {(id) => <TextInput id={id} ltr inputMode="tel" className="num" invalid={!!errors.phone} {...form.register("phone")} />}
           </Field>
         </div>
-        <Field label="الدور" error={errors.roleId?.message}>
+        <Field required label="الدور" error={errors.roleId?.message}>
           {(id) => <Controller control={form.control} name="roleId" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={roleOptions(roles)} disabled={user.isMe} />} />}
         </Field>
         <Field label="النطاق">

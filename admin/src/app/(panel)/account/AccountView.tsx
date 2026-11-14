@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { Card } from "@/components/panel/PageHead";
+import { Note } from "@/components/panel/Note";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Field, TextInput } from "@/components/ui/Field";
@@ -12,13 +13,18 @@ import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
 import { arDate, relative } from "@/lib/format";
 import { useMe } from "@/lib/use-me";
+import { useUrlState } from "@/lib/use-url-state";
 
 type Dialog = null | "password" | "mfa" | "logout-all";
 
 export function AccountView() {
   const { data: me } = useMe();
   const sessions = useQuery({ queryKey: ["me", "sessions"], queryFn: api.me.sessions });
-  const [dialog, setDialog] = useState<Dialog>(null);
+  // النوافذ حالتها في الرابط (?modal=password|mfa|logout-all) عشان «رجوع» يقفلها (القسم 2.3)
+  const url = useUrlState();
+  const m = url.get("modal");
+  const dialog: Dialog = m === "password" || m === "mfa" || m === "logout-all" ? m : null;
+  const setDialog = (d: Dialog) => (d ? url.push({ modal: d }) : url.replace({ modal: null }));
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_1fr]">
@@ -85,7 +91,7 @@ export function AccountView() {
         open={dialog === "mfa"}
         onClose={() => setDialog(null)}
         title="إعادة ضبط التحقق بخطوتين"
-        body="سيُطلب منك ربط تطبيق المصادقة من جديد عند الدخول القادم."
+        body="يُطلب منك ربط تطبيق المصادقة من جديد عند الدخول القادم."
         confirm="إعادة الضبط"
         run={api.me.resetMfa}
         toast={["أُعيد ضبط التحقق", "أُعيد ضبط التحقق بخطوتين"]}
@@ -148,7 +154,7 @@ function ChangePasswordModal({ open, onClose }: { open: boolean; onClose: () => 
     if (!Object.keys(e).length) m.mutate();
   }
   const field = (key: keyof typeof v, label: string, auto: string) => (
-    <Field label={label} error={err[key]}>
+    <Field required label={label} error={err[key]}>
       {(id) => <TextInput id={id} type="password" autoComplete={auto} value={v[key]} invalid={!!err[key]} onChange={(e) => setV((s) => ({ ...s, [key]: e.target.value }))} />}
     </Field>
   );
@@ -211,7 +217,6 @@ function ConfirmModal({
       open={open}
       onOpenChange={(o) => !o && onClose()}
       title={title}
-      description={body}
       footer={
         <>
           <Button variant="danger" size="M" loading={m.isPending} onClick={() => m.mutate()}>
@@ -222,6 +227,9 @@ function ConfirmModal({
           </Button>
         </>
       }
-    />
+    >
+      {/* ملاحظة تنبيه (Note · #FBF3E4 بنص #B7791F · أيقونة alert) زي الإطار */}
+      <Note tone="warning">{body}</Note>
+    </Modal>
   );
 }

@@ -88,7 +88,7 @@ export function OfferDrawer({ id, profile, branches }: { id: string; profile: Pr
   const loading = q.isLoading || svcs.some((x) => x.isLoading);
 
   return (
-    <Drawer open onOpenChange={(x) => !x && url.close()} title={o?.name ?? "…"} subtitle={o ? `${short(profile)} · عرض · ${branchLabel(o.branchIds, approved)}` : undefined}>
+    <Drawer tight open onOpenChange={(x) => !x && url.close()} title={o?.name ?? "…"} subtitle={o ? `${short(profile)} · عرض · ${branchLabel(o.branchIds, approved)}` : undefined}>
       {loading ? (
         <>
           <Skeleton className="h-[280px] rounded-14" />
@@ -153,7 +153,7 @@ export function PackageDrawer({ id, profile, branches }: { id: string; profile: 
   const specs = specKeys.map((k) => [k, x?.specs?.[k] ?? list.map((s) => s.products[0]?.specs[k]).find(Boolean)] as const).filter(([, val]) => val);
 
   return (
-    <Drawer open onOpenChange={(o) => !o && url.close()} title={x?.name ?? "…"} subtitle={x ? `${short(profile)} · باقة · ${branchLabel(x.branchIds, approved)}` : undefined}>
+    <Drawer tight open onOpenChange={(o) => !o && url.close()} title={x?.name ?? "…"} subtitle={x ? `${short(profile)} · باقة · ${branchLabel(x.branchIds, approved)}` : undefined}>
       {loading ? (
         <>
           <Skeleton className="h-[280px] rounded-14" />

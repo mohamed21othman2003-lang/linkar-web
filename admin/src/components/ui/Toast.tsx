@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import { ltrRuns } from "@/lib/format";
 import { Icon } from "./Icon";
 
 // رسائل التأكيد (القسم 16 · Figma CON5-T2301 3114:25307): شريط كحلي r12 · حشو 12·18 · مسافة 10 · علامة ✓ 18 أخضر فاتح
@@ -28,7 +29,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div key={t.id} role="status" className="pointer-events-auto flex max-w-[560px] items-center gap-2.5 rounded-12 bg-ink px-[18px] py-3 text-13 font-medium text-white shadow-card">
             <Icon name="check" size={18} className="shrink-0 text-lime" />
             <span className="sr-only">{t.title} — </span>
-            <span>{t.body ?? t.title}</span>
+            {/* الأكواد والأرقام جوه الرسالة معزولة عشان ما تنقلبش (REQ-0429 · LK-WA-001 · 055 410 2290) — القسم 19.1 · 8 */}
+            <span>{ltrRuns(t.body ?? t.title)}</span>
           </div>
         ))}
       </div>

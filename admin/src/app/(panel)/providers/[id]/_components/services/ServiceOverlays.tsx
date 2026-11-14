@@ -107,7 +107,7 @@ function ServiceDrawer({ id, profile, branches }: { id: string; profile: Provide
   const company = p1?.specs.company.replace(/^‏/, "") ?? "";
 
   return (
-    <Drawer
+    <Drawer tight
       open
       onOpenChange={(o) => !o && close()}
       title={s?.name ?? "…"}
@@ -293,7 +293,7 @@ function PauseServiceModal({ s, profile, branches, close }: P) {
           )}
         </Field>
       </div>
-      <Field label="رسالة للمزوّد" error={err}>
+      <Field required label="رسالة للمزوّد" error={err}>
         {(id) => <TextArea id={id} value={message} onChange={setMessage} rows={2} className="h-16! text-14! font-normal!" />}
       </Field>
       <div className="flex gap-2.5 [&>*]:flex-1">

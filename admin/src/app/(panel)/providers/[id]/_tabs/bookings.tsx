@@ -8,6 +8,7 @@ import { Pill } from "@/components/ui/Pill";
 import { api } from "@/lib/api";
 import { BOOKING_STATUS_OPTIONS, CURRENT_MONTH, MONTH_OPTIONS, type ProviderBookingRow } from "@/lib/api/provider-tabs";
 import { arDate, num } from "@/lib/format";
+import { useCan } from "@/lib/use-me";
 import { useUrlState } from "@/lib/use-url-state";
 import { ClearLink, FilterSelect, WrapHead } from "../_components/tab-bits";
 import type { ProfileTabProps } from "./types";
@@ -19,6 +20,7 @@ import type { ProfileTabProps } from "./types";
 // الجدول جوه بطاقة حشو 20·20·16: رأس 58 r10 #F4F6F5 · أعمدة 120/80/152/130/80/80/70/170/150.
 const ALL = "all";
 export default function BookingsTab({ profile }: ProfileTabProps) {
+  const canBook = useCan("bookings", "edit");
   const url = useUrlState();
   const id = profile.provider.id;
   const f = {
@@ -69,12 +71,15 @@ export default function BookingsTab({ profile }: ProfileTabProps) {
 
   return (
     <>
-      <div className="flex justify-end">
-        <ButtonLink href={`/coming-soon?s=bookings&new=1&provider=${id}`} variant="accent" className="h-11! px-4 text-14">
-          حجز يدوي
-          <Icon name="plus" size={16} />
-        </ButtonLink>
-      </div>
+      {/* يختفي لمن لا يملك تعديل الحجوزات (القسم 19.1 · 7) */}
+      {canBook ? (
+        <div className="flex justify-end">
+          <ButtonLink href={`/coming-soon?s=bookings&new=1&provider=${id}`} variant="accent" className="h-11! px-4 text-14">
+            حجز يدوي
+            <Icon name="plus" size={16} />
+          </ButtonLink>
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
           <FilterSelect label="الفرع" value={f.branch} options={branchOpts} onChange={(v) => url.replace({ bbranch: v || null })} />

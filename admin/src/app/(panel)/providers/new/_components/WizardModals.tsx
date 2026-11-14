@@ -151,15 +151,15 @@ export function AddServiceModal({
   const c = CRITERIA[type];
   return (
     <Modal open onOpenChange={(o) => !o && onClose()} width={520} className="gap-3! p-[22px]!" title={`إضافة خدمة لـ${branch}`} subtitle={`${brand} · قبل الإرسال`}>
-      <Field label="نوع الخدمة" error={err.type}>
+      <Field required label="نوع الخدمة" error={err.type}>
         {(id) => <Select id={id} value={type} onChange={setType} options={options} className={M_SELECT} invalid={!!err.type} placeholder="كل الخدمات مضافة" />}
       </Field>
       {c ? <CriteriaLink block label={`معايير الاعتماد: ${type} · ${c.items.length} معياراً · ${criticalCount(type)} حرجة`} onClick={() => onCriteria(type)} /> : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        <Field label="مدة التنفيذ من" error={err.from}>
+        <Field required label="مدة التنفيذ من" error={err.from}>
           {(id) => <TextInput id={id} value={from} onChange={(e) => setFrom(e.target.value)} placeholder="3 ساعات" invalid={!!err.from} className={M_INPUT} />}
         </Field>
-        <Field label="إلى" error={err.to}>
+        <Field required label="إلى" error={err.to}>
           {(id) => <TextInput id={id} value={to} onChange={(e) => setTo(e.target.value)} placeholder="5 ساعات" invalid={!!err.to} className={M_INPUT} />}
         </Field>
       </div>
@@ -215,7 +215,7 @@ export function ApproveModal({
           ))}
         </span>
       </div>
-      <Field label="مراجعة لينكار · تظهر في صفحة الفرع على الموقع والتطبيق" error={err}>
+      <Field required label="مراجعة لينكار · تظهر في صفحة الفرع على الموقع والتطبيق" error={err}>
         {(id) => <TextArea id={id} value={review} invalid={!!err} onChange={(v) => (setReview(v), setErr(undefined))} placeholder="«مركز حديث بفتحات مكيفة وفريق معتمد، يقدّم الغسيل والتلميع بمواد Koch Chemie.»" className="h-[72px]! text-14! font-normal!" />}
       </Field>
       <div className="flex flex-wrap items-center justify-between gap-2">

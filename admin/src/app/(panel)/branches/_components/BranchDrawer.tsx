@@ -29,7 +29,7 @@ export function BranchDrawer() {
   const openModal = (m: string) => url.push({ branch: null, modal: m, b: id });
   const approved = b && (b.status === "approved" || b.status === "new");
   return (
-    <Drawer
+    <Drawer tight
       open={!!id}
       onOpenChange={(o) => !o && close()}
       title={b ? `${b.name} · ${codeLabel(b)}` : "…"}
@@ -94,7 +94,7 @@ function Body({ b }: { b: Branch }) {
     <>
       <div className="flex flex-col gap-2 rounded-16 bg-ink px-[18px] py-4">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-16 font-bold text-white">
+          <p className="text-16 leading-6 font-bold text-white">
             {approved && b.tier ? `${TIER_LABEL[b.tier]}${b.score != null ? ` ${b.score}` : ""} · تقييم لينكار ${b.linkarRating != null ? num(b.linkarRating, 1) : "—"}` : b.status === "rejected" ? `نتيجة الزيارة ${b.result ?? "—"}` : "الفئة بعد الزيارة"}
           </p>
           <StatusPill status={b.status} small />

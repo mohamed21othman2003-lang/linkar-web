@@ -22,7 +22,7 @@ export function ForgotPasswordModal({ open, onOpenChange }: { open: boolean; onO
     setBusy(false);
     onOpenChange(false);
     setEmail("");
-    toast("أُرسل رابط الاستعادة", "تفقّد بريدك، الرابط صالح 30 دقيقة.");
+    toast("أُرسل رابط الاستعادة", "أرسلنا رابط إعادة التعيين إلى بريدك");
   }
 
   return (
@@ -33,21 +33,24 @@ export function ForgotPasswordModal({ open, onOpenChange }: { open: boolean; onO
         setError(undefined);
       }}
       title="استعادة كلمة المرور"
-      description="نرسل رابط إعادة التعيين إلى بريدك في لينكار"
+      subtitle="نرسل رابط إعادة التعيين إلى بريدك في لينكار"
+      width={480}
       footer={
         <>
-          <Button variant="accent" size="M" loading={busy} onClick={send}>
+          <Button variant="accent" size="M" className="h-[46px]" loading={busy} onClick={send}>
             إرسال الرابط
           </Button>
-          <Button variant="secondary" size="M" onClick={() => onOpenChange(false)}>
+          <Button variant="secondary" size="M" className="h-[46px]" onClick={() => onOpenChange(false)}>
             إلغاء
           </Button>
         </>
       }
     >
-      <Field label="البريد الإلكتروني" error={error} hint="الرابط صالح 30 دقيقة. لو ما وصلك تواصل مع مدير النظام.">
-        {(id) => <TextInput id={id} type="email" ltr placeholder="n.alqahtani@linkarksa.com" value={email} invalid={!!error} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} />}
+      <Field required label="البريد الإلكتروني" error={error}>
+        {(id) => <TextInput id={id} type="email" ltr className="h-[42px]!" placeholder="n.alqahtani@linkarksa.com" value={email} invalid={!!error} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} />}
       </Field>
+      {/* سطر مستقل تحت الحقل (12/18 Light · مسافة 14) زي 3114:31788 */}
+      <p className="text-12 leading-[18px] font-light text-muted">الرابط صالح 30 دقيقة. لو ما وصلك تواصل مع مدير النظام.</p>
     </Modal>
   );
 }

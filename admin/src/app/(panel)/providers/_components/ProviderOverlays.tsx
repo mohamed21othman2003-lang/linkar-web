@@ -145,14 +145,14 @@ function PauseModal({ p, close }: P) {
   return (
     <Modal open onOpenChange={(o) => !o && !m.isPending && close()} width={540} className="gap-3! p-[22px]!" title="إيقاف المنشأة مؤقتاً" subtitle={sub(p)}>
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
-        <Field label="السبب" error={e.reason?.message}>
+        <Field required label="السبب" error={e.reason?.message}>
           {(id) => <Controller control={f.control} name="reason" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={PAUSE_REASONS} className={M_SELECT} invalid={!!e.reason} />} />}
         </Field>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <Field label="من" error={e.from?.message}>
+          <Field required label="من" error={e.from?.message}>
             {(id) => <Controller control={f.control} name="from" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} todayLabel min={today} />} />}
           </Field>
-          <Field label="حتى" error={e.until?.message}>
+          <Field required label="حتى" error={e.until?.message}>
             {(id) => <Controller control={f.control} name="until" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} min={today} invalid={!!e.until} />} />}
           </Field>
         </div>
@@ -238,7 +238,7 @@ function DeleteModal({ p, close }: P) {
         >
           <ModalKV k="الحجوزات والمستحقات">لا حجوزات قائمة · لا مستحقات</ModalKV>
           <DangerNote>الحذف أرشفة نهائية: تختفي المنشأة وفروعها من القوائم وتُلغى الزيارات المجدولة، ويبقى السجل في «المحذوفة».</DangerNote>
-          <Field label="اكتب اسم المنشأة للتأكيد" error={m.isError ? "تعذّر الحذف، حاول مرة أخرى" : undefined}>
+          <Field required label="اكتب اسم المنشأة للتأكيد" error={m.isError ? "تعذّر الحذف، حاول مرة أخرى" : undefined}>
             {(id) => <TextInput id={id} value={name} onChange={(e) => setName(e.target.value)} placeholder={p.name} className={M_INPUT} autoComplete="off" />}
           </Field>
           <div className="flex gap-2.5 [&>*]:flex-1">
@@ -286,7 +286,7 @@ function RequestDocModal({ p, close }: P) {
           m.mutate();
         }}
       >
-        <Field label="المستند المطلوب" error={err}>
+        <Field required label="المستند المطلوب" error={err}>
           {(id) => <TextArea id={id} value={doc} invalid={!!err} onChange={(v) => (setDoc(v), setErr(undefined))} placeholder="اكتب اسم المستند المطلوب، مثال: رخصة البلدية سارية" />}
         </Field>
         <Field label="الفرع">{(id) => <Select id={id} value={branch} onChange={setBranch} options={branches} />}</Field>
@@ -354,7 +354,7 @@ function EditModal({ p, close }: P) {
   const m = useMutation({ mutationFn: (v: CompanyData) => api.providers.updateCompany(p.id, v), onSuccess: (_r, v) => done("حُفظت بيانات المنشأة", `حُفظت بيانات ${v.brand}`) });
   const e = f.formState.errors;
   const field = (name: keyof CompanyData, label: string, ltr?: boolean) => (
-    <Field label={label} error={e[name]?.message}>
+    <Field required label={label} error={e[name]?.message}>
       {(id) => <TextInput id={id} {...f.register(name)} ltr={ltr} invalid={!!e[name]} className={`${M_INPUT} h-[42px]!`} />}
     </Field>
   );
@@ -430,16 +430,16 @@ function AddBranchModal({ p, close }: P) {
     >
       <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3" noValidate>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2.5 gap-y-3">
-          <Field label="اسم الفرع" error={e.name?.message}>
+          <Field required label="اسم الفرع" error={e.name?.message}>
             {(id) => <TextInput id={id} {...f.register("name")} placeholder="اسم الفرع على لينكار" invalid={!!e.name} className={M_INPUT} />}
           </Field>
-          <Field label="المدينة والحي" error={e.area?.message}>
+          <Field required label="المدينة والحي" error={e.area?.message}>
             {(id) => <Controller control={f.control} name="area" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={AREAS} className={M_SELECT} />} />}
           </Field>
-          <Field label="مدير الفرع" error={e.manager?.message}>
+          <Field required label="مدير الفرع" error={e.manager?.message}>
             {(id) => <TextInput id={id} {...f.register("manager")} placeholder="اسم مدير الفرع" invalid={!!e.manager} className={M_INPUT} />}
           </Field>
-          <Field label="جوال المدير" error={e.managerPhone?.message}>
+          <Field required label="جوال المدير" error={e.managerPhone?.message}>
             {(id) => <TextInput id={id} {...f.register("managerPhone", { setValueAs: (v: string) => v.replace(/\D/g, "") })} ltr inputMode="tel" placeholder="05X XXX XXXX" invalid={!!e.managerPhone} className={M_INPUT} />}
           </Field>
         </div>
@@ -474,10 +474,10 @@ function AddBranchModal({ p, close }: P) {
           )}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2.5 gap-y-3">
-          <Field label="زيارة ميدانية" error={e.visit?.message}>
+          <Field required label="زيارة ميدانية" error={e.visit?.message}>
             {(id) => <Controller control={f.control} name="visit" render={({ field }) => <DateField id={id} value={field.value} onChange={field.onChange} withTime min={today} invalid={!!e.visit} />} />}
           </Field>
-          <Field label="المقيّم" error={e.assessor?.message}>
+          <Field required label="المقيّم" error={e.assessor?.message}>
             {(id) => <Controller control={f.control} name="assessor" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={ASSESSORS} className={M_SELECT} />} />}
           </Field>
         </div>

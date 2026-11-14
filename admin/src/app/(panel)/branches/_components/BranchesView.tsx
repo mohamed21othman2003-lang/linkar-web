@@ -309,7 +309,7 @@ function BulkMessageModal({ branches, byProvider, close, done }: { branches: Bra
           />
         )}
       </Field>
-      <Field label="نص الرسالة" error={tried && errors.body ? "اكتب نص الرسالة" : undefined}>
+      <Field required label="نص الرسالة" error={tried && errors.body ? "اكتب نص الرسالة" : undefined}>
         {(id) => <TextArea id={id} value={body} onChange={setBody} invalid={tried && errors.body} className="text-14! leading-[22px] font-normal!" />}
       </Field>
       <Field label="رابط مرفق (اختياري)">{(id) => <Select id={id} value={link} onChange={setLink} options={LINKS.map((l) => ({ value: l, label: l }))} className={`${SEL} [&>svg]:hidden`} />}</Field>

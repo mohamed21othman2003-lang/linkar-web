@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageHead } from "@/components/panel/PageHead";
 import { AccountView } from "./AccountView";
 
@@ -9,7 +10,10 @@ export default function AccountPage() {
   return (
     <>
       <PageHead title="حسابي" description="بياناتك وأمان حسابك في لوحة تحكم لينكار." />
-      <AccountView />
+      {/* النوافذ في الرابط (useSearchParams) */}
+      <Suspense>
+        <AccountView />
+      </Suspense>
     </>
   );
 }

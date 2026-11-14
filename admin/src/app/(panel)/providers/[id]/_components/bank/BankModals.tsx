@@ -128,7 +128,7 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
         <RadioCard name="acc-type" on={!bank} onClick={() => setType("wallet")} title="محفظة إلكترونية" sub="‏STC Pay أعمال · urpay أعمال" />
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <Field label={bank ? "البنك" : "المحفظة"} error={e.provider?.message}>
+        <Field required label={bank ? "البنك" : "المحفظة"} error={e.provider?.message}>
           {(id) => (
             <Controller
               control={control}
@@ -148,7 +148,7 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
             />
           )}
         </Field>
-        <Field label="يُستخدم لـ" error={e.usage?.message}>
+        <Field required label="يُستخدم لـ" error={e.usage?.message}>
           {(id) => (
             <Controller
               control={control}
@@ -167,7 +167,7 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
           )}
         </Field>
       </div>
-      <Field label={bank ? "رقم الآيبان (IBAN)" : "رقم جوال المحفظة"} error={e.number?.message}>
+      <Field required label={bank ? "رقم الآيبان (IBAN)" : "رقم جوال المحفظة"} error={e.number?.message}>
         {(id) => (
           <Controller
             control={control}
@@ -175,7 +175,7 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
             render={({ field }) => (
               <TextInput
                 id={id}
-                dir="ltr"
+                ltr
                 inputMode={bank ? "text" : "numeric"}
                 autoComplete="off"
                 value={field.value}
@@ -189,11 +189,11 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
           />
         )}
       </Field>
-      <Field label="اسم صاحب الحساب" error={e.holder?.message}>
+      <Field required label="اسم صاحب الحساب" error={e.holder?.message}>
         {(id) => <TextInput id={id} {...register("holder")} invalid={!!e.holder} className={IN} />}
       </Field>
       {bank ? (
-        <Field label="شهادة الآيبان من البنك" error={e.certificate?.message}>
+        <Field required label="شهادة الآيبان من البنك" error={e.certificate?.message}>
           {(id) => (
             <label
               htmlFor={id}
@@ -301,7 +301,7 @@ function SettlementForm({
   };
   return (
     <>
-      <Field label="قاعدة التحويل" error={error}>
+      <Field required label="قاعدة التحويل" error={error}>
         {(id) => (
           <TextInput
             id={id}

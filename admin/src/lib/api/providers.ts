@@ -1,5 +1,6 @@
 // مقدّمو الخدمة (القسم 7 و 8) — بيانات تجريبية بنفس شكل الخادم المتوقع.
 // المصدر: إطارات Figma CON5-07 / 07D / 07A / 07M / 07N (صفحة 3114:412، قسم «v5 · 07 · مقدّمو الخدمة»).
+import { ltr, ltrRuns } from "../format";
 import { ApiError, delay } from "./errors";
 import type { ListResult } from "./users";
 
@@ -121,7 +122,7 @@ const active = (city: string, line: string): Pick<ProviderDrawer, "subtitle" | "
   heroLine: `${city} · ${line}`,
   pill: { label: "نشط", tone: "success" },
 });
-const contact = (v: string): DrawerBlock => ({ kind: "tile", title: "مسؤول التواصل مع لينكار", text: v });
+const contact = (v: string): DrawerBlock => ({ kind: "tile", title: "مسؤول التواصل مع لينكار", text: ltrRuns(v) });
 const network = (branches: string, services: string, types: string): DrawerBlock => ({
   kind: "tile",
   title: "الشبكة والخدمات",
@@ -878,7 +879,7 @@ export const providersApi = {
         cr: v.cr,
         owner: `${v.ownerName} · ${v.ownerPhone}`,
         kind: v.type === "care" ? (n > 1 ? "مركز عناية · عدة فروع" : "مركز عناية · فرع واحد") : n > 1 ? "مغسلة سيارات · عدة فروع" : "مغسلة سيارات · فرع واحد",
-        bank: `${v.bank} •••• ${v.iban.replace(/\s/g, "").slice(-4)}`,
+        bank: `${v.bank} ${ltr(`•••• ${v.iban.replace(/\s/g, "").slice(-4)}`)}`,
         contact: `${v.ownerName} · ${v.ownerPhone}`,
       }),
       drawer: {
@@ -909,7 +910,7 @@ export const providersApi = {
             kind: "tile",
             title: "الحساب البنكي",
             rows: [
-              ["البنك", `${v.bank} •••• ${v.iban.replace(/\s/g, "").slice(-4)}`],
+              ["البنك", `${v.bank} ${ltr(`•••• ${v.iban.replace(/\s/g, "").slice(-4)}`)}`],
               ["صاحب الحساب", v.accountName],
             ],
           },

@@ -34,7 +34,7 @@ function VerifyForm() {
 
   return (
     <form onSubmit={submit} noValidate className="mt-[18px] flex flex-col gap-[18px]">
-      <Field strong label={recovery ? "رمز الاسترداد" : "رمز التحقق"} error={error}>
+      <Field required strong label={recovery ? "رمز الاسترداد" : "رمز التحقق"} error={error}>
         {(id) => (
           <TextInput
             id={id}

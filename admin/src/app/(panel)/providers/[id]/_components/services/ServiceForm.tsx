@@ -514,10 +514,10 @@ function ServiceCard({ branches }: { branches: ProviderBranch[] }) {
   return (
     <SCard>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <Field label="اسم الخدمة كما يراه العميل" error={e.name?.message}>
+        <Field required label="اسم الخدمة كما يراه العميل" error={e.name?.message}>
           {(id) => <TextInput id={id} {...register("name")} placeholder="Johnson Ceramic Pro Gold" invalid={!!e.name} className={IN} />}
         </Field>
-        <Field label="التصنيف" error={e.category?.message}>
+        <Field required label="التصنيف" error={e.category?.message}>
           {(id) => (
             <Controller
               control={control}
@@ -676,7 +676,7 @@ function ProductBody({ i, branches, priceTab, setPriceTab }: { i: number; branch
     <>
       {/* الوصف والخصائص */}
       <SCard title="الوصف والخصائص" className="p-4!">
-        <Field label="الوصف للعميل" error={err(e, `${base}.description`)}>
+        <Field required label="الوصف للعميل" error={err(e, `${base}.description`)}>
           {(id) => (
             <textarea
               id={id}
@@ -740,7 +740,7 @@ function ProductBody({ i, branches, priceTab, setPriceTab }: { i: number; branch
       {/* المواصفات الفنية — حقول ديناميكية من تعريف التصنيف، وأغلبها تلقائي من المنتج المعتمد (مقفول) */}
       <SCard title="المواصفات الفنية" className="p-4!">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <Field label="المنتج المعتمد" error={err(e, `${base}.name`)}>
+          <Field required label="المنتج المعتمد" error={err(e, `${base}.name`)}>
             {(id) => (
               <Select
                 id={id}
@@ -982,7 +982,7 @@ function ChannelsCard({ users, branches, durations }: { users: { id: string; nam
   const setVis = (u: string, k: "sale" | "cost", v: boolean) => setValue("visibility", { ...vis, [u]: { ...(vis[u] ?? { sale: false, cost: false }), [k]: v } }, { shouldDirty: true });
   return (
     <SCard title="التنفيذ والقنوات">
-      <Field label="مدة التنفيذ" error={e.duration?.message}>
+      <Field required label="مدة التنفيذ" error={e.duration?.message}>
         {(id) => (
           <Controller
             control={control}

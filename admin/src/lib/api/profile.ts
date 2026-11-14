@@ -1,6 +1,7 @@
 // ملف المزوّد (القسم 9) — رأس الملف وأعداد التبويبات و«نظرة عامة» والفروع والمستخدمون.
 // المصدر: إطارات Figma CON5-07a (صفحة 3114:412، قسم «v5 · 07 · مقدّمو الخدمة») — جونسون نظرة عامة 3114:48595 · تعديل البيانات CON5-07E1 3304:158088.
 // باقي التبويبات (الحجوزات، التحليلات، المستحقات، …) بتضيف دوالها هنا أو في ملفاتها من غير ما تغيّر الأشكال دي.
+import { ltr } from "../format";
 import { delay } from "./errors";
 import { providersApi, type Provider } from "./providers";
 
@@ -366,7 +367,7 @@ export const profileApi = {
       cr: v.cr,
       vat: v.vat,
       owner: `${v.ownerName} · ${v.ownerPhone}`,
-      bank: `${acc.bank.replace(/^مصرف /, "")} •••• ${acc.iban.replace(/\s/g, "").slice(-4)}`,
+      bank: `${acc.bank.replace(/^مصرف /, "")} ${ltr(`•••• ${acc.iban.replace(/\s/g, "").slice(-4)}`)}`,
     });
     // الأرقام الحساسة بتتخزن وترجع مخفية زي ما الخادم بيعمل
     const digits = (s: string) => s.replace(/\D/g, "");

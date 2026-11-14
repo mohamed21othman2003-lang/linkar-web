@@ -39,7 +39,8 @@ export function Modal({
           style={{ width }}
           className={`fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] max-w-[calc(100vw-32px)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3.5 overflow-y-auto rounded-[20px] bg-white p-6 shadow-card focus:outline-none ${className ?? ""}`}
         >
-          <div className="flex items-center justify-between gap-2">
+          {/* بسطر فرعي: الرأس 52 والزر فوق (caMIN · 3114:54387) · من غيره: الزر في النص مع العنوان (3114:28715) */}
+          <div className={`flex justify-between gap-2 ${subtitle ? "items-start" : "items-center"}`}>
             {subtitle ? (
               <div className="flex flex-col gap-0.5">
                 <Dialog.Title className="text-18 font-bold text-ink">{title}</Dialog.Title>

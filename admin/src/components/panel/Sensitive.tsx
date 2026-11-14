@@ -71,7 +71,7 @@ function OtpModal({ copy, onSubmit, onCancel }: { copy: OtpCopy; onSubmit: (otp:
   return (
     <Modal open onOpenChange={(o) => !o && !busy && onCancel()} title={copy.title} description={copy.description} width={440}>
       <form onSubmit={submit} className="flex flex-col gap-3.5" noValidate>
-        <Field label="رمز التحقق" error={error}>
+        <Field required label="رمز التحقق" error={error}>
           {(id) => (
             <TextInput
               id={id}
