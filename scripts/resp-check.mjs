@@ -39,6 +39,18 @@ const admin = [
   "/login", "/reset-password?token=x", "/account", "/coming-soon?s=home",
   "/settings/users", "/settings/users?user=u-2", "/settings/roles", "/settings/roles/operations", "/settings/audit-log",
   "/providers", "/providers?provider=johnson", "/providers/new?step=1", "/providers/new?step=2", "/providers/new?step=3",
+  "/providers/lk-jn-001?tab=bookings", "/providers/lk-jn-001?tab=quality", "/providers/lk-jn-001?tab=analytics", "/providers/lk-jn-001?tab=dues",
+  "/branches", "/branches/LK-JN-ZH-001/performance",
+  // المرحلة التانية
+  "/overview", "/analytics", "/analytics?tab=behavior", "/reports",
+  "/requests", "/requests?request=REQ-2026-0418", "/requests?tab=data",
+  "/bookings", "/bookings?booking=BK-21473", "/bookings?tab=completed", "/bookings/new?step=1", "/bookings/new?step=2",
+  "/customers", "/customers?customer=cu-ms", "/customers?tab=coupons", "/customers/cu-ms",
+  "/partners/agencies", "/partners/agencies?agency=DL-014", "/partners/agencies/DL-014", "/partners/marketers", "/partners/marketers?marketer=SM123", "/partners/marketers/SM123", "/partners/marketers/rates",
+  "/invoices", "/invoices?tab=provider", "/payments", "/payments?tab=refunds", "/dues", "/dues?tab=transfers", "/dues?tab=claims",
+  "/field-evaluation", "/field-evaluation/centers", "/field-evaluation/centers/lk-dr-001", "/reviews", "/reviews?tab=reviews", "/reviews?complaint=CM-3352",
+  "/messages", "/messages?message=MSG-0418", "/system/policies", "/system/paid-features",
+  "/reference/service-categories", "/reference/car-sizes", "/reference/service-categories/ppf", "/reference/accreditation",
 ];
 const isAdmin = args.includes("--admin");
 const pages = (isAdmin

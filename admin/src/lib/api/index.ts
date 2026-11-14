@@ -33,6 +33,7 @@ import { messagesApi } from "./messages";
 import { policiesApi } from "./policies";
 import { paidFeaturesApi } from "./paid-features";
 import { referenceApi } from "./reference";
+import { notificationsApi } from "./notifications";
 export type * from "./types";
 export { ApiError, isApiError } from "./errors";
 
@@ -143,6 +144,8 @@ export const api = {
   paidFeatures: paidFeaturesApi,
   // المرحلة 2 · البيانات المرجعية CON5-20
   reference: referenceApi,
+  // CON5-M02 · الإشعارات (جرس الشريط العلوي)
+  notifications: notificationsApi,
 };
 
 // صلاحيات (القسم 2.5): لكل وحدة أربعة إجراءات + صلاحيات حساسة. «*» = كل الصلاحيات.

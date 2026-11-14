@@ -307,6 +307,8 @@ function CancelModal({ b }: { b: Booking }) {
 }
 
 // ───────────── CON5-04M · تحويل الحجز (3114-34295 …) ─────────────
+// سطور 20 (leading-5) في السؤال والخيارين والمقارنة زي Figma — كانت 22 فالنافذة أطول بـ13 (diff 6.18%).
+// أقصى ارتفاع 100dvh−32 (مش 90vh) عشان نسخة BK-21475 (811) ما تنضغطش على شاشة 900.
 function TransferModal({ b }: { b: Booking }) {
   const close = useClose();
   const d = TRANSFER_DEFAULTS[b.id] ?? { mode: "branch" as const, ...(TRANSFER_BRANCHES.find((x) => x.providerId === b.providerId && x.branchCode !== b.branchCode) ?? TRANSFER_BRANCHES[0]), reason: TRANSFER_REASONS[1] };
@@ -333,14 +335,14 @@ function TransferModal({ b }: { b: Booking }) {
     if (m === "branch") pickProvider(b.providerId);
   };
   const row = (k: string, now: ReactNode, next: ReactNode) => (
-    <div className="grid grid-cols-[1.35fr_1fr_1fr] border-t border-divider px-2.5 py-1.5 text-13">
+    <div className="grid grid-cols-[1.35fr_1fr_1fr] border-t border-divider px-2.5 py-1.5 text-13 leading-5">
       <span className="font-medium text-ink">{k}</span>
       <span className="text-ink">{typeof now === "string" ? ltrRuns(now) : now}</span>
       <span className="text-ink">{typeof next === "string" ? ltrRuns(next) : next}</span>
     </div>
   );
   return (
-    <Modal open onOpenChange={(o) => !o && close()} title={`تحويل الحجز ${b.id}`} subtitle={ltrRuns(`${b.customer.name} · ${b.service} · ${b.size}`)} width={simple ? 520 : 600} className="gap-2.5! px-[22px]! py-5!"
+    <Modal open onOpenChange={(o) => !o && close()} title={`تحويل الحجز ${b.id}`} subtitle={ltrRuns(`${b.customer.name} · ${b.service} · ${b.size}`)} width={simple ? 520 : 600} className="max-h-[calc(100dvh-32px)]! gap-2.5! px-[22px]! py-5!"
       footer={
         <>
           <Button variant="secondary" className={SEC} onClick={close}>
@@ -361,18 +363,18 @@ function TransferModal({ b }: { b: Booking }) {
         </>
       ) : (
         <>
-          <p className="text-13 font-medium text-muted">إلى أين يتحوّل الحجز؟</p>
+          <p className="text-13 leading-5 font-medium text-muted">إلى أين يتحوّل الحجز؟</p>
           <div role="radiogroup" className="grid grid-cols-2 gap-2.5">
-            <OptionCard className="px-3.5 py-3" selected={mode === "branch"} onClick={() => setModeAnd("branch")} title="فرع آخر لنفس مقدّم الخدمة" sub="نفس الخدمة ونفس سعر التكلفة" />
-            <OptionCard className="px-3.5 py-3" selected={mode === "provider"} onClick={() => setModeAnd("provider")} title="مقدّم خدمة آخر" sub="خدمة مماثلة · بموافقة العميل" />
+            <OptionCard className="min-h-[69px] px-3.5 py-3 [&_span]:leading-5" selected={mode === "branch"} onClick={() => setModeAnd("branch")} title="فرع آخر لنفس مقدّم الخدمة" sub="نفس الخدمة ونفس سعر التكلفة" />
+            <OptionCard className="min-h-[69px] px-3.5 py-3 [&_span]:leading-5" selected={mode === "provider"} onClick={() => setModeAnd("provider")} title="مقدّم خدمة آخر" sub="خدمة مماثلة · بموافقة العميل" />
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             <SelectField label="مقدّم الخدمة" value={providerId} options={mode === "branch" ? providers.filter((p) => p.value === b.providerId) : providers.filter((p) => p.value !== b.providerId)} onChange={pickProvider} />
             <SelectField label="الفرع" value={code} options={branches} onChange={setCode} />
           </div>
           {mode === "provider" && d.service ? <SelectField label="الخدمة لدى الوجهة" value={d.service} options={opts([d.service])} onChange={() => {}} /> : null}
-          <div className="overflow-hidden rounded-10 border border-border">
-            <div className="grid grid-cols-[1.35fr_1fr_1fr] bg-surface-1 px-2.5 py-1.5 text-12 font-medium text-muted">
+          <div className="shrink-0 overflow-hidden rounded-10 border border-border">
+            <div className="grid grid-cols-[1.35fr_1fr_1fr] bg-surface-1 px-2.5 py-1.5 text-12 leading-5 font-medium text-muted">
               <span />
               <span>الحالي</span>
               <span>بعد التحويل</span>
@@ -386,7 +388,13 @@ function TransferModal({ b }: { b: Booking }) {
         </>
       )}
       {b.voucherCode && b.validUntil ? <MKV k="القسيمة">{ltrRuns(`${b.voucherCode} · تبقى صالحة حتى ${arDate(b.validUntil)}`)}</MKV> : null}
-      {mode === "provider" && d.consent && !simple ? <Checkbox label={d.consent} checked={consent} onChange={(e) => setConsent(e.target.checked)} /> : null}
+      {/* Figma «Toggle · وافق العميل…» (3114-34043): النص يمين والمفتاح شمال */}
+      {mode === "provider" && d.consent && !simple ? (
+        <label className="flex min-h-[22px] items-center justify-between gap-2.5 text-13 leading-5 font-medium text-ink">
+          {d.consent}
+          <Switch checked={consent} onCheckedChange={setConsent} label={d.consent} />
+        </label>
+      ) : null}
       {simple ? null : (
         <MNote>
           تصل رسالة للعميل بالفرع الجديد. يظهر الحجز في لوحة {target.provider} ويُضاف لمستحقاتها بسعرها المتفق عليه عند التنفيذ، وفي لوحة {b.provider} بحالة «حُوِّل بقرار لينكار».

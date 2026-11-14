@@ -21,7 +21,7 @@ export function LoginForm() {
   const router = useRouter();
   const [forgot, setForgot] = useState(false);
   const [serverError, setServerError] = useState<string>();
-  const { register, handleSubmit, formState } = useForm<Values>({
+  const { register, handleSubmit, formState, getValues } = useForm<Values>({
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "", remember: true },
   });
@@ -57,7 +57,8 @@ export function LoginForm() {
       <Button type="submit" size="L" loading={isSubmitting} className="w-full">
         تسجيل الدخول
       </Button>
-      <ForgotPasswordModal open={forgot} onOpenChange={setForgot} />
+      {/* key: يتعبّى البريد من جديد مع كل فتح */}
+      <ForgotPasswordModal key={String(forgot)} open={forgot} onOpenChange={setForgot} defaultEmail={forgot ? getValues("email").trim() : ""} />
     </form>
   );
 }

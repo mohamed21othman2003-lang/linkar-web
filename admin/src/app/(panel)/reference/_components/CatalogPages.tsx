@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
 import { ltrRuns, num } from "@/lib/format";
+import { productOptions, productWarranty, templateCount, templateCritical } from "@/lib/api/reference";
 import { useUrlState } from "@/lib/use-url-state";
 import { CategoryIcon, HEAD_ROW, PanelHead, SmallBtn } from "./bits";
 import { EditableList } from "./EditableList";
@@ -154,13 +155,13 @@ export function CategoryPage({ slug }: { slug: string }) {
                     {ltrRuns(p.name)}
                   </span>
                   <span className="min-w-0" style={cell(210)}>
-                    {ltrRuns(p.specs)}
+                    {ltrRuns(p.summary)}
                   </span>
                   <span className="min-w-0" style={cell(150)}>
-                    {ltrRuns(p.warranty)}
+                    {ltrRuns(productWarranty(p))}
                   </span>
                   <span className="min-w-0" style={cell(120)}>
-                    {p.options}
+                    {productOptions(p)}
                   </span>
                   <span className="num min-w-0" style={cell(70)}>
                     {num(p.providers)}
@@ -275,16 +276,16 @@ export function AccreditationPage() {
                   {ltrRuns(t.category)}
                 </span>
                 <span className="min-w-0" style={cell(230)}>
-                  {t.method}
+                  {t.method || "—"}
                 </span>
                 <span className="num min-w-0" style={cell(80)}>
-                  {t.count}
+                  {templateCount(t)}
                 </span>
                 <span className="num min-w-0" style={cell(60)}>
-                  {t.critical}
+                  {templateCritical(t)}
                 </span>
                 <span className="num min-w-0" style={cell(70)}>
-                  {t.threshold}
+                  {t.threshold || "—"}
                 </span>
                 <span className="flex-1" />
                 <Acts edit={() => url.push({ modal: "ref-template", template: t.id })} del={() => url.push({ modal: "ref-template-delete", template: t.id })} />

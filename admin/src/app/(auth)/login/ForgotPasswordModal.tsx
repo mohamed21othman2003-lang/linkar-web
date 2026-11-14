@@ -9,9 +9,10 @@ import { api } from "@/lib/api";
 
 // CON5-L0 · استعادة كلمة المرور (3114-31788): نافذة فوق صفحة الدخول.
 // بعد «إرسال الرابط» تظهر «أُرسل رابط الاستعادة» دايماً، حتى لو البريد مش مسجّل (لأسباب أمنية).
-export function ForgotPasswordModal({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+// البريد بيتعبّى من حقل «البريد المؤسسي» في صفحة الدخول (Figma بيرسمه قيمة كحلي مش placeholder).
+export function ForgotPasswordModal({ open, onOpenChange, defaultEmail = "" }: { open: boolean; onOpenChange: (o: boolean) => void; defaultEmail?: string }) {
   const toast = useToast();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
 

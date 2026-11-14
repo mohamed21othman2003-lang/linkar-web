@@ -8,14 +8,16 @@ import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { api } from "@/lib/api";
 import { useMe } from "@/lib/use-me";
+import { ContentModal, NotificationsBell } from "./Notifications";
 
 // الشريط العلوي (القسم 4.1): البحث العام (في المرحلة الأولى بيدوّر في مقدمي الخدمة بس)،
-// الإشعارات والرسائل (بنقطة تنبيه — لاحقاً)، وقائمة المستخدم: حسابي · تسجيل الخروج.
+// الإشعارات (CON5-M02 — لوحة الجرس في Notifications.tsx) والرسائل (بنقطة تنبيه)، وقائمة المستخدم: حسابي · إدارة المحتوى (CON5-M03) · تسجيل الخروج.
 export function Topbar() {
   const router = useRouter();
   const { data: me } = useMe();
   const [q, setQ] = useState("");
   const [logout, setLogout] = useState(false);
+  const [content, setContent] = useState(false);
   // نص البحث الكامل مابيكفّيش الموبايل — «ابحث» بس تحت 1024
   const wide = useSyncExternalStore(
     (cb) => {
@@ -52,7 +54,7 @@ export function Topbar() {
 
       <div className="flex items-center gap-2 sm:gap-3">
         <IconDot label="الرسائل" icon="message" />
-        <IconDot label="الإشعارات" icon="bell" />
+        <NotificationsBell />
         <Menu.Root dir="rtl">
           <Menu.Trigger className="flex items-center gap-2.5 rounded-12 py-1 ps-1.5 pe-1 hover:bg-surface-1" aria-label="قائمة المستخدم">
             <span className="flex size-9 items-center justify-center rounded-full bg-lime text-14 font-medium text-ink">{me?.initial ?? ""}</span>
@@ -67,6 +69,9 @@ export function Topbar() {
               <Menu.Item onSelect={() => router.push("/account")} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 outline-none data-highlighted:bg-surface-1">
                 <Icon name="user" size={18} /> حسابي
               </Menu.Item>
+              <Menu.Item onSelect={() => setContent(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 outline-none data-highlighted:bg-surface-1">
+                <Icon name="globe" size={18} /> إدارة المحتوى
+              </Menu.Item>
               <Menu.Item onSelect={() => setLogout(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 text-danger outline-none data-highlighted:bg-surface-1">
                 <Icon name="logout" size={18} /> تسجيل الخروج
               </Menu.Item>
@@ -75,6 +80,7 @@ export function Topbar() {
         </Menu.Root>
       </div>
 
+      <ContentModal open={content} onOpenChange={setContent} />
       {/* CON5-24M · تسجيل الخروج (3114-28775) */}
       <Modal
         open={logout}
@@ -103,7 +109,7 @@ export function Topbar() {
   );
 }
 
-function IconDot({ label, icon }: { label: string; icon: "bell" | "message" }) {
+function IconDot({ label, icon }: { label: string; icon: "message" }) {
   return (
     <button type="button" aria-label={label} title={label} className="relative flex size-10 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1">
       <Icon name={icon} size={18} />
