@@ -1,4 +1,4 @@
-import { ICON_SPRITE_VERSION, type UiGlyph, type ServiceIcon } from "./generated";
+import { CRITICAL_ICONS, ICON_SPRITE_VERSION, type UiGlyph, type ServiceIcon } from "./generated";
 
 // Icon colors come from text color (currentColor); Figma tones map to:
 // Green=text-nature-green, Neon=text-neon-green, Charcoal=text-deep-charcoal, White=text-white,
@@ -21,7 +21,7 @@ export interface IconProps {
 export function Icon({ name, size = 24, className, flip }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden className={`${flip ? "dir-flip " : ""}${className ?? ""}`}>
-      <use href={`${UI_SPRITE}#${name}`} />
+      <use href={CRITICAL_ICONS.has(name) ? `#i-${name}` : `${UI_SPRITE}#${name}`} />
     </svg>
   );
 }

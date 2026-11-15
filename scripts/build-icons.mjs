@@ -62,6 +62,13 @@ writeFileSync(join(spriteDir, "service.svg"), serviceSprite);
 // نسخة الملف في اللينك (?v=) عشان المتصفح ياخد الجديد لما الأيقونات تتغيّر
 const version = createHash("sha1").update(uiSprite + serviceSprite).digest("hex").slice(0, 8);
 
+// أيقونات أول الشاشة (الهيدر، بحث الهيرو، نافذة الموقع): بتتحط جوه الصفحة نفسها (~2KB مضغوطة) بدل ما تستنى
+// الـsprite الخارجي — المتصفح بيطلبه بأولوية منخفضة فكانت بتظهر بعد ثواني على النت البطيء (Speed Index)
+const CRITICAL = ["bell", "check", "chevron-down", "chevron-left", "map-pin", "menu", "navigation", "search", "user", "x"];
+const uiMap = new Map(ui);
+for (const k of CRITICAL) if (!uiMap.has(k)) throw new Error(`critical icon "${k}" is not in the UI set`);
+const critical = CRITICAL.map((k) => `<symbol id="i-${k}" viewBox="0 0 24 24" fill="none">${uiMap.get(k)}</symbol>`).join("");
+
 const header = `// Generated from Figma (UI icon set 665:3031 and v2 Service icon set 1308:420)
 // by scripts/build-icons.mjs. Do not edit by hand; rerun \`node scripts/build-icons.mjs\`.
 // The glyphs themselves live in the sprites public/icons/ui.svg and public/icons/service.svg.
@@ -69,6 +76,14 @@ const header = `// Generated from Figma (UI icon set 665:3031 and v2 Service ico
 
 writeFileSync(
   outFile,
-  `${header}\n${emitType("UiGlyph", ui)}\n${emitType("ServiceIcon", service)}\nexport const ICON_SPRITE_VERSION = ${JSON.stringify(version)};\n`,
+  `${header}\n${emitType("UiGlyph", ui)}\n${emitType("ServiceIcon", service)}\nexport const ICON_SPRITE_VERSION = ${JSON.stringify(version)};\n\nexport const CRITICAL_ICONS: ReadonlySet<UiGlyph> = new Set(${JSON.stringify(CRITICAL)});\n`,
+);
+// ملف لوحده عشان الـstring ده مايدخلش في الـJS بتاع المتصفح (Icon بيتستورد من client components) — الـlayout (server) بس اللي بيقراه
+writeFileSync(
+  join(iconsDir, "critical-symbols.ts"),
+  `${header}
+/** symbols of CRITICAL_ICONS (ids "i-<name>"), inlined once per page by the root layout */
+export const CRITICAL_SYMBOLS = ${JSON.stringify(critical)};
+`,
 );
 console.log(`Wrote ${outFile} and public/icons/{ui,service}.svg (${ui.length} UI icons, ${service.length} service icons, v${version})`);

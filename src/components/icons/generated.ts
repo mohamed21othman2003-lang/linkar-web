@@ -61,3 +61,5 @@ export type ServiceIcon =
   | "wash";
 
 export const ICON_SPRITE_VERSION = "f0c97a21";
+
+export const CRITICAL_ICONS: ReadonlySet<UiGlyph> = new Set(["bell","check","chevron-down","chevron-left","map-pin","menu","navigation","search","user","x"]);
