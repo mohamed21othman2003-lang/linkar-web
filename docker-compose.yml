@@ -1,27 +1,27 @@
-# تشغيل موقع لينكار على السيرفر:
-#   docker compose up -d --build     ← بناء وتشغيل
-#   docker compose logs -f web       ← متابعة اللوج (أو admin للوحة التحكم)
-#   docker compose down              ← إيقاف (كاش الصور بيفضل في الـvolume)
+# Running Linkar on a server:
+#   docker compose up -d --build     <- build and start
+#   docker compose logs -f web       <- follow logs (or "admin" for the control panel)
+#   docker compose down              <- stop (the image cache volume is kept)
 #
-# الإعدادات من ملف .env جنب الملف ده (انسخ .env.example → .env وعدّل).
-# خدمتين: web = موقع العملاء · admin = لوحة تحكم لينكار (admin.linkarksa.com).
-# الاتنين لسه ببيانات تجريبية جوه الكود (مفيش باك إند ولا قاعدة بيانات).
+# Settings come from .env next to this file (copy .env.example -> .env and edit).
+# Two services: web = customer website · admin = Linkar control panel (admin.linkarksa.com).
+# Both still run on demo data inside the code (no backend or database yet).
 
 services:
   web:
     build:
       context: .
       args:
-        # الدومين النهائي — بيتدمج وقت البناء في sitemap.xml و robots.txt
+        # Final domain — baked in at build time into sitemap.xml and robots.txt
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://linkar-web.vercel.app}
     image: linkar-web:latest
     container_name: linkar-web
     ports:
-      # الافتراضي على loopback بس (يتنشر عن طريق nginx / reverse proxy).
-      # لو مفيش proxy خلّي BIND_ADDR=0.0.0.0 في .env
+      # Loopback only by default (published through nginx / a reverse proxy).
+      # Without a proxy, set BIND_ADDR=0.0.0.0 in .env
       - "${BIND_ADDR:-127.0.0.1}:${WEB_PORT:-3000}:3000"
     volumes:
-      # كاش الصور المحسّنة (AVIF/WebP) يفضل بين عمليات النشر
+      # Optimized image cache (AVIF/WebP) kept between deploys
       - next_image_cache:/app/.next/cache/images
     restart: unless-stopped
 
@@ -29,7 +29,7 @@ services:
     build:
       context: ./admin
       args:
-        # رابط الـAPI لما الخادم يجهز (فاضي = بيانات تجريبية)
+        # Backend API URL once it exists (empty = demo data)
         NEXT_PUBLIC_API_URL: ${ADMIN_API_URL:-}
     image: linkar-admin:latest
     container_name: linkar-admin

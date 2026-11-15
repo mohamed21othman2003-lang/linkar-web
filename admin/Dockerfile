@@ -1,4 +1,4 @@
-# لوحة تحكم لينكار (Next.js 16) — نفس طريقة صورة الموقع: بناء على مراحل بإخراج standalone
+# Linkar control panel (Next.js 16) — same approach as the website image: multi-stage, standalone output
 
 FROM node:22-alpine AS deps
 WORKDIR /app
@@ -9,11 +9,11 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# رابط الـAPI لما الخادم يجهز (دلوقتي اللوحة شغّالة ببيانات تجريبية جوه الكود)
+# Backend API URL once it exists (for now the panel runs on demo data inside the code)
 ARG NEXT_PUBLIC_API_URL=
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
     NEXT_TELEMETRY_DISABLED=1
-# الخط من Google Fonts بيتنزّل وقت البناء (next/font/google) — البناء محتاج إنترنت
+# The font is downloaded from Google Fonts at build time (next/font/google) — the build needs internet access
 RUN npm run build
 
 FROM node:22-alpine AS runner
