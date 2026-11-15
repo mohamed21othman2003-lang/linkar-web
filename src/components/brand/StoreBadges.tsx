@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { stores } from "@/lib/data/site";
 
 // Store button (42:381) — شارات أبل وجوجل الرسمية (بالإنجليزي زي الفيجما)

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale } from "@/i18n/locale";

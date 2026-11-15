@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { useEffect } from "react";
 import type { Locale } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";

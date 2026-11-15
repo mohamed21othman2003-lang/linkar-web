@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getHomeDict } from "@/i18n/dict/home";

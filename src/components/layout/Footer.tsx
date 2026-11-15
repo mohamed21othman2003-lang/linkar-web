@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
 import { getSite } from "@/lib/server/content";

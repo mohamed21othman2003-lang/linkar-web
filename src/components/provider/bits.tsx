@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import type { ServiceSlug } from "@/lib/data/types";
 import { routes } from "@/lib/routes";
 import { Icon, ServiceGlyph } from "@/components/icons/Icon";

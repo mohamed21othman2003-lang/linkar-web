@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { logoCrops, logoInsets } from "@/lib/data/search/logo-insets";
 
 // Partner logo · Tile (566:1939): مربع أبيض بحد cool-gray والشعار جوّه بمكانه ومقاسه من الفيجما لكل مقدّم خدمة

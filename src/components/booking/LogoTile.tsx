@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { logoSize } from "@/lib/data/providers";
 
 // Partner logo (44×44 / 40 / 36 / 26 / 22): صندوق أبيض r16 بحدود رمادية والشعار جوّاه بنسبته

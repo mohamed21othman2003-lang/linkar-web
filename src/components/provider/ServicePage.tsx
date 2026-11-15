@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";

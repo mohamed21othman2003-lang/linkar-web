@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/brand/Logo";

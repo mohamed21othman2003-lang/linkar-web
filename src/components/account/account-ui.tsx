@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { IBM_Plex_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import type { BookingStatus } from "@/lib/data/account/bookings";

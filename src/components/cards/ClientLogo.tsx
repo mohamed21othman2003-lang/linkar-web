@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Img";
 import { logoAreaSize, logoSize } from "@/lib/data/providers";
 
 // v2 · Client logo — الشعار بنفس مقاسه في الفيجما داخل صندوق أبيض (بيتقص لو أكبر من الصندوق)
