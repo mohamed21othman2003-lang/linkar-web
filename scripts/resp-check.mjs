@@ -6,7 +6,10 @@
 //   clipped    — نص متقصوص جوه عنصر overflow hidden (من غير ellipsis أو line-clamp)
 // وبيحفظ لقطة كاملة لكل صفحة في .claude/figma-refs/resp/<width>/ للمراجعة بالعين.
 // node scripts/resp-check.mjs [--base http://localhost:3000] [--widths 390,768] [--only /account] [--locale en] [--no-shots]
-import { chromium } from "playwright";
+//   --browser webkit|firefox|chromium   محرّك المتصفح مع --widths (webkit = محرّك سفاري)
+//   --devices "iPhone SE,Pixel 7,iPad Mini"   أجهزة Playwright الجاهزة (كل جهاز بمحرّكه: آيفون/آيباد = webkit، أندرويد = chromium)
+//   --shots issues   لقطة بس للصفحات اللي فيها مشكلة · --out name   اسم ملف التقرير
+import { chromium, webkit, firefox, devices } from "playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
 
 const args = process.argv.slice(2);
@@ -18,6 +21,11 @@ const rawOnly = opt("only", "");
 const only = rawOnly ? "/" + rawOnly.replace(/^[A-Za-z]:\/.*?\/Git\//, "").replace(/^\/+/, "") : "";
 const locale = opt("locale", "ar");
 const shots = !args.includes("--no-shots");
+const shotsIssuesOnly = opt("shots", "") === "issues";
+const engines = { chromium, webkit, firefox };
+const deviceNames = opt("devices", "").split(",").map((x) => x.trim()).filter(Boolean);
+for (const d of deviceNames) if (!devices[d]) throw new Error(`unknown device: ${d}`);
+const outName = opt("out", "report");
 
 const guest = [
   "/", "/services", "/search?services=polish", "/search?services=polish,nano-ceramic", "/search?services=polish&view=map",
@@ -150,29 +158,52 @@ const detect = () => {
   return out;
 };
 
-const browser = await chromium.launch();
+// كل «بروفايل» = مقاس + محرّك + (جهاز اختياري)
+const profiles = deviceNames.length
+  ? deviceNames.map((d) => {
+      const { defaultBrowserType, ...ctx } = devices[d];
+      return { label: d, engine: defaultBrowserType, ctx };
+    })
+  : widths.map((w) => ({
+      label: String(w),
+      engine: opt("browser", "chromium"),
+      ctx: { viewport: { width: w, height: 900 }, ...(w < 768 && opt("browser", "chromium") !== "firefox" ? { isMobile: true, hasTouch: true } : {}) },
+    }));
+const launched = {};
 const report = {};
 let issues = 0;
-for (const w of widths) {
-  const dir = `.claude/figma-refs/resp/${w}`;
+const sessions = [...new Set(pages.map((x) => x.s))];
+for (const prof of profiles) {
+  launched[prof.engine] ??= await engines[prof.engine].launch();
+  const dir = `.claude/figma-refs/resp/${prof.label.replace(/[^\w.-]+/g, "_")}`;
   if (shots) mkdirSync(dir, { recursive: true });
-  for (const s of ["", "user"]) {
+  for (const s of sessions) {
     const list = pages.filter((x) => x.s === s);
     if (!list.length) continue;
-    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, ...(w < 768 ? { isMobile: true, hasTouch: true } : {}) });
     const host = new URL(base).hostname;
-    await ctx.addCookies([
-      { name: "locale", value: locale, domain: host, path: "/" },
-      ...(s === "admin" ? [{ name: "linkar_admin_session", value: "demo", domain: host, path: "/" }] : s ? [{ name: "linkar_session", value: s, domain: host, path: "/" }] : []),
-    ]);
-    await ctx.addInitScript(() => {
-      localStorage.setItem("linkar_location_prompt", "dismissed");
-      // نافذة «قيّم خدمتك» بتفتح لوحدها للعميل المسجّل (W2-39) — نعلّمها إنها اتعرضت عشان ماتتحسبش تداخل
-      for (const id of ["BK-21388", "BK-21280", "BK-21431", "BK-21452"]) localStorage.setItem(`linkar_rate_prompted_${id}`, "1");
-    });
-    const page = await ctx.newPage();
-    for (const { p } of list) {
-      await page.goto(base + p, { waitUntil: "networkidle" }).catch(() => {});
+    const bad = [];
+    let ctx, page;
+    // سياق جديد — ولو المتصفح نفسه وقع (WebKit على ويندوز بيقع أحيانًا مع الرام القليلة) نشغّله تاني
+    const fresh = async () => {
+      await ctx?.close().catch(() => {});
+      let browser = launched[prof.engine];
+      if (!browser.isConnected()) browser = launched[prof.engine] = await engines[prof.engine].launch();
+      ctx = await browser.newContext(prof.ctx);
+      await ctx.addCookies([
+        { name: "locale", value: locale, domain: host, path: "/" },
+        ...(s === "admin" ? [{ name: "linkar_admin_session", value: "demo", domain: host, path: "/" }] : s ? [{ name: "linkar_session", value: s, domain: host, path: "/" }] : []),
+      ]);
+      await ctx.addInitScript(() => {
+        localStorage.setItem("linkar_location_prompt", "dismissed");
+        // نافذة «قيّم خدمتك» بتفتح لوحدها للعميل المسجّل (W2-39) — نعلّمها إنها اتعرضت عشان ماتتحسبش تداخل
+        for (const id of ["BK-21388", "BK-21280", "BK-21431", "BK-21452"]) localStorage.setItem(`linkar_rate_prompted_${id}`, "1");
+      });
+      page = await ctx.newPage();
+      page.on("response", (res) => { if (res.status() >= 400 && !res.url().includes("/does-not-exist")) bad.push(`${res.status()} ${res.url()}`); });
+    };
+    const check = async (p) => {
+      bad.length = 0;
+      await page.goto(base + p, { waitUntil: "networkidle", timeout: 45000 }).catch((e) => { if (/crash|closed/i.test(e.message)) throw e; });
       await page.waitForLoadState("networkidle").catch(() => {});
       // صفحات بتحوّل لوحدها بعد التحميل (redirect) بتكسر evaluate — نستنى ونجرّب تاني بدل ما الفحص كله يقع
       const scroll = () => page.evaluate(async () => {
@@ -189,27 +220,41 @@ for (const w of widths) {
       await page.waitForTimeout(250);
       const r = await page.evaluate(detect).catch(async () => {
         await page.waitForLoadState("networkidle").catch(() => {});
-        return page.evaluate(detect).catch(() => ({ overflow: 0, offscreen: [], overlap: [], clipped: [] }));
+        return page.evaluate(detect);
       });
-      if (process.env.RESP_DEBUG) console.log(p, w, JSON.stringify(r).slice(0, 200));
-      const key = `${p}${s ? " [user]" : ""}`;
-      const n = (r.overflow ? 1 : 0) + r.offscreen.length + r.overlap.length + r.clipped.length;
+      r.bad = [...new Set(bad)];
+      return r;
+    };
+    await fresh();
+    for (const { p } of list) {
+      let r;
+      for (let attempt = 0; attempt < 3 && !r; attempt++) {
+        try { r = await check(p); } catch (e) {
+          if (process.env.RESP_DEBUG) console.log("retry", p, prof.label, e.message.split(String.fromCharCode(10))[0]);
+          await fresh().catch(() => {});
+        }
+      }
+      r ??= { overflow: 0, offscreen: [], overlap: [], clipped: [], bad: ["page crashed 3 times"] };
+      if (process.env.RESP_DEBUG) console.log(p, prof.label, JSON.stringify(r).slice(0, 200));
+      const key = `${p}${s ? ` [${s}]` : ""}`;
+      const n = (r.overflow ? 1 : 0) + r.offscreen.length + r.overlap.length + r.clipped.length + r.bad.length;
       if (n) {
         report[key] ??= {};
-        report[key][w] = r;
+        report[key][prof.label] = r;
         issues += n;
       }
-      if (shots) {
-        const file = `${dir}/${(s ? "u" : "g")}${p.replace(/[/?&=,]+/g, "_") || "_home"}.png`;
+      if (shots && (!shotsIssuesOnly || n)) {
+        const file = `${dir}/${(s ? s[0] : "g")}${p.replace(/[/?&=,]+/g, "_") || "_home"}.png`;
         await page.screenshot({ path: file, fullPage: true }).catch(() => {});
       }
     }
-    await ctx.close();
+    await ctx.close().catch(() => {});
   }
-  console.log(`width ${w}: done`);
+  console.log(`${prof.label} (${prof.engine}): done`);
 }
-await browser.close();
-writeFileSync(".claude/figma-refs/resp/report.json", JSON.stringify(report, null, 1));
+for (const b of Object.values(launched)) await b.close().catch(() => {});
+mkdirSync(".claude/figma-refs/resp", { recursive: true });
+writeFileSync(`.claude/figma-refs/resp/${outName}.json`, JSON.stringify(report, null, 1));
 console.log(`pages with issues: ${Object.keys(report).length} · total findings: ${issues}`);
 for (const [k, v] of Object.entries(report)) {
   console.log(`\n${k}`);
@@ -219,6 +264,7 @@ for (const [k, v] of Object.entries(report)) {
     if (r.offscreen.length) parts.push(`offscreen ${r.offscreen.length}`);
     if (r.overlap.length) parts.push(`overlap ${r.overlap.length}`);
     if (r.clipped.length) parts.push(`clipped ${r.clipped.length}`);
+    if (r.bad?.length) parts.push(`http ${r.bad.join(" ")}`);
     console.log(`  ${w}: ${parts.join(" · ")}`);
   }
 }

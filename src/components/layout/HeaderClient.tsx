@@ -162,7 +162,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
             })}
           </nav>
 
-          <div className={`flex items-center gap-3 ${dark ? "ms-auto gap-2.5 lg:ms-0 lg:gap-3.5" : ""}`}>
+          <div className={`ms-auto flex items-center lg:ms-0 ${dark ? "gap-2.5 lg:gap-3.5" : "gap-2 sm:gap-3"}`}>
             <LangSwitch
               locale={v.locale}
               label={v.langLabel}
@@ -171,7 +171,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                   ? // V2-01t/V2-01m: مافيش زر اللغة في هيدر الهيرو تحت الديسكتوب (موجود في القائمة)
                     // V2-01 (202:7312 «Btn · اللغة»): دايرة 43 بحد ليموني/55 على كحلي/35
                     "hidden size-[43px] items-center justify-center rounded-full border border-neon-green/55 bg-deep-charcoal/35 text-label-m text-white lg:flex"
-                  : "flex h-control-sm items-center rounded-full border border-cool-gray px-3 text-label-m text-deep-charcoal"
+                  : // موبايل: نفس طول زر القائمة (40) عشان الزرّين يبانوا طقم واحد في آخر الهيدر
+                    "flex h-10 min-w-10 items-center justify-center rounded-full border border-cool-gray px-3 text-label-m text-deep-charcoal hover:bg-tile sm:h-control-sm"
               }
             />
             {/* v2 · Web header · Auth=Signed in (85:26114): «Notifications» — Icon button Ghost M (44، r12) بين اللغة والحساب.
@@ -256,10 +257,10 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               aria-label={v.menuLabel}
               onClick={() => setDrawer(true)}
               className={`flex items-center justify-center rounded-md lg:hidden ${
-                dark ? "size-10 bg-white/12 text-white md:size-11" : "size-control-md text-deep-charcoal"
+                dark ? "size-10 bg-white/12 text-white md:size-11" : "size-10 border border-cool-gray text-deep-charcoal hover:bg-tile sm:size-control-md"
               }`}
             >
-              <Icon name="menu" size={dark ? 20 : 24} className={dark ? "md:size-[22px]" : ""} />
+              <Icon name="menu" size={dark ? 20 : 22} className={dark ? "md:size-[22px]" : "sm:size-6"} />
             </button>
           </div>
         </div>
