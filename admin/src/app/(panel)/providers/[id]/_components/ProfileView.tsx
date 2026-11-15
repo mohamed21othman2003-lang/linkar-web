@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { withBase } from "@/lib/base-path";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ComponentType } from "react";
@@ -256,7 +257,7 @@ function Logo({ src, name }: { src?: string; name: string }) {
     <div className="hidden h-[90px] w-[129px] shrink-0 items-center justify-center rounded-[16.8px] border-[1.4px] border-border sm:flex">
       <div className="flex h-16 w-[129px] items-start justify-center rounded-14 bg-white pt-2.5">
         <div className="flex h-[45px] w-[118px] items-start justify-center rounded-[11.2px] border-[1.4px] border-border bg-white pt-[5.6px]">
-          {src ? <Image src={src} alt={name} width={95} height={30} loading="eager" className="h-[30px] w-[95px] object-contain" /> : <Icon name="store" size={22} className="mt-0.5 text-muted" />}
+          {src ? <Image src={src.startsWith("/") ? withBase(src) : src} alt={name} width={95} height={30} loading="eager" className="h-[30px] w-[95px] object-contain" /> : <Icon name="store" size={22} className="mt-0.5 text-muted" />}
         </div>
       </div>
     </div>
