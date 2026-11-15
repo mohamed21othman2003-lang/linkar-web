@@ -20,6 +20,8 @@ export const notoKufiLatin = localFont({
   src: "./fonts/noto-kufi-arabic-latin.woff2",
   weight: "300 700",
   variable: "--font-noto-kufi-lat",
+  // احتياطي ورا Readex Pro (نفس المدى تقريباً) — نادراً ما بيتطلب، فمش بنحمّله مقدّماً مع أول الصفحة
+  preload: false,
   declarations: [
     {
       prop: "unicode-range",
