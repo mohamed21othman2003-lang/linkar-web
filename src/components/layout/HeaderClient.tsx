@@ -234,10 +234,12 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                   setPanel(null);
                   setSearchOpen((o) => !o);
                 }}
-                className="hidden h-control-md items-center gap-1.5 whitespace-nowrap rounded-md bg-neon-green px-5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover sm:flex"
+                aria-label={v.search}
+                // 1024–1279: الروابط كلها ظاهرة ومافيش مكان للنص — الزر أيقونة بس (كان بيطلع برّه الشاشة على 1024)
+                className="hidden h-control-md items-center gap-1.5 whitespace-nowrap rounded-md bg-neon-green px-5 text-label-m text-deep-charcoal hover:bg-bg-brand-hover sm:flex lg:max-xl:w-control-md lg:max-xl:justify-center lg:max-xl:px-0"
               >
                 <Icon name="search" size={18} />
-                {v.search}
+                <span className="lg:max-xl:sr-only">{v.search}</span>
               </button>
             )}
             {/* V2-01t: زر «ابحث» مربع زجاجي جنب القائمة في هيدر الهيرو */}
