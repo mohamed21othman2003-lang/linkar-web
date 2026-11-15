@@ -47,9 +47,8 @@ export default async function Home() {
   return (
     <>
       <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={a.forYou} />
-      <Suspense fallback={null}>
-        <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
-      </Suspense>
+      {/* «اخترنا لك» بيبان جزء منه في أول شاشة على الديسكتوب — بيتبعت مع الصفحة على طول (من غير Suspense) */}
+      <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
       {/* الأقسام اللي تحت أول شاشة: المتصفح مابيحسبش layout/رسم ليها لحد ما تقرّب من الشاشة (content-visibility) —
           الرئيسية فيها ~1600 عنصر وده كان أكبر شغل على المعالج في الموبايل */}
       <Deferred>
@@ -101,8 +100,13 @@ export default async function Home() {
 // Suspense: React بيعمل hydration لكل قسم في مهمة لوحده ويسيب المتصفح يتنفّس بينهم — بدل مهمة واحدة طويلة للصفحة كلها (TBT)
 function Deferred({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Placeholder />}>
       <div className="[contain-intrinsic-size:auto_900px] [content-visibility:auto]">{children}</div>
     </Suspense>
   );
+}
+
+// React ساعات بيبعت القسم الكبير بعد أول رسمة — المكان المحجوز بيمنع الفوتر يطلع تحت الهيرو ثم يتزق (CLS)
+function Placeholder() {
+  return <div aria-hidden className="h-[900px]" />;
 }
