@@ -47,8 +47,11 @@ export default async function Home() {
   return (
     <>
       <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={a.forYou} />
-      {/* «اخترنا لك» بيبان جزء منه في أول شاشة على الديسكتوب — بيتبعت مع الصفحة على طول (من غير Suspense) */}
-      <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+      {/* Suspense: React بيجهّز القسم ده في مهمة لوحده بعد الهيرو (أكبر مهمة على الموبايل كانت تجهيز الصفحة كلها مرة واحدة).
+          المكان المحجوز أطول من الجزء اللي بيبان منه في أول شاشة على الديسكتوب، فمفيش حاجة بتتحرك قدام العين */}
+      <Suspense fallback={<Placeholder />}>
+        <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+      </Suspense>
       {/* الأقسام اللي تحت أول شاشة: المتصفح مابيحسبش layout/رسم ليها لحد ما تقرّب من الشاشة (content-visibility) —
           الرئيسية فيها ~1600 عنصر وده كان أكبر شغل على المعالج في الموبايل */}
       <Deferred>
