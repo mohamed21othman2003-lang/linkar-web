@@ -42,6 +42,7 @@ docker compose down               # stop (the image cache volume is kept)
 | `ADMIN_PORT` | `3001` | Host port for the control panel. |
 | `BIND_ADDR` | `127.0.0.1` | `127.0.0.1` = reachable only through a reverse proxy on the same machine (recommended). `0.0.0.0` = exposed directly. |
 | `ADMIN_API_URL` | *(empty)* | Backend API base URL for the panel, once it exists (also baked in at build time). Empty = demo data. |
+| `ADMIN_BASE_PATH` | *(empty)* | Serve the panel under a path of the website's domain, e.g. `/admin` → `https://linkar.ido.sa/admin` (nginx then proxies `/admin/` to the panel without rewriting). Empty = the panel has its own subdomain. Baked in at build time. |
 
 Never commit `.env` (it is git-ignored).
 
