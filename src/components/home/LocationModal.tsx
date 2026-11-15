@@ -10,35 +10,46 @@ export type LocationModalCopy = Record<
   string
 >;
 
+// الاختيار بيتحفظ في كوكي عشان السيرفر يعرف من الأول يرسم النافذة ولا لأ (لو ظهرت بعد التحميل بتأخّر Speed Index)
 function remember(value: string) {
-  try {
-    window.localStorage.setItem(LOCATION_STORAGE_KEY, value);
-  } catch {
-    // التخزين ممكن يكون مقفول (وضع التصفح الخاص) — النافذة هتظهر تاني بس مش مشكلة
-  }
+  document.cookie = `${LOCATION_STORAGE_KEY}=${value}; path=/; max-age=31536000; samesite=lax`;
 }
 
 // Home · Location permission · first visit (658:2075) — بتظهر مرة واحدة في أول زيارة (للنسختين)،
 // وبتتفتح تاني من حقل الموقع في الهيرو أو «تغيير» في «اخترنا لك».
-export function LocationModal({ copy, privacyHref, currentLabel }: { copy: LocationModalCopy; privacyHref: string; currentLabel: string }) {
-  const [open, setOpen] = useState(false);
+export function LocationModal({
+  copy,
+  privacyHref,
+  currentLabel,
+  initialOpen,
+}: {
+  copy: LocationModalCopy;
+  privacyHref: string;
+  currentLabel: string;
+  /** السيرفر بيفتحها من أول رسمة لو مفيش كوكي الاختيار (أول زيارة) */
+  initialOpen: boolean;
+}) {
+  const [open, setOpen] = useState(initialOpen);
   const [query, setQuery] = useState("");
   const dialog = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let seen: string | null = "1";
+    // زوار قدام كان اختيارهم محفوظ في localStorage قبل الكوكي — ننقله ونقفل النافذة
     try {
-      seen = window.localStorage.getItem(LOCATION_STORAGE_KEY);
+      const old = window.localStorage.getItem(LOCATION_STORAGE_KEY);
+      if (old) {
+        remember(old);
+        window.localStorage.removeItem(LOCATION_STORAGE_KEY);
+        // مزامنة لمرة واحدة مع تخزين المتصفح (مش متاح وقت الرسم على السيرفر)
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setOpen(false);
+      }
     } catch {
-      seen = "1";
+      // التخزين مقفول (تصفح خاص) — مفيش حاجة ننقلها
     }
-    const id = seen ? 0 : window.setTimeout(() => setOpen(true), 400);
     const onOpen = () => setOpen(true);
     window.addEventListener(LOCATION_OPEN, onOpen);
-    return () => {
-      window.clearTimeout(id);
-      window.removeEventListener(LOCATION_OPEN, onOpen);
-    };
+    return () => window.removeEventListener(LOCATION_OPEN, onOpen);
   }, []);
 
   useEffect(() => {
