@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox, Field, TextInput } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
+import { withBase } from "@/lib/base-path";
 
 const schema = z.object({
   email: z.string().trim().min(1, "أدخل البريد المؤسسي").email("أدخل بريداً صحيحاً"),
@@ -28,7 +29,7 @@ export function LoginForm() {
 
   const onSubmit = handleSubmit(async (v) => {
     setServerError(undefined);
-    const res = await fetch("/api/auth/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(v) });
+    const res = await fetch(withBase("/api/auth/login"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(v) });
     // عند الخطأ: رسالة تحت الحقول من غير ما نقول أنهي واحد غلط
     if (!res.ok) return setServerError("البريد أو كلمة المرور غير صحيحة.");
     const next = new URLSearchParams(window.location.search).get("next");

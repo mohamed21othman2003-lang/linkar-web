@@ -34,6 +34,7 @@ import { policiesApi } from "./policies";
 import { paidFeaturesApi } from "./paid-features";
 import { referenceApi } from "./reference";
 import { notificationsApi } from "./notifications";
+import { withBase } from "@/lib/base-path";
 export type * from "./types";
 export { ApiError, isApiError } from "./errors";
 
@@ -63,7 +64,7 @@ export const api = {
     forgotPassword: async (email: string) => delay({ ok: true, email }),
     resetPassword: async (token: string, password: string) => delay({ ok: !!token && password.length >= 12 }),
     logout: async () => {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch(withBase("/api/auth/logout"), { method: "POST" });
     },
   },
   me: {

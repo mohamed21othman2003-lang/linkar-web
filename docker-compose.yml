@@ -31,6 +31,8 @@ services:
       args:
         # Backend API URL once it exists (empty = demo data)
         NEXT_PUBLIC_API_URL: ${ADMIN_API_URL:-}
+        # Sub-path when the panel shares the website's domain (e.g. /admin) — empty = its own domain
+        NEXT_PUBLIC_BASE_PATH: ${ADMIN_BASE_PATH:-}
     image: linkar-admin:latest
     container_name: linkar-admin
     ports:

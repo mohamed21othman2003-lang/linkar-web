@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { withBase } from "@/lib/base-path";
 
 // CON5-L1 / L2: صفحة كاملة من غير هيكل اللوحة — لوحة الدخول (يمين، أبيض) + لوحة تعريفية (شمال، كحلي)
 const POINTS = [
@@ -13,7 +14,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="grid min-h-screen grid-cols-1 bg-white lg:grid-cols-2">
       <main className="flex flex-col px-6 pt-[118px] pb-10 lg:ps-[160px] lg:pe-6">
         <div className="flex w-full max-w-[400px] flex-1 flex-col">
-          <Image src="/logo-primary.svg" alt="Linkar" width={128} height={20} priority className="mb-10 h-5 w-auto self-start" />
+          <Image src={withBase("/logo-primary.svg")} alt="Linkar" width={128} height={20} priority className="mb-10 h-5 w-auto self-start" />
           {children}
         </div>
         {/* زر English ظاهر في التصميم بس مش مربوط — اللوحة عربية بس في المرحلة الأولى (CON5-L1) */}

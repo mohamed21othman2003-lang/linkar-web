@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon, type UiGlyph } from "@/components/ui/Icon";
 import { api } from "@/lib/api";
+import { withBase } from "@/lib/base-path";
 
 // القائمة الجانبية (القسم 4.1): 240px يمين الشاشة، كحلي — نفس بنود Figma (13 بند).
 // المرحلة التانية: كل البنود ليها صفحات. «الإعدادات» = /system (السياسات والميزات المدفوعة).
@@ -74,7 +75,7 @@ export function Sidebar() {
       className={`fixed inset-y-0 right-0 z-40 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-4 pb-6 text-white transition-transform xl:z-30 xl:translate-x-0 ${open ? "translate-x-0 shadow-drawer" : "translate-x-full"}`}
     >
       <Link href="/overview" className="flex flex-col items-start gap-1 px-3 pb-3">
-        <Image src="/logo-inverse.svg" alt="Linkar" width={112} height={15} className="h-[15px] w-[112px]" priority />
+        <Image src={withBase("/logo-inverse.svg")} alt="Linkar" width={112} height={15} className="h-[15px] w-[112px]" priority />
         <span className="text-16 font-medium">لوحة تحكم لينكار</span>
       </Link>
       <nav className="flex flex-col">

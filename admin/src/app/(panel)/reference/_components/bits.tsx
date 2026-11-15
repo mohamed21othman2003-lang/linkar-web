@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon, type UiGlyph } from "@/components/ui/Icon";
 import { REF_NAV, type RefSlug } from "@/lib/api/reference";
+import { withBase } from "@/lib/base-path";
 
 // قطع صفحات البيانات المرجعية (CON5-20 3114:74880)
 
@@ -82,7 +83,7 @@ export function CategoryIcon({ icon }: { icon?: string }) {
     <span className="flex size-10 shrink-0 items-center justify-center bg-ink text-lime">
       {icon ? (
         <svg width={24} height={24} viewBox="0 0 48 48" aria-hidden>
-          <use href={`/icons/service.svg#${icon}`} />
+          <use href={withBase(`/icons/service.svg#${icon}`)} />
         </svg>
       ) : (
         <Icon name="grid" size={20} />

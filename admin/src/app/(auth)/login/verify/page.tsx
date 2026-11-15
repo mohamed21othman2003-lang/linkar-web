@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Field, TextInput } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
 import { HOME_PATH } from "@/lib/session";
+import { withBase } from "@/lib/base-path";
 
 // CON5-L2 · رمز التحقق (3114-28858): حقل واحد بفاصل «482 913». «استخدم رمز الاسترداد» يبدّل الحقل لرمز الاسترداد.
 // بعد «تأكيد الدخول» → مقدمو الخدمة في المرحلة الأولى.
@@ -23,7 +24,7 @@ function VerifyForm() {
     e.preventDefault();
     setError(undefined);
     setBusy(true);
-    const res = await fetch("/api/auth/verify", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, recovery }) });
+    const res = await fetch(withBase("/api/auth/verify"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, recovery }) });
     setBusy(false);
     if (res.status === 401) return router.replace("/login");
     if (!res.ok) return setError(recovery ? "رمز الاسترداد غير صحيح." : "الرمز غير صحيح أو انتهت صلاحيته.");
