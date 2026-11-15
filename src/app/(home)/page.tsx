@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
@@ -46,7 +47,9 @@ export default async function Home() {
   return (
     <>
       <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={a.forYou} />
-      <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+      <Suspense fallback={null}>
+        <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+      </Suspense>
       {/* الأقسام اللي تحت أول شاشة: المتصفح مابيحسبش layout/رسم ليها لحد ما تقرّب من الشاشة (content-visibility) —
           الرئيسية فيها ~1600 عنصر وده كان أكبر شغل على المعالج في الموبايل */}
       <Deferred>
@@ -94,7 +97,12 @@ export default async function Home() {
   );
 }
 
-// ارتفاع تقديري لحد ما القسم يترسم أول مرة (auto = بعد كده بيفتكر ارتفاعه الحقيقي)
+// ارتفاع تقديري لحد ما القسم يترسم أول مرة (auto = بعد كده بيفتكر ارتفاعه الحقيقي).
+// Suspense: React بيعمل hydration لكل قسم في مهمة لوحده ويسيب المتصفح يتنفّس بينهم — بدل مهمة واحدة طويلة للصفحة كلها (TBT)
 function Deferred({ children }: { children: React.ReactNode }) {
-  return <div className="[contain-intrinsic-size:auto_900px] [content-visibility:auto]">{children}</div>;
+  return (
+    <Suspense fallback={null}>
+      <div className="[contain-intrinsic-size:auto_900px] [content-visibility:auto]">{children}</div>
+    </Suspense>
+  );
 }
