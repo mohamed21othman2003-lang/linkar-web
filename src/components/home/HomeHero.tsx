@@ -35,7 +35,8 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
             src="/figma/home/hero-coupe-2x.jpg"
             alt=""
             fill
-            preload
+            loading="eager"
+            fetchPriority="high"
             sizes="(max-width: 767px) 150vw, 100vw"
             quality={55}
             className={`object-cover max-md:object-fill ${ar ? "lg:-scale-x-100" : ""}`}

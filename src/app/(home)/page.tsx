@@ -47,14 +47,32 @@ export default async function Home() {
     <>
       <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={a.forYou} />
       <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
-      <HowItWorksBand locale={locale} content={content} providers={providers} />
-      <ServicesBand locale={locale} content={content} items={serviceItems} />
-      <ProvidersBand locale={locale} content={content} providers={providers} services={services} />
-      <OffersBand locale={locale} content={content} providers={providers} endsAt={endsAt} />
-      <PackagesBand locale={locale} content={content} providers={providers} />
-      <AppBand id={a.app} locale={locale} content={content} />
-      <ReviewsBand locale={locale} content={content} />
-      <DealerBand locale={locale} content={content} />
+      {/* الأقسام اللي تحت أول شاشة: المتصفح مابيحسبش layout/رسم ليها لحد ما تقرّب من الشاشة (content-visibility) —
+          الرئيسية فيها ~1600 عنصر وده كان أكبر شغل على المعالج في الموبايل */}
+      <Deferred>
+        <HowItWorksBand locale={locale} content={content} providers={providers} />
+      </Deferred>
+      <Deferred>
+        <ServicesBand locale={locale} content={content} items={serviceItems} />
+      </Deferred>
+      <Deferred>
+        <ProvidersBand locale={locale} content={content} providers={providers} services={services} />
+      </Deferred>
+      <Deferred>
+        <OffersBand locale={locale} content={content} providers={providers} endsAt={endsAt} />
+      </Deferred>
+      <Deferred>
+        <PackagesBand locale={locale} content={content} providers={providers} />
+      </Deferred>
+      <Deferred>
+        <AppBand id={a.app} locale={locale} content={content} />
+      </Deferred>
+      <Deferred>
+        <ReviewsBand locale={locale} content={content} />
+      </Deferred>
+      <Deferred>
+        <DealerBand locale={locale} content={content} />
+      </Deferred>
       <LocationModal
         initialOpen={!jar.has(LOCATION_STORAGE_KEY)}
         privacyHref={homeHref("privacy")}
@@ -74,4 +92,9 @@ export default async function Home() {
       />
     </>
   );
+}
+
+// ارتفاع تقديري لحد ما القسم يترسم أول مرة (auto = بعد كده بيفتكر ارتفاعه الحقيقي)
+function Deferred({ children }: { children: React.ReactNode }) {
+  return <div className="[contain-intrinsic-size:auto_900px] [content-visibility:auto]">{children}</div>;
 }
