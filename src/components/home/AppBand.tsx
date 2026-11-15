@@ -10,6 +10,7 @@ import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
 import { FigmaIcon, RText } from "./bits";
 import { FloatPhone, PopChip } from "./motion";
+import { WideOnly } from "@/components/layout/WideOnly";
 
 type S = (x: { text_ar: string; text_en: string }) => string;
 
@@ -19,6 +20,7 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
   return (
     <>
       {/* Download (37:27970): الشارتين فوق بعض وجنبهم صندوق QR الأبيض بمسافة 20 (L-1025) — الصندوق ارتفاعه 104 (L-1367) */}
+      <WideOnly>
       <div className="flex w-full items-center gap-5 max-xl:hidden">
         {/* الشارتين 48+8+48 = 104 = ارتفاع صندوق الـQR بالظبط (ملاحظة اجتماع 9 نوفمبر: «الطول مش واحد») */}
         <StoreBadges height={48} className="flex-col gap-2!" />
@@ -28,6 +30,7 @@ function Download({ s, content }: { s: S; content: HomeContent }) {
           <span className="text-[14px] leading-[22px] font-medium whitespace-nowrap text-deep-charcoal">{s(a.scan)}</span>
         </div>
       </div>
+      </WideOnly>
       <div className="hidden items-center gap-2.5 md:max-xl:flex">
         <StoreBadges height={37} className="flex-col-reverse gap-1.5!" />
         {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -9,6 +9,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { FigmaIcon, LogoTile, SectionLink } from "../bits";
 import { PulseTag } from "../motion";
+import { WideOnly } from "@/components/layout/WideOnly";
 
 // V2-01 · Band · How it works (202:7422؛ التابلت/الموبايل من V2-01t/m 202:11805/202:11198) — لوحة الرحلة + الخطوات
 // ديسكتوب: خط زمني · تابلت: مربعات أيقونات جنب لوحة الرحلة متصغّرة · موبايل: الخطوات في كارت كحلي من غير اللوحة
@@ -151,6 +152,7 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
             </ButtonLink>
             <SectionLink label={s(h.protect_link)} href={homeHref("warranty")} />
           </div>
+          <WideOnly>
           <ol className="relative flex flex-col gap-[22px] max-xl:hidden">
             <span className="absolute start-[27px] top-7 bottom-7 w-0.5 bg-nature-green/50" aria-hidden />
             {h.steps.map((step, i) => {
@@ -179,6 +181,8 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
               );
             })}
           </ol>
+          </WideOnly>
+          <WideOnly>
           <div className="flex flex-wrap items-center gap-4 max-xl:hidden">
             <ButtonLink href={homeHref("search")} size="lg">
               {s(h.start)}
@@ -186,13 +190,16 @@ export function HowItWorksBand({ locale, content, providers }: { locale: Locale;
             </ButtonLink>
             <SectionLink label={s(h.protect_link)} href={homeHref("warranty")} />
           </div>
+          </WideOnly>
         </div>
 
         {/* Responses visual */}
+        <WideOnly>
         <div className="relative hidden h-[560px] w-[520px] shrink-0 xl:block" aria-hidden>
           <div className="mx-auto mt-2.5 w-[440px]">{panel}</div>
           {tags}
         </div>
+        </WideOnly>
       </Container>
     </section>
   );

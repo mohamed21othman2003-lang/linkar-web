@@ -10,6 +10,7 @@ import { OfferFeaturedCard } from "@/components/cards/OfferFeaturedCard";
 import { Container } from "@/components/ui/Container";
 import { MobileLink, RText, SectionHead } from "../bits";
 import { Rail } from "../Rail";
+import { WideOnly } from "@/components/layout/WideOnly";
 
 // V2-01 · Band · Offers (85:30070 · تابلت 85:34454 · موبايل 85:33777) — العرض المميّز (LLumar) + كارتين عروض
 // تحت xl مافيش العرض المميّز: الكروت في شريط أفقي يبدأ بـXPEL
@@ -45,6 +46,7 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
           link={{ label: s(b.head.link), href: homeHref(b.head.link.href_key) }}
         />
         {/* ديسكتوب: الصف (611 + 313 + 313) = محتوى الـ1440 بالظبط — من 1280 لـ1439 بيتصغّر عشان مايطلعش برّه */}
+        <WideOnly>
         <div className="hidden xl:flex xl:items-start xl:max-[1439px]:[zoom:0.875]">
           {fp && (
             <div className="-ms-[7px] w-[621px] shrink-0 p-[5px]">
@@ -66,6 +68,7 @@ export function OffersBand({ locale, content, providers, endsAt }: { locale: Loc
             </div>
           ))}
         </div>
+        </WideOnly>
         <div className="flex flex-col gap-[18px] xl:hidden">
           <Rail
             reverse
