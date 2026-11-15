@@ -176,7 +176,7 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
           <Link
             key={f.id}
             href={f.href}
-            className="flex flex-col items-start gap-3 rounded-[20px] border border-v3-card-stroke bg-white p-5 hover:border-deep-charcoal"
+            className="flex min-w-0 flex-col items-start gap-3 rounded-[20px] border border-v3-card-stroke bg-white p-5 hover:border-deep-charcoal"
           >
             <span className="flex w-full items-center justify-between gap-2">
               <span className="flex min-w-0 items-center gap-1.5">
@@ -198,7 +198,8 @@ function OffersBlock({ locale, title, sub, allLabel, offers }: { locale: Locale;
               {tx(locale, f, "provider")}
               <ProviderTile slug={f.provider_slug} alt="" size={24} />
             </span>
-            <span className="mt-auto flex w-full items-center justify-between gap-2">
+            {/* 320: السعر و«ينتهي خلال…» مش بيكفّوا في سطر — الملاحظة بتنزل تحت بدل ما الكارت يطلع برّه الشاشة */}
+            <span className="mt-auto flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1">
               <span className="flex items-baseline gap-1.5">
                 <span className="text-h5 text-deep-charcoal">{formatPrice(locale, f.price)}</span>
                 <span className="text-caption text-v3-text-meta line-through">{formatNumber(f.old_price)}</span>

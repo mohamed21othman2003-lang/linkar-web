@@ -166,11 +166,12 @@ function BreakdownRow({ r }: { r: NewBookingsRow }) {
 // ───────────── بطاقات الأرقام ─────────────
 function KpiLink({ href, icon, label, value }: { href: string; icon: UiGlyph; label: string; value?: string }) {
   return (
-    <Link href={href} className="flex flex-col gap-1.5 rounded-16 bg-white p-4 transition-shadow hover:shadow-menu">
+    <Link href={href} className="flex min-w-0 flex-col gap-1.5 rounded-16 bg-white p-4 transition-shadow hover:shadow-menu">
       <span className="flex size-8 items-center justify-center rounded-8 bg-surface-2 text-ink">
         <Icon name={icon} size={16} />
       </span>
-      {value === undefined ? <Skeleton className="my-1.5 h-[30px] w-24" /> : <span className="num text-[26px] leading-[42px] font-semibold whitespace-nowrap text-ink">{value}</span>}
+      {value === undefined ? <Skeleton className="my-1.5 h-[30px] w-24" /> : // عمودين على الموبايل: «241,380 ر.س» بـ26 كان بيدخل في الكارت اللي جنبه — أصغر تحت sm
+        <span className="num text-[20px] leading-8 font-semibold whitespace-nowrap text-ink max-[380px]:text-[17px] sm:text-[26px] sm:leading-[42px]">{value}</span>}
       <span className="text-14 font-medium text-ink">{label}</span>
     </Link>
   );

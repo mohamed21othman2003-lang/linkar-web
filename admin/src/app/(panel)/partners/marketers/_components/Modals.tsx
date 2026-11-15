@@ -457,7 +457,7 @@ function TransferModal({ id, onClose }: { id: string; onClose: () => void }) {
       }
     >
       <MKV b k="الدفعة">{p.data ? ltrRuns(`${id} · ${p.data.period} · ${num(p.data.marketers)} مسوّقاً`) : "…"}</MKV>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="تاريخ التحويل" error={e.date?.message}>
           {(fid) => <TextInput id={fid} className={R14} invalid={!!e.date} {...register("date")} />}
         </Field>
@@ -539,7 +539,7 @@ function EditForm({ id, v, onClose }: { id: string; v: EditValues; onClose: () =
         </Foot>
       }
     >
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="الاسم" error={e.name?.message}>
           {(fid) => <TextInput id={fid} className={R14} invalid={!!e.name} {...register("name")} />}
         </Field>
@@ -550,7 +550,7 @@ function EditForm({ id, v, onClose }: { id: string; v: EditValues; onClose: () =
       <Field label="البريد" error={e.email?.message}>
         {(fid) => <TextInput id={fid} className={R14} ltr invalid={!!e.email} {...register("email")} />}
       </Field>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="المدينة" error={e.city?.message}>
           {(fid) => <TextInput id={fid} className={R14} invalid={!!e.city} {...register("city")} />}
         </Field>
@@ -594,7 +594,7 @@ function BalanceForm({ id, code, b, onClose }: { id: string; code: string; b: { 
       }
     >
       <MKV b k="الكود">{code}</MKV>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="قيمة الرصيد · ر.س" error={e.value?.message}>
           {(fid) => <TextInput id={fid} className={R14} inputMode="numeric" invalid={!!e.value} {...register("value")} />}
         </Field>

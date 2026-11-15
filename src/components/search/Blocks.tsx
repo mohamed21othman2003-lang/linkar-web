@@ -73,7 +73,8 @@ export function AiPick({
         )}
       </div>
       <div className="hidden flex-1 md:block" />
-      <div className="flex items-center gap-4">
+      {/* 320: السعر + الزر مش بيكفّوا جنب بعض — الزر بينزل تحت السعر بدل ما يطلع برّه الشاشة */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
         <div className="flex flex-col items-start">
           <span className="text-caption text-white/65">{t.forYourCar}</span>
           <span className="text-[22px] leading-[34px] font-bold whitespace-nowrap text-white">{formatPrice(locale, price)}</span>

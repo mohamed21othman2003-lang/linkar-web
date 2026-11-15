@@ -85,7 +85,8 @@ const detect = () => {
       if (a.getAttribute("aria-hidden") === "true" || a.hasAttribute("inert")) return true;
       const cs = getComputedStyle(a);
       if (cs.display === "none" || cs.visibility === "hidden" || +cs.opacity < 0.05) return true;
-      if (cs.position === "fixed" && a.getBoundingClientRect().right <= 0) return true;
+      // درج مقفول برّه الشاشة (يمين أو شمال) — مش ظاهر للمستخدم
+      if (cs.position === "fixed") { const fr = a.getBoundingClientRect(); if (fr.right <= 0 || fr.left >= document.documentElement.clientWidth - 1) return true; }
     }
     return false;
   };

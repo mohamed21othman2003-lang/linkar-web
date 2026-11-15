@@ -207,18 +207,18 @@ function Step1({ form }: F) {
     <>
       <Card title="العميل">
         <TextF form={form} name="phone" label="رقم الجوال" placeholder="055 410 2287" ltr />
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <TextF form={form} name="name" label="الاسم الكامل" placeholder="خالد الدوسري" />
           <TextF form={form} name="email" label="البريد الإلكتروني (اختياري)" placeholder="khaled.d@example.com" ltr />
         </div>
       </Card>
       <Card title="السيارة">
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <SelectF form={form} name="make" label="الماركة" options={opts(MAKES)} />
           <SelectF form={form} name="model" label="الموديل" options={opts(MODELS)} />
           <SelectF form={form} name="year" label="سنة الصنع" options={opts(YEARS)} />
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <SelectF form={form} name="size" label="حجم السيارة" options={opts(SIZES)} />
           <TextF form={form} name="plate" label="رقم اللوحة" placeholder="ر ج د 4821" />
         </div>
@@ -244,7 +244,7 @@ function Step2({ form }: F) {
   return (
     <>
       <Card title="ماذا يحجز العميل؟">
-        <div className="grid gap-3 sm:grid-cols-[130px_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-[130px_1fr_1fr]">
           <SelectF form={form} name="city" label="المدينة" options={opts(CITIES)} />
           <SelectF
             form={form}
@@ -255,7 +255,7 @@ function Step2({ form }: F) {
           <SelectF form={form} name="branchCode" label="الفرع" options={branches} />
         </div>
         <p className="text-13 font-semibold text-ink">الخدمات والباقات والعروض · الأسعار شاملة الضريبة</p>
-        <div className="grid gap-4 sm:grid-cols-[1fr_150px_150px]">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_150px_150px]">
           <Field label="بحث">{(id) => <TextInput id={id} value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث باسم الخدمة أو الباقة" icon={<Icon name="search" size={16} />} className="[&_input]:text-14! [&_input]:font-normal!" />}</Field>
           <Field label="النوع">{(id) => <Select id={id} value={type} options={TYPES} onChange={setType} className="[&>span]:text-14! [&>span]:font-normal!" />}</Field>
           <Field label="التصنيف">{(id) => <Select id={id} value={category} options={[{ value: "", label: "الكل" }, ...opts(CATEGORIES)]} onChange={setCategory} className="[&>span]:text-14! [&>span]:font-normal!" />}</Field>

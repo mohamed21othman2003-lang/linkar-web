@@ -123,9 +123,10 @@ function KV({ k, v }: { k: string; v: ReactNode }) {
 
 function Row({ label, children }: { label: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex min-h-8 items-center justify-between gap-4">
+    // 320: الشارة + الزر مش بيكفّوا جنب العنوان — بينزلوا سطر تاني بدل ما يطلعوا برّه الكارت
+    <div className="flex min-h-8 flex-wrap items-center justify-between gap-x-4 gap-y-2">
       <span className="text-13 font-medium text-ink">{label}</span>
-      <span className="flex items-center gap-2.5">{children}</span>
+      <span className="flex flex-wrap items-center gap-2.5">{children}</span>
     </div>
   );
 }

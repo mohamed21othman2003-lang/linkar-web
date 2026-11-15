@@ -77,12 +77,13 @@ const COL_H = 150;
 export function Columns({ cols, max }: { cols: Column[]; max?: number }) {
   const top = max ?? Math.max(1, ...cols.map((c) => c.n));
   return (
-    <div role="img" aria-label={cols.map((c) => `${c.label} ${c.value}`).join(" · ")} className="flex h-[210px] items-end gap-2 sm:gap-3.5">
+    <div role="img" aria-label={cols.map((c) => `${c.label} ${c.value}`).join(" · ")} className="flex h-[210px] items-end gap-1 min-[380px]:gap-2 sm:gap-3.5">
       {cols.map((c) => (
         <div key={c.label} className="flex min-w-0 flex-1 flex-col items-center gap-1.5">
           <span className="num text-12 leading-5 font-medium whitespace-nowrap text-ink">{c.value}</span>
           <span aria-hidden className={`w-full max-w-11 rounded-[6px] ${c.hi ? "bg-lime" : "bg-ink"}`} style={{ height: Math.round((c.n / top) * COL_H) }} />
-          <span className="text-12 leading-5 font-medium whitespace-nowrap text-muted">{c.label}</span>
+          {/* 7 أعمدة على 320: «الأربعاء» بـ12 كان بيركب على «الخميس» — الخط أصغر على الموبايل */}
+          <span className="text-12 leading-5 font-medium whitespace-nowrap text-muted max-sm:text-[10px] max-[380px]:text-[9px]">{c.label}</span>
         </div>
       ))}
     </div>
