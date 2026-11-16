@@ -61,12 +61,7 @@ export function LocationModal({
       setOpen(false);
     };
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   function dismiss() {
@@ -93,6 +88,8 @@ export function LocationModal({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[60] flex animate-dissolve items-center justify-center overflow-y-auto bg-deep-charcoal/72 p-4" onClick={dismiss}>
+      {/* قفل تمرير الصفحة وهي مفتوحة — جوه الـHTML من السيرفر نفسه، بدل ما JS يغيّره بعد التحميل ويعيد حساب layout الصفحة كلها */}
+      <style>{"body{overflow:hidden}"}</style>
       <div
         role="dialog"
         aria-modal="true"
