@@ -11,6 +11,7 @@ import { getFeaturedOfferEndsAt, getHomeContent, homeHref } from "@/lib/server/h
 import { HomeHero } from "@/components/home/HomeHero";
 import { LocationModal } from "@/components/home/LocationModal";
 import { LOCATION_STORAGE_KEY } from "@/components/home/location-events";
+import { isPhone } from "@/lib/server/device";
 import { AppBand } from "@/components/home/AppBand";
 import { ForYouBand } from "@/components/home/bands/ForYouBand";
 import { HowItWorksBand } from "@/components/home/user/HowItWorksBand";
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // الرئيسية — V2-01 · Home (202:7311) في نسخة العميل: نفس الصفحة للزائر والعميل المسجّل.
 // «لأنك حجزت…/حان موعد…» للعميل العائد بس؛ الزائر والعميل الجديد يشوفوا مكانها ترشيحات حسب موقعه (ملاحظة 202:8219)
 export default async function Home() {
-  const [locale, user, content, providers, services, endsAt, jar] = await Promise.all([
+  const [locale, user, content, providers, services, endsAt, jar, phone] = await Promise.all([
     getLocale(),
     getSession(),
     getHomeContent(),
@@ -37,6 +38,7 @@ export default async function Home() {
     getServices(),
     getFeaturedOfferEndsAt(),
     cookies(),
+    isPhone(),
   ]);
   const t = getCommon(locale);
   const s = (x: { text_ar: string; text_en: string }) => tx(locale, x, "text");
@@ -47,11 +49,15 @@ export default async function Home() {
   return (
     <>
       <HomeHero locale={locale} content={content} signedIn={!!user} nextAnchor={a.forYou} />
-      {/* Suspense: React بيجهّز القسم ده في مهمة لوحده بعد الهيرو (أكبر مهمة على الموبايل كانت تجهيز الصفحة كلها مرة واحدة).
-          المكان المحجوز أطول من الجزء اللي بيبان منه في أول شاشة على الديسكتوب، فمفيش حاجة بتتحرك قدام العين */}
-      <Suspense fallback={<Placeholder />}>
+      {/* التليفون: «اخترنا لك» بيتجهّز في مهمة لوحده بعد الهيرو (Suspense) — أكبر مهمة على الموبايل كانت تجهيز الصفحة كلها مرة واحدة.
+          الديسكتوب: جزء منه بيبان في أول شاشة، ولو اتأخر الـViewTransition بتاع الصفحة بيحسبه نطّة (CLS) — فبيتبعت على طول */}
+      {phone ? (
+        <Suspense fallback={<Placeholder />}>
+          <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
+        </Suspense>
+      ) : (
         <ForYouBand id={a.forYou} locale={locale} content={content} providers={providers} user={user} />
-      </Suspense>
+      )}
       {/* الأقسام اللي تحت أول شاشة: المتصفح مابيحسبش layout/رسم ليها لحد ما تقرّب من الشاشة (content-visibility) —
           الرئيسية فيها ~1600 عنصر وده كان أكبر شغل على المعالج في الموبايل */}
       <Deferred>
