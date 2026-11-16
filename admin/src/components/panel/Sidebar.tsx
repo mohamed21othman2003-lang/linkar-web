@@ -106,8 +106,8 @@ export function Sidebar() {
                   aria-current={active ? "page" : undefined}
                   className={`flex h-10 items-center gap-2.5 rounded-10 px-3 text-14 xl:h-[26px] font-medium whitespace-nowrap ${active ? "bg-lime text-ink" : "text-white/88 hover:bg-white/8"}`}
                 >
-                  <Icon name={it.icon} size={20} />
-                  <span className="flex-1">{it.label}</span>
+                  <Icon name={it.icon} size={20} className="shrink-0" />
+                  <span className="min-w-0 flex-1 truncate" title={it.label}>{it.label}</span>
                   {badge ? <span className="num rounded-full bg-lime px-2 text-12 font-medium text-ink">{badge}</span> : null}
                 </Link>
                 {/* «الشركاء» = صفحتين (الوكالات · المسوّقون) ومفيش رابط بينهم في Figma — روابط فرعية تحت البند وهو مفتوح */}

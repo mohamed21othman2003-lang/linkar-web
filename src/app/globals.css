@@ -321,6 +321,28 @@ body:has([aria-modal="true"]) .fab-root {
   body:has(.fab-root) footer {
     padding-bottom: 7.5rem;
   }
+  /* الأزرار العائمة بتظهر بعد أول ~300px تمرير — في أول شاشة كانت فوق شارة App Store في الهيرو (تقرير الموبايل #12).
+     المتصفحات اللي مابتدعمش scroll-timeline بتعرضها على طول زي الأول */
+  @supports (animation-timeline: scroll()) {
+    .fab-root {
+      animation: fab-reveal linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 320px;
+    }
+  }
+}
+@keyframes fab-reveal {
+  0%,
+  60% {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 12px;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+  }
 }
 
 body {
