@@ -12,10 +12,13 @@ import { Skeleton } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
 import { CHANNEL_FILTERS, PRICE_FILTERS, SERVICE_SORTS, SERVICE_STATUS_FILTERS, WARRANTY_FILTERS, type ServiceRow } from "@/lib/api/services";
-import { sizePrices } from "@/lib/format";
+import * as Menu from "@radix-ui/react-dropdown-menu";
+import { MobileFilters } from "@/components/panel/MobileFilters";
+import { num } from "@/lib/format";
 import { useUrlState } from "@/lib/use-url-state";
 import OffersTab from "./offers";
 import type { ProfileTabProps } from "./types";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-07a · ملف المزوّد · جونسون · الخدمات والأسعار (3114-50957 · فرع الحمراء 3400-231034 · فرع المحمدية 3400-231438)
 // + «موقوف» (CON5-07a · موقوف 3312-215143). الرابط: ?tab=services&view=all|services|offers|packages|paused&branch=&price=&status=&warranty=&channel=&sort=
@@ -231,8 +234,9 @@ export default function ServicesTab(props: ProfileTabProps) {
       ) : (
         <div className="flex flex-wrap items-center justify-between gap-2.5">
           {chips}
+          {canEdit ? <AddMenu onPick={open} /> : null}
           {canEdit ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="hidden flex-wrap gap-2 md:flex">
               <Button variant="secondary" size="S" icon={<Icon name="plus" size={14} />} onClick={() => open("package-new")}>
                 باقة جديدة
               </Button>
@@ -250,13 +254,15 @@ export default function ServicesTab(props: ProfileTabProps) {
       {view !== "paused" ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
+            <MobileFilters active={[f.price, f.status, f.warranty, f.channel, url.get("sort")].filter(Boolean).length} onClear={clear}>
             <Select variant="filter" label="السعر" value={f.price} onChange={(x) => url.replace({ price: x || null })} options={PRICE_FILTERS} className={FILTER} />
             <Select variant="filter" label="الحالة" value={f.status} onChange={(x) => url.replace({ status: x || null })} options={SERVICE_STATUS_FILTERS} className={FILTER} />
             <Select variant="filter" label="الضمان" value={f.warranty} onChange={(x) => url.replace({ warranty: x || null })} options={WARRANTY_FILTERS} className={FILTER} />
             <Select variant="filter" label="القناة" value={f.channel} onChange={(x) => url.replace({ channel: x || null })} options={CHANNEL_FILTERS} className={FILTER} />
             <Select variant="filter" label="الترتيب" value={f.sort} onChange={(x) => url.replace({ sort: x === "popular" ? null : x })} options={SERVICE_SORTS} className={FILTER} />
+            </MobileFilters>
           </div>
-          <button type="button" onClick={clear} className="text-13 leading-5 font-medium text-success hover:underline">
+          <button type="button" onClick={clear} className="hit-44 text-13 leading-5 font-medium text-success hover:underline">
             مسح الفلاتر
           </button>
         </div>
@@ -267,9 +273,9 @@ export default function ServicesTab(props: ProfileTabProps) {
       ) : (
         <>
           {/* أقل من md: كل خدمة كارت */}
-          <div className="flex flex-col gap-2.5 md:hidden">
+          <div className="flex flex-col gap-2.5 lg:hidden">
             <div className="flex items-center justify-between gap-2 rounded-12 bg-surface-1 px-3 py-2 text-12 font-medium text-muted">
-              <span>الأسعار: سيدان · متوسط · كبير</span>
+              <span>الأسعار حسب حجم السيارة</span>
               {branchSelect}
             </div>
             {list.isLoading
@@ -282,8 +288,8 @@ export default function ServicesTab(props: ProfileTabProps) {
                       {(
                         [
                           ["النوع", r.typeLabel],
-                          ["سعر التكلفة", r.cost ? <bdi dir="ltr">{sizePrices(r.cost)}</bdi> : "—"],
-                          ["سعر البيع", r.sale ? <bdi dir="ltr">{sizePrices(r.sale)}</bdi> : "—"],
+                          ["سعر التكلفة", r.cost ? <SizePriceList p={r.cost} /> : "—"],
+                          ["سعر البيع", r.sale ? <SizePriceList p={r.sale} /> : "—"],
                           ["الهامش", r.marginPct != null ? marginText(r.marginPct) : "—"],
                           ["الضمان", r.warrantyLabel],
                           ["مدة التنفيذ", r.durationShort],
@@ -300,7 +306,7 @@ export default function ServicesTab(props: ProfileTabProps) {
                 )))}
           </div>
 
-          <div className="hidden overflow-x-auto md:block">
+          <ScrollX className="hidden lg:block">
             <div className="min-w-[1000px]" role="table" aria-label={`خدمات ${profile.provider.name}`}>
               <div role="row" className={`grid ${COLS} items-end gap-2 rounded-8 bg-surface-1 px-2.5 py-[9px] text-12 leading-[23px] font-medium text-muted`}>
                 <span role="columnheader">الخدمة</span>
@@ -332,10 +338,10 @@ export default function ServicesTab(props: ProfileTabProps) {
                       <span role="cell">{nameCell(r)}</span>
                       <span role="cell">{r.typeLabel}</span>
                       <span role="cell" className="num">
-                        {r.cost ? <bdi dir="ltr">{sizePrices(r.cost)}</bdi> : "—"}
+                        {r.cost ? <SizePrices p={r.cost} /> : "—"}
                       </span>
                       <span role="cell" className="num">
-                        {r.sale ? <bdi dir="ltr">{sizePrices(r.sale)}</bdi> : "—"}
+                        {r.sale ? <SizePrices p={r.sale} /> : "—"}
                       </span>
                       <span role="cell" className="num">
                         {r.marginPct != null ? marginText(r.marginPct) : "—"}
@@ -346,9 +352,66 @@ export default function ServicesTab(props: ProfileTabProps) {
                     </div>
                   )))}
             </div>
-          </div>
+          </ScrollX>
         </>
       )}
     </>
+  );
+}
+
+const SIZES = ["سيدان", "متوسط", "كبير"] as const;
+
+/** خلية الجدول: الأسعار التلاتة بنفس ترتيب العنوان «س · م · ك» (سيدان أقصى اليمين) — كانت LTR فالترتيب بيتقلب */
+function SizePrices({ p }: { p: [number, number, number] }) {
+  return (
+    <span className="inline-flex flex-wrap items-center gap-x-1" aria-label={p.map((x, i) => `${SIZES[i]} ${num(x)} ر.س`).join("، ")}>
+      {p.map((x, i) => (
+        <span key={i} className="inline-flex items-center gap-x-1" title={SIZES[i]}>
+          {i > 0 ? <span aria-hidden className="text-muted">·</span> : null}
+          <span className="num">{num(x)}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** كارت الموبايل: كل حجم في سطر باسمه والعملة («سيدان 1,899 ر.س») */
+function SizePriceList({ p }: { p: [number, number, number] }) {
+  return (
+    <ul className="flex flex-col items-end gap-0.5">
+      {p.map((x, i) => (
+        <li key={i} className="flex items-center gap-2">
+          <span className="font-light text-muted">{SIZES[i]}</span>
+          <span className="num">{num(x)} ر.س</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** الموبايل: «+ إضافة» قائمة واحدة بدل 3 أزرار فوق المحتوى */
+function AddMenu({ onPick }: { onPick: (modal: string) => void }) {
+  const items: [string, string][] = [
+    ["service-new", "إضافة خدمة"],
+    ["offer-new", "عرض جديد"],
+    ["package-new", "باقة جديدة"],
+  ];
+  return (
+    <Menu.Root dir="rtl" modal={false}>
+      <Menu.Trigger className="flex h-11 items-center gap-1.5 rounded-10 border border-border bg-white px-3 text-13 font-medium text-ink hover:bg-surface-1 md:hidden">
+        <Icon name="plus" size={16} />
+        إضافة
+      </Menu.Trigger>
+      <Menu.Portal>
+        <Menu.Content align="end" sideOffset={6} collisionPadding={16} className="z-[70] flex w-[200px] flex-col gap-0.5 rounded-12 border border-border bg-white p-1.5 shadow-menu">
+          {items.map(([m, label]) => (
+            <Menu.Item key={m} onSelect={() => onPick(m)} className="flex h-11 cursor-pointer items-center gap-2.5 rounded-8 px-2.5 text-13 font-medium text-ink outline-none data-highlighted:bg-surface-1">
+              <Icon name="plus" size={16} />
+              {label}
+            </Menu.Item>
+          ))}
+        </Menu.Content>
+      </Menu.Portal>
+    </Menu.Root>
   );
 }

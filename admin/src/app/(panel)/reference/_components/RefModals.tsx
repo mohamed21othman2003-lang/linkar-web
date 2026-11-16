@@ -126,7 +126,7 @@ function CategoryFormInner({ slug, initial, done, onClose }: { slug?: string; in
       <Field label="الأيقونة">
         {(id) => (
           <label htmlFor={id} className="flex size-[132px] cursor-pointer flex-col items-center justify-center gap-2 rounded-12 border border-dashed border-border-strong bg-white px-2 text-center text-12 font-medium text-success hover:bg-surface-1">
-            <Icon name="download" size={24} className="text-ink" />
+            <Icon name="download" size={24} className="rotate-180 text-ink" />
             <span>{file ?? (slug ? "تغيير الأيقونة" : "رفع الأيقونة")}</span>
             <input id={id} type="file" accept="image/svg+xml,image/png" className="sr-only" onChange={(e) => setFile(e.target.files?.[0]?.name ?? null)} />
           </label>

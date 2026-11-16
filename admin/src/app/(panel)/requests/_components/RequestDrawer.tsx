@@ -18,6 +18,7 @@ import { useCan } from "@/lib/use-me";
 import { useUrlState } from "@/lib/use-url-state";
 import { DateField } from "../../providers/_components/form-bits";
 import { FIELD, HeroPill, LinkRow, RKV, RTile } from "./bits";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-03D · درج قرار الطلب — 29 إطار بنفس المكوّن، والمحتوى بلوكات من الخادم (requests.ts):
 // 0417 (3114:30051) · 0414 (3114:30210) · 0420 (3114:30405) · 0422 (3114:30462) · 0424 (3114:31589) · 0425 (3114:31633)
@@ -230,7 +231,7 @@ function Proposal({ rows, value, onChange }: { rows: ProposalRow[]; value: { new
   // الأعمدة من Figma: نص 70 · حقل 53 (الحجم · التكلفة · المقترحة · البيع · المقترح · الهامش · بعد الاقتراح)
   const COLS = "grid grid-cols-[70px_70px_53px_70px_53px_70px_70px] items-center gap-1.5 px-2.5 py-2";
   return (
-    <div className="overflow-x-auto rounded-12 border border-border">
+    <ScrollX className="rounded-12 border border-border">
       <div className="min-w-[492px]">
         <div className={`grid min-h-[88px] grid-cols-[repeat(7,65px)] items-center gap-1.5 px-2.5 py-2 bg-surface-1 text-12 leading-[18px] font-medium text-muted`}>
           {["الحجم", "التكلفة الحالية", "التكلفة المقترحة", "سعر البيع الحالي · شامل الضريبة", "سعر البيع المقترح", "الهامش الحالي", "الهامش بعد الاقتراح"].map((h) => (
@@ -252,7 +253,7 @@ function Proposal({ rows, value, onChange }: { rows: ProposalRow[]; value: { new
           );
         })}
       </div>
-    </div>
+    </ScrollX>
   );
 }
 function PriceInput({ value, onChange, label }: { value: number; onChange: (v: string) => void; label: string }) {

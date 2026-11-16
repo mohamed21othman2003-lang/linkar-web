@@ -34,6 +34,7 @@ import {
 } from "@/lib/api/services";
 import { SERVICE_TYPES } from "@/lib/api/providers";
 import { num } from "@/lib/format";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-07M · إضافة خدمة · جونسون (3260-206684) · تعديل الخدمة · Johnson Ceramic Pro (3260-243268)
 // أكبر نافذة في اللوحة: 1240×840 · r20 · الرأس (حشو 22·32·14 · عنوان 22 Bold + إغلاق 36) ثابت، والمحتوى بتمرير داخلي (حشو 4·32·24 · مسافة 16)،
@@ -937,7 +938,7 @@ function PriceCard({ i, branches, tab, setTab }: { i: number; branches: Provider
           </Button>
         ) : null}
       </div>
-      <div className="overflow-x-auto">
+      <ScrollX>
         <div className="flex min-w-[720px] flex-col gap-2">
           <div className="grid grid-cols-[110px_repeat(4,minmax(0,1fr))] gap-2.5 text-12 leading-5 font-medium text-muted">
             <span>الحجم</span>
@@ -967,7 +968,7 @@ function PriceCard({ i, branches, tab, setTab }: { i: number; branches: Provider
             );
           })}
         </div>
-      </div>
+      </ScrollX>
     </SCard>
   );
 }
@@ -1016,7 +1017,7 @@ function ChannelsCard({ users, branches, durations }: { users: { id: string; nam
       </div>
       <div className="flex flex-col gap-2 rounded-12 bg-surface-1 p-3.5">
         <h4 className="text-14 leading-[22px] font-semibold text-ink">ظهور الأسعار لمستخدمي مقدّم الخدمة</h4>
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="min-w-[440px]">
             <div className="grid grid-cols-[minmax(160px,260px)_120px_120px_1fr] gap-3 pb-1 text-12 leading-5 font-medium text-muted">
               <span className="text-13">المستخدم</span>
@@ -1034,7 +1035,7 @@ function ChannelsCard({ users, branches, durations }: { users: { id: string; nam
               </div>
             ))}
           </div>
-        </div>
+        </ScrollX>
         <Field label="الفروع">
           {(id) => <MultiSelect id={id} value={vb} onChange={(v) => setValue("visibilityBranchIds", v, { shouldDirty: true })} options={branches.map((b) => ({ value: b.id, label: b.name }))} />}
         </Field>

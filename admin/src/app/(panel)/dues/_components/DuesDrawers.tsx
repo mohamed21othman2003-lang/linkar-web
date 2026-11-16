@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
 import { CLAIM_STATUS, type Block, type DrawerDoc, type Two } from "@/lib/api/dues";
 import { useUrlState } from "@/lib/use-url-state";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // أدراج مستحقات المزوّدين:
 // CON5-14D · كشف <المزوّد> · أكتوبر: جونسون (3114:72303) · لومار (72474) · XPEL (72560) · نانو شيلد (72646) · درع (72761) · لمعة (72842) · الريم (72924) · الندى (72967)
@@ -87,7 +88,7 @@ function BlockView({ b }: { b: Block }) {
 /** جدول صغير جوه البطاقة: رأس 38/58 #F4F6F5 r10 حشو 9·12 · صفوف حشو 12 بفاصل #E8ECEA */
 function MiniTable({ cols, rows }: { cols: { h: string; h2?: string; w: number }[]; rows: (string | Two)[][] }) {
   return (
-    <div className="overflow-x-auto">
+    <ScrollX>
       <div className="min-w-[514px]">
         <div className="flex rounded-10 bg-surface-1 px-3 py-[9px] text-12 leading-5 font-medium text-muted">
           {cols.map((c) => (
@@ -113,7 +114,7 @@ function MiniTable({ cols, rows }: { cols: { h: string; h2?: string; w: number }
           </div>
         ))}
       </div>
-    </div>
+    </ScrollX>
   );
 }
 

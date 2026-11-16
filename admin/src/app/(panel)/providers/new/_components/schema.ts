@@ -41,7 +41,7 @@ export const accountSchema = z.object({
 export const wizardSchema = z.object({
   type: z.enum(["care", "wash"]),
   brand: req("أدخل العلامة التجارية"),
-  brandEn: z.string().trim().regex(/^[A-Za-z0-9 &'.-]+$/, "بالحروف الإنجليزية"),
+  brandEn: z.string().trim().min(1, "أدخل العلامة بالإنجليزية").regex(/^[A-Za-z0-9 &'.-]+$/, "اكتب العلامة بالحروف الإنجليزية فقط"),
   city: req("اختر المدينة"),
   legalName: req("أدخل الاسم القانوني"),
   cr: z.string().refine((v) => /^\d{10}$/.test(digits(v)), "السجل التجاري 10 أرقام"),

@@ -68,7 +68,8 @@ export default function BankTab({ profile, canEdit }: ProfileTabProps) {
       <section className="flex flex-col gap-2 rounded-14 border border-border bg-white p-3 sm:p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-16 leading-6 font-bold text-ink">الحساب البنكي لاستلام المستحقات</h2>
-          {canEdit ? (
+          {/* مفيش حسابات: زر «إضافة حساب» في الحالة الفاضية بس (كانوا زرّين زي بعض) */}
+          {canEdit && !(q.data && !q.data.items.length) ? (
             <Button variant="secondary" className="h-[46px] px-4" icon={<Icon name="edit" size={16} />} onClick={() => url.push({ modal: "bank-add" })}>
               إضافة حساب
             </Button>

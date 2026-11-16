@@ -31,6 +31,7 @@ import {
 import { useUrlState } from "@/lib/use-url-state";
 import { ClaimDrawer, StatementDrawer, TransferDrawer } from "./DuesDrawers";
 import { DuesModals } from "./DuesModals";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-14 · مستحقات المزوّدين (3114:71708) · التحويلات (3114:71988) · المطالبات المالية (3114:74438) · بعد اعتماد CL-2026-0010 (3114:74638)
 // الرابط: /dues?tab=transfers|claims · كشف المزوّد ?provider=<lk-…> (CON5-14D كشف) · ?transfer=TRF-… (CON5-14D) · ?claim=CL-… (CON5-14C)
@@ -268,7 +269,7 @@ function DuesTable() {
   );
   return (
     <>
-      <div className="hidden overflow-x-auto md:block">
+      <ScrollX className="hidden lg:block">
         <div className="min-w-[1040px]">
           {head}
           {q.isLoading ? (
@@ -336,8 +337,8 @@ function DuesTable() {
             ))
           )}
         </div>
-      </div>
-      <div className="flex flex-col gap-2.5 md:hidden">
+      </ScrollX>
+      <div className="flex flex-col gap-2.5 lg:hidden">
         {q.isLoading
           ? Array.from({ length: 4 }, (_, i) => (
               <Skeleton key={i} className="h-28 w-full rounded-12" />

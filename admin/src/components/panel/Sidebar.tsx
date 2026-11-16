@@ -8,8 +8,10 @@ import { useEffect, useState } from "react";
 import { Icon, type UiGlyph } from "@/components/ui/Icon";
 import { api } from "@/lib/api";
 import { withBase } from "@/lib/base-path";
+import { useMe } from "@/lib/use-me";
+import { LogoutModal } from "./Topbar";
 
-// القائمة الجانبية (القسم 4.1): 240px يمين الشاشة، كحلي — نفس بنود Figma (13 بند).
+// القائمة الجانبية (القسم 4.1): 240px يمين الشاشة، كحلي — بنود Figma + الأقسام اللي كانت مالهاش بند (المدفوعات، المستحقات، التقييم الميداني، الميزات المدفوعة).
 // المرحلة التانية: كل البنود ليها صفحات. «الإعدادات» = /system (السياسات والميزات المدفوعة).
 type Item = { label: string; icon: UiGlyph; href: string; match?: string; badge?: number; sub?: { label: string; href: string }[] };
 const GROUPS: { title?: string; items: Item[] }[] = [
@@ -26,13 +28,16 @@ const GROUPS: { title?: string; items: Item[] }[] = [
       { label: "الطلبات", icon: "edit", href: "/requests", match: "/requests" },
       { label: "الحجوزات", icon: "calendar", href: "/bookings", match: "/bookings" },
       { label: "العملاء", icon: "users", href: "/customers", match: "/customers" },
-      { label: "الفواتير والقسائم", icon: "receipt", href: "/invoices", match: "/invoices|/payments" },
+      { label: "الفواتير والقسائم", icon: "receipt", href: "/invoices", match: "/invoices" },
+      { label: "المدفوعات والاستردادات", icon: "card", href: "/payments", match: "/payments" },
     ],
   },
   {
     title: "الشبكة",
     items: [
-      { label: "مقدّمو الخدمة", icon: "store", href: "/providers", match: "/providers|/branches|/dues|/field-evaluation|/reviews" },
+      { label: "مقدّمو الخدمة", icon: "store", href: "/providers", match: "/providers|/branches|/reviews" },
+      { label: "مستحقات المزوّدين", icon: "wallet", href: "/dues", match: "/dues" },
+      { label: "التقييم الميداني والتصنيف", icon: "star", href: "/field-evaluation", match: "/field-evaluation" },
       { label: "الشركاء", icon: "car", href: "/partners/agencies", match: "/partners", sub: [{ label: "الوكالات", href: "/partners/agencies" }, { label: "المسوّقون", href: "/partners/marketers" }] },
     ],
   },
@@ -42,7 +47,8 @@ const GROUPS: { title?: string; items: Item[] }[] = [
       { label: "الرسائل", icon: "message", href: "/messages", match: "/messages" },
       { label: "البيانات المرجعية", icon: "settings", href: "/reference", match: "/reference" },
       { label: "المستخدمون والصلاحيات", icon: "users", href: "/settings/users", match: "/settings" },
-      { label: "الإعدادات", icon: "lock", href: "/system/policies", match: "/system" },
+      { label: "الميزات المدفوعة", icon: "gift", href: "/system/paid-features", match: "/system/paid-features" },
+      { label: "الإعدادات", icon: "lock", href: "/system/policies", match: "/system/policies" },
     ],
   },
 ];
@@ -52,6 +58,8 @@ export function Sidebar() {
   const section = useSearchParams().get("s");
   // أقل من 1280: القائمة مخفية وبتتفتح كدرج من زر القائمة في الشريط العلوي (حدث panel:menu)
   const [open, setOpen] = useState(false);
+  const [logout, setLogout] = useState(false);
+  const { data: me } = useMe();
   useEffect(() => {
     const toggle = () => setOpen((o) => !o);
     window.addEventListener("panel:menu", toggle);
@@ -74,10 +82,16 @@ export function Sidebar() {
       id="panel-sidebar"
       className={`fixed inset-y-0 right-0 z-40 flex w-60 flex-col overflow-y-auto bg-ink px-4 pt-4 pb-6 text-white transition-transform xl:z-30 xl:translate-x-0 ${open ? "translate-x-0 shadow-drawer" : "translate-x-full"}`}
     >
-      <Link href="/overview" className="flex flex-col items-start gap-1 px-3 pb-3">
-        <Image src={withBase("/logo-inverse.svg")} alt="Linkar" width={112} height={15} className="h-[15px] w-[112px]" priority />
-        <span className="text-16 font-medium">لوحة تحكم لينكار</span>
-      </Link>
+      <div className="flex items-start justify-between gap-2">
+        <Link href="/overview" className="flex flex-col items-start gap-1 px-3 pb-3">
+          <Image src={withBase("/logo-inverse.svg")} alt="Linkar" width={112} height={15} className="h-[15px] w-[112px]" priority />
+          <span className="text-16 font-medium">لوحة تحكم لينكار</span>
+        </Link>
+        {/* زر قفل الدرج (تحت 1280 بس) */}
+        <button type="button" aria-label="إغلاق القائمة" onClick={() => setOpen(false)} className="-mt-1 flex size-11 shrink-0 items-center justify-center rounded-10 text-white/88 hover:bg-white/8 xl:hidden">
+          <Icon name="x" size={20} />
+        </button>
+      </div>
       <nav className="flex flex-col">
         {GROUPS.map((g, gi) => (
           <div key={gi} className="flex flex-col">
@@ -115,7 +129,19 @@ export function Sidebar() {
           </div>
         ))}
       </nav>
+      {/* في الدرج (تحت 1280): اسم المستخدم + تسجيل الخروج تحت — على الديسكتوب موجودين في الشريط العلوي */}
+      <div className="mt-auto flex items-center gap-2.5 border-t border-white/12 px-3 pt-4 xl:hidden">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lime text-14 font-medium text-ink">{me?.initial ?? ""}</span>
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-13 font-medium">{me?.name ?? "…"}</span>
+          <span className="truncate text-12 text-white/60">{me?.role}</span>
+        </span>
+        <button type="button" onClick={() => setLogout(true)} aria-label="تسجيل الخروج" title="تسجيل الخروج" className="flex size-11 shrink-0 items-center justify-center rounded-10 text-white/88 hover:bg-white/8">
+          <Icon name="logout" size={20} />
+        </button>
+      </div>
     </aside>
+    <LogoutModal open={logout} onOpenChange={setLogout} />
     </>
   );
 }

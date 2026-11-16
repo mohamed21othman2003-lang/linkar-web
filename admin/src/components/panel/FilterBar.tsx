@@ -31,7 +31,7 @@ export function SearchInput({
   iconEnd?: boolean;
 }) {
   return (
-    <label className={`flex h-10 items-center gap-2 rounded-10 border border-border bg-white px-3 focus-within:border-ink ${className ?? "w-full sm:w-[280px]"}`}>
+    <label className={`flex h-10 items-center gap-2 rounded-10 border pointer-coarse:h-11 border-border bg-white px-3 focus-within:border-ink ${className ?? "w-full sm:w-[280px]"}`}>
       {iconEnd ? null : <Icon name="search" size={16} className="shrink-0 text-muted" />}
       <input
         type="search"
@@ -42,7 +42,7 @@ export function SearchInput({
         className="min-w-0 flex-1 bg-transparent text-13 text-ink outline-none placeholder:font-light placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
       />
       {value ? (
-        <button type="button" aria-label="مسح البحث" onClick={() => onChange("")} className="shrink-0 text-muted hover:text-ink">
+        <button type="button" aria-label="مسح البحث" onClick={() => onChange("")} className="hit-44 shrink-0 text-muted hover:text-ink">
           <Icon name="x" size={14} />
         </button>
       ) : null}
@@ -53,7 +53,7 @@ export function SearchInput({
 
 export function ClearFilters({ onClick }: { onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="flex h-10 items-center gap-1.5 rounded-10 px-2 text-13 font-medium text-ink hover:bg-surface-2">
+    <button type="button" onClick={onClick} className="flex h-10 items-center gap-1.5 rounded-10 px-2 text-13 font-medium text-ink hover:bg-surface-2 pointer-coarse:h-11">
       <Icon name="x" size={14} />
       مسح الفلاتر
     </button>

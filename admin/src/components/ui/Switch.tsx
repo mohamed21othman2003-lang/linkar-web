@@ -24,7 +24,7 @@ export function Switch({
       aria-label={label}
       disabled={disabled}
       onClick={() => onCheckedChange?.(!checked)}
-      className={`flex h-[22px] w-10 shrink-0 items-center rounded-full p-0.5 transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+      className={`hit-44 flex h-[22px] w-10 shrink-0 items-center rounded-full p-0.5 transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
         checked ? "justify-start bg-ink" : "justify-end bg-[#cfd6d3]"
       } ${className ?? ""}`}
     >

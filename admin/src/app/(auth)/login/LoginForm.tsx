@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
-import { Checkbox, Field, TextInput } from "@/components/ui/Field";
+import { Checkbox, Field, PasswordToggle, TextInput } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
 import { ForgotPasswordModal } from "./ForgotPasswordModal";
 import { withBase } from "@/lib/base-path";
@@ -21,10 +21,12 @@ type Values = z.infer<typeof schema>;
 export function LoginForm() {
   const router = useRouter();
   const [forgot, setForgot] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [serverError, setServerError] = useState<string>();
   const { register, handleSubmit, formState, getValues } = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { email: "", password: "", remember: true },
+    // «تذكّرني» مطفي افتراضياً — لوحة موظفين
+    defaultValues: { email: "", password: "", remember: false },
   });
 
   const onSubmit = handleSubmit(async (v) => {
@@ -47,12 +49,24 @@ export function LoginForm() {
         label="كلمة المرور"
         error={errors.password?.message ?? serverError}
         aside={
-          <button type="button" onClick={() => setForgot(true)} className="text-13 text-success hover:underline">
+          <button type="button" onClick={() => setForgot(true)} className="hit-44 text-13 text-success hover:underline">
             نسيت كلمة المرور؟
           </button>
         }
       >
-        {(id) => <TextInput id={id} type="password" size="L" autoComplete="current-password" placeholder="••••••••" icon={<Icon name="lock" size={18} />} invalid={!!errors.password || !!serverError} {...register("password")} />}
+        {(id) => (
+          <TextInput
+            id={id}
+            type={showPass ? "text" : "password"}
+            size="L"
+            autoComplete="current-password"
+            placeholder="أدخل كلمة المرور"
+            icon={<Icon name="lock" size={18} />}
+            end={<PasswordToggle shown={showPass} onToggle={() => setShowPass((v) => !v)} />}
+            invalid={!!errors.password || !!serverError}
+            {...register("password")}
+          />
+        )}
       </Field>
       <Checkbox label="تذكّرني على هذا الجهاز" {...register("remember")} />
       <Button type="submit" size="L" loading={isSubmitting} className="w-full">

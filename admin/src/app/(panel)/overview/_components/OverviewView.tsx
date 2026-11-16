@@ -101,20 +101,21 @@ function NewBookingsCard({ data }: { data?: OverviewData["newBookings"] }) {
               <Skeleton className="h-5 w-64" />
             )}
           </div>
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-8 bg-surface-2 text-ink">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-8 bg-surface-2 text-ink max-sm:hidden">
             <Icon name="phone" size={16} />
           </span>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5">
-          <Link href="/bookings?modal=notify-crm" className="inline-flex h-[42px] items-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium text-ink hover:bg-surface-1">
+        {/* الموبايل: زرّين التنبيه بعرض كامل فوق بعض و«عرض الحجوزات» رابط تحتهم */}
+        <div className="flex flex-wrap items-center gap-2.5 max-sm:w-full max-sm:flex-col max-sm:items-stretch">
+          <Link href="/bookings?modal=notify-crm" className="inline-flex h-[42px] items-center justify-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium whitespace-nowrap text-ink hover:bg-surface-1 pointer-coarse:h-11">
             <Icon name="user" size={16} />
             تنبيه موظف <span dir="ltr">CRM</span>
           </Link>
-          <Link href="/bookings?modal=notify-providers" className="inline-flex h-[42px] items-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium text-ink hover:bg-surface-1">
+          <Link href="/bookings?modal=notify-providers" className="inline-flex h-[42px] items-center justify-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium whitespace-nowrap text-ink hover:bg-surface-1 pointer-coarse:h-11">
             <Icon name="bell" size={16} />
             تنبيه المزوّدين
           </Link>
-          <Link href="/bookings?tab=awaiting-visit" className="inline-flex h-10 items-center px-1.5 text-14 leading-[22px] font-semibold text-ink hover:underline">
+          <Link href="/bookings?tab=awaiting-visit" className="inline-flex h-10 items-center justify-center px-1.5 text-14 leading-[22px] font-semibold text-ink hover:underline pointer-coarse:h-11">
             عرض الحجوزات
           </Link>
         </div>
@@ -149,14 +150,15 @@ function BreakdownRow({ r }: { r: NewBookingsRow }) {
     r.provider
   );
   return (
-    <div role="row" className={`grid grid-cols-2 items-center gap-x-3 gap-y-1.5 border-b border-divider px-3 py-2.5 text-13 leading-5 text-ink md:gap-0 ${COLS}`}>
-      <span role="cell" className="col-span-2 font-medium md:col-span-1">
+    // أقل من md: عمود واحد — كل حقل سطر «العنوان … القيمة» (العنوان يمين والقيمة شمال) بدل عمودين بارتفاعات مختلفة
+    <div role="row" className={`grid grid-cols-1 items-center gap-y-1.5 border-b border-divider px-3 py-2.5 text-13 leading-5 text-ink md:gap-0 ${COLS}`}>
+      <span role="cell" className="font-medium">
         {name}
       </span>
       {cells.map(([k, v]) => (
-        <span key={k} role="cell" className="flex flex-col max-md:gap-0.5">
-          <span className="text-12 font-medium text-muted md:hidden">{k}</span>
-          <span>{v}</span>
+        <span key={k} role="cell" className="flex flex-col max-md:flex-row max-md:items-start max-md:justify-between max-md:gap-3">
+          <span className="shrink-0 text-12 font-medium text-muted md:hidden">{k}</span>
+          <span className="max-md:min-w-0 max-md:text-end">{v}</span>
         </span>
       ))}
     </div>

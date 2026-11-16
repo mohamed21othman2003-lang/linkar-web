@@ -350,12 +350,13 @@ const editSchema = z.object({
 });
 function EditModal({ p, close }: P) {
   const done = useDone(close);
-  const f = useForm({ resolver: zodResolver(editSchema), defaultValues: p.company });
+  // «—» في البيانات = مش متسجّل → الحقل يبان فاضي بنص إرشادي بدل ما يبان كأنه متعبّي
+  const f = useForm({ resolver: zodResolver(editSchema), defaultValues: Object.fromEntries(Object.entries(p.company).map(([k, v]) => [k, v === "—" ? "" : v])) as CompanyData });
   const m = useMutation({ mutationFn: (v: CompanyData) => api.providers.updateCompany(p.id, v), onSuccess: (_r, v) => done("حُفظت بيانات المنشأة", `حُفظت بيانات ${v.brand}`) });
   const e = f.formState.errors;
   const field = (name: keyof CompanyData, label: string, ltr?: boolean) => (
     <Field required label={label} error={e[name]?.message}>
-      {(id) => <TextInput id={id} {...f.register(name)} ltr={ltr} invalid={!!e[name]} className={`${M_INPUT} h-[42px]!`} />}
+      {(id) => <TextInput id={id} {...f.register(name)} ltr={ltr} invalid={!!e[name]} placeholder={`أدخل ${label}`} className={`${M_INPUT} h-[42px]!`} />}
     </Field>
   );
   return (
@@ -365,8 +366,19 @@ function EditModal({ p, close }: P) {
       width={640}
       title="تعديل بيانات المنشأة"
       subtitle={`${sub(p)} · تعديل لينكار المباشر يُسجّل في السجل ويُبلَّغ المزوّد`}
+      // الأزرار في ذيل النافذة الثابت (مربوطة بالنموذج بـ form=) عشان ماتختفيش مع التمرير
+      footer={
+        <>
+          <Button type="submit" form="edit-company" className="h-11" loading={m.isPending}>
+            حفظ التعديل
+          </Button>
+          <Button variant="secondary" className="h-[46px]" onClick={close} disabled={m.isPending}>
+            إلغاء
+          </Button>
+        </>
+      }
     >
-      <form onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3.5" noValidate>
+      <form id="edit-company" onSubmit={f.handleSubmit((v) => m.mutate(v))} className="flex flex-col gap-3.5" noValidate>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-3.5">
           {field("brand", "الاسم التجاري")}
           {field("legalName", "الاسم القانوني")}
@@ -378,14 +390,6 @@ function EditModal({ p, close }: P) {
           {field("bank", "الحساب البنكي")}
         </div>
         <DangerNote tone="info">تغيير الحساب البنكي أو السجل يتطلب مستنداً محدّثاً، ويُطبّق على الدفعات القادمة فقط.</DangerNote>
-        <div className="flex gap-2.5 [&>*]:flex-1">
-          <Button type="submit" className="h-11" loading={m.isPending}>
-            حفظ التعديل
-          </Button>
-          <Button variant="secondary" className="h-[46px]" onClick={close} disabled={m.isPending}>
-            إلغاء
-          </Button>
-        </div>
       </form>
     </Modal>
   );

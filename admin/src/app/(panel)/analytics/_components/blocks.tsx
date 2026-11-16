@@ -1,5 +1,8 @@
+"use client";
+
 import type { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/Spinner";
+import { useScrollEdges } from "@/components/ui/scroll-edges";
 import type { Bar, BarTone, Block, Cell, Column, Stat, TableCol } from "@/lib/api/analytics";
 
 // مكوّنات «CON5 · التحليلات · تبويبات» (2126:411) — رسوم SVG/CSS بسيطة بنفس مقاسات Figma (بدون مكتبة رسوم):
@@ -82,8 +85,8 @@ export function Columns({ cols, max }: { cols: Column[]; max?: number }) {
         <div key={c.label} className="flex min-w-0 flex-1 flex-col items-center gap-1.5">
           <span className="num text-12 leading-5 font-medium whitespace-nowrap text-ink">{c.value}</span>
           <span aria-hidden className={`w-full max-w-11 rounded-[6px] ${c.hi ? "bg-lime" : "bg-ink"}`} style={{ height: Math.round((c.n / top) * COL_H) }} />
-          {/* 7 أعمدة على 320: «الأربعاء» بـ12 كان بيركب على «الخميس» — الخط أصغر على الموبايل */}
-          <span className="text-12 leading-5 font-medium whitespace-nowrap text-muted max-sm:text-[10px] max-[380px]:text-[9px]">{c.label}</span>
+          {/* 7 أعمدة على 320: «الأربعاء» بـ12 كان بيركب على «الخميس» — 11 على الموبايل (أقل من كده مايتقريش) والاسم الطويل بيلف على سطرين */}
+          <span className="max-w-full text-center text-12 leading-5 font-medium text-muted max-sm:text-[11px] max-sm:leading-[14px] max-sm:break-words sm:whitespace-nowrap">{c.label}</span>
         </div>
       ))}
     </div>
@@ -108,43 +111,74 @@ export function BarRow({ bar }: { bar: Bar }) {
 
 const cellText = (c: Cell) => (typeof c === "string" ? c : c.text);
 
-/** جدول بعرض أعمدة Figma (العمود بلا عرض = المرن) — بتمرير أفقي داخلي على الشاشات الصغيرة */
+/** جدول بعرض أعمدة Figma (العمود بلا عرض = المرن) — md وأكبر: جدول (وتمرير أفقي بتلاشي على الطرف لو أعرض)،
+ *  أقل من md: كل صف كارت (أول خلية عنوان والباقي «العنوان … القيمة») عشان كل الأعمدة تتقري من غير سحب جانبي */
 export function DataGrid<C = Cell>({ cols, groups, rows, label, renderCell, rowPad = "p-2.5", flexMin = 100 }: { cols: TableCol[]; groups?: { label: string; span: number }[]; rows: { cells: C[]; total?: boolean }[]; label: string; renderCell?: (c: C, col: number) => ReactNode; /** حشو الصف (التقارير: 14·10) */ rowPad?: string; flexMin?: number }) {
   const template = cols.map((c) => (c.w ? `${c.w}px` : `minmax(${flexMin}px,1fr)`)).join(" ");
   const minW = cols.reduce((s, c) => s + (c.w ?? flexMin), 0) + (cols.length - 1) * 10 + 20;
   const grid = { gridTemplateColumns: template };
+  const [ref, edges] = useScrollEdges<HTMLDivElement>();
+  // عنوان كل عمود في الكارت = «المجموعة · العمود» لو فيه صف مجموعات
+  const groupOf: string[] = [];
+  groups?.forEach((g) => {
+    for (let i = 0; i < g.span; i++) groupOf.push(g.label);
+  });
+  const colLabel = (i: number) => [groupOf[i], cols[i]?.label].filter(Boolean).join(" · ");
+  const cell = (c: C, ci: number) => (renderCell ? renderCell(c, ci) : <CellView c={c as Cell} />);
   return (
-    <div className="-mx-1 overflow-x-auto px-1">
-      <div role="table" aria-label={label} className="flex flex-col" style={{ minWidth: minW }}>
-        <div role="rowgroup" className="flex flex-col gap-0.5 rounded-8 bg-surface-1 px-2.5 py-[9px] text-12 leading-5 font-medium">
-          {groups ? (
-            <div role="row" className="grid gap-x-2.5 text-ink" style={grid}>
-              {groups.map((g, i) => (
-                <span key={i} role="columnheader" style={{ gridColumn: `span ${g.span}` }}>
-                  {g.label}
+    <>
+      <div role="list" aria-label={label} className="flex flex-col gap-2 md:hidden">
+        {rows.map((r, ri) => {
+          const [first, ...rest] = r.cells;
+          return (
+            <div key={ri} role="listitem" className={`flex flex-col gap-1.5 rounded-12 border border-border p-3 text-13 leading-5 ${r.total ? "bg-surface-2" : "bg-white"}`}>
+              <div className="num font-medium text-ink">{first === undefined ? null : cell(first, 0)}</div>
+              {rest.length ? (
+                <dl className="flex flex-col gap-1 border-t border-divider pt-1.5">
+                  {rest.map((c, i) => (
+                    <div key={i} className="flex items-start justify-between gap-3">
+                      <dt className="shrink-0 font-light text-muted">{colLabel(i + 1)}</dt>
+                      <dd className="num min-w-0 text-end font-light text-ink">{cell(c, i + 1)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+      <div ref={ref} data-start={edges.start} data-end={edges.end} className="edge-mask -mx-1 hidden overflow-x-auto px-1 md:block">
+        <div role="table" aria-label={label} className="flex flex-col" style={{ minWidth: minW }}>
+          <div role="rowgroup" className="flex flex-col gap-0.5 rounded-8 bg-surface-1 px-2.5 py-[9px] text-12 leading-5 font-medium">
+            {groups ? (
+              <div role="row" className="grid gap-x-2.5 text-ink" style={grid}>
+                {groups.map((g, i) => (
+                  <span key={i} role="columnheader" style={{ gridColumn: `span ${g.span}` }}>
+                    {g.label}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+            <div role="row" className="grid items-end gap-x-2.5 text-muted" style={grid}>
+              {cols.map((c, i) => (
+                <span key={i} role="columnheader">
+                  {c.label}
                 </span>
               ))}
             </div>
-          ) : null}
-          <div role="row" className="grid items-end gap-x-2.5 text-muted" style={grid}>
-            {cols.map((c, i) => (
-              <span key={i} role="columnheader">
-                {c.label}
-              </span>
-            ))}
           </div>
+          {rows.map((r, ri) => (
+            <div key={ri} role="row" className={`grid items-center gap-x-2.5 border-b border-border ${rowPad} text-13 leading-[22px] font-light text-ink ${r.total ? "bg-surface-2" : ""}`} style={grid}>
+              {r.cells.map((c, ci) => (
+                <span key={ci} role="cell" className="num min-w-0">
+                  {cell(c, ci)}
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
-        {rows.map((r, ri) => (
-          <div key={ri} role="row" className={`grid items-center gap-x-2.5 border-b border-border ${rowPad} text-13 leading-[22px] font-light text-ink ${r.total ? "bg-surface-2" : ""}`} style={grid}>
-            {r.cells.map((c, ci) => (
-              <span key={ci} role="cell" className="num min-w-0">
-                {renderCell ? renderCell(c, ci) : <CellView c={c as Cell} />}
-              </span>
-            ))}
-          </div>
-        ))}
       </div>
-    </div>
+    </>
   );
 }
 

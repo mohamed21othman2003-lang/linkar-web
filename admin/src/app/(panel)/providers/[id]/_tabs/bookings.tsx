@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { DataTable, type Column } from "@/components/panel/DataTable";
@@ -44,6 +45,8 @@ export default function BookingsTab({ profile }: ProfileTabProps) {
     queryFn: () => api.providerTabs.bookings(id, { ...f, period: f.period === ALL ? undefined : f.period, page }),
   });
   const filtered = !!(f.branch || f.status || f.service || f.period !== CURRENT_MONTH);
+  // الحجوزات الجديدة (لسه ما اتنفّذتش) من نفس مصدر الرئيسية وصفحة الحجوزات — عشان الأرقام ماتتعارضش
+  const fresh = useQuery({ queryKey: ["bookings", "contact"], queryFn: api.bookings.contactSummary }).data?.rows.find((r) => r.providerId === id);
   const clear = () => url.replace({ bbranch: null, bstatus: null, bperiod: null, bservice: null, bpage: null });
 
   const branchOpts = [{ value: "", label: "الكل" }, ...(branches.data ?? []).filter((b) => b.status === "approved").map((b) => ({ value: b.id, label: b.name }))];
@@ -70,6 +73,7 @@ export default function BookingsTab({ profile }: ProfileTabProps) {
       id: "actions",
       header: " ",
       width: 150,
+      pin: true,
       // Figma: «التفاصيل» 32 r8 يمين و«اعتماد ✓» (أخضر 34 r12) على شماله — الصف المعتمد فيه «التفاصيل» بس
       cell: (r) => (
         <div className={`flex items-center gap-1.5 ${r.status === "approved" ? "" : "justify-end"}`} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
@@ -105,6 +109,17 @@ export default function BookingsTab({ profile }: ProfileTabProps) {
         </div>
         <ClearLink onClick={clear} />
       </div>
+      {fresh?.fresh ? (
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-12 bg-info-tint px-3.5 py-2.5 text-13 font-light text-info">
+          <Icon name="info" size={16} className="shrink-0" />
+          <span>
+            <span className="num font-medium">{fresh.fresh}</span> حجزاً جديداً بانتظار الزيارة · أقرب موعد {fresh.nearest}
+          </span>
+          <Link href={`/bookings?tab=awaiting-visit&provider=${id}`} className="font-medium underline-offset-4 hover:underline">
+            عرض في الحجوزات
+          </Link>
+        </p>
+      ) : null}
       <div className="flex flex-col gap-3 rounded-16 bg-white px-0 pt-1 pb-0 md:px-5 md:pt-5 md:pb-4">
         <DataTable
           columns={columns}
@@ -117,7 +132,7 @@ export default function BookingsTab({ profile }: ProfileTabProps) {
           onRetry={() => list.refetch()}
           filtered={filtered}
           onClearFilters={clear}
-          empty={{ title: "لا توجد حجوزات بعد", body: "تظهر هنا حجوزات المزوّد وحالة اعتماد تنفيذها." }}
+          empty={{ title: "لا توجد حجوزات منفّذة في هذه الفترة", body: "تظهر هنا الحجوزات المنفّذة وحالة اعتمادها. الحجوزات الجديدة بانتظار الزيارة في صفحة الحجوزات." }}
           gap={0}
           edge={12}
           headRadius={10}

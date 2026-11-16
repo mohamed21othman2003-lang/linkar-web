@@ -11,6 +11,7 @@ import { api, isApiError } from "@/lib/api";
 import type { ListKey, RefList, RefRow } from "@/lib/api/reference";
 import { useUrlState } from "@/lib/use-url-state";
 import { HEAD_ROW, MiniSwitch, PanelHead, SmallBtn } from "./bits";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // القوائم القابلة للتعديل: أحجام السيارات (3114:75328) · أسباب الشكاوى (77075) · جوانب تقييم العميل (77216) · أكواد الترقيم (77648)
 // · فئات الفروع (76963 · داخل «معايير اعتماد الفروع والخدمات»). صف 48 (حشو 6·8 · مسافة 8): الخلايا (36 · r8 · إطار) ثم «مفعّلة» ثم حذف 32.
@@ -87,7 +88,7 @@ function ListEditor({ list, head }: { list: RefList; head?: (save: ReactNode) =>
   return (
     <>
       {head ? head(saveBtn) : <PanelHead title={list.title} sub={list.sub} action={saveBtn} />}
-      <div className="flex flex-col overflow-x-auto">
+      <ScrollX className="flex flex-col">
         <div className="flex min-w-[560px] flex-col gap-3.5">
           <div className={HEAD_ROW}>
             {cols.map((c) => (
@@ -121,7 +122,7 @@ function ListEditor({ list, head }: { list: RefList; head?: (save: ReactNode) =>
             </div>
           ))}
         </div>
-      </div>
+      </ScrollX>
       {errRow != null ? (
         <p role="alert" className="text-12 text-danger">
           اكتب القيمة في كل صف قبل الحفظ

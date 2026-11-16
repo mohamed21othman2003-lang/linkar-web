@@ -85,4 +85,84 @@
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
   }
+  /* iOS بيعمل zoom على أي حقل أقل من 16px — تحت 1024 كل الحقول 16 (الشكل على الديسكتوب زي ما هو) */
+  @media (max-width: 1023.98px) {
+    input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]),
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+/* تمرير أفقي بعلامة: تلاشي على الطرف اللي وراه محتوى (data-start / data-end من useScrollEdges) — اللوحة RTL فالـ start يمين */
+.edge-mask {
+  --edge-fade: 32px;
+}
+.edge-mask[data-start="true"] {
+  mask-image: linear-gradient(to left, transparent 0, #000 var(--edge-fade));
+}
+.edge-mask[data-end="true"] {
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--edge-fade));
+}
+.edge-mask[data-start="true"][data-end="true"] {
+  mask-image: linear-gradient(to left, transparent 0, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent 100%);
+}
+
+/* الجدول: أول عمود وعمود الإجراءات ثابتين، وظل على حرفهم الداخلي لما يكون فيه أعمدة مستخبية وراهم */
+.dt-scroll[data-start="true"] .dt-sticky-start {
+  box-shadow: -10px 0 10px -8px rgba(20, 41, 54, 0.18);
+}
+.dt-scroll[data-end="true"] .dt-sticky-end {
+  box-shadow: 10px 0 10px -8px rgba(20, 41, 54, 0.18);
+}
+.dt-scroll.dt-no-end[data-end="true"] {
+  mask-image: linear-gradient(to right, transparent 0, #000 32px);
+}
+
+/* مساحة لمس 44×44 على الشاشات اللمس من غير ما الشكل يتغيّر (للأيقونات والروابط الصغيرة) — العنصر لازم ما يكونش absolute */
+@layer utilities {
+  @media (pointer: coarse) {
+    .hit-44 {
+      position: relative;
+    }
+    .hit-44::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+/* كل الأزرار والروابط على الشاشات اللمس: مساحة لمس مخفية 44×44 على الأقل (Apple HIG) من غير ما الشكل يتغيّر.
+   في طبقة base: لو العنصر absolute/sticky بكلاس Tailwind (utilities) الكلاس بيكسب، والعنصر المتموضع بيحتوي الـ::after برضه */
+@layer base {
+  @media (pointer: coarse) {
+    button:not(:disabled),
+    a[href],
+    [role="button"],
+    [role="switch"],
+    [role="checkbox"],
+    [role="tab"] {
+      position: relative;
+    }
+    button:not(:disabled)::after,
+    a[href]::after,
+    [role="button"]::after,
+    [role="switch"]::after,
+    [role="checkbox"]::after,
+    [role="tab"]::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
 }

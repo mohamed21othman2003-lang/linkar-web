@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useScrollEdges } from "@/components/ui/scroll-edges";
 import { num } from "@/lib/format";
 
 // تبويبات + شارة عدد (القسم 3.5 «Tabs + Count»). شكلين في Figma:
@@ -23,14 +24,16 @@ export function Tabs<K extends string>({
   label?: string;
   className?: string;
 }) {
+  // تبويبات أكتر من العرض (موبايل): تلاشي على الطرف اللي وراه تبويبات عشان يبان إن فيه تمرير
+  const [ref, edges] = useScrollEdges<HTMLDivElement>();
   return (
-    <div role="tablist" aria-label={label} className={`flex ${variant === "underline" ? "items-end gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]" : "items-center gap-2 max-md:-mx-1 max-md:overflow-x-auto max-md:px-1 max-md:pb-1 max-md:[scrollbar-width:none] md:flex-wrap [&>*]:shrink-0"} ${className ?? ""}`}>
+    <div ref={ref} data-start={edges.start} data-end={edges.end} role="tablist" aria-label={label} className={`edge-mask flex ${variant === "underline" ? "items-end gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]" : "items-center gap-2 max-md:-mx-1 max-md:overflow-x-auto max-md:px-1 max-md:pb-1 max-md:[scrollbar-width:none] md:flex-wrap [&>*]:shrink-0"} ${className ?? ""}`}>
       {items.map((t) => {
         const active = t.key === value;
         const cls =
           variant === "underline"
-            ? `-mb-px flex shrink-0 items-center gap-1.5 px-3.5 pt-2.5 text-14 font-medium whitespace-nowrap ${active ? "border-b-[3px] border-ink pb-3 text-ink" : "pb-3 text-muted hover:text-ink"}`
-            : `flex h-10 items-center gap-1.5 rounded-10 px-3.5 text-14 ${active ? "bg-ink font-semibold text-white" : "border border-border bg-white font-medium text-ink hover:bg-surface-1"}`;
+            ? `-mb-px flex shrink-0 items-center gap-1.5 px-3.5 pt-2.5 text-14 pointer-coarse:min-h-11 font-medium whitespace-nowrap ${active ? "border-b-[3px] border-ink pb-3 text-ink" : "pb-3 text-muted hover:text-ink"}`
+            : `flex h-10 items-center gap-1.5 rounded-10 px-3.5 text-14 pointer-coarse:h-11 ${active ? "bg-ink font-semibold text-white" : "border border-border bg-white font-medium text-ink hover:bg-surface-1"}`;
         const content = (
           <>
             <span>{t.label}</span>

@@ -416,7 +416,9 @@ async function ensure(providerId: string) {
       id: `${s.id}-p${k + 1}`,
       prices: Object.fromEntries(branchIds.map((b) => [b, structuredClone(Object.values(pr.prices)[0])])),
     }));
-    if (i >= SEED.length) s.name = `${base.name} ${Math.floor(i / SEED.length) + 1}`;
+    // الأسماء التجريبية منقولة من خدمات جونسون — اسم الماركة «Johnson» مايظهرش في خدمات مزوّد تاني
+    if (providerId !== "lk-jn-001") s.name = s.name.replace(/^Johnson\s+/, "");
+    if (i >= SEED.length) s.name = `${s.name} ${Math.floor(i / SEED.length) + 1}`;
     services.push(s);
   }
 }

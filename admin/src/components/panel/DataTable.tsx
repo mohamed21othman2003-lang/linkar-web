@@ -4,6 +4,7 @@ import { createColumnHelper, tableFeatures, useTable, type RowData } from "@tans
 import { useMemo, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Spinner";
+import { useScrollEdges } from "@/components/ui/scroll-edges";
 import { EmptyState } from "./PageHead";
 
 // جدول (القسم 3.5 «Table» · Figma CON5-23 3114:24841): رأس 38 على #F4F6F5 r8 بنص 12 Medium رمادي،
@@ -19,9 +20,13 @@ export type Column<T> = {
   align?: "start" | "center" | "end";
   /** خلية أزرار: الضغط جواها ما يفتحش الصف */
   actions?: boolean;
+  /** عمود أزرار بشكله الخاص (مش actions) بس يفضل ثابت على الشمال وقت التمرير، وفي الكارت يتحط تحت مع الأزرار */
+  pin?: boolean;
+  /** يتشال من كارت الموبايل (التفاصيل في الدرج) — عشان الكارت يفضل 3–4 حقول أساسية */
+  hideOnCard?: boolean;
 };
 
-type Meta = { width?: number; align?: "start" | "center" | "end"; actions?: boolean };
+type Meta = { width?: number; align?: "start" | "center" | "end"; actions?: boolean; pin?: boolean; hideOnCard?: boolean };
 const features = tableFeatures({ columnMeta: {} as Meta });
 
 const ALIGN = { start: "text-start", center: "text-center", end: "text-end" };
@@ -76,11 +81,15 @@ export function DataTable<T extends RowData>({
 }) {
   const helper = useMemo(() => createColumnHelper<typeof features, T>(), []);
   const defs = useMemo(
-    () => helper.columns(columns.map((c) => helper.display({ id: c.id, header: () => c.header, cell: (ctx) => c.cell(ctx.row.original), meta: { width: c.width, align: c.align, actions: c.actions } }))),
+    () => helper.columns(columns.map((c) => helper.display({ id: c.id, header: () => c.header, cell: (ctx) => c.cell(ctx.row.original), meta: { width: c.width, align: c.align, actions: c.actions, pin: c.pin, hideOnCard: c.hideOnCard } }))),
     [columns, helper],
   );
   const rows = useMemo(() => data ?? [], [data]);
   const table = useTable({ features, columns: defs, data: rows, getRowId: (r) => getRowId(r) });
+  // 1024–1366: الجدول أعرض من المساحة → أول عمود (الاسم/الرقم) وعمود الإجراءات ثابتين + ظل على الطرف اللي وراه أعمدة
+  const [scrollRef, edges] = useScrollEdges<HTMLDivElement>();
+  const lastIsActions = !!(columns[columns.length - 1]?.actions || columns[columns.length - 1]?.pin);
+  const stickyCls = (i: number, n: number) => (i === 0 ? "dt-sticky-start sticky start-0 z-[1]" : i === n - 1 && lastIsActions ? "dt-sticky-end sticky end-0 z-[1]" : "");
 
   const pad = (i: number, n: number) => ({
     paddingInlineStart: i === 0 ? edge : gap / 2,
@@ -93,7 +102,7 @@ export function DataTable<T extends RowData>({
       return Array.from({ length: skeletonRows }, (_, r) => (
         <tr key={r}>
           {columns.map((c, i) => (
-            <td key={c.id} style={pad(i, columns.length)} className={`border-b py-[18px] ${rowClassName}`}>
+            <td key={c.id} style={pad(i, columns.length)} className={`border-b py-[18px] ${rowClassName} ${stickyCls(i, columns.length)} ${stickyCls(i, columns.length) ? "bg-white" : ""}`}>
               <Skeleton className={`h-4 ${c.actions ? "ms-auto w-24" : "w-3/4"}`} />
             </td>
           ))}
@@ -124,17 +133,20 @@ export function DataTable<T extends RowData>({
         onKeyDown={onRowClick ? (e) => e.key === "Enter" && e.target === e.currentTarget && onRowClick(row.original) : undefined}
         tabIndex={onRowClick ? 0 : undefined}
         aria-label={rowLabel?.(row.original)}
-        className={`${onRowClick ? "cursor-pointer hover:bg-surface-1/60 focus-visible:bg-surface-1" : ""} ${rowClass?.(row.original) ?? ""}`}
+        className={`group/row ${onRowClick ? "cursor-pointer hover:bg-surface-1/60 focus-visible:bg-surface-1" : ""} ${rowClass?.(row.original) ?? ""}`}
       >
         {row.getAllCells().map((cell, i) => {
           const m = cell.column.columnDef.meta;
+          const sticky = stickyCls(i, columns.length);
+          // الخلية الثابتة لازم خلفية مصمتة (المحتوى بيعدّي تحتها) — نفس لون الصف المحدد/الـ hover
+          const stickyBg = sticky ? `${rowClass?.(row.original) ?? "bg-white"} ${onRowClick ? "group-hover/row:bg-[#f8faf9] group-focus-visible/row:bg-surface-1" : ""}` : "";
           return (
             <td
               key={cell.id}
               style={{ ...pad(i, columns.length), paddingBlock: rowPadY }}
               onClick={m?.actions ? (e) => e.stopPropagation() : undefined}
               onKeyDown={m?.actions ? (e) => e.stopPropagation() : undefined}
-              className={`border-b align-middle ${rowClassName} text-13 font-light text-ink ${ALIGN[m?.align ?? "start"]}`}
+              className={`border-b align-middle ${rowClassName} text-13 font-light text-ink ${ALIGN[m?.align ?? "start"]} ${sticky} ${stickyBg}`}
             >
               {m?.actions ? <div className="flex items-center justify-end gap-1.5">{<table.FlexRender cell={cell} />}</div> : <table.FlexRender cell={cell} />}
             </td>
@@ -144,7 +156,7 @@ export function DataTable<T extends RowData>({
     ));
   };
 
-  // أقل من md: كل صف كارت (العمود الأول عنوان، والباقي «العنوان: القيمة»، والإجراءات تحت) بدل جدول بتمرير جانبي
+  // أقل من lg (1024): كل صف كارت (العمود الأول عنوان، والباقي «العنوان: القيمة»، والإجراءات تحت) بدل جدول بتمرير جانبي
   const stateNode = () => {
     if (error)
       return <EmptyState title="تعذّر تحميل البيانات" body="حدث خطأ أثناء التحميل. حاول مرة أخرى." action={onRetry ? <Button variant="secondary" size="S" onClick={onRetry}>إعادة المحاولة</Button> : null} />;
@@ -165,8 +177,9 @@ export function DataTable<T extends RowData>({
     return table.getRowModel().rows.map((row) => {
       const cells = row.getAllCells();
       const [first, ...rest] = cells;
-      const actions = rest.filter((c) => c.column.columnDef.meta?.actions);
-      const fields = rest.filter((c) => !c.column.columnDef.meta?.actions);
+      const isBtns = (c: (typeof rest)[number]) => !!(c.column.columnDef.meta?.actions || c.column.columnDef.meta?.pin);
+      const actions = rest.filter(isBtns);
+      const fields = rest.filter((c) => !isBtns(c) && !c.column.columnDef.meta?.hideOnCard);
       return (
         <div
           key={row.id}
@@ -208,8 +221,8 @@ export function DataTable<T extends RowData>({
 
   return (
     <>
-      <div className="flex flex-col gap-2.5 md:hidden">{cards()}</div>
-      <div className="relative hidden overflow-x-auto md:block">
+      <div className="flex flex-col gap-2.5 lg:hidden">{cards()}</div>
+      <div ref={scrollRef} data-start={edges.start} data-end={edges.end} className={`dt-scroll relative hidden overflow-x-auto lg:block ${lastIsActions ? "" : "dt-no-end"}`}>
         <table className="w-full table-fixed border-separate border-spacing-0" style={{ minWidth }}>
           <colgroup>
             {columns.map((c, i) => (
@@ -224,7 +237,7 @@ export function DataTable<T extends RowData>({
                     key={h.id}
                     scope="col"
                     style={pad(i, columns.length)}
-                    className={`bg-surface-1 py-[9px] text-12 font-medium whitespace-nowrap text-muted ${headRadius === 10 ? "first:rounded-s-10 last:rounded-e-10" : "first:rounded-s-8 last:rounded-e-8"} ${ALIGN[h.column.columnDef.meta?.align ?? "start"]}`}
+                    className={`bg-surface-1 py-[9px] text-12 font-medium whitespace-nowrap text-muted ${headRadius === 10 ? "first:rounded-s-10 last:rounded-e-10" : "first:rounded-s-8 last:rounded-e-8"} ${ALIGN[h.column.columnDef.meta?.align ?? "start"]} ${stickyCls(i, columns.length)}`}
                   >
                     <table.FlexRender header={h} />
                   </th>

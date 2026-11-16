@@ -47,7 +47,7 @@ export function Select<V extends string = string>({
         aria-label={ariaLabel ?? label}
         aria-invalid={invalid || undefined}
         className={`group flex items-center rounded-10 border bg-white text-13 text-ink outline-none disabled:cursor-not-allowed disabled:bg-surface-1 data-[state=open]:border-ink ${
-          variant === "filter" ? "h-10 w-fit gap-1.5 px-3 hover:bg-surface-1" : "h-11 w-full gap-2 px-3"
+          variant === "filter" ? "h-10 w-fit gap-1.5 px-3 enabled:hover:bg-surface-1 disabled:border-dashed disabled:opacity-60 pointer-coarse:h-11" : "h-11 w-full gap-2 px-3"
         } ${invalid ? "border-danger" : "border-border"} ${className ?? ""}`}
       >
         {variant === "filter" ? (
@@ -73,7 +73,7 @@ export function Select<V extends string = string>({
               <Menu.RadioItem
                 key={o.value}
                 value={o.value}
-                className="flex min-h-[37px] cursor-pointer items-center justify-between gap-2.5 rounded-8 px-2.5 py-2 text-13 leading-[21px] font-medium text-ink outline-none data-highlighted:bg-surface-1 data-[state=checked]:bg-lime-tint"
+                className="flex min-h-[37px] cursor-pointer pointer-coarse:min-h-11 items-center justify-between gap-2.5 rounded-8 px-2.5 py-2 text-13 leading-[21px] font-medium text-ink outline-none data-highlighted:bg-surface-1 data-[state=checked]:bg-lime-tint"
               >
                 {o.label}
                 <Menu.ItemIndicator>

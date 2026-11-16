@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { Icon, type UiGlyph } from "@/components/ui/Icon";
+import { Select } from "@/components/ui/Select";
 import { REF_NAV, type RefSlug } from "@/lib/api/reference";
 import { withBase } from "@/lib/base-path";
 
@@ -10,8 +12,16 @@ import { withBase } from "@/lib/base-path";
 
 /** «Ref nav» 250: أبيض r16 · حشو 14·10 · مسافة 2 · عناوين المجموعات 11 Medium رمادي · البنود 34 r10 (المختار كحلي 13 SemiBold أبيض) */
 export function RefNav({ active }: { active: RefSlug }) {
+  const router = useRouter();
+  const options = REF_NAV.flatMap((g) => g.items.map((i) => ({ value: i.slug, label: i.label })));
   return (
-    <nav aria-label="البيانات المرجعية" className="flex w-full shrink-0 flex-col gap-0.5 rounded-16 bg-white px-2.5 py-3.5 xl:w-[250px]">
+    <>
+    {/* أقل من 1280 (القائمة كانت بتترص فوق المحتوى وتاخد أول شاشة كلها): قائمة «القسم» منسدلة */}
+    <div className="flex w-full flex-col gap-1.5 rounded-16 bg-white p-3 xl:hidden">
+      <span className="text-12 font-medium text-muted">القسم</span>
+      <Select value={active} options={options} ariaLabel="القسم" onChange={(v) => router.push(`/reference/${v}`)} />
+    </div>
+    <nav aria-label="البيانات المرجعية" className="hidden w-full shrink-0 flex-col gap-0.5 rounded-16 bg-white px-2.5 py-3.5 xl:flex xl:w-[250px]">
       {REF_NAV.map((g) => (
         <div key={g.group} className="flex flex-col gap-0.5">
           <p className="px-2 pt-2.5 pb-1 text-[11px] leading-[18px] font-medium text-muted">{g.group}</p>
@@ -31,6 +41,7 @@ export function RefNav({ active }: { active: RefSlug }) {
         </div>
       ))}
     </nav>
+    </>
   );
 }
 
@@ -55,7 +66,7 @@ export function PanelHead({ title, sub, action }: { title: ReactNode; sub?: stri
 /** زر 32 بإطار r8 (تعديل ✎ · حذف 🗑 أحمر) */
 export function SmallBtn({ icon, label, danger, onClick }: { icon: UiGlyph; label: string; danger?: boolean; onClick: () => void }) {
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick} className={`flex size-8 shrink-0 items-center justify-center rounded-8 border border-border bg-white hover:bg-surface-1 ${danger ? "text-danger" : "text-ink"}`}>
+    <button type="button" aria-label={label} title={label} onClick={onClick} className={`hit-44 flex size-8 shrink-0 items-center justify-center rounded-8 border border-border bg-white hover:bg-surface-1 ${danger ? "text-danger" : "text-ink"}`}>
       <Icon name={icon} size={16} />
     </button>
   );
@@ -70,7 +81,7 @@ export function MiniSwitch({ checked, onChange, label }: { checked: boolean; onC
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors ${checked ? "justify-start bg-ink" : "justify-end bg-[#cfd6d3]"}`}
+      className={`hit-44 flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors ${checked ? "justify-start bg-ink" : "justify-end bg-[#cfd6d3]"}`}
     >
       <span aria-hidden className="size-4 rounded-full bg-white" />
     </button>

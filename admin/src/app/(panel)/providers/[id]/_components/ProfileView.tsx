@@ -237,8 +237,13 @@ function Head({ profile, canEdit }: { profile: ProviderProfile; canEdit: boolean
       <Logo src={profile.logo} name={p.name} />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <h1 className="flex flex-wrap items-center gap-x-2 text-18 text-ink sm:text-24">
-          <span>
-            <span className="font-bold">{bold}</span> <bdi className="font-normal">{rest}</bdi>
+          <span className="min-w-0">
+            <span className="font-bold">{bold}</span> <bdi className="font-normal max-sm:hidden">{rest}</bdi>
+            {/* الموبايل: الكود في سطر لوحده من غير كسر («LK-XP-» / «001» كان بيتقسم ويركب على الاسم) */}
+            {tail ? <bdi className="font-normal sm:hidden">{tail}</bdi> : null}
+            <span className="block text-13 leading-[22px] font-normal text-muted sm:hidden">
+              <bdi className="num whitespace-nowrap">{p.code}</bdi>
+            </span>
           </span>
           {suspended ? <Pill tone="danger">موقوف</Pill> : null}
         </h1>

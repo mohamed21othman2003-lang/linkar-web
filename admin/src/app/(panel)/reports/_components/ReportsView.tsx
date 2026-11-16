@@ -104,11 +104,12 @@ export function ReportsView() {
               </>
             )}
           </div>
+          {/* الموبايل: كل حقل في سطر لوحده بعرض كامل — التاريخ «1 أكتوبر 2026» كان بيتكسر على سطرين في 130px */}
           <div className="flex flex-wrap items-end gap-2.5">
-            <FieldSelect label="الفترة" icon="calendar" value={f.period} options={REPORT_PERIODS} onChange={(v) => set({ period: v })} className="w-[138px]" />
-            <FieldSelect label="من" icon="calendar" value={f.from} options={FROM_OPTIONS} onChange={(v) => set({ from: v })} className="w-[130px]" wrap />
-            <FieldSelect label="إلى" icon="calendar" value={f.to} options={TO_OPTIONS} onChange={(v) => set({ to: v })} className="w-[130px]" wrap />
-            <FieldSelect label={d?.scope.label ?? "المدينة"} icon={d?.scope.icon ?? "map-pin"} value={f.scope} options={d?.scope.options ?? [{ value: "", label: "الكل" }]} onChange={(v) => set({ scope: v })} className="w-[121px]" />
+            <FieldSelect label="الفترة" icon="calendar" value={f.period} options={REPORT_PERIODS} onChange={(v) => set({ period: v })} className="w-[138px] max-sm:w-full" />
+            <FieldSelect label="من" icon="calendar" value={f.from} options={FROM_OPTIONS} onChange={(v) => set({ from: v })} className="w-[130px] max-sm:w-full" wrap />
+            <FieldSelect label="إلى" icon="calendar" value={f.to} options={TO_OPTIONS} onChange={(v) => set({ to: v })} className="w-[130px] max-sm:w-full" wrap />
+            <FieldSelect label={d?.scope.label ?? "المدينة"} icon={d?.scope.icon ?? "map-pin"} value={f.scope} options={d?.scope.options ?? [{ value: "", label: "الكل" }]} onChange={(v) => set({ scope: v })} className="w-[121px] max-sm:w-full" />
             <div className="flex items-end gap-2.5 max-sm:w-full sm:me-auto">
               <Button className="h-11 rounded-10 max-sm:flex-1" onClick={apply}>
                 عرض التقرير

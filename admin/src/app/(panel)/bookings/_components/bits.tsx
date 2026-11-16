@@ -39,13 +39,19 @@ export function TwoLine({ top, bottom, ltrBottom }: { top: ReactNode; bottom?: R
 }
 
 export const Plain = ({ children }: { children: ReactNode }) => <span className="num block text-13 leading-5 font-normal text-ink">{children}</span>;
-export const Money = ({ v }: { v: number }) => <Plain>{num(v)}</Plain>;
+// العملة بتظهر في كارت الموبايل بس (في الجدول العنوان فيه «شامل الضريبة» زي Figma)
+export const Money = ({ v }: { v: number }) => (
+  <Plain>
+    {num(v)}
+    <span className="lg:hidden"> ر.س</span>
+  </Plain>
+);
 export const Txt = ({ s }: { s: string }) => <>{ltrRuns(s)}</>;
 
 /** زر أيقونة 32 r8 بإطار (التفاصيل) */
 export function SquareBtn({ icon, label, onClick }: { icon: UiGlyph; label: string; onClick: () => void }) {
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick} className="flex size-8 shrink-0 items-center justify-center rounded-8 border border-border bg-white text-ink hover:bg-surface-1">
+    <button type="button" aria-label={label} title={label} onClick={onClick} className="flex size-8 shrink-0 items-center justify-center rounded-8 border border-border bg-white text-ink hover:bg-surface-1 pointer-coarse:size-11">
       <Icon name={icon} size={16} />
     </button>
   );
@@ -54,7 +60,7 @@ export function SquareBtn({ icon, label, onClick }: { icon: UiGlyph; label: stri
 /** زر ⋯ 32 دائري (Row menu) — في الحجوزات بيفتح نافذة الإجراءات CON5-04A */
 export function DotsBtn({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick} className="flex size-8 shrink-0 items-center justify-center gap-[3px] rounded-full border border-border bg-white hover:bg-surface-1">
+    <button type="button" aria-label={label} title={label} onClick={onClick} className="flex size-8 shrink-0 items-center justify-center gap-[3px] rounded-full border border-border bg-white hover:bg-surface-1 pointer-coarse:size-11">
       {[0, 1, 2].map((i) => (
         <span key={i} className="size-1 rounded-full bg-ink" />
       ))}

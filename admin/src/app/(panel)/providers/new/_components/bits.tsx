@@ -58,7 +58,8 @@ export function DocRow({ label, status, onFile, accept = "application/pdf,image/
       ) : (
         <span className="inline-flex h-[46px] shrink-0 items-center gap-1.5 rounded-12 border border-border bg-white px-[18px] text-14 font-medium text-ink">
           رفع الملف
-          <Icon name="download" size={16} />
+          {/* مفيش أيقونة رفع في الطقم — سهم التنزيل مقلوب */}
+          <Icon name="download" size={16} className="rotate-180" />
         </span>
       )}
       <input

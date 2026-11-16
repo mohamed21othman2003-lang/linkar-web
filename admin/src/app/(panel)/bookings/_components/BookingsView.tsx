@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { DataTable, type Column } from "@/components/panel/DataTable";
 import { FilterBar, SearchInput } from "@/components/panel/FilterBar";
+import { MobileFilters } from "@/components/panel/MobileFilters";
 import { PageHead } from "@/components/panel/PageHead";
 import { Tabs } from "@/components/panel/Tabs";
 import { ButtonLink } from "@/components/ui/Button";
@@ -108,7 +109,7 @@ export function BookingsView() {
         <Kpi label="بانتظار قرار لينكار" icon="alert" value={kpis.data?.linkar} />
         <Kpi label="ملغاة" icon="x" value={kpis.data?.cancelled} />
       </div>
-      <section className="flex flex-col gap-4 rounded-16 bg-white p-5">
+      <section className="flex flex-col gap-4 rounded-16 bg-white p-4 sm:p-5">
         <Tabs
           variant="pill"
           label="تبويبات الحجوزات"
@@ -117,11 +118,13 @@ export function BookingsView() {
           items={BOOKING_TABS.map((k) => ({ key: k, label: TAB_LABEL[k], count: counts?.[k] }))}
         />
         <FilterBar className="gap-2!" onClear={clear} canClear={filtered}>
+          <MobileFilters active={[provider, branch, category, channel, period !== "2026-10" ? period : ""].filter(Boolean).length} onClear={clear}>
           <Select variant="filter" label="مقدّم الخدمة" value={provider} options={PROVIDERS} onChange={set("provider")} className={FILTER} />
           <Select variant="filter" label="الفرع" value={branch} options={BRANCHES} onChange={set("branch")} className={FILTER} />
           <Select variant="filter" label="الخدمة" value={category} options={SERVICES} onChange={set("category")} className={FILTER} />
           <Select variant="filter" label="الفترة" value={period} options={PERIODS} onChange={(v) => url.replace({ period: v === "2026-10" ? null : v, page: null })} className={FILTER} />
           <Select variant="filter" label="القناة" value={channel} options={CHANNEL_OPTS} onChange={set("channel")} className={FILTER} />
+          </MobileFilters>
           <span className="hidden flex-1 lg:block" />
           <SearchInput value={search} onChange={setSearch} placeholder="ابحث برقم الحجز أو الجوال" className="h-[38px]! w-full lg:w-[260px] [&_input]:text-end [&_svg]:text-muted" iconEnd />
         </FilterBar>
@@ -178,10 +181,10 @@ function columnsFor(tab: BookingTab, c: Ctx): Column<Booking>[] {
   const base: Column<Booking>[] = [
     { id: "id", header: "رقم الحجز", width: w[0], cell: (b) => <Plain>{b.id}</Plain> },
     { id: "customer", header: "العميل", width: w[1], cell: (b) => <TwoLine top={b.customer.name} bottom={b.customer.phone} ltrBottom /> },
-    { id: "provider", header: withBranch ? "مقدّم الخدمة · الفرع" : "مقدّم الخدمة", width: w[2], cell: (b) => <TwoLine top={b.provider} bottom={b.branch} /> },
+    { id: "provider", header: withBranch ? "مقدّم الخدمة · الفرع" : "مقدّم الخدمة", width: w[2], cell: (b) => <TwoLine top={b.provider} bottom={b.branch} />, hideOnCard: true },
     { id: "service", header: "الخدمة", width: w[3], cell: (b) => <TwoLine top={b.service} bottom={b.size} /> },
     { id: "sale", header: head2("سعر البيع"), width: w[4], cell: (b) => <Money v={b.sale} /> },
-    { id: "cost", header: head2("سعر التكلفة"), width: w[5], cell: (b) => <Money v={b.cost} /> },
+    { id: "cost", header: head2("سعر التكلفة"), width: w[5], cell: (b) => <Money v={b.cost} />, hideOnCard: true },
   ];
   const details = (b: Booking) => <SquareBtn icon="info" label={`تفاصيل ${b.id}`} onClick={() => c.openDrawer(b)} />;
   const dots = (b: Booking) => (c.canEdit ? <DotsBtn label={`إجراءات ${b.id}`} onClick={() => c.openActions(b)} /> : null);
@@ -189,6 +192,7 @@ function columnsFor(tab: BookingTab, c: Ctx): Column<Booking>[] {
     id: "actions",
     header: " ",
     width,
+    pin: true,
     // في Figma الأزرار على يمين العمود (مش آخره) — فمش عمود actions بتاع الجدول، والضغط جواه ما يفتحش الصف
     cell: (b) => (
       <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
@@ -280,14 +284,14 @@ function columnsFor(tab: BookingTab, c: Ctx): Column<Booking>[] {
       return [
         ...base,
         { id: "request", header: "الطلب", width: w[6], cell: (b) => <Plain>{b.request?.label ?? "—"}</Plain> },
-        { id: "voucher", header: "القسيمة", width: w[7], cell: (b) => <Plain>{b.voucher}</Plain> },
+        { id: "voucher", header: "القسيمة", width: w[7], cell: (b) => <Plain>{b.voucher}</Plain>, hideOnCard: true },
         actions(w[8]),
       ];
     default:
       return [
         ...base,
         { id: "status", header: "الحالة", width: w[6], cell: (b) => <StatusPill kind={STATUS_PILL[b.status].kind}>{b.status === "approved" ? "معتمد" : STATUS_PILL[b.status].label}</StatusPill> },
-        { id: "voucher", header: "القسيمة", width: w[7], cell: (b) => <Plain>{b.voucher}</Plain> },
+        { id: "voucher", header: "القسيمة", width: w[7], cell: (b) => <Plain>{b.voucher}</Plain>, hideOnCard: true },
         actions(w[8]),
       ];
   }
@@ -316,7 +320,7 @@ function ContactCard({ canEdit, onNotify }: { canEdit: boolean; onNotify: (m: st
     { id: "d", header: "أقرب موعد", width: 152, cell: (r) => <Plain>{r.nearest}</Plain> },
   ];
   return (
-    <section className="flex flex-col gap-3.5 rounded-16 bg-white px-5 py-[18px]">
+    <section className="flex flex-col gap-3.5 rounded-16 bg-white px-4 py-[18px] sm:px-5">
       <div className="flex flex-wrap items-center gap-2.5">
         <div className="flex min-w-0 flex-col gap-0.5">
           <h2 className="text-16 leading-6 font-semibold text-ink">حجوزات جديدة بانتظار التواصل</h2>
@@ -326,12 +330,12 @@ function ContactCard({ canEdit, onNotify }: { canEdit: boolean; onNotify: (m: st
             <Skeleton className="h-4 w-72" />
           )}
         </div>
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-8 bg-surface-2 text-ink">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-8 bg-surface-2 text-ink max-sm:hidden">
           <Icon name="phone" size={16} />
         </span>
         <span className="flex-1" />
         {canEdit ? (
-          <div className="flex gap-2.5">
+          <div className="flex gap-2.5 max-sm:w-full max-sm:flex-col">
             <NotifyBtn icon="user" onClick={() => onNotify("notify-crm")}>
               تنبيه موظف CRM
             </NotifyBtn>
@@ -348,7 +352,7 @@ function ContactCard({ canEdit, onNotify }: { canEdit: boolean; onNotify: (m: st
 
 function NotifyBtn({ icon, onClick, children }: { icon: UiGlyph; onClick: () => void; children: ReactNode }) {
   return (
-    <button type="button" onClick={onClick} className="flex h-[42px] items-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium text-ink hover:bg-surface-1">
+    <button type="button" onClick={onClick} className="flex h-[42px] items-center justify-center gap-1.5 rounded-12 border border-border bg-white px-3.5 text-14 font-medium whitespace-nowrap text-ink hover:bg-surface-1 pointer-coarse:h-11">
       <Icon name={icon} size={16} />
       {children}
     </button>

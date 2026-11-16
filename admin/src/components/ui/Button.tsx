@@ -21,7 +21,8 @@ const VARIANT: Record<ButtonVariant, string> = {
 const SIZE: Record<ButtonSize, string> = {
   L: "h-[52px] rounded-12 px-6 text-16 font-medium",
   M: "h-12 rounded-12 px-4 text-14 font-medium",
-  S: "h-8 rounded-8 px-3 text-12 font-medium",
+  // hit-44: مساحة لمس 44 على الشاشات اللمس من غير ما الزر يكبر (الشكل على الماوس زي ما هو)
+  S: "hit-44 h-8 rounded-8 px-3 text-12 font-medium",
 };
 
 function classes(variant: ButtonVariant, size: ButtonSize, className?: string) {
@@ -56,7 +57,7 @@ export function IconButton({ label, className, children, ...rest }: { label: str
       aria-label={label}
       title={label}
       {...rest}
-      className={`inline-flex size-10 shrink-0 items-center justify-center rounded-10 border border-border bg-white text-ink hover:bg-surface-1 ${className ?? ""}`}
+      className={`inline-flex size-10 shrink-0 pointer-coarse:size-11 items-center justify-center rounded-10 border border-border bg-white text-ink hover:bg-surface-1 ${className ?? ""}`}
     >
       {children}
     </button>

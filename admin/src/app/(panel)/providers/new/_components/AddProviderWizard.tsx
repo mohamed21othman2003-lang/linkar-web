@@ -288,9 +288,10 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
     void files;
   };
   const err = (k: keyof WizardValues) => (e[k] as { message?: string } | undefined)?.message;
-  const text = (name: "brand" | "brandEn" | "legalName" | "ownerName" | "email", label: string, opts: { ltr?: boolean; placeholder?: string } = {}) => (
+  // latin: نص إنجليزي بيتكتب من الشمال لليمين (العلامة بالإنجليزية)
+  const text = (name: "brand" | "brandEn" | "legalName" | "ownerName" | "email", label: string, opts: { ltr?: boolean; latin?: boolean; placeholder?: string } = {}) => (
     <Field required label={label} error={err(name)}>
-      {(id) => <TextInput id={id} {...register(name)} ltr={opts.ltr} placeholder={opts.placeholder} invalid={!!e[name]} className={W_INPUT} />}
+      {(id) => <TextInput id={id} {...register(name)} ltr={opts.ltr} placeholder={opts.placeholder} invalid={!!e[name]} className={`${W_INPUT} ${opts.latin ? "[&_input]:text-left!" : ""}`} />}
     </Field>
   );
   const digitsField = (name: "cr" | "vat" | "unified", label: string, max: number) => (
@@ -308,7 +309,7 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
       <WCard title="العلامة التجارية والمنشأة">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {text("brand", "العلامة التجارية (تظهر للعملاء)", { placeholder: "مركز الواحة للعناية" })}
-          {text("brandEn", "العلامة بالإنجليزية", { ltr: true, placeholder: "Al Waha Car Care" })}
+          {text("brandEn", "العلامة بالإنجليزية", { ltr: true, latin: true, placeholder: "Al Waha Car Care" })}
           {text("legalName", "الاسم القانوني كما في السجل")}
           <Field required label="المدينة الرئيسية" error={err("city")}>
             {(id) => <Controller control={control} name="city" render={({ field }) => <Select id={id} value={field.value} onChange={field.onChange} options={CITY_OPTS} className={W_SELECT} />} />}
@@ -393,7 +394,7 @@ export function CompanyStep({ edit }: { edit?: boolean } = {}) {
         ))}
         <Button variant="secondary" className="h-[46px] self-start px-[18px]" onClick={() => accounts.append({ bank: BANKS[0], accountName: getValues("legalName"), iban: "" })}>
           إضافة حساب بنكي أو محفظة
-          <Icon name="download" size={16} />
+          <Icon name="plus" size={16} />
         </Button>
       </WCard>
 

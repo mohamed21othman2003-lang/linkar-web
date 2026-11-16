@@ -12,19 +12,17 @@ const POINTS = [
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid min-h-screen grid-cols-1 bg-white lg:grid-cols-2">
-      <main className="flex flex-col px-6 pt-[118px] pb-10 lg:ps-[160px] lg:pe-6">
+      {/* الشاشات القصيرة (موبايل 320×568): حشو فوق أقل عشان زر الدخول يبان من غير تمرير */}
+      <main className="flex flex-col px-6 pt-[118px] pb-10 max-lg:[@media(max-height:740px)]:pt-8 max-lg:[@media(max-height:740px)]:pb-6 lg:ps-[160px] lg:pe-6">
         <div className="flex w-full max-w-[400px] flex-1 flex-col">
-          <Image src={withBase("/logo-primary.svg")} alt="Linkar" width={128} height={20} priority className="mb-10 h-5 w-auto self-start" />
+          <Image src={withBase("/logo-primary.svg")} alt="Linkar" width={128} height={20} priority className="mb-10 h-5 w-auto self-start max-lg:[@media(max-height:740px)]:mb-6" />
           {children}
         </div>
-        {/* زر English ظاهر في التصميم بس مش مربوط — اللوحة عربية بس في المرحلة الأولى (CON5-L1) */}
-        <div className="mt-10 flex w-full max-w-[400px] items-center justify-between">
+        {/* زر English اتشال: اللوحة عربية بس بالتصميم — كان نص من غير وظيفة */}
+        <div className="mt-10 flex w-full max-w-[400px] items-center justify-between max-lg:[@media(max-height:740px)]:mt-6">
           <p className="text-13 font-light text-muted">
             © <span className="num">2026</span> لينكار · لوحة تحكم لينكار
           </p>
-          <span aria-disabled className="inline-flex h-[34px] items-center rounded-16 border border-border px-3.5 text-13 font-medium text-ink">
-            English
-          </span>
         </div>
       </main>
 

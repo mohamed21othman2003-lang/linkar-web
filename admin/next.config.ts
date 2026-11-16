@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   ...(process.env.NEXT_PUBLIC_BASE_PATH ? { basePath: process.env.NEXT_PUBLIC_BASE_PATH } : {}),
   // اللوحة مشروع مستقل جوه ريبو الموقع — الجذر هو فولدر admin نفسه مش الريبو
   ...(onVercel ? {} : { turbopack: { root: path.join(__dirname) }, outputFileTracingRoot: path.join(__dirname) }),
+  // روابط قديمة/متكتبة غلط لصفحات ليها مكان تاني (basePath بيتضاف للمصدر والوجهة لوحده)
+  async redirects() {
+    return [{ source: "/paid-features", destination: "/system/paid-features", permanent: false }];
+  },
 };
 
 export default nextConfig;

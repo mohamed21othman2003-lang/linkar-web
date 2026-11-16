@@ -31,6 +31,7 @@ import type { ProviderBranch, ProviderProfile } from "@/lib/api/profile";
 import { num } from "@/lib/format";
 import { DateField } from "../../../_components/form-bits";
 import { BigModal, BranchChips, CELL_ALERT, CELL_CALC, IN, LOW_MARGIN, RadioCard, SCard, SEL, ToggleRow, WideKV } from "./bits";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-07M · عرض جديد · جونسون (3260-207383) — نفس النافذة لـ«تعديل البيانات» من قائمة ⋯ في جدول العروض.
 // بيانات العرض: صفّين × 3 حقول (371 · مسافة 12) ← القنوات (3 مفاتيح) ← إشعار العملاء
@@ -315,7 +316,7 @@ export function OfferFormModal({ profile, branches, offer, onClose }: { profile:
       {/* الخدمات والفروع */}
       <SCard title="الخدمات والفروع">
         <BranchChips value={v.branchIds} onChange={(x) => setValue("branchIds", x, { shouldDirty: true })} branches={approved} />
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="flex min-w-[760px] flex-col gap-2" role="table" aria-label="الخدمات والفروع">
             <div role="row" className="grid grid-cols-[150px_1fr_80px_80px_90px_120px_30px] gap-2.5 text-12 leading-5 font-medium text-muted">
               <span role="columnheader">الفروع</span>
@@ -372,7 +373,7 @@ export function OfferFormModal({ profile, branches, offer, onClose }: { profile:
               ))
             )}
           </div>
-        </div>
+        </ScrollX>
         {lowMargin ? <p className="text-12 leading-5 text-warning">هامش لينكار بعد العرض أقل من {LOW_MARGIN}% — تتطلب الجدولة صلاحية حساسة.</p> : null}
         {e.serviceIds?.message ? (
           <p role="alert" className="text-12 text-danger">

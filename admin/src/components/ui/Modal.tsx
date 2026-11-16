@@ -37,10 +37,11 @@ export function Modal({
           dir="rtl"
           onOpenAutoFocus={keepFocusQuiet}
           style={{ width }}
-          className={`fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] max-w-[calc(100vw-32px)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3.5 overflow-y-auto rounded-[20px] bg-white p-6 shadow-card focus:outline-none ${className ?? ""}`}
+          className={`fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] max-w-[calc(100vw-32px)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3.5 rounded-[20px] bg-white p-6 shadow-card focus:outline-none ${className ?? ""}`}
         >
+          {/* النوافذ الطويلة: الرأس (العنوان + X) والأزرار ثابتين، والمحتوى بس اللي بيتمرّر */}
           {/* بسطر فرعي: الرأس 52 والزر فوق (caMIN · 3114:54387) · من غيره: الزر في النص مع العنوان (3114:28715) */}
-          <div className={`flex justify-between gap-2 ${subtitle ? "items-start" : "items-center"}`}>
+          <div className={`flex shrink-0 justify-between gap-2 ${subtitle ? "items-start" : "items-center"}`}>
             {subtitle ? (
               <div className="flex flex-col gap-0.5">
                 <Dialog.Title className="text-18 font-bold text-ink">{title}</Dialog.Title>
@@ -49,13 +50,20 @@ export function Modal({
             ) : (
               <Dialog.Title className="text-18 font-bold text-ink">{title}</Dialog.Title>
             )}
-            <Dialog.Close className="flex size-9 shrink-0 items-center justify-center rounded-10 border border-border bg-white text-ink hover:bg-surface-1" aria-label="إغلاق">
+            <Dialog.Close className="flex size-9 shrink-0 items-center justify-center rounded-10 border border-border bg-white text-ink hover:bg-surface-1 pointer-coarse:size-11" aria-label="إغلاق">
               <Icon name="x" size={18} />
             </Dialog.Close>
           </div>
-          {description ? <Dialog.Description className="text-13 font-light text-muted">{description}</Dialog.Description> : <Dialog.Description className="sr-only">{title}</Dialog.Description>}
-          {children}
-          {footer ? <div className="flex flex-wrap gap-2.5 [&>*]:min-w-[120px] [&>*]:flex-1">{footer}</div> : null}
+          {/* حشو 4 (بهامش سالب) عشان إطار الفوكس مايتقصّش من التمرير · المسافة نفس مسافة النافذة (gap: inherit) */}
+          {description || children ? (
+            <div className="-m-1 flex min-h-0 flex-1 flex-col overflow-y-auto p-1 [gap:inherit]">
+              {description ? <Dialog.Description className="text-13 font-light text-muted">{description}</Dialog.Description> : <Dialog.Description className="sr-only">{title}</Dialog.Description>}
+              {children}
+            </div>
+          ) : (
+            <Dialog.Description className="sr-only">{title}</Dialog.Description>
+          )}
+          {footer ? <div className="flex shrink-0 flex-wrap gap-2.5 [&>*]:min-w-[120px] [&>*]:flex-1">{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

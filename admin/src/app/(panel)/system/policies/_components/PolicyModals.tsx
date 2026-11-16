@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/Toast";
 import { api, isApiError } from "@/lib/api";
 import { APPEARS_IN } from "@/lib/api/policies";
 import { useUrlState } from "@/lib/use-url-state";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-21M · سجل النسخ (3114:64520) و CON5-21M · سياسة جديدة (3114:64561) — 600 عرض
 export function PolicyModals() {
@@ -58,7 +59,7 @@ function History({ id, onClose }: { id: string; onClose: () => void }) {
       subtitle="كل نشر يُنشئ نسخة جديدة ويُحفظ من نشرها ومتى"
       width={600}
     >
-      <div className="overflow-x-auto rounded-10 border border-border">
+      <ScrollX className="rounded-10 border border-border">
         <div className="min-w-[530px]">
           <div dir="ltr"
             className={`${GRID} bg-surface-1 text-12 font-medium text-muted`}
@@ -85,7 +86,7 @@ function History({ id, onClose }: { id: string; onClose: () => void }) {
                 </div>
               ))}
         </div>
-      </div>
+      </ScrollX>
       <div className="flex flex-wrap gap-2.5 [&>*]:min-w-[120px] [&>*]:flex-1">
         <Button variant="secondary" className="h-[46px]!" onClick={onClose}>
           إغلاق

@@ -14,6 +14,7 @@ import { productOptions, productWarranty, templateCount, templateCritical } from
 import { useUrlState } from "@/lib/use-url-state";
 import { CategoryIcon, HEAD_ROW, PanelHead, SmallBtn } from "./bits";
 import { EditableList } from "./EditableList";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 function Loading() {
   return (
@@ -73,7 +74,7 @@ export function CategoriesPage() {
       ) : !q.data?.length ? (
         <EmptyState title="لا توجد تصنيفات بعد" />
       ) : (
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="min-w-[520px]">
             <div className={HEAD_ROW}>
               <span className="min-w-0 flex-1">التصنيف</span>
@@ -93,7 +94,7 @@ export function CategoriesPage() {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollX>
       )}
     </>
   );
@@ -138,7 +139,7 @@ export function CategoryPage({ slug }: { slug: string }) {
           </Button>
         </div>
         {c.products.length ? (
-          <div className="overflow-x-auto">
+          <ScrollX>
             <div className="min-w-[640px]">
               <div className={`${HEAD_ROW} min-h-[52px]`}>
                 {PCOLS.map(([l, w]) => (
@@ -171,7 +172,7 @@ export function CategoryPage({ slug }: { slug: string }) {
                 </div>
               ))}
             </div>
-          </div>
+          </ScrollX>
         ) : (
           <EmptyState title="لا توجد منتجات معتمدة بعد" />
         )}
@@ -256,7 +257,7 @@ export function AccreditationPage() {
       ) : !q.data?.length ? (
         <EmptyState title="لا توجد قوالب بعد" />
       ) : (
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="min-w-[700px]">
             <div className={HEAD_ROW}>
               {TCOLS.map(([l, w]) => (
@@ -292,7 +293,7 @@ export function AccreditationPage() {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollX>
       )}
     </>
   );

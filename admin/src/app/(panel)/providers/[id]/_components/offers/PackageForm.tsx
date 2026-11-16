@@ -18,6 +18,7 @@ import { SIZE_LABELS, type Tri } from "@/lib/api/services";
 import { num } from "@/lib/format";
 import { DateField } from "../../../_components/form-bits";
 import { BigModal, BranchChips, CELL_ALERT, CELL_CALC, IN, LOW_MARGIN, SCard, SEL, TagChip, ToggleRow } from "./bits";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-07M · باقة جديدة · جونسون (3260-207985) — ونفسها لـ«تعديل البيانات» من قائمة ⋯ في جدول الباقات.
 // بيانات الباقة: (اسم الباقة · الفترة · الحد) ← الوصف للعميل (60) ← الفروع ← 3 مفاتيح القنوات
@@ -270,7 +271,7 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
 
       {/* الخدمات المشمولة */}
       <SCard title="الخدمات المشمولة">
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="min-w-[640px]" role="table" aria-label="الخدمات المشمولة">
             <div role="row" className="grid grid-cols-[36px_1fr_150px_150px_110px] rounded-10 bg-surface-1 px-3 py-[9px] text-12 leading-5 font-medium text-muted">
               <span role="columnheader" className="sr-only">
@@ -323,7 +324,7 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
                   );
                 })}
           </div>
-        </div>
+        </ScrollX>
         {e.items?.message ? (
           <p role="alert" className="text-12 text-danger">
             {e.items.message}
@@ -340,7 +341,7 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
             </TagChip>
           ))}
         </div>
-        <div className="overflow-x-auto">
+        <ScrollX>
           <div className="flex min-w-[760px] flex-col gap-2" role="table" aria-label="سعر الباقة">
             <div role="row" className="grid min-h-10 grid-cols-[110px_repeat(5,1fr)] items-center gap-2.5 text-12 leading-5 font-medium text-muted">
               <span role="columnheader">الحجم</span>
@@ -373,7 +374,7 @@ export function PackageFormModal({ profile, branches, pkg, onClose }: { profile:
               );
             })}
           </div>
-        </div>
+        </ScrollX>
         {priceError ? (
           <p role="alert" className="text-12 text-danger">
             {priceError}

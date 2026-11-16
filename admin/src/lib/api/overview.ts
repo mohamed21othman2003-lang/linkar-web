@@ -1,5 +1,6 @@
 // الرئيسية «نظرة عامة» (Figma CON5-01 3114:65057) — رد واحد زي GET /dashboard/overview.
 // الأرقام والنصوص حرفياً من الإطار (اليوم التجريبي = MOCK_NOW 14 أكتوبر 2026).
+import { contactSummary } from "./bookings";
 import { delay } from "./errors";
 
 /** صف في جدول «حجوزات جديدة بانتظار التواصل» (لكل مزوّد) */
@@ -44,18 +45,8 @@ export interface OverviewData {
 
 const DATA: OverviewData = {
   greetingName: "نوف",
-  newBookings: {
-    total: 186,
-    branches: 41,
-    providers: 17,
-    contacted: 185,
-    rows: [
-      { provider: "XPEL السعودية", providerId: "lk-xp-001", branches: 5, branchNames: "العليا · الملقا · +3 أخرى", fresh: 24, providerContacted: 23, linkarContacted: 24, nearest: "2026-10-17" },
-      { provider: "لومار", providerId: "lk-lm-001", branches: 4, branchNames: "الروضة · الياسمين · +2 أخرى", fresh: 19, providerContacted: 19, linkarContacted: 19, nearest: "2026-10-16" },
-      { provider: "جونسون", providerId: "lk-jn-001", branches: 3, branchNames: "الحمراء · المحمدية · الزهراء", fresh: 14, providerContacted: 13, linkarContacted: 13, nearest: "2026-10-16" },
-      { provider: "مزوّدون آخرون (14)", providerId: null, branches: 29, fresh: 129, providerContacted: 129, linkarContacted: 129, nearest: null },
-    ],
-  },
+  // «حجوزات جديدة بانتظار التواصل» بتتملى من contactSummary (نفس مصدر صفحة الحجوزات) في get تحت
+  newBookings: { total: 0, branches: 0, providers: 0, contacted: 0, rows: [] },
   kpis: { salesToday: 241380, marginToday: 46828, duesToday: 194552, awaitingDecision: 30, vouchersExpiring: 38 },
   network: { active: "21 · 18 مركز عناية · 3 مغاسل", branches: "55 · بلاتيني 9 · ذهبي 31 · فضي 15", services: "214" },
   salesByType: [
@@ -79,5 +70,15 @@ const DATA: OverviewData = {
 };
 
 export const overviewApi = {
-  get: async (): Promise<OverviewData> => delay(structuredClone(DATA)),
+  get: async (): Promise<OverviewData> => {
+    const c = contactSummary();
+    const newBookings: OverviewData["newBookings"] = {
+      total: c.fresh,
+      branches: c.branches,
+      providers: c.providers,
+      contacted: c.contacted,
+      rows: c.rows.map((r) => ({ provider: r.provider, providerId: r.providerId, branches: r.branches, branchNames: r.branchLine, fresh: r.fresh, providerContacted: r.providerContacted, linkarContacted: r.linkarContacted, nearest: r.nearestIso })),
+    };
+    return delay({ ...structuredClone(DATA), newBookings });
+  },
 };

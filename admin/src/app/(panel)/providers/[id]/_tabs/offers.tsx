@@ -138,7 +138,7 @@ export default function OffersTab({ profile, canEdit, kind, chips }: ProfileTabP
 
       <div className="rounded-16 bg-white sm:p-5">
         {/* أقل من md: كل صف كارت */}
-        <div className="flex flex-col gap-2.5 md:hidden">
+        <div className="flex flex-col gap-2.5 lg:hidden">
           {list.isLoading
             ? Array.from({ length: 3 }, (_, i) => <Skeleton key={i} className="h-32 w-full rounded-12" />)
             : (state() ??
@@ -164,7 +164,7 @@ export default function OffersTab({ profile, canEdit, kind, chips }: ProfileTabP
               )))}
         </div>
 
-        <div className="hidden md:block" role="table" aria-label={isPkg ? `باقات ${profile.provider.name}` : `عروض ${profile.provider.name}`}>
+        <div className="hidden lg:block" role="table" aria-label={isPkg ? `باقات ${profile.provider.name}` : `عروض ${profile.provider.name}`}>
           <div role="row" className={`grid ${HEAD} rounded-10 bg-surface-1 px-3 py-[9px] text-12 leading-5 font-medium text-muted`}>
             <span role="columnheader">{isPkg ? "الباقة · المصدر" : "العرض · المصدر"}</span>
             <span role="columnheader">الفرع</span>

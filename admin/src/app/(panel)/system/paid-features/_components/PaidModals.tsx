@@ -16,6 +16,7 @@ import { api, isApiError } from "@/lib/api";
 import { PAYMENTS, PLAN_FEATURES, PLANS, TRIALS, type Subscription } from "@/lib/api/paid-features";
 import { num } from "@/lib/format";
 import { useUrlState } from "@/lib/use-url-state";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // النوافذ CON5-22M: تفعيل الميزة · جونسون (3114:64901 · 560) · إعدادات الخطة (3114:64951 · 600) · إدارة الاشتراك · لومار (3114:65006) / XPEL (3114:65031 · 520)
 // الرسائل CON5-22T: فُعّلت الميزة (64935) · حُفظت الخطة (64939) · مُددت التجربة (64943) · حُفظ الاشتراك (64947)
@@ -156,7 +157,7 @@ function PlanForm({ initial, onClose }: { initial: { price: number; trial: strin
         {(fid) => <TextInput id={fid} inputMode="decimal" invalid={!!err} className="h-[42px]! [&_input]:text-14! [&_input]:font-normal!" {...f.register("price")} />}
       </Field>
       <Field label="التجربة المجانية">{(fid) => <Controller control={f.control} name="trial" render={({ field }) => <Select id={fid} value={field.value} options={opts(trialOpts)} onChange={field.onChange} className={SEL} />} />}</Field>
-      <div className="overflow-x-auto rounded-10 border border-border">
+      <ScrollX className="rounded-10 border border-border">
         <div className="min-w-[420px]">
           <div dir="ltr" className={`${GRID} bg-surface-1 text-12 font-medium text-muted`}>
             <span>بعد الاشتراك</span>
@@ -171,7 +172,7 @@ function PlanForm({ initial, onClose }: { initial: { price: number; trial: strin
             </div>
           ))}
         </div>
-      </div>
+      </ScrollX>
       <Field label="الدفع">{(fid) => <Controller control={f.control} name="payment" render={({ field }) => <Select id={fid} value={field.value} options={opts(PAYMENTS)} onChange={field.onChange} className={SEL} />} />}</Field>
       <div className="flex flex-wrap gap-2.5 [&>*]:min-w-[120px] [&>*]:flex-1">
         <Button variant="secondary" className="h-[46px]!" onClick={onClose}>

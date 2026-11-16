@@ -170,24 +170,25 @@ function Editor({ id, initial, system, description, members }: { id: string | nu
       </Card>
 
       <Card title="الصلاحيات حسب الوحدة" subtitle={ACTIONS.join(" · ")}>
-        <div role="table" aria-label="الصلاحيات حسب الوحدة" className="overflow-hidden rounded-10 border border-border">
+        {/* md وأكبر: جدول Figma — خلايا بعرض ثابت (shrink-0) عشان كل الصفوف تقف تحت العناوين بالظبط */}
+        <div role="table" aria-label="الصلاحيات حسب الوحدة" className="hidden overflow-hidden rounded-10 border border-border md:block">
           <div role="row" className="flex items-center bg-surface-1 px-3 py-[7px] text-12 leading-5 font-medium text-muted">
-            <span role="columnheader" className="flex-1">
+            <span role="columnheader" className="min-w-0 flex-1">
               الوحدة
             </span>
             {ACTIONS.map((a) => (
-              <span key={a} role="columnheader" className="w-[130px] text-center">
+              <span key={a} role="columnheader" className="w-[130px] shrink-0 text-center">
                 {a}
               </span>
             ))}
           </div>
           {MODULES.map((m) => (
             <div key={m} role="row" className="flex items-center border-t border-divider px-3 py-[7px] text-13 leading-5">
-              <span role="rowheader" className="flex-1 font-medium text-ink">
+              <span role="rowheader" className="min-w-0 flex-1 font-medium text-ink">
                 {m}
               </span>
               {draft.grants[m].map((on, i) => (
-                <span key={i} role="cell" className="flex w-[130px] justify-center">
+                <span key={i} role="cell" className="flex w-[130px] shrink-0 justify-center">
                   <button
                     type="button"
                     role="checkbox"
@@ -195,11 +196,25 @@ function Editor({ id, initial, system, description, members }: { id: string | nu
                     aria-label={`${m} · ${ACTIONS[i]}`}
                     disabled={readOnly}
                     onClick={() => toggle(m, i)}
-                    className={`flex h-5 w-10 items-center justify-center rounded-[6px] enabled:hover:bg-surface-2 disabled:cursor-default ${on ? "font-semibold text-success" : "text-border-strong"}`}
+                    className={`hit-44 flex h-5 w-10 items-center justify-center rounded-[6px] enabled:hover:bg-surface-2 disabled:cursor-default ${on ? "font-semibold text-success" : "text-border-strong"}`}
                   >
                     {on ? "✓" : "—"}
                   </button>
                 </span>
+              ))}
+            </div>
+          ))}
+        </div>
+        {/* أقل من md: كل وحدة كارت فيه 4 مفاتيح بعناوينها (صف لمس 44) بدل أعمدة بتتزحلق */}
+        <div className="flex flex-col gap-2.5 md:hidden">
+          {MODULES.map((m) => (
+            <div key={m} role="group" aria-label={m} className="flex flex-col gap-1 rounded-12 border border-border p-3">
+              <h3 className="text-13 font-medium text-ink">{m}</h3>
+              {draft.grants[m].map((on, i) => (
+                <div key={i} className="flex min-h-11 items-center justify-between gap-3 border-t border-divider first-of-type:border-t-0">
+                  <span className="text-13 font-light text-ink">{ACTIONS[i]}</span>
+                  <Switch checked={on} disabled={readOnly} label={`${m} · ${ACTIONS[i]}`} onCheckedChange={() => toggle(m, i)} className="disabled:opacity-100" />
+                </div>
               ))}
             </div>
           ))}

@@ -11,6 +11,7 @@ import { ltrRuns, num } from "@/lib/format";
 import { useCan } from "@/lib/use-me";
 import { useUrlState } from "@/lib/use-url-state";
 import { HeroPill, RTile } from "./bits";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-12D · عرض لينكار باتفاق مع المزوّد — خصم 15% تظليل كامل · لومار (مسودة) (3114:30133) · خصم 10% تفصيل داخلي كامل · جونسون (3114:30328)
 // الرابط: ?offer=OF-LM-15 | OF-JN-10 — «إرسال للتوقيع» → CON5-12T (3114:32273)
@@ -72,7 +73,7 @@ export function OfferDrawer() {
             ))}
           </div>
           <RTile title="الأسعار · شاملة الضريبة">
-            <div className="overflow-x-auto rounded-10 border border-border">
+            <ScrollX className="rounded-10 border border-border">
               <div className="min-w-[440px]">
                 <div className="grid min-h-14 grid-cols-5 items-center bg-surface-1 px-2.5 py-2 text-12 leading-5 font-medium text-muted">
                   {["الحجم", "التكلفة الحالية", "التكلفة في العرض", "سعر البيع الآن", "سعر البيع في العرض"].map((h) => (
@@ -89,7 +90,7 @@ export function OfferDrawer() {
                   </div>
                 ))}
               </div>
-            </div>
+            </ScrollX>
             <p className="text-12 leading-5 font-light text-muted">{o.marginLine}</p>
           </RTile>
         </>

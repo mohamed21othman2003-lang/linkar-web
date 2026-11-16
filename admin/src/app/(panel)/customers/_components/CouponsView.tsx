@@ -17,6 +17,7 @@ import { useCan } from "@/lib/use-me";
 import { useUrlState } from "@/lib/use-url-state";
 import { Pager, Plain, SegmentCard, TwoLine } from "./bits";
 import { CreateCouponModal } from "./CreateCouponModal";
+import { ScrollX } from "@/components/ui/ScrollX";
 
 // CON5-05 · العملاء · الكوبونات (3400-230073) · بعد الإنشاء: OCT15 (3411-244519) · LINKAR20 (3411-245025) · REEM100 (3411-246524) · OCT15 كود واحد (3435-327105)
 // الرابط: /customers?tab=coupons&q=&kind=&status= · الدرج ?coupon=<الكود> · الإنشاء ?modal=create-coupon
@@ -211,7 +212,7 @@ function CouponDrawer() {
           {c.usage ? (
             <section className="flex flex-col gap-2 rounded-14 border border-border p-3.5">
               <h3 className="num text-12 leading-5 font-medium text-muted">{c.usage.title}</h3>
-              <div className="overflow-x-auto">
+              <ScrollX>
                 <table className="w-full min-w-[480px] table-fixed text-start">
                   <colgroup>
                     <col style={{ width: 128 }} />
@@ -240,7 +241,7 @@ function CouponDrawer() {
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </ScrollX>
               <p className="num text-12 leading-5 font-light text-muted">{c.usage.footer}</p>
             </section>
           ) : null}

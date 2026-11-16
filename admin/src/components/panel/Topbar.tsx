@@ -36,9 +36,18 @@ export function Topbar() {
         aria-label="القائمة"
         aria-controls="panel-sidebar"
         onClick={() => window.dispatchEvent(new Event("panel:menu"))}
-        className="flex size-10 shrink-0 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1 xl:hidden"
+        className="flex size-10 shrink-0 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1 pointer-coarse:size-11 xl:hidden"
       >
         <Icon name="menu" size={20} />
+      </button>
+      {/* أقل من 360: حقل البحث بيتزنق لـ«…» — أيقونة بتودّي لصفحة مقدّمي الخدمة (البحث العام بيدوّر فيها بس) */}
+      <button
+        type="button"
+        aria-label="بحث"
+        onClick={() => router.push("/providers")}
+        className="flex size-10 shrink-0 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1 pointer-coarse:size-11 me-auto min-[360px]:hidden"
+      >
+        <Icon name="search" size={18} />
       </button>
       <form
         role="search"
@@ -46,7 +55,7 @@ export function Topbar() {
           e.preventDefault();
           router.push(`/providers${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
         }}
-        className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-10 border border-border px-3 xl:h-[38px] xl:max-w-[460px] xl:flex-none xl:basis-[460px]"
+        className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-10 border border-border px-3 max-[359px]:hidden pointer-coarse:h-11 xl:h-[38px] xl:max-w-[460px] xl:flex-none xl:basis-[460px]"
       >
         <Icon name="search" size={16} className="shrink-0 text-muted" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={wide ? "ابحث باسم مركز أو رقم طلب أو حجز أو عميل" : "ابحث"} aria-label="بحث" className="min-w-0 flex-1 bg-transparent text-13 font-light outline-none placeholder:text-muted" />
@@ -66,13 +75,13 @@ export function Topbar() {
           </Menu.Trigger>
           <Menu.Portal>
             <Menu.Content align="end" sideOffset={8} className="z-40 min-w-48 rounded-12 border border-border bg-white p-1.5 shadow-menu">
-              <Menu.Item onSelect={() => router.push("/account")} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 outline-none data-highlighted:bg-surface-1">
+              <Menu.Item onSelect={() => router.push("/account")} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 pointer-coarse:h-11 outline-none data-highlighted:bg-surface-1">
                 <Icon name="user" size={18} /> حسابي
               </Menu.Item>
-              <Menu.Item onSelect={() => setContent(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 outline-none data-highlighted:bg-surface-1">
+              <Menu.Item onSelect={() => setContent(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 pointer-coarse:h-11 outline-none data-highlighted:bg-surface-1">
                 <Icon name="globe" size={18} /> إدارة المحتوى
               </Menu.Item>
-              <Menu.Item onSelect={() => setLogout(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 text-danger outline-none data-highlighted:bg-surface-1">
+              <Menu.Item onSelect={() => setLogout(true)} className="flex h-9 cursor-pointer items-center gap-2 rounded-8 px-3 text-13 pointer-coarse:h-11 text-danger outline-none data-highlighted:bg-surface-1">
                 <Icon name="logout" size={18} /> تسجيل الخروج
               </Menu.Item>
             </Menu.Content>
@@ -81,37 +90,44 @@ export function Topbar() {
       </div>
 
       <ContentModal open={content} onOpenChange={setContent} />
-      {/* CON5-24M · تسجيل الخروج (3114-28775) */}
-      <Modal
-        open={logout}
-        onOpenChange={setLogout}
-        title="تسجيل الخروج"
-        description="هل تريدين تسجيل الخروج من لوحة تحكم لينكار؟"
-        footer={
-          <>
-            <Button
-              size="M"
-              onClick={async () => {
-                await api.auth.logout();
-                router.replace("/login");
-                router.refresh();
-              }}
-            >
-              تسجيل الخروج
-            </Button>
-            <Button variant="secondary" size="M" onClick={() => setLogout(false)}>
-              إلغاء
-            </Button>
-          </>
-        }
-      />
+      <LogoutModal open={logout} onOpenChange={setLogout} />
     </header>
+  );
+}
+
+// CON5-24M · تسجيل الخروج (3114-28775) — مشتركة بين قائمة المستخدم ودرج القائمة على الموبايل
+export function LogoutModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const router = useRouter();
+  return (
+    <Modal
+      open={open}
+      onOpenChange={onOpenChange}
+      title="تسجيل الخروج"
+      description="هل تريدين تسجيل الخروج من لوحة تحكم لينكار؟"
+      footer={
+        <>
+          <Button
+            size="M"
+            onClick={async () => {
+              await api.auth.logout();
+              router.replace("/login");
+              router.refresh();
+            }}
+          >
+            تسجيل الخروج
+          </Button>
+          <Button variant="secondary" size="M" onClick={() => onOpenChange(false)}>
+            إلغاء
+          </Button>
+        </>
+      }
+    />
   );
 }
 
 function IconDot({ label, icon }: { label: string; icon: "message" }) {
   return (
-    <button type="button" aria-label={label} title={label} className="relative flex size-10 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1">
+    <button type="button" aria-label={label} title={label} className="relative flex size-10 items-center justify-center rounded-10 border border-border text-ink hover:bg-surface-1 pointer-coarse:size-11">
       <Icon name={icon} size={18} />
       <span className="absolute top-[9px] right-2 size-2 rounded-full bg-danger" />
     </button>

@@ -39,8 +39,9 @@ function Viewer({ id, onClose }: { id: string; onClose: () => void }) {
           <div className="absolute inset-0 bg-ink/70" />
         </Dialog.Overlay>
         <Dialog.Content dir="rtl" onOpenAutoFocus={keepFocusQuiet} className="fixed inset-0 z-50 flex flex-col overflow-y-auto focus:outline-none" onClick={(e) => e.target === e.currentTarget && onClose()}>
+          {/* الموبايل: العنوان كامل في سطر لوحده مع X، والزرّين تحت بالنص — كان العنوان بيتقص لـ«…ف» */}
           <div className="flex min-h-16 shrink-0 flex-wrap items-center gap-2.5 bg-ink px-4 py-2 sm:px-6">
-            <Dialog.Title className="min-w-0 flex-1 truncate text-14 leading-[22px] font-medium text-white">{d?.bar ?? id}</Dialog.Title>
+            <Dialog.Title className="min-w-0 flex-1 text-14 leading-[22px] font-medium text-white max-sm:order-1 max-sm:basis-[calc(100%-56px)] sm:truncate">{d?.bar ?? id}</Dialog.Title>
             <Dialog.Description className="sr-only">عرض المستند للطباعة أو الإرسال</Dialog.Description>
             <BarBtn icon="mail" loading={send.isPending} disabled={!d} onClick={() => send.mutate()}>
               {d?.kind === "self-billing" ? "إرسال للمزوّد" : "إرسال للعميل"}
@@ -48,7 +49,7 @@ function Viewer({ id, onClose }: { id: string; onClose: () => void }) {
             <BarBtn icon="download" loading={pdf.isPending} disabled={!d} onClick={() => pdf.mutate()}>
               تنزيل PDF
             </BarBtn>
-            <Dialog.Close aria-label="إغلاق" className="flex size-9 shrink-0 items-center justify-center rounded-10 border border-[#3d5260] text-white hover:bg-white/10">
+            <Dialog.Close aria-label="إغلاق" className="flex size-9 shrink-0 items-center justify-center rounded-10 border border-[#3d5260] text-white hover:bg-white/10 max-sm:order-2 pointer-coarse:size-11">
               <Icon name="x" size={16} />
             </Dialog.Close>
           </div>
@@ -103,7 +104,7 @@ function BarBtn({ icon, children, loading, disabled, onClick }: { icon: "mail" |
       onClick={onClick}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className="inline-flex h-[46px] shrink-0 items-center gap-1.5 rounded-12 border border-border bg-white px-4 text-14 font-medium text-ink hover:bg-surface-1 disabled:opacity-70"
+      className="inline-flex h-[46px] shrink-0 items-center justify-center gap-1.5 rounded-12 border border-border bg-white px-4 text-14 font-medium text-ink hover:bg-surface-1 disabled:opacity-70 max-sm:order-3 max-sm:flex-1 max-sm:px-3"
     >
       {children}
       {loading ? <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : <Icon name={icon} size={16} />}

@@ -760,15 +760,19 @@ export const providersApi = {
   list: async (q: ProviderQuery = {}): Promise<ListResult<Provider, ProviderTab>> => {
     const tab = q.tab ?? "all";
     const s = q.q?.trim() ? norm(q.q.trim()) : "";
-    const items = providers
-      .filter((p) => tabOf(p, tab))
+    // الفلاتر (المدينة · المستوى · التقييم · البحث) — أعداد التبويبات بتتحسب من نفس النتيجة المفلترة
+    const pool = providers
       .filter((p) => !q.city || p.city === q.city)
       .filter((p) => !q.tier || p.tiers.includes(q.tier as Tier))
       .filter((p) => matchRating(p, q.rating))
-      .filter((p) => !s || norm(p.name).includes(s) || norm(p.code).includes(s))
+      .filter((p) => !s || norm(p.name).includes(s) || norm(p.code).includes(s));
+    const items = pool
+      .filter((p) => tabOf(p, tab))
       // تبويب «بانتظار الزيارة» من غير ترتيب مختار: الأحدث أولاً (CON5-07 3114-50499: الواحة ثم الندى)
       .sort(tab === "pending-visit" && !q.sort ? SORTERS.newest : SORTERS[q.sort ?? "top-selling"]);
-    return delay({ items: clone(items), total: items.length, counts: counts() });
+    const anyFilter = !!(q.city || q.tier || q.rating || s);
+    // من غير فلتر: إجماليات الخادم (Figma) · بفلتر: عدد النتائج الفعلي في كل تبويب
+    return delay({ items: clone(items), total: items.length, counts: anyFilter ? rawCounts(pool) : counts() });
   },
   kpis: async (): Promise<ProviderKpis> => {
     const k = rawKpis(providers);

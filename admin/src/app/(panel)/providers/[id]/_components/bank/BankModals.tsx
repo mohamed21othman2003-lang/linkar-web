@@ -216,7 +216,7 @@ export function AddAccountModal({ profile, branches, close }: { profile: Provide
               <span className={`min-w-0 flex-1 truncate ${v.certificate ? "text-ink" : "font-light text-muted"}`}>
                 {v.certificate ? `‏${v.certificate.name}‏ · ${v.certificate.sizeKb} ك.ب · مرفوعة` : "ارفع الشهادة (PDF أو صورة · حتى 5 ميجابايت)"}
               </span>
-              <Icon name="download" size={16} className="shrink-0 text-ink" />
+              <Icon name="download" size={16} className="shrink-0 rotate-180 text-ink" />
             </label>
           )}
         </Field>

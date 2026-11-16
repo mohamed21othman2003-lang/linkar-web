@@ -715,21 +715,26 @@ function counts() {
 // ───────────── «حجوزات جديدة بانتظار التواصل» (CON7 في 3114:33571) ─────────────
 export interface ContactRow {
   provider: string;
+  /** null = صف «مزوّدون آخرون» */
+  providerId: string | null;
   branches: number;
   branchLine?: string;
   fresh: number;
   providerContacted: number;
   linkarContacted: number;
   nearest: string;
+  /** أقرب موعد ISO (الرئيسية بتنسّقه بنفسها) */
+  nearestIso: string | null;
 }
+// مصدر واحد لأعداد «حجوزات جديدة بانتظار التواصل» — الرئيسية (overviewApi) والحجوزات وملف المزوّد بيقروا من هنا
 const CONTACT_ROWS: (ContactRow & { ids: string[] })[] = [
-  { provider: "XPEL السعودية", branches: 5, branchLine: "العليا · الملقا · +3 أخرى", fresh: 24, providerContacted: 23, linkarContacted: 24, nearest: "17 أكتوبر 2026", ids: [] },
-  { provider: "لومار", branches: 4, branchLine: "الروضة · الياسمين · +2 أخرى", fresh: 19, providerContacted: 19, linkarContacted: 19, nearest: "16 أكتوبر 2026", ids: [] },
-  { provider: "جونسون", branches: 3, branchLine: "الحمراء · المحمدية · الزهراء", fresh: 14, providerContacted: 13, linkarContacted: 13, nearest: "16 أكتوبر 2026", ids: ["BK-21473"] },
-  { provider: "مزوّدون آخرون (14)", branches: 29, fresh: 129, providerContacted: 129, linkarContacted: 129, nearest: "—", ids: [] },
+  { provider: "XPEL السعودية", providerId: "lk-xp-001", branches: 5, branchLine: "العليا · الملقا · +3 أخرى", fresh: 24, providerContacted: 23, linkarContacted: 24, nearest: "17 أكتوبر 2026", nearestIso: "2026-10-17", ids: [] },
+  { provider: "لومار", providerId: "lk-lm-001", branches: 4, branchLine: "الروضة · الياسمين · +2 أخرى", fresh: 19, providerContacted: 19, linkarContacted: 19, nearest: "16 أكتوبر 2026", nearestIso: "2026-10-16", ids: [] },
+  { provider: "جونسون", providerId: "lk-jn-001", branches: 3, branchLine: "الحمراء · المحمدية · الزهراء", fresh: 14, providerContacted: 13, linkarContacted: 13, nearest: "16 أكتوبر 2026", nearestIso: "2026-10-16", ids: ["BK-21473"] },
+  { provider: "مزوّدون آخرون (14)", providerId: null, branches: 29, fresh: 129, providerContacted: 129, linkarContacted: 129, nearest: "—", nearestIso: null, ids: [] },
 ];
 // الأرقام الأساسية من غير الحجوزات المتتبَّعة (BK-21473 لسه ما اتواصلش معاها لينكار → 13 من 14 · وبعد التواصل 14 من 14 و«تم التواصل مع 186»)
-function contactSummary() {
+export function contactSummary() {
   let extra = 0;
   const rows: ContactRow[] = CONTACT_ROWS.map(({ ids, ...r }) => {
     const done = ids.filter((id) => store.find((b) => b.id === id)?.linkar?.done).length;

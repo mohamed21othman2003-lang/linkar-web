@@ -110,7 +110,8 @@ export function ManualBookingWizard() {
     <>
       <PageHead title="حجز يدوي" description="حجز لعميل بالهاتف أو واتساب أو طلب شركة." crumbs={[{ label: "الحجوزات", href: "/bookings" }, { label: "حجز يدوي" }]} />
       <Stepper step={step} />
-      <div className="flex flex-col-reverse items-start gap-4 lg:flex-row">
+      {/* على الموبايل النموذج الأول والملخص شريط ثابت تحت بيتفتح ويتقفل */}
+      <div className="flex flex-col items-start gap-4 lg:flex-row">
         <div className="flex w-full min-w-0 flex-col gap-4 lg:flex-1">
           {step === 1 ? <Step1 form={form} /> : step === 2 ? <Step2 form={form} /> : step === 3 ? <Step3 form={form} /> : <Step4 form={form} />}
           <div className="flex items-center gap-2.5">
@@ -148,7 +149,20 @@ export function ManualBookingWizard() {
 // ───────────── المؤشر (Stepper): 58 · r14 · حشو 14·18 · دوائر 28 ─────────────
 function Stepper({ step }: { step: number }) {
   return (
-    <ol className="flex items-center gap-2 overflow-x-auto rounded-14 border border-border bg-white px-[18px] py-3.5 [scrollbar-width:none]">
+    <>
+    {/* أقل من md: «الخطوة 1 من 4» + شريط تقدّم بدل المؤشر اللي بيتقص */}
+    <div className="flex flex-col gap-2 rounded-14 border border-border bg-white px-4 py-3 md:hidden">
+      <div className="flex items-center justify-between gap-3 text-13">
+        <span className="font-bold text-ink">{STEPS[step - 1]}</span>
+        <span className="shrink-0 font-medium text-muted">
+          الخطوة <span className="num">{step}</span> من <span className="num">{STEPS.length}</span>
+        </span>
+      </div>
+      <div role="progressbar" aria-label="تقدّم الحجز" aria-valuemin={1} aria-valuemax={STEPS.length} aria-valuenow={step} className="h-1.5 overflow-hidden rounded-full bg-surface-2">
+        <div className="h-full rounded-full bg-lime" style={{ width: `${(step / STEPS.length) * 100}%` }} />
+      </div>
+    </div>
+    <ol className="hidden md:flex items-center gap-2 overflow-x-auto rounded-14 border border-border bg-white px-[18px] py-3.5 [scrollbar-width:none]">
       {STEPS.map((label, i) => {
         const n = i + 1;
         const done = n < step;
@@ -164,6 +178,7 @@ function Stepper({ step }: { step: number }) {
         );
       })}
     </ol>
+    </>
   );
 }
 
@@ -368,9 +383,18 @@ function Step4({ form }: F) {
 function Summary({ form, step }: F & { step: number }) {
   const { v, picked, sale, br } = useDerived(form);
   const has = step > 1 && picked.length;
+  const [open, setOpen] = useState(false);
   return (
-    <aside className="flex w-full shrink-0 flex-col gap-3 rounded-16 border border-border bg-white p-5 lg:w-[360px]">
-      <h2 className="text-16 leading-[26px] font-bold text-ink">ملخص الحجز</h2>
+    <aside className="flex w-full shrink-0 flex-col gap-3 rounded-16 border border-border bg-white p-5 max-lg:sticky max-lg:bottom-3 max-lg:z-10 max-lg:gap-0 max-lg:p-0 max-lg:shadow-card lg:w-[360px]">
+      <h2 className="text-16 leading-[26px] font-bold text-ink max-lg:hidden">ملخص الحجز</h2>
+      <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="flex min-h-12 items-center justify-between gap-3 px-4 text-ink lg:hidden">
+        <span className="text-14 font-bold">ملخص الحجز</span>
+        <span className="flex items-center gap-2 text-13 font-medium">
+          {has ? <span className="num">{num(sale)} ر.س</span> : null}
+          <Icon name="chevron-down" size={16} className={`transition-transform ${open ? "" : "rotate-180"}`} />
+        </span>
+      </button>
+      <div className={`flex flex-col gap-3 max-lg:max-h-[50vh] max-lg:overflow-y-auto max-lg:border-t max-lg:border-divider max-lg:px-4 max-lg:py-2 ${open ? "" : "max-lg:hidden"}`}>
       <KVRow k="العميل">{v.name ? ltrRuns(`${v.name} · ${v.phone} · عميل جديد`) : "—"}</KVRow>
       <KVRow k="السيارة">{v.make ? `${v.make} ${v.model} ${v.year} · ${v.size}` : "—"}</KVRow>
       <KVRow k="الخدمة">{has ? ltrRuns(picked.map((s) => s.name).join(" + ")) : "—"}</KVRow>
@@ -378,6 +402,7 @@ function Summary({ form, step }: F & { step: number }) {
       <KVRow k="السعر للعميل · شامل الضريبة">{has ? `${num(sale)} ر.س شامل الضريبة` : "—"}</KVRow>
       <KVRow k="الدفع">{step > 2 ? (v.pay === "bank" ? "تحويل بنكي" : "رابط دفع · صالح 24 ساعة") : "—"}</KVRow>
       <KVRow k="المصدر">{step > 2 ? v.channel : "—"}</KVRow>
+      </div>
     </aside>
   );
 }

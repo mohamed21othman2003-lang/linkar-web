@@ -4,14 +4,15 @@ import { forwardRef, useId, type ComponentProps, type ReactNode } from "react";
 // L = حقول صفحات الدخول (CON5-L1 3114:28801): 50 · r12 · حشو 14 · نص 14 Light. خطأ = إطار أحمر ونص تحت الحقل
 export const TextInput = forwardRef<
   HTMLInputElement,
-  Omit<ComponentProps<"input">, "size"> & { icon?: ReactNode; invalid?: boolean; ltr?: boolean; size?: "M" | "L" }
->(function TextInput({ icon, invalid, ltr, size = "M", className, ...rest }, ref) {
+  Omit<ComponentProps<"input">, "size"> & { icon?: ReactNode; end?: ReactNode; invalid?: boolean; ltr?: boolean; size?: "M" | "L" }
+>(function TextInput({ icon, end, invalid, ltr, size = "M", className, ...rest }, ref) {
   return (
     <div
-      className={`flex items-center gap-2 border bg-white focus-within:border-[1.5px] focus-within:border-ink ${
+      className={`flex items-center gap-2 border bg-white focus-within:border-[1.5px] ${
         size === "L" ? "h-[50px] rounded-12 px-3.5 [&_input]:text-14 [&_input]:font-light" : "h-11 rounded-10 px-3 [&_input]:text-13 [&_input]:font-medium"
       } ${
-        invalid ? "border-danger" : "border-border"
+        // الخطأ يفضل أحمر حتى والحقل عليه الفوكس
+        invalid ? "border-danger focus-within:border-danger" : "border-border focus-within:border-ink"
       } ${className ?? ""}`}
     >
       {icon ? <span className="shrink-0 text-muted">{icon}</span> : null}
@@ -22,9 +23,29 @@ export const TextInput = forwardRef<
         {...rest}
         className={`min-w-0 flex-1 bg-transparent text-ink outline-none placeholder:font-light placeholder:text-muted ${ltr ? "text-right" : ""}`}
       />
+      {end}
     </div>
   );
 });
+
+/** زر إظهار/إخفاء كلمة المرور (بيتحط في end بتاع TextInput) */
+export function PasswordToggle({ shown, onToggle }: { shown: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={shown ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+      aria-pressed={shown}
+      className="hit-44 flex size-8 shrink-0 items-center justify-center rounded-8 text-muted hover:bg-surface-1 hover:text-ink"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+        <circle cx="12" cy="12" r="3" />
+        {shown ? null : <path d="M4 4l16 16" />}
+      </svg>
+    </button>
+  );
+}
 
 export function Field({
   label,
