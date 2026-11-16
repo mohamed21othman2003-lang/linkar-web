@@ -5,6 +5,7 @@ import { Children, useEffect, useRef, useState, type CSSProperties, type ReactNo
 import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
 import { scrollTrack } from "../motion";
+import { whenNear } from "../when-near";
 
 // خطوة الشريط = عرض الكارت + المسافة
 function stepOf(el: HTMLElement) {
@@ -53,12 +54,17 @@ export function PackagesCarousel({
       el.scrollLeft = desktop() ? (rtl ? -1 : 1) * max() : 0;
       onScroll();
     };
-    place();
-    const ro = new ResizeObserver(place);
-    ro.observe(el);
+    // القياس بيستنى لحد ما الشريط يقرّب من الشاشة (when-near.ts)
+    let ro: ResizeObserver | undefined;
+    const stop = whenNear(el, () => {
+      place();
+      ro = new ResizeObserver(place);
+      ro.observe(el);
+    });
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      ro.disconnect();
+      stop();
+      ro?.disconnect();
       el.removeEventListener("scroll", onScroll);
     };
   }, [rtl, n]);

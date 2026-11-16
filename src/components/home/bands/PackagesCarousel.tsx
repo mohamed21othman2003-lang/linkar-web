@@ -9,6 +9,7 @@ import type { Provider } from "@/lib/data/types";
 import type { PackageCategory } from "@/lib/data/home/home";
 import { OfferCard, type OfferFeature } from "@/components/cards/OfferCard";
 import { Icon } from "@/components/icons/Icon";
+import { whenNear } from "../when-near";
 
 export type PackageView = {
   key: string;
@@ -70,12 +71,17 @@ export function PackagesCarousel({
       el.scrollLeft = 0;
       onScroll();
     };
-    place();
-    const ro = new ResizeObserver(place);
-    ro.observe(el);
+    // القياس بيستنى لحد ما الشريط يقرّب من الشاشة (when-near.ts)
+    let ro: ResizeObserver | undefined;
+    const stop = whenNear(el, () => {
+      place();
+      ro = new ResizeObserver(place);
+      ro.observe(el);
+    });
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      ro.disconnect();
+      stop();
+      ro?.disconnect();
       el.removeEventListener("scroll", onScroll);
     };
   }, [rtl, n]);
