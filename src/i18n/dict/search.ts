@@ -60,6 +60,7 @@ const ar = {
   locationLabel: "الموقع أو الفرع",
   carLabel: "نوع السيارة",
   carPlaceholder: "اختر نوع السيارة",
+  pickService: "اختر خدمة واحدة على الأقل",
   search: "ابحث",
   removeService: (name: string) => `إزالة ${name}`,
   // نافذة المقارنة W2-31
@@ -153,6 +154,7 @@ const en: typeof ar = {
   locationLabel: "Location or branch",
   carLabel: "Car type",
   carPlaceholder: "Choose car type",
+  pickService: "Choose at least one service",
   search: "Search",
   removeService: (name: string) => `Remove ${name}`,
   compareTitle: (service: string) => `Compare ${service} across providers`,

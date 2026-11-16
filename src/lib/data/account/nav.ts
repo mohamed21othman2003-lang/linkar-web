@@ -7,10 +7,11 @@ export const accountNav = [
   { key: "warranties", label_ar: "ضماناتي", label_en: "My warranties", href: routes.warranties },
   { key: "favorites", label_ar: "المفضلة", label_en: "Favorites", href: routes.favorites() },
   { key: "points", label_ar: "النقاط", label_en: "Points", href: routes.points },
-  { key: "gifts", label_ar: "الهدايا", label_en: "Gifts", href: routes.dealerPackages },
+  // نفس عنوان الصفحة (كان «الهدايا» والصفحة «باقات الوكالات» — تقرير QA #54)
+  { key: "gifts", label_ar: "باقات الوكالات", label_en: "Dealer packages", href: routes.dealerPackages },
   { key: "cars", label_ar: "سياراتي", label_en: "My cars", href: routes.cars },
   { key: "payment", label_ar: "طرق الدفع", label_en: "Payment methods", href: routes.paymentMethods },
-  { key: "reviews", label_ar: "التقييمات", label_en: "Reviews", href: routes.reviews },
+  { key: "reviews", label_ar: "تقييماتي", label_en: "My reviews", href: routes.reviews },
   { key: "complaints", label_ar: "الشكاوى والمقترحات", label_en: "Complaints and suggestions", href: routes.complaints() },
   { key: "settings", label_ar: "الإعدادات", label_en: "Settings", href: routes.settings },
 ];

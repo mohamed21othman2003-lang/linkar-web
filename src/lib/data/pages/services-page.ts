@@ -15,6 +15,9 @@ export const servicesPage = {
   selected_many_en: "You chose {n} services: {list}",
   together_ar: "تُحجزان معاً في زيارة واحدة وبدفع واحد",
   together_en: "Booked together in one visit with one payment",
+  // 3 خدمات فأكثر: «تُحجز» مش «تُحجزان» (المثنى) — تقرير الموبايل #38
+  together_many_ar: "تُحجز معاً في زيارة واحدة وبدفع واحد",
+  together_many_en: "Booked together in one visit with one payment",
   cta_one_ar: "اعرض مقدّمي الخدمة",
   cta_one_en: "Show providers",
   cta_two_ar: "اعرض مقدّمي الخدمتين",

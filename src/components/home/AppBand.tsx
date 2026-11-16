@@ -71,7 +71,8 @@ function AppPhone({ screen }: { screen: string }) {
 export function AppBand({ locale, content, id }: { locale: Locale; content: HomeContent; id: string }) {
   const a = content.appBand;
   const s: S = (x) => tx(locale, x, "text");
-  const chip = "flex h-14 items-center gap-2.5 rounded-full ps-4 pe-3.5 text-label-m whitespace-nowrap shadow-[0_24px_24px_#0b0d0a33]";
+  // تحت xl المسرح كله متصغّر للنص (scale-50) فالنص كان ~7px — الشيبس بتتكبّر 1.5× تحت xl فالنص بيبقى ~11px (تقرير الموبايل #13)
+  const chip = "flex h-14 items-center gap-2.5 rounded-full ps-4 pe-3.5 text-label-m whitespace-nowrap shadow-[0_24px_24px_#0b0d0a33] max-xl:scale-150";
   return (
     <section id={id} className="relative scroll-mt-20 overflow-hidden bg-deep-charcoal py-9 md:py-16 xl:flex xl:min-h-[912px] xl:items-center xl:py-5">
       <Container className="grid grid-cols-1 gap-[18px] max-md:px-5 md:grid-cols-[1fr_350px] md:items-center md:gap-6 xl:flex xl:items-center xl:justify-between xl:gap-10">
@@ -94,14 +95,15 @@ export function AppBand({ locale, content, id }: { locale: Locale; content: Home
               <li
                 key={f.title.text_ar}
                 style={{ "--o": i ^ 1 } as CSSProperties}
-                className="max-xl:order-(--o) flex h-[52px] items-center gap-2 rounded-[14px] border border-white/12 bg-white/7 px-3 py-2.5 xl:h-auto xl:min-h-[98px] xl:gap-3 xl:rounded-lg xl:border-white/24 xl:bg-white/12 xl:p-3.5"
+                // min-w-0 + النص بيلف لسطرين بدل ما يطلع برّه الشاشة على الموبايل (تقرير الموبايل #13)
+                className="max-xl:order-(--o) flex min-h-[52px] min-w-0 items-center gap-2 rounded-[14px] border border-white/12 bg-white/7 px-3 py-2.5 xl:min-h-[98px] xl:gap-3 xl:rounded-lg xl:border-white/24 xl:bg-white/12 xl:p-3.5"
               >
                 <FigmaIcon name={f.icon} size={40} className="max-xl:hidden" />
                 <span className="flex size-[30px] shrink-0 items-center justify-center rounded-[9px] bg-neon-green text-deep-charcoal xl:hidden">
                   <Icon name={f.glyph} size={16} />
                 </span>
-                <div className="flex flex-col gap-1">
-                  <p className="text-[13px]/[20px] font-medium whitespace-nowrap text-white xl:text-label-l xl:whitespace-normal">{s(f.title)}</p>
+                <div className="flex min-w-0 flex-col gap-1">
+                  <p className="text-[13px]/[18px] font-medium text-white xl:text-label-l">{s(f.title)}</p>
                   <p className="text-caption text-cool-gray max-xl:hidden">{s(f.body)}</p>
                 </div>
               </li>

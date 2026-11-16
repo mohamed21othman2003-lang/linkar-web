@@ -9,37 +9,50 @@ import { routes } from "@/lib/routes";
 import { signOut } from "@/app/actions/session";
 import { Icon } from "@/components/icons/Icon";
 import { Popup, PopupActions, popupBtnClass, useToast } from "./account-dialog";
+import { Dropdown } from "./dropdown";
 
 type Pref = { key: string; title: string; body: string; state: "on" | "off" | "locked" };
+type AddressKind = "home" | "work" | "other";
+// العنوان بمفاتيح؛ النص بييجي من addressOptions باللغة الحالية (تقرير QA #29)
+type Address = { id: string; kind: AddressKind; name: string; city: string; district: string; selected: boolean };
+type AddressOptions = {
+  kinds: { key: AddressKind; label: string }[];
+  cities: { key: string; label: string; districts: { key: string; label: string }[] }[];
+};
 export type SettingsView = {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
-  addresses: { id: string; label: string; area: string; selected: boolean }[];
+  addresses: Address[];
+  addressOptions: AddressOptions;
   alerts: Pref[];
   location: Pref;
   openBookings: string[];
   points: string;
 };
 
-// v2 · Toggle (854:6): 44×24 — شغّال: مسار كحلي ودائرة ليموني في نهاية السطر · مقفول: كحلي 35% · مطفي: رمادي ودائرة بيضا في البداية
-function Toggle({ on, locked, label, onChange }: { on: boolean; locked?: boolean; label: string; onChange?: (v: boolean) => void }) {
+// v2 · Toggle (854:6): 44×24 — شغّال: مسار كحلي ودائرة ليموني في نهاية السطر (يسار في العربي، يمين في الإنجليزي) ·
+// مطفي: رمادي ودائرة بيضا في البداية. المقفول الشغّال (رسائل الحجز) = شكل «شغّال» باهت + قفل جوه الدائرة،
+// عشان مايتلخبطش مع المطفي (كان رمادي ودائرته في البداية فشكله مطفي). الدائرة بـ inset-inline فبتنعكس صح مع الاتجاه.
+function Toggle({ on, locked, label, lockedLabel, onChange }: { on: boolean; locked?: boolean; label: string; lockedLabel?: string; onChange?: (v: boolean) => void }) {
+  const isOn = on || !!locked;
   return (
     <button
       type="button"
       role="switch"
-      aria-checked={on}
-      aria-label={label}
+      aria-checked={isOn}
+      aria-label={locked && lockedLabel ? `${label} · ${lockedLabel}` : label}
       aria-disabled={locked || undefined}
+      title={locked ? lockedLabel : undefined}
       onClick={() => !locked && onChange?.(!on)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-150 ease-figma-out ${locked ? "cursor-not-allowed bg-deep-charcoal/35" : on ? "bg-deep-charcoal" : "bg-cool-gray"}`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-150 ease-figma-out ${isOn ? "bg-deep-charcoal" : "bg-cool-gray"} ${locked ? "cursor-not-allowed opacity-55" : ""}`}
     >
       <span
-        className={`absolute top-0.5 size-5 rounded-full transition-[inset-inline-start,background-color] duration-150 ease-figma-out ${on || locked ? "start-[calc(100%-22px)]" : "start-0.5"} ${
-          locked ? "bg-white" : on ? "bg-neon-green" : "bg-white"
-        }`}
-      />
+        className={`absolute top-0.5 flex size-5 items-center justify-center rounded-full transition-[inset-inline-start,background-color] duration-150 ease-figma-out ${isOn ? "start-[calc(100%-22px)] bg-neon-green" : "start-0.5 bg-white"}`}
+      >
+        {locked && <Icon name="lock" size={11} className="text-deep-charcoal" />}
+      </span>
     </button>
   );
 }
@@ -56,14 +69,14 @@ function SettingsCard({ id, title, sub, children }: { id?: string; title: string
   );
 }
 
-function PrefRow({ p, onChange }: { p: Pref & { on: boolean }; onChange: (v: boolean) => void }) {
+function PrefRow({ p, lockedLabel, onChange }: { p: Pref & { on: boolean }; lockedLabel?: string; onChange: (v: boolean) => void }) {
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="flex min-w-0 flex-col">
         <span className="text-label-l text-deep-charcoal">{p.title}</span>
         <span className="text-body-s text-v3-text-meta">{p.body}</span>
       </div>
-      <Toggle on={p.on} locked={p.state === "locked"} label={p.title} onChange={onChange} />
+      <Toggle on={p.on} locked={p.state === "locked"} label={p.title} lockedLabel={lockedLabel} onChange={onChange} />
     </div>
   );
 }
@@ -91,6 +104,14 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
     Object.fromEntries([...v.alerts, v.location].map((p) => [p.key, p.state !== "off"])),
   );
   const [popup, setPopup] = useState<null | "p01" | "p02" | "p03a" | "p03b">(null);
+  // P-31a (إضافة) / P-31b·c (تعديل): key بيجدّد حالة النموذج كل ما يتفتح
+  const [addressDialog, setAddressDialog] = useState<{ key: number; address: Address | null } | null>(null);
+  const opts = v.addressOptions;
+  const kindLabel = (a: Address) => (a.kind === "other" && a.name.trim() ? a.name.trim() : (opts.kinds.find((k) => k.key === a.kind)?.label ?? ""));
+  const areaLabel = (a: Address) => {
+    const city = opts.cities.find((c) => c.key === a.city);
+    return [city?.districts.find((d) => d.key === a.district)?.label, city?.label].filter(Boolean).join(locale === "ar" ? "، " : ", ");
+  };
   const [newPhone, setNewPhone] = useState("");
   const [code, setCode] = useState(["", "", "", ""]);
   const [seconds, setSeconds] = useState(45);
@@ -194,12 +215,16 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
             >
               <Icon name="map-pin" size={20} className={a.selected ? "text-nature-green" : "text-state-gray"} />
               <span className="flex flex-col">
-                <span className="text-label-l text-deep-charcoal">{a.label}</span>
-                <span className="text-body-s text-v3-text-meta">{a.area}</span>
+                <span className="text-label-l text-deep-charcoal">{kindLabel(a)}</span>
+                <span className="text-body-s text-v3-text-meta">{areaLabel(a)}</span>
               </span>
             </button>
             <span className="flex items-center gap-3.5">
-              <button type="button" className="flex items-center gap-1.5 py-0.5 text-label-m text-nature-green hover:underline">
+              <button
+                type="button"
+                onClick={() => setAddressDialog({ key: Date.now(), address: a })}
+                className="flex items-center gap-1.5 py-0.5 text-label-m text-nature-green hover:underline"
+              >
                 <Icon name="edit" size={16} className="text-nature-green" />
                 {t.edit}
               </button>
@@ -208,7 +233,11 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
           </div>
         ))}
         <div className="flex">
-          <button type="button" className="flex items-center gap-1.5 rounded-md border border-cool-gray bg-white px-[18px] py-2.5 text-label-m text-deep-charcoal hover:border-border-strong">
+          <button
+            type="button"
+            onClick={() => setAddressDialog({ key: Date.now(), address: null })}
+            className="flex items-center gap-1.5 rounded-md border border-cool-gray bg-white px-[18px] py-2.5 text-label-m text-deep-charcoal hover:border-border-strong"
+          >
             <Icon name="plus" size={16} />
             {t.addAddress}
           </button>
@@ -218,7 +247,7 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
       {/* التنبيهات */}
       <SettingsCard id="alerts" title={t.alerts}>
         {v.alerts.map((p) => (
-          <PrefRow key={p.key} p={{ ...p, on: prefs[p.key] }} onChange={(on) => setPrefs((s) => ({ ...s, [p.key]: on }))} />
+          <PrefRow key={p.key} p={{ ...p, on: prefs[p.key] }} lockedLabel={t.lockedOn} onChange={(on) => setPrefs((s) => ({ ...s, [p.key]: on }))} />
         ))}
       </SettingsCard>
 
@@ -277,6 +306,28 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
           <span className="min-[1440px]:max-w-[860px]">{t.deleteRule}</span>
         </p>
       </SettingsCard>
+
+      {/* P-31a · إضافة عنوان · P-31b/c · تعديل العنوان — بيحفظ في نفس حالة القائمة (تجريبي) */}
+      {addressDialog && (
+        <AddressPopup
+          key={addressDialog.key}
+          locale={locale}
+          initial={addressDialog.address}
+          opts={opts}
+          onClose={() => setAddressDialog(null)}
+          onSave={(a) => {
+            setAddresses((list) => {
+              const exists = list.some((x) => x.id === a.id);
+              const next = exists ? list.map((x) => (x.id === a.id ? a : x)) : [...list, a];
+              // أول عنوان أو «استخدم هذا العنوان» ← هو المختار، والباقي لا
+              const selectedId = a.selected || !next.some((x) => x.selected) ? a.id : null;
+              return selectedId ? next.map((x) => ({ ...x, selected: x.id === selectedId })) : next;
+            });
+            setAddressDialog(null);
+            showToast(t.addressForm.saved);
+          }}
+        />
+      )}
 
       {/* P-01 · تغيير رقم الجوال */}
       <Popup open={popup === "p01"} onClose={close} title={pp.p01.title} closeLabel={d.close}>
@@ -422,5 +473,119 @@ export function SettingsForm({ locale, v }: { locale: Locale; v: SettingsView })
       </Popup>
       {toast}
     </div>
+  );
+}
+
+// P-31a · إضافة عنوان · P-31b/c · تعديل العنوان: نوع العنوان + المدينة/الحي (W2-DD) + «استخدم هذا العنوان»
+function AddressPopup({
+  locale,
+  initial,
+  opts,
+  onClose,
+  onSave,
+}: {
+  locale: Locale;
+  initial: Address | null;
+  opts: AddressOptions;
+  onClose: () => void;
+  onSave: (a: Address) => void;
+}) {
+  const d = getAccountDict(locale);
+  const f = d.settings.addressForm;
+  const [kind, setKind] = useState<AddressKind>(initial?.kind ?? "home");
+  const [name, setName] = useState(initial?.name ?? "");
+  const [city, setCity] = useState(initial?.city ?? "");
+  const [district, setDistrict] = useState(initial?.district ?? "");
+  const [selected, setSelected] = useState(initial?.selected ?? false);
+  const districts = opts.cities.find((c) => c.key === city)?.districts ?? [];
+  const ids = { city: "address-city", district: "address-district", name: "address-name" };
+
+  return (
+    <Popup open onClose={onClose} title={initial ? f.editTitle : f.addTitle} closeLabel={d.close}>
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSave({ id: initial?.id ?? `addr-${Date.now()}`, kind, name: kind === "other" ? name.trim() : "", city, district, selected });
+        }}
+      >
+        <div className="flex flex-col gap-2">
+          <span className="text-label-m text-deep-charcoal">{f.kind}</span>
+          <div role="radiogroup" aria-label={f.kind} className="flex flex-wrap gap-2">
+            {opts.kinds.map((k) => (
+              <button
+                key={k.key}
+                type="button"
+                role="radio"
+                aria-checked={kind === k.key}
+                onClick={() => setKind(k.key)}
+                className={`h-11 rounded-full px-4 text-label-m ${kind === k.key ? "bg-deep-charcoal text-neon-green" : "border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong"}`}
+              >
+                {k.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {kind === "other" && (
+          <label htmlFor={ids.name} className="flex flex-col gap-1.5">
+            <span className="text-label-m text-deep-charcoal">{f.name}</span>
+            <input id={ids.name} value={name} onChange={(e) => setName(e.target.value.slice(0, 40))} placeholder={f.namePlaceholder} required className={field} />
+          </label>
+        )}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor={ids.city} className="text-label-m text-deep-charcoal">
+              {f.city}
+            </label>
+            <Dropdown
+              id={ids.city}
+              required
+              placeholder={f.choose}
+              searchPlaceholder={f.search}
+              emptyLabel={f.noResults}
+              value={city}
+              options={opts.cities}
+              onChange={(k) => {
+                setCity(k);
+                setDistrict("");
+              }}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor={ids.district} className="text-label-m text-deep-charcoal">
+              {f.district}
+            </label>
+            <Dropdown
+              id={ids.district}
+              required
+              disabled={!city}
+              placeholder={f.choose}
+              searchPlaceholder={f.search}
+              emptyLabel={f.noResults}
+              value={district}
+              options={districts}
+              onChange={setDistrict}
+            />
+          </div>
+        </div>
+        <label className="flex cursor-pointer items-center gap-2.5 text-body-s text-deep-charcoal">
+          <input
+            type="checkbox"
+            checked={selected}
+            onChange={(e) => setSelected(e.target.checked)}
+            className="size-5 shrink-0 cursor-pointer appearance-none rounded-[6px] border border-cool-gray bg-white bg-center bg-no-repeat checked:border-deep-charcoal checked:bg-deep-charcoal checked:bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23abf907%22 stroke-width=%223%22><path d=%22M5 12l5 5L20 7%22/></svg>')] checked:bg-[length:14px]"
+          />
+          {f.makeSelected}
+        </label>
+        <PopupActions>
+          <button type="button" onClick={onClose} className={popupBtnClass.outline}>
+            {d.cancel}
+          </button>
+          <button type="submit" className={popupBtnClass.primary}>
+            {f.save}
+          </button>
+        </PopupActions>
+      </form>
+    </Popup>
   );
 }

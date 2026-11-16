@@ -2,6 +2,7 @@ import Image from "@/components/ui/Img";
 import Link from "@/components/ui/NavLink";
 import type { ReactNode } from "react";
 import { Icon, type UiGlyph } from "@/components/icons/Icon";
+import { ScrollRow } from "./scroll-row";
 
 // قطع مشتركة بين صفحات الحساب (الجزء 2) — كلها من نفس أنماط الفيجما في فريمات W2-64…W2-70
 
@@ -70,8 +71,9 @@ export function AxNote({ icon = "info", children, className = "" }: { icon?: UiG
 // تبويبات كبسولة (W2-64 · تبويبات / W2-69 · تبويبات / W2-69b): روابط، النشط كحلي بنص ليموني
 export function AxTabs({ items, label }: { items: { key: string; label: string; href: string; active: boolean }[]; label: string }) {
   return (
-    <div className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <nav aria-label={label} className="inline-flex gap-1 rounded-full bg-cool-gray/35 p-1">
+    // الصف بيتسحب أفقياً بمسافة في آخره وتلاشي على الحافة، والتبويب النشط بيبان لوحده (تقرير QA #48)
+    <ScrollRow watch={items.find((t) => t.active)?.key} className="flex max-w-full">
+      <nav aria-label={label} className="inline-flex shrink-0 gap-1 rounded-full bg-cool-gray/35 p-1">
         {items.map((t) => (
           <Link
             key={t.key}
@@ -86,7 +88,7 @@ export function AxTabs({ items, label }: { items: { key: string; label: string; 
           </Link>
         ))}
       </nav>
-    </div>
+    </ScrollRow>
   );
 }
 

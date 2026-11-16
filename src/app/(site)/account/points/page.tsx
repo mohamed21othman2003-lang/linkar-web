@@ -78,6 +78,7 @@ export default async function PointsPage() {
             shareMessage: tx(locale, shareInvite, "message"),
             shareOptions: shareInvite.options.map((o) => ({ key: o.key, label: tx(locale, o, "label") })),
             toastCopied: tx(locale, shareInvite, "toast_copied"),
+            toastCodeCopied: tx(locale, shareInvite, "toast_code_copied"),
           }}
         />
       </div>

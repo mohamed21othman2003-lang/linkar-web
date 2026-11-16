@@ -7,9 +7,13 @@ export function formatNumber(n: number): string {
   return num.format(n);
 }
 
-// «1,399 ر.س» بالعربي و«SAR 1,399» بالإنجليزي
+// الكسور دايماً رقمين (743.5 ← 743.50) والأرقام الصحيحة من غير كسور
+const money = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// «1,399 ر.س» بالعربي و«SAR 1,399» بالإنجليزي — مسافة غير قابلة للكسر عشان الرقم والعملة ما يتفصلوش على سطرين
 export function formatPrice(locale: Locale, amount: number): string {
-  return locale === "en" ? `SAR ${num.format(amount)}` : `${num.format(amount)} ر.س`;
+  const n = Number.isInteger(Math.round(amount * 100) / 100) ? num.format(Math.round(amount)) : money.format(amount);
+  return locale === "en" ? `SAR ${n}` : `${n} ر.س`;
 }
 
 export function currency(locale: Locale): string {

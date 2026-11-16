@@ -12,9 +12,10 @@ export function summaryModel(
   opts: { car?: boolean; branchStyle?: "distance" | "city" } = {},
 ) {
   const t = getBookingDict(locale);
+  // المدينة الفاضية (فرع مؤقت) ما بتسيبش فاصلة لوحدها
   const branchValue =
     opts.branchStyle === "city"
-      ? `${tx(locale, b.branch, "name")}${locale === "ar" ? "، " : ", "}${tx(locale, b.branch, "city")}`
+      ? [tx(locale, b.branch, "name"), tx(locale, b.branch, "city")].filter(Boolean).join(locale === "ar" ? "، " : ", ")
       : `${tx(locale, b.branch, "name")} · ${formatNumber(b.branch.distance_km)} ${t.km}`;
   const rows: SummaryRow[] = [{ label: t.branch, value: branchValue, icon: "branch" }];
   if (opts.car && b.car) rows.push({ label: t.car, value: carTitle(locale, b.car, true), icon: "car" });

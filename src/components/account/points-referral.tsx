@@ -19,6 +19,7 @@ export type ReferralCopy = {
   shareMessage: string;
   shareOptions: { key: string; label: string }[];
   toastCopied: string;
+  toastCodeCopied: string;
 };
 
 const optionIcon: Record<string, UiGlyph> = { copy: "copy", whatsapp: "message", sms: "phone", email: "mail" };
@@ -45,32 +46,33 @@ export function PointsReferral({ c }: { c: ReferralCopy }) {
   };
 
   return (
-    <section className="flex flex-col gap-2.5 rounded-[20px] border border-neon-green/60 bg-tint-lime p-6">
+    <section className="flex flex-col gap-2.5 rounded-[20px] border border-neon-green/60 bg-tint-lime p-4 sm:p-6">
       <h2 className="flex items-center gap-2 text-h5 text-deep-charcoal">
         <Icon name="gift" size={20} className="shrink-0 text-nature-green" />
         {c.title}
       </h2>
       <p className="text-body-s text-deep-charcoal">{c.text}</p>
-      <div className="flex flex-wrap items-center gap-2">
+      {/* الكود الأول ثم «نسخ» و«مشاركة» في نفس السطر (على الموبايل كان الكود بينزل سطر لوحده تحت الأزرار) */}
+      <div className="flex items-center gap-2">
+        <span dir="ltr" className="inline-flex h-[46px] shrink-0 items-center rounded-md border border-cool-gray bg-white px-3 text-h5 text-deep-charcoal sm:px-4">
+          {c.code}
+        </span>
+        <button
+          type="button"
+          onClick={() => (copyText(c.code), show(c.toastCodeCopied))}
+          className="inline-flex h-control-md min-w-0 items-center justify-center gap-1.5 rounded-md border border-cool-gray bg-white px-3 text-label-m text-deep-charcoal hover:bg-tile max-sm:flex-1 sm:px-[18px]"
+        >
+          <Icon name="copy" size={16} className="shrink-0" />
+          {c.copy}
+        </button>
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex h-[42px] items-center gap-1.5 rounded-md bg-deep-charcoal px-[18px] text-label-m text-neon-green hover:bg-bg-inverse-subtle"
+          className="inline-flex h-[42px] min-w-0 items-center justify-center gap-1.5 rounded-md bg-deep-charcoal px-3 text-label-m text-neon-green hover:bg-bg-inverse-subtle max-sm:flex-1 sm:px-[18px]"
         >
-          <Icon name="share" size={16} />
+          <Icon name="share" size={16} className="shrink-0" />
           {c.share}
         </button>
-        <button
-          type="button"
-          onClick={() => (copyText(c.code), show(c.toastCopied))}
-          className="inline-flex h-control-md items-center gap-1.5 rounded-md border border-cool-gray bg-white px-[18px] text-label-m text-deep-charcoal hover:bg-tile"
-        >
-          <Icon name="copy" size={16} />
-          {c.copy}
-        </button>
-        <span dir="ltr" className="inline-flex h-[46px] items-center rounded-md border border-cool-gray bg-white px-4 text-h5 text-deep-charcoal">
-          {c.code}
-        </span>
       </div>
       <p className="text-caption text-state-gray">{c.note}</p>
 

@@ -12,9 +12,11 @@ export const externalPortals = {
   affiliate: routes.affiliates,
 };
 
+// روابط تطبيق لينكار في المتاجر — لسه ماوصلتش من لينكار. فاضية = الشارة بتظهر من غير رابط
+// (قبل كده كانت بتودّي للصفحة الرئيسية للمتجر مش لتطبيق لينكار — تقرير الموبايل #20)
 export const stores = {
-  google: "https://play.google.com/store/apps?hl=ar",
-  apple: "https://www.apple.com/sa-ar/app-store/",
+  google: "",
+  apple: "",
 };
 
 export const site = {
@@ -265,14 +267,15 @@ export const site = {
         ],
       },
     ] satisfies (Record<"title_ar" | "title_en", string> & { links: Link[] })[],
-    // روابط السوشيال لحد ما توصل الحسابات الرسمية (من وصف v2 · Social icon)
+    // حسابات لينكار الرسمية — لسه ماوصلتش. الرابط الفاضي = الأيقونة بتظهر من غير رابط
+    // (قبل كده كانت بتودّي للصفحة الرئيسية لكل موقع — تقرير الموبايل #20)
     social: [
-      { platform: "facebook", label: "Facebook", href: "https://www.facebook.com/" },
-      { platform: "instagram", label: "Instagram", href: "https://www.instagram.com/" },
-      { platform: "tiktok", label: "TikTok", href: "https://www.tiktok.com/" },
-      { platform: "snapchat", label: "Snapchat", href: "https://www.snapchat.com/" },
-      { platform: "x", label: "X", href: "https://x.com/" },
-      { platform: "youtube", label: "YouTube", href: "https://www.youtube.com/" },
+      { platform: "facebook", label: "Facebook", href: "" },
+      { platform: "instagram", label: "Instagram", href: "" },
+      { platform: "tiktok", label: "TikTok", href: "" },
+      { platform: "snapchat", label: "Snapchat", href: "" },
+      { platform: "x", label: "X", href: "" },
+      { platform: "youtube", label: "YouTube", href: "" },
     ],
     payments: ["Apple Pay", "mada", "Visa", "Mastercard", "STC Pay", "tabby", "tamara"],
     copyright_ar: "© 2026 لينكار. جميع الحقوق محفوظة.",

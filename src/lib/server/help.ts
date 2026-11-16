@@ -68,6 +68,12 @@ export async function getHelpPopupsCopy(): Promise<HelpPopupsCopy> {
       pendingReply: tx(locale, a, "pending_reply"),
       close: tx(locale, a, "close"),
     },
-    whatsapp: { title: tx(locale, w, "title"), body: tx(locale, w, "body"), open: tx(locale, w, "open"), close: tx(locale, w, "close"), href: w.href },
+    whatsapp: {
+      title: tx(locale, w, "title"),
+      body: tx(locale, w, "body"),
+      open: w.number ? tx(locale, w, "open") : tx(locale, w, "contact"),
+      close: tx(locale, w, "close"),
+      href: w.number ? `https://wa.me/${w.number}?text=${encodeURIComponent(tx(locale, w, "prefill"))}` : w.contact_href,
+    },
   };
 }

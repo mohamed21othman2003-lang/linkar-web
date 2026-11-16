@@ -56,6 +56,9 @@ export type Booking = Localized<"provider"> &
     amount: number;
     action: BookingRowAction;
     maps_url: string;
+    // رقم الفرع وواتساب (+9665… / 9665…) — مش في الفيجما؛ من غيرهم صفوف P-07 بتظهر معطّلة
+    branch_phone?: string;
+    branch_whatsapp?: string;
     // تقييم الخدمة W2-63 (للحجوزات المكتملة): معيار خاص بالخدمة بعد المعايير الأربعة الثابتة
     rating?: Localized<"title_meta"> & Localized<"extra_criterion"> & Localized<"service_category"> & Localized<"sample_comment"> & { sample: number[] };
     detail?: BookingDetail;

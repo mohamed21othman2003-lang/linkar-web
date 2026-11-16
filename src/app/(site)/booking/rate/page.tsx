@@ -45,7 +45,6 @@ export default async function BookingRatePage({ searchParams }: { searchParams: 
         overall={booking.overall}
         criteria={booking.criteria.map((c) => ({ key: c.key, label: tx(locale, c, "label"), value: c.value, serviceSpecific: c.service_specific }))}
         serviceCategory={tx(locale, booking, "service_category")}
-        comment={tx(locale, booking, "comment")}
         publicName={tx(locale, booking, "customer_display")}
         points={booking.points_reward}
         complaintHref={routes.complaintNew}

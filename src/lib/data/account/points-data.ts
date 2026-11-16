@@ -44,6 +44,7 @@ export const pointsSummary: PointsSummary = {
   referral_code: "MOHD7Q",
   expiry_ar: "أقرب انتهاء: 256 نقطة في 14 يونيو 2027",
   expiry_en: "Next expiry: 256 points on 14 Jun 2027",
+  // 10,123 = مبلغ الحجزين الحاليين (2,323 + 7,800 ر.س) بنقطة لكل ريال — متطابق مع بيانات الحجوزات
   pending_ar: "بانتظار الإضافة: 10,123 نقطة بعد اكتمال حجزيك الحاليين",
   pending_en: "Pending: 10,123 points after your 2 current bookings are completed",
 };
@@ -105,4 +106,7 @@ export const shareInvite = {
   // P-10a
   toast_copied_ar: "تم نسخ الرابط",
   toast_copied_en: "Link copied",
+  // «نسخ» جنب الكود نفسه (مش الرابط)
+  toast_code_copied_ar: "تم نسخ الكود",
+  toast_code_copied_en: "Code copied",
 };

@@ -220,11 +220,12 @@ export function CompareTray({ locale, label, className = "" }: { locale: Locale;
   const empty = COMPARE_MAX - keys.length;
   return (
     <div
-      className={`flex max-w-[calc(100vw-32px)] animate-dissolve flex-wrap items-center gap-x-4 gap-y-2 rounded-[28px] bg-deep-charcoal py-2.5 ps-[22px] pe-2.5 shadow-[0_12px_24px_rgba(13,26,33,0.3)] sm:flex-nowrap sm:rounded-full ${className}`}
+      // موبايل: سطر واحد (~64px) — العدد + اللوجوهات + «قارن الآن»، و«مسح» أيقونة؛ وحد خفيف يبان على الخلفيات الغامقة (تقرير الموبايل #14)
+      className={`flex max-w-[calc(100vw-32px)] animate-dissolve flex-nowrap items-center gap-x-3 rounded-full bg-deep-charcoal py-2 ps-4 pe-2 shadow-[0_12px_24px_rgba(13,26,33,0.3)] ring-1 ring-white/15 sm:gap-x-4 sm:py-2.5 sm:ps-[22px] sm:pe-2.5 ${className}`}
     >
       <div className="flex min-w-0 flex-col items-start">
         <p className="text-label-l whitespace-nowrap text-white">{t.selectedForCompare(keys.length)}</p>
-        <p className="text-caption whitespace-nowrap text-white/65">
+        <p className="text-caption whitespace-nowrap text-white/65 max-sm:hidden">
           {label} · {t.upTo3}
         </p>
       </div>
@@ -233,19 +234,20 @@ export function CompareTray({ locale, label, className = "" }: { locale: Locale;
           <LogoTile key={k} src={items[k].logo} alt={items[k].name} size={36} radius={18} />
         ))}
         {Array.from({ length: empty }).map((_, i) => (
-          <span key={i} aria-label={t.emptySlot} className="flex size-9 items-center justify-center rounded-[10px] border border-dashed border-white/35 text-white">
+          <span key={i} aria-label={t.emptySlot} className="flex size-9 items-center justify-center rounded-[10px] border border-dashed border-white/35 text-white max-sm:hidden">
             <Icon name="plus" size={14} />
           </span>
         ))}
       </div>
       {/* W2-30a: «مسح» أبيض صافي */}
-      <button type="button" onClick={clear} className="text-label-m text-white hover:text-neon-green">
-        {t.clear}
+      <button type="button" onClick={clear} aria-label={t.clear} className="flex items-center justify-center text-label-m text-white hover:text-neon-green max-sm:size-10 max-sm:rounded-full max-sm:bg-white/10">
+        <span className="max-sm:hidden">{t.clear}</span>
+        <Icon name="x" size={16} className="sm:hidden" />
       </button>
       <button
         type="button"
         onClick={openCompare}
-        className="ms-auto flex h-12 items-center gap-1.5 rounded-full bg-neon-green px-5 text-label-l whitespace-nowrap text-deep-charcoal hover:bg-bg-brand-hover"
+        className="ms-auto flex h-11 items-center gap-1.5 rounded-full bg-neon-green px-4 text-label-l whitespace-nowrap text-deep-charcoal hover:bg-bg-brand-hover sm:h-12 sm:px-5"
       >
         {t.compareNow}
         <Icon name="chevron-left" size={16} flip />

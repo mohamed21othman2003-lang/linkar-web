@@ -19,6 +19,7 @@ import { ContactBranchButton } from "@/components/booking/ContactBranchButton";
 import { parseBookingQuery } from "@/components/booking/query";
 import { carTitle } from "@/components/booking/summary-model";
 import { voucherCodeFont } from "@/components/booking/fonts";
+import { QrCode } from "@/components/ui/QrCode";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getBookingDict(await getLocale());
@@ -45,7 +46,11 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
   const providerName = tx(locale, b.provider, "name");
   const branchName = tx(locale, b.branch, "name");
   const sep = locale === "ar" ? "، " : ", ";
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${providerName} ${branchName} ${tx(locale, b.branch, "city")}`)}`;
+  const city = tx(locale, b.branch, "city");
+  // فرع مؤقت (من غير بيانات): البحث باسم المركز بس
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.branch.placeholder ? providerName : `${providerName} ${branchName} ${city}`)}`;
+  // سطر الفرع: الاسم ثم العنوان — السطور الفاضية بتختفي
+  const branchStreet = [branchName, tx(locale, b.branch, "street")].filter(Boolean).join(" · ");
   const due = formatPrice(locale, totals.due);
   const validUntil = tx(locale, conf, "valid_until");
   const lineNames = b.lines.map((l) => tx(locale, l, "name"));
@@ -91,9 +96,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                   {lineShort.join(" + ")} · {t.sizes[b.size]}
                 </span>
                 <span className="text-body-s text-text-secondary">
-                  {providerName} · {branchName}
-                  {sep}
-                  {tx(locale, b.branch, "city")}
+                  {providerName} · {[branchName, city].filter(Boolean).join(sep)}
                 </span>
                 {b.car && (
                   <span className="text-body-s text-text-secondary">
@@ -106,7 +109,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                 </span>
               </div>
               <span className="flex size-[172px] shrink-0 items-center justify-center rounded-md border border-cool-gray bg-white">
-                <Image src="/figma/booking/voucher-qr.svg" alt={conf.voucher_code} width={148} height={148} unoptimized />
+                <QrCode value={conf.voucher_code} size={148} margin={0} label={conf.voucher_code} />
               </span>
             </div>
             <dl className="flex flex-col gap-2.5 rounded-lg border border-border-default p-5">
@@ -140,7 +143,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
               )}
               <ContactBranchButton
                 locale={locale}
-                branch={{ id: b.branch.id, providerSlug: b.provider.slug, branchLine: `${providerName} · ${branchName}`, address: [tx(locale, b.branch, "street"), tx(locale, b.branch, "district"), tx(locale, b.branch, "city")].filter(Boolean).join(sep), mapsUrl }}
+                branch={{ id: b.branch.id, providerSlug: b.provider.slug, branchLine: `${providerName} · ${branchName}`, address: [tx(locale, b.branch, "street"), tx(locale, b.branch, "district"), tx(locale, b.branch, "city")].filter(Boolean).join(sep), mapsUrl, phone: b.branch.phone }}
                 className="flex h-[52px] items-center gap-1.5 rounded-md border border-border-default bg-white px-[22px] text-label-l hover:border-border-strong">
                 <Icon name="phone" size={16} />
                 {t.contactBranch}
@@ -152,13 +155,11 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
     );
   }
 
+  const address = [tx(locale, b.branch, "street"), tx(locale, b.branch, "district")].filter(Boolean).join(sep);
   const nextSteps = t.next.map((s, i) => ({
     title: s.title,
-    body: t.fill(s.body, {
-      date: validUntil,
-      branch: branchName,
-      address: [tx(locale, b.branch, "street"), tx(locale, b.branch, "district")].filter(Boolean).join(sep),
-    }),
+    // من غير عنوان ← نشيل « · {address}» بدل ما يفضل فاصل لوحده
+    body: t.fill(address ? s.body : s.body.replace(/\s*·\s*\{address\}/, ""), { date: validUntil, branch: branchName, address }),
     icon: nextIcons[i],
   }));
   const rows: [string, string][] = [
@@ -189,7 +190,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
               <span className="rounded-full bg-neon-green px-2.5 py-1 text-caption">{cash ? t.statusCash : t.statusPaid}</span>
             </div>
             <div className="flex flex-col items-center gap-2.5 px-6 pt-6 pb-4">
-              <Image src="/figma/booking/voucher-qr.svg" alt={conf.voucher_code} width={180} height={180} unoptimized />
+              <QrCode value={conf.voucher_code} size={180} margin={0} label={conf.voucher_code} />
               <span className={`${voucherCodeFont} text-[20.2px] leading-[34px] tracking-[0.04em]`} dir="ltr">
                 {conf.voucher_code}
               </span>
@@ -203,9 +204,7 @@ export default async function BookingConfirmedPage({ searchParams }: { searchPar
                 <LogoTile slug={b.provider.slug} src={b.provider.logo} alt={providerName} size={40} />
                 <div className="flex flex-col gap-0.5">
                   <span className="text-label-l">{providerName}</span>
-                  <span className="text-caption text-text-secondary">
-                    {branchName} · {tx(locale, b.branch, "street")}
-                  </span>
+                  <span className="text-caption text-text-secondary">{branchStreet}</span>
                 </div>
               </div>
               {rows.map(([k, v]) => (

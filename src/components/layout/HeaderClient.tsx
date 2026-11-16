@@ -9,6 +9,7 @@ import { routes } from "@/lib/routes";
 import { LangSwitch } from "./LangSwitch";
 import { AboutMegaMenu, BusinessMegaMenu, type AboutMenuView, type BusinessMenuView } from "./MegaMenus";
 import { AccountMenu, type AccountMenuView } from "./AccountMenu";
+import { signOut } from "@/app/actions/session";
 import { SearchPanel } from "@/components/search/SearchPanel";
 
 export type NavKey = "home" | "services" | "offers" | "packages" | "about" | "business";
@@ -62,6 +63,24 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
     setDrawer(false);
     setSearchOpen(false);
   }
+
+  // أيقونات القوائم المنسدلة (ديسكتوب) بتتحمّل في وقت فاضي بعد الصفحة — قبل كده كانت بتبدأ تتحمّل لما القايمة تفتح
+  // فأول فتحة بتبان مربعات فاضية (تقرير الموبايل #61)
+  useEffect(() => {
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+    const icons = [
+      ...[...v.about.about, ...v.about.customers, ...v.business.providers, ...v.business.companies].map((i) => i.icon),
+      "/figma/icons/menu-download.svg",
+      "/figma/icons/menu-file.svg",
+      "/figma/icons/menu-building.svg",
+      "/figma/icons/menu-car.svg",
+      "/figma/icons/menu-arrow-neon.svg",
+      "/figma/icons/menu-arrow-green.svg",
+    ];
+    const load = () => [...new Set(icons)].forEach((src) => (new Image().src = src));
+    const id = window.setTimeout(load, 2500);
+    return () => window.clearTimeout(id);
+  }, [v.about, v.business]);
 
   useEffect(() => {
     if (variant !== "hero") return;
@@ -124,7 +143,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
             />
           </Link>
 
-          <nav className="mx-auto hidden items-center gap-4 lg:flex xl:gap-7">
+          {/* 1024–1279: مسافات أصغر — الإنجليزي (عناوين أطول) كان بيطلع برّه الشاشة بـ15px (#59) */}
+          <nav className="mx-auto hidden min-w-0 items-center gap-3 lg:flex xl:gap-7">
             {navKeys.map((k) => {
               const item = v.nav[k];
               const isMenu = k === "about" || k === "business";
@@ -168,9 +188,9 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               label={v.langLabel}
               className={
                 dark
-                  ? // V2-01t/V2-01m: مافيش زر اللغة في هيدر الهيرو تحت الديسكتوب (موجود في القائمة)
-                    // V2-01 (202:7312 «Btn · اللغة»): دايرة 43 بحد ليموني/55 على كحلي/35
-                    "hidden size-[43px] items-center justify-center rounded-full border border-neon-green/55 bg-deep-charcoal/35 text-label-m text-white lg:flex"
+                  ? // V2-01 (202:7312 «Btn · اللغة»): دايرة 43 بحد ليموني/55 على كحلي/35 — وعلى الموبايل/التابلت دايرة 40
+                    // بنفس مقاس زر القائمة (قبل كده كانت مستخبية تحت 1024 ومافيش طريقة تغيّر اللغة من الرئيسية — تقرير الموبايل #10)
+                    "flex size-10 items-center justify-center rounded-full border border-neon-green/55 bg-deep-charcoal/35 text-label-m text-white md:size-11 lg:size-[43px]"
                   : // موبايل: نفس طول زر القائمة (40) عشان الزرّين يبانوا طقم واحد في آخر الهيدر
                     "flex h-10 min-w-10 items-center justify-center rounded-full border border-cool-gray px-3 text-label-m text-deep-charcoal hover:bg-tile sm:h-control-sm"
               }
@@ -181,8 +201,8 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
               <Link
                 href={v.account.viewAllHref}
                 aria-label={v.account.notificationsTitle}
-                // تحت xl مافيش مكان في الهيدر (1024 كان بيطلع برّه) — الإشعارات موجودة في قايمة الحساب
-                className="hidden size-11 items-center justify-center rounded-md text-deep-charcoal hover:bg-tile xl:flex"
+                // 1024–1279 مافيش مكان (الروابط كلها ظاهرة) — الإشعارات في قايمة الحساب؛ الموبايل/التابلت فيه الجرس (#28)
+                className="flex size-10 items-center justify-center rounded-md text-deep-charcoal hover:bg-tile sm:size-11 lg:hidden xl:flex"
               >
                 <Icon name="bell" size={20} />
               </Link>
@@ -207,7 +227,7 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                 >
                   {v.account.initial}
                 </span>
-                <span className={dark ? "max-md:hidden" : ""}>{v.firstName}</span>
+                <span className={dark ? "max-md:hidden lg:max-xl:hidden" : "lg:max-xl:hidden"}>{v.firstName}</span>
                 <Icon name="chevron-down" size={dark ? 14 : 16} className={dark ? "max-md:hidden" : ""} />
               </button>
             ) : dark ? (
@@ -289,8 +309,9 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
       {drawer && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
           <div className="absolute inset-0 animate-dissolve bg-bg-overlay" onClick={() => setDrawer(false)} />
-          <div className="absolute inset-y-0 start-0 flex w-[min(360px,90vw)] flex-col gap-1 overflow-y-auto bg-white p-4">
-            <div className="mb-2 flex items-center justify-between">
+          {/* من نفس ناحية زر القائمة (النهاية)، والجزء اللي فوق (اللوجو + X) ثابت وهي بتتمرر (#37) */}
+          <div className="absolute inset-y-0 end-0 flex w-[min(360px,90vw)] flex-col gap-1 overflow-y-auto bg-white px-4 pb-4">
+            <div className="sticky top-0 z-10 -mx-4 mb-2 flex items-center justify-between bg-white px-4 pt-4 pb-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/logo-primary.svg" alt={v.brand} width={130} height={17} className="h-auto w-[130px]" />
               <button type="button" aria-label={v.closeLabel} onClick={() => setDrawer(false)} className="flex size-control-md items-center justify-center text-deep-charcoal">
@@ -346,15 +367,32 @@ export function HeaderClient({ v, variant }: { v: HeaderView; variant: "hero" | 
                 {v.search}
               </button>
               {v.account ? (
-                <Link href={routes.account} className="flex h-control-md items-center justify-center gap-2 rounded-md border border-cool-gray text-label-m text-deep-charcoal">
-                  <span className="flex size-7 items-center justify-center rounded-full bg-neon-green">{v.account.initial}</span>
-                  {v.account.name}
-                </Link>
+                <>
+                  <Link href={routes.account} className="flex h-control-md items-center justify-center gap-2 rounded-md border border-cool-gray text-label-m text-deep-charcoal">
+                    <span className="flex size-7 items-center justify-center rounded-full bg-neon-green">{v.account.initial}</span>
+                    {v.account.name}
+                  </Link>
+                  <Link href={v.account.viewAllHref} className="flex h-control-md items-center justify-center gap-2 rounded-md border border-cool-gray text-label-m text-deep-charcoal">
+                    <Icon name="bell" size={18} />
+                    {v.account.notificationsTitle}
+                  </Link>
+                  <form action={signOut}>
+                    <button type="submit" className="flex h-control-md w-full items-center justify-center gap-2 rounded-md text-label-m text-promotional-red hover:bg-tile">
+                      {v.account.signOut}
+                    </button>
+                  </form>
+                </>
               ) : (
                 <Link href={routes.login} className="flex h-control-md items-center justify-center rounded-md border border-cool-gray text-label-m font-bold text-deep-charcoal">
                   {v.signIn}
                 </Link>
               )}
+              {/* تغيير اللغة من القائمة كمان (#10) */}
+              <LangSwitch
+                locale={v.locale}
+                label={v.locale === "ar" ? "English" : "العربية"}
+                className="flex h-control-md items-center justify-center gap-2 rounded-md text-label-m text-deep-charcoal hover:bg-tile"
+              />
             </div>
           </div>
         </div>

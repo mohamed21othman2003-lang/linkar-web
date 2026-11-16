@@ -17,6 +17,7 @@ export type BranchView = {
   hours: string;
   distance: string; // «5.6 كم»
   mapsUrl: string;
+  placeholder?: boolean; // فرع مؤقت «أقرب فرع لموقعك» (من غير عنوان)
 };
 
 // W2-33 · الفرع · الأقرب لموقعك (تلقائي): الفرع الأقرب مختار تلقائياً + «فروع أخرى» مرتّبة حسب المسافة
@@ -93,12 +94,15 @@ function BranchOption({ locale, t, b, on, onSelect, nearest = false }: { locale:
         <div className={`flex min-w-0 flex-col ${nearest ? "gap-[3px]" : "gap-0.5"}`}>
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-label-l">{b.name}</span>
-            {nearest && <span className="rounded-full bg-deep-charcoal px-2 py-0.5 text-[14px] leading-[22px] font-light text-neon-green">{t.nearestTag}</span>}
+            {nearest && !b.placeholder && <span className="rounded-full bg-deep-charcoal px-2 py-0.5 text-[14px] leading-[22px] font-light text-neon-green">{t.nearestTag}</span>}
           </div>
           <span className="text-[14px] leading-[22px] font-medium text-nature-green">{t.fill(t.distanceFromYou, { d: b.distance })}</span>
-          <span className={`text-[14px] font-light text-v3-text-meta ${nearest ? "leading-6" : "leading-[22px]"}`}>
-            {(nearest ? [b.street, b.district, b.city] : [b.street, b.district]).filter(Boolean).join(locale === "en" ? ", " : "، ")}
-          </span>
+          {/* العنوان مش موجود ← السطر بيختفي */}
+          {(nearest ? [b.street, b.district, b.city] : [b.street, b.district]).some(Boolean) && (
+            <span className={`text-[14px] font-light text-v3-text-meta ${nearest ? "leading-6" : "leading-[22px]"}`}>
+              {(nearest ? [b.street, b.district, b.city] : [b.street, b.district]).filter(Boolean).join(locale === "en" ? ", " : "، ")}
+            </span>
+          )}
           {nearest && b.hours && <span className="text-[14px] leading-[22px] font-light text-nature-green">{b.hours}</span>}
         </div>
       </div>

@@ -41,13 +41,14 @@ export default async function ServicesPage() {
         <ServicePicker
           locale={locale}
           items={items}
-          defaultSelected={[...p.default_selected]}
+          defaultSelected={[]}
           definiteNames={locale === "en" ? p.definite_en : p.definite_ar}
           copy={{
             selectedOne: tx(locale, p, "selected_one"),
             selectedTwo: tx(locale, p, "selected_two"),
             selectedMany: tx(locale, p, "selected_many"),
             together: tx(locale, p, "together"),
+            togetherMany: tx(locale, p, "together_many"),
             ctaOne: tx(locale, p, "cta_one"),
             ctaTwo: tx(locale, p, "cta_two"),
             ctaMany: tx(locale, p, "cta_many"),

@@ -30,7 +30,7 @@ export function toDetailView(locale: Locale, b: Booking, user: DemoUser): Bookin
   const paid = det.rows.find((r) => r.label_ar === "المدفوع");
   const vf = b.voucher_full;
   return {
-    branch: { id: b.id, providerSlug: b.provider_slug, branchLine, address: tx(locale, b, "address"), mapsUrl: b.maps_url },
+    branch: { id: b.id, providerSlug: b.provider_slug, branchLine, address: tx(locale, b, "address"), mapsUrl: b.maps_url, phone: b.branch_phone, whatsapp: b.branch_whatsapp },
     statusLabel: tx(locale, det, "status_label"),
     statusTone: det.status_tone,
     tracker: det.tracker.map((s) => ({ label: tx(locale, s, "label"), note: tx(locale, s, "note"), state: s.state })),

@@ -62,9 +62,9 @@ export const paymentPage = {
   toast_default_en: "Set as default",
   toast_unlinked_ar: "تم إلغاء ربط {name}",
   toast_unlinked_en: "{name} unlinked",
-  // P-10d — ملف الفاتورة نفسه لسه مش موجود (هيجي من الـAPI)
-  toast_download_ar: "جارٍ تنزيل الملف (PDF)…",
-  toast_download_en: "Downloading the file (PDF)…",
+  // P-10d — الفاتورة بتتفتح في نافذة الطباعة (حفظ PDF) لحد ما ملفها ييجي من الـAPI
+  toast_download_ar: "اختر «حفظ بصيغة PDF» من نافذة الطباعة",
+  toast_download_en: "Choose “Save as PDF” in the print window",
 };
 
 // القيم الظاهرة في نموذج الفيجما (W2-68b)

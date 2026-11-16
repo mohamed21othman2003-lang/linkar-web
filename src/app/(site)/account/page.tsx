@@ -11,6 +11,7 @@ import { routes } from "@/lib/routes";
 import { Icon, ServiceGlyph } from "@/components/icons/Icon";
 import { ProviderTile } from "@/components/account/account-ui";
 import { AxEmpty } from "@/components/account/account-extra-ui";
+import { RateLink } from "@/components/booking/PendingRatingPrompt";
 import type { OverviewOffer } from "@/lib/data/account/overview";
 import type { Locale } from "@/i18n/config";
 
@@ -125,22 +126,23 @@ export default async function AccountHomePage() {
             ))}
           </div>
 
-          {/* كيف كانت تجربتك مع …؟ */}
+          {/* كيف كانت تجربتك مع …؟ — التقييم بيفتح من هنا بضغطة (مابقاش بيفتح لوحده بعد الدخول) */}
           <section className="flex flex-col gap-4 rounded-[20px] border border-neon-green/60 bg-tint-lime p-5 md:flex-row md:items-center md:justify-between md:p-6">
-            <Link href={routes.bookingReview(data.rate.booking_id)} className="flex items-center gap-3.5">
+            <RateLink bookingId={data.rate.booking_id} href={routes.bookingReview(data.rate.booking_id)} className="flex items-center gap-3.5">
               <ProviderTile slug={data.rate.provider_slug} alt={tx(locale, data.rate, "provider")} size={48} />
               <span className="flex flex-col gap-1">
                 <span className="text-h5 text-deep-charcoal">{o.rateTitle(tx(locale, data.rate, "provider"))}</span>
                 <span className="text-body-s text-state-gray">{tx(locale, data.rate, "meta")}</span>
               </span>
-            </Link>
+            </RateLink>
             <div className="flex flex-wrap items-center gap-4">
-              <Link
+              <RateLink
+                bookingId={data.rate.booking_id}
                 href={routes.bookingReview(data.rate.booking_id)}
                 className="rounded-md bg-deep-charcoal px-[18px] py-2.5 text-label-m text-neon-green hover:bg-bg-inverse-subtle"
               >
                 {o.rateCta}
-              </Link>
+              </RateLink>
               <span className="flex items-center gap-1 text-state-gray" aria-hidden>
                 {[0, 1, 2, 3, 4].map((i) => (
                   <Icon key={i} name="star" size={22} />

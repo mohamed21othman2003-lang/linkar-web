@@ -49,11 +49,11 @@ export function HomeServiceCard({ locale, service, providers, label }: { locale:
           {name}
         </h3>
       )}
-      <p className="absolute start-[21px] top-[89px] text-[11.54px] leading-[22px] text-v3-text-meta">{t.findItAt}</p>
-      <p className="absolute start-[21px] end-3 top-[110px] truncate text-[11.54px] leading-[20px] text-white">
+      <p className="absolute start-[21px] top-[89px] text-[12px] leading-[22px] text-v3-text-meta">{t.findItAt}</p>
+      <p className="absolute start-[21px] end-3 top-[110px] truncate text-[12px] leading-[20px] text-white">
         {providers.map((p) => tx(locale, p, "short_name")).join(" • ")}
       </p>
-      <span className="absolute end-[14px] top-[157.14px] flex h-[24.8px] w-[64.5px] items-center justify-center rounded-full bg-neon-green text-[11.54px] font-bold text-deep-charcoal">
+      <span className="absolute end-[14px] top-[157.14px] flex h-[24.8px] w-[64.5px] items-center justify-center rounded-full bg-neon-green text-[12px] font-bold text-deep-charcoal">
         {t.book}
       </span>
     </article>

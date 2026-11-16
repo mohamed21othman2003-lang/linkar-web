@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { routes } from "@/lib/routes";
 import { scrollTrack } from "../motion";
 import type { Locale } from "@/i18n/config";
 import type { Provider } from "@/lib/data/types";
@@ -50,9 +48,18 @@ export function PackagesCarousel({
   slideLabel: string;
 }) {
   const [index, setIndex] = useState(0);
+  // شيبس التصنيف بتفلتر الباقات هنا في نفس المكان (قبل كده كلها كانت بتودّي لصفحة الباقات من غير فلتر — تقرير الموبايل #4)
+  const [cat, setCat] = useState<PackageCategory | null>(null);
   const track = useRef<HTMLDivElement>(null);
   const touched = useRef(false);
-  const list = items;
+  const list = cat ? items.filter((x) => x.categories.includes(cat)) : items;
+  const pick = (c: PackageCategory | null) => {
+    setCat(c);
+    setIndex(0);
+    touched.current = false;
+    const el = track.current;
+    if (el) el.scrollLeft = 0;
+  };
   const n = list.length;
   const rtl = locale === "ar";
 
@@ -113,14 +120,13 @@ export function PackagesCarousel({
     <div className="flex flex-col gap-[18px] md:gap-7 xl:gap-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="-me-5 flex h-9 items-center gap-[7px] overflow-x-auto pe-5 [scrollbar-width:none] md:m-0 md:gap-2 md:p-0 [&::-webkit-scrollbar]:hidden">
-          <span aria-current="true" className={chip(true)}>
+          <button type="button" aria-pressed={!cat} onClick={() => pick(null)} className={chip(!cat)}>
             {allLabel}
-          </span>
-          {/* Chip (557:194) في الفيجما بيودّي لصفحة الباقات (W2-41) */}
+          </button>
           {categories.map((c) => (
-            <Link key={c.slug} href={routes.packages} className={chip(false)}>
+            <button key={c.slug} type="button" aria-pressed={cat === c.slug} onClick={() => pick(cat === c.slug ? null : c.slug)} className={chip(cat === c.slug)}>
               {c.label}
-            </Link>
+            </button>
           ))}
         </div>
         <div className="hidden gap-2 xl:flex">
@@ -165,7 +171,7 @@ export function PackagesCarousel({
             aria-label={`${slideLabel} ${i + 1}`}
             aria-current={i === index}
             onClick={() => go(i)}
-            className={`h-2 rounded-xs transition-all ${i === index ? "w-[22px] bg-deep-charcoal md:w-6" : "w-2 bg-dot xl:bg-cool-gray"}`}
+            className={`hit relative h-2 rounded-xs transition-all ${i === index ? "w-[22px] bg-deep-charcoal md:w-6" : "w-2 bg-dot xl:bg-cool-gray"}`}
           />
         ))}
       </div>

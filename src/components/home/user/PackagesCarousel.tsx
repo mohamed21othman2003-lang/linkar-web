@@ -132,7 +132,7 @@ export function PackagesCarousel({
             aria-label={`${slideLabel} ${i + 1}`}
             aria-current={i === index}
             onClick={() => go(i)}
-            className={`h-2 rounded-xs transition-all ${i === index ? "w-6 bg-deep-charcoal" : "w-2 bg-cool-gray"}`}
+            className={`hit relative h-2 rounded-xs transition-all ${i === index ? "w-6 bg-deep-charcoal" : "w-2 bg-cool-gray"}`}
           />
         ))}
       </div>

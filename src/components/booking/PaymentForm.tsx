@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
 import type { PaymentMethodId } from "@/lib/data/booking/types";
 import { formatNumber, formatPrice } from "@/lib/format";
+import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
 import { RadioDot, Toggle } from "./Radio";
 import { Summary, type SummaryRow } from "./Summary";
@@ -258,8 +260,34 @@ export function PaymentForm({
             {busy ? t.processing : t.fill(t.pay[method], { amount })}
           </button>
         }
-        footer={<p className="text-caption text-text-secondary">{t.agree}</p>}
+        footer={
+          <p className="text-caption text-text-secondary">
+            {t.agreeParts.before}
+            <Link href={routes.terms} target="_blank" className="text-nature-green underline underline-offset-2 hover:text-deep-charcoal">
+              {t.agreeParts.link}
+            </Link>
+            {t.agreeParts.after}
+          </p>
+        }
       />
+
+      {/* موبايل/تابلت: شريط ثابت تحت فيه الإجمالي وزر الدفع — من غير ما العميل ينزل ~1600px لآخر الصفحة */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border-default bg-white/96 px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-elevation-2 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-[720px] items-center gap-3">
+          <div className="flex min-w-0 flex-col">
+            <span className="text-caption text-text-secondary">{t.due}</span>
+            <span className="text-h5 whitespace-nowrap text-deep-charcoal">{amount}</span>
+          </div>
+          <button
+            type="button"
+            onClick={pay}
+            disabled={busy}
+            className="flex h-[52px] min-w-0 flex-1 items-center justify-center rounded-[14px] bg-pay-black px-3 text-label-l text-white disabled:opacity-70"
+          >
+            <span className="truncate">{busy ? t.processing : t.fill(t.pay[method], { amount })}</span>
+          </button>
+        </div>
+      </div>
 
       <VerifyPaymentModal
         key={method}

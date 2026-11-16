@@ -44,6 +44,7 @@ export default async function BookingsPage({ searchParams }: { searchParams: Pro
     dateIso: r.date_iso,
     branch: tx(locale, r, "branch"),
     car: tx(locale, r, "car_short"),
+    carFull: tx(locale, r, "car").split(" · ")[0],
     carKey: r.car_key,
     amount: formatPrice(locale, r.amount),
     action: r.action,

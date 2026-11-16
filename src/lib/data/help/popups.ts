@@ -50,6 +50,12 @@ export const whatsappPopup = {
   open_en: "Open WhatsApp",
   close_ar: "إغلاق",
   close_en: "Close",
-  // رقم واتساب لينكار لسه ماوصلش — لما يوصل يتحط في الرابط (wa.me/966…) — النص مافيهوش placeholder (اجتماع 9 نوفمبر)
-  href: "https://wa.me/",
+  // رقم واتساب لينكار لسه ماوصلش — بيتحط في .env كـ LINKAR_WHATSAPP (966…، من غير +) أول ما يوصل (اجتماع 9 نوفمبر).
+  // من غيره الزر بيودّي لصفحة «تواصل معنا» بدل رابط wa.me فاضي (تقرير الموبايل #6)
+  number: (process.env.LINKAR_WHATSAPP ?? "").replace(/\D/g, ""),
+  prefill_ar: "مرحباً فريق لينكار،",
+  prefill_en: "Hello Linkar team,",
+  contact_ar: "تواصل معنا",
+  contact_en: "Contact us",
+  contact_href: "/contact",
 };

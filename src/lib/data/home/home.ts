@@ -95,6 +95,20 @@ export const locationModal = {
   not_now: t("ليس الآن", "Not now"),
   browser_note: t("سيطلب منك المتصفح تأكيد الإذن", "Your browser will ask you to confirm"),
   privacy: t("سياسة الخصوصية", "Privacy policy"),
+  no_results: t("لا توجد نتائج", "No results"),
+  // اقتراحات حقل «ابحث عن مدينة أو حي» (لحد ما يتربط بخدمة عناوين حقيقية)
+  suggestions: [
+    t("جدة · حي الروضة", "Jeddah · Al Rawdah"),
+    t("جدة · حي الزهراء", "Jeddah · Al Zahraa"),
+    t("جدة · حي السلامة", "Jeddah · Al Salamah"),
+    t("الرياض · حي الملقا", "Riyadh · Al Malqa"),
+    t("الرياض · حي العليا", "Riyadh · Al Olaya"),
+    t("الرياض · حي النرجس", "Riyadh · Al Narjis"),
+    t("الدمام · حي الشاطئ", "Dammam · Al Shati"),
+    t("الخبر · حي العقربية", "Khobar · Al Aqrabiyah"),
+    t("مكة المكرمة · حي العزيزية", "Makkah · Al Aziziyah"),
+    t("المدينة المنورة · حي قباء", "Madinah · Quba"),
+  ],
 };
 
 // الموقع التجريبي اللي ظاهر في الفيجما

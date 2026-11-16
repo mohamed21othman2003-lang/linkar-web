@@ -50,9 +50,10 @@ export type Warranty =
       valid_until: L;
       car: L;
       certificate: string;
-      remaining: number; // نسبة المدة المتبقية (شريط التقدّم)
+      // بداية ونهاية الضمان — المتبقي (النص وشريط التقدّم) بيتحسب من تاريخ النهارده في الصفحة
+      start_iso: string;
+      end_iso: string;
       // P-30
-      status_line: L;
       show_at: L;
       service_line: L;
       car_line: L;
@@ -83,8 +84,8 @@ export const warranties: Warranty[] = [
     valid_until: { ar: "8 أبريل 2027", en: "8 Apr 2027" },
     car: { ar: "لكزس ES 2022", en: "Lexus ES 2022" },
     certificate: "WR-2026-00405",
-    remaining: 861 / 928,
-    status_line: { ar: "ساري · متبقٍ 5 أشهر و19 يوماً", en: "Active · 5 months and 19 days left" },
+    start_iso: "2026-10-08",
+    end_iso: "2027-04-08",
     show_at: { ar: "اعرض الرمز في أي فرع لمركز لمعة للتلميع", en: "Show the code at any Lamaa Polishing Center branch" },
     service_line: { ar: "تلميع خارجي · 3 مراحل · BK-21388", en: "Exterior polish · 3 stages · BK-21388" },
     car_line: { ar: "لكزس ES 2022 · ب ن د 5678", en: "Lexus ES 2022 · BND 5678" },

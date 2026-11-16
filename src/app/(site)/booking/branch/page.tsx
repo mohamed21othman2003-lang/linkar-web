@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
+import { getCommon } from "@/i18n/dict/common";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { getSession } from "@/lib/server/session";
@@ -35,8 +36,11 @@ export default async function BookingBranchPage({ searchParams }: { searchParams
     city: tx(locale, br, "city"),
     hours: tx(locale, br, "hours"),
     distance: `${formatNumber(br.distance_km)} ${t.km}`,
-    mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${tx(locale, b.provider, "name")} ${tx(locale, br, "name")} ${tx(locale, br, "city")}`)}`,
+    // فرع مؤقت (من غير بيانات): البحث في الخريطة باسم المركز بس
+    mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(br.placeholder ? tx(locale, b.provider, "name") : `${tx(locale, b.provider, "name")} ${tx(locale, br, "name")} ${tx(locale, br, "city")}`)}`,
+    placeholder: br.placeholder,
   }));
+  const shortName = tx(locale, b.provider, "short_name");
   const hrefs = Object.fromEntries(b.branches.map((br) => [br.id, bookingHref(routes.bookingDetails, { ...b.query, branch: br.id })]));
   const summary = summaryModel(locale, b);
   const providerName = tx(locale, b.provider, "name");
@@ -58,9 +62,12 @@ export default async function BookingBranchPage({ searchParams }: { searchParams
             locale={locale}
             branches={branches}
             intro={
-              b.branches.length === 1
-                ? t.fill(t.branchSubOne, { provider: tx(locale, b.provider, "short_name"), city })
-                : t.fill(t.branchSub, { provider: tx(locale, b.provider, "short_name"), n: b.branches.length, city })
+              // عدد الفروع من مصدر واحد: الفروع الحقيقية لو موجودة، وإلا provider.branches (نفس رقم صفحة المزوّد)
+              b.branch.placeholder
+                ? t.fill(t.branchSubCount, { provider: shortName, n: getCommon(locale).branches(b.provider.branches) })
+                : b.branches.length === 1
+                  ? t.fill(t.branchSubOne, { provider: shortName, city })
+                  : t.fill(t.branchSub, { provider: shortName, n: b.branches.length, city })
             }
             summary={{
               ...summary,

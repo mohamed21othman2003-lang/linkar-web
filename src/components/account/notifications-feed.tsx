@@ -7,6 +7,7 @@ import { getAccountDict } from "@/i18n/dict/account";
 import { routes } from "@/lib/routes";
 import { Icon, type UiGlyph } from "@/components/icons/Icon";
 import { useToast } from "./account-dialog";
+import { ScrollRow } from "./scroll-row";
 
 export type FeedItemView = {
   id: string;
@@ -78,7 +79,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
       ) : (
         <>
           <div className="flex">
-            <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-full bg-cool-gray/35 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ScrollRow role="tablist" watch={tab} className="flex max-w-full gap-1 rounded-full bg-cool-gray/35 p-1">
               {tabOrder.map((k) => {
                 const on = k === tab;
                 return (
@@ -94,7 +95,7 @@ export function NotificationsFeed({ locale, items, initialTab }: { locale: Local
                   </button>
                 );
               })}
-            </div>
+            </ScrollRow>
           </div>
 
           {/* CHANGE_TO · DISSOLVE 200ms EASE_OUT («W2-73 · تبويبات») */}

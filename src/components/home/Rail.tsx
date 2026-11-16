@@ -71,7 +71,7 @@ export function Rail({
               aria-label={`${i + 1}`}
               aria-current={i === index}
               onClick={() => go(i)}
-              className={`h-2 rounded-xs transition-all duration-200 ease-figma-out ${
+              className={`hit relative h-2 rounded-xs transition-all duration-200 ease-figma-out ${
                 i === index
                   ? `w-[22px] md:w-6 ${dots === "dark" ? "bg-neon-green" : "bg-deep-charcoal"}`
                   : `w-2 ${dots === "dark" ? "bg-white/30" : "bg-dot"}`

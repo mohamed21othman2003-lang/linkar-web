@@ -6,6 +6,7 @@ import { Icon } from "@/components/icons/Icon";
 import { routes } from "@/lib/routes";
 import { AxCloseButton, AxConfirm, AxDialog, useAxToast } from "./account-extra-dialog";
 import { AxEmpty } from "./account-extra-ui";
+import { Dropdown } from "./dropdown";
 
 export type CarView = {
   id: string;
@@ -50,6 +51,8 @@ export type CarsCopy = {
   fields: { make: string; model: string; year: string; color: string; plateNumbers: string; plateLetters: string };
   sizeDetected: string;
   selectPlaceholder: string;
+  search: string;
+  noResults: string;
   sizeChange: string;
   makeDefaultCar: string;
   save: string;
@@ -73,43 +76,6 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
         {label}
       </label>
       {children}
-    </div>
-  );
-}
-
-function Select({
-  id,
-  value,
-  onChange,
-  placeholder,
-  required = true,
-  autoFocus = false,
-  children,
-}: {
-  id: string;
-  value: string | number;
-  onChange: (v: string) => void;
-  placeholder: string;
-  required?: boolean;
-  autoFocus?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <div className="relative">
-      <select
-        id={id}
-        value={value || ""}
-        required={required}
-        data-autofocus={autoFocus || undefined}
-        onChange={(e) => onChange(e.target.value)}
-        className={`${inputCls} appearance-none pe-10 invalid:text-text-tertiary`}
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {children}
-      </select>
-      <Icon name="chevron-down" size={16} className="pointer-events-none absolute end-3.5 top-1/2 -translate-y-1/2 text-state-gray" />
     </div>
   );
 }
@@ -183,7 +149,8 @@ function CarDialog({
   const sizeLabel = o.sizes.find((s) => s.key === size)?.label ?? "";
 
   return (
-    <AxDialog open={open} onClose={onClose} labelledBy={id} width={600} animate={false} shadow="shadow-[0_12px_24px_0_#0000002e]" className="p-5 md:p-8">
+    // أقصى ارتفاع = الشاشة − 16px فوق وتحت؛ النافذة بتسكرول جوّاها والرأس وأزرار الحفظ ثابتين (كانت 850–940px والأطراف بتتقص)
+    <AxDialog open={open} onClose={onClose} labelledBy={id} width={600} animate={false} shadow="shadow-[0_12px_24px_0_#0000002e]" className="max-h-[calc(100dvh-32px)] overflow-y-auto overscroll-contain px-5 md:px-8">
       <form
         className="flex flex-col gap-5"
         onSubmit={(e) => {
@@ -191,7 +158,7 @@ function CarDialog({
           onSave({ make, model, year, color, size, plateNumbers: numbers.trim(), plateLetters: letters.trim(), makeDefault });
         }}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="sticky top-0 z-20 -mx-5 -mb-2 flex items-start justify-between gap-4 bg-white px-5 pt-5 pb-2 md:-mx-8 md:px-8 md:pt-8">
           <div className="flex flex-col gap-1">
             <h2 id={id} className="text-h4 text-deep-charcoal">
               {d.editing ? c.modalEditTitle : c.modalTitle}
@@ -201,11 +168,16 @@ function CarDialog({
           <AxCloseButton onClick={onClose} label={c.close} variant="square" />
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
+          {/* W2-DD الشركة / الموديل / سنة الصنع / اللون — قوائم بشكل الفيجما (والطويلة فيها بحث) بدل قوائم المتصفح */}
           <Field label={c.fields.make} htmlFor={`${id}-make`}>
-            <Select
+            <Dropdown
               id={`${id}-make`}
+              required
               placeholder={c.selectPlaceholder}
+              searchPlaceholder={c.search}
+              emptyLabel={c.noResults}
               value={make}
+              options={o.makes}
               onChange={(v) => {
                 setMake(v);
                 const first = o.makes.find((m) => m.key === v)?.models[0];
@@ -214,46 +186,35 @@ function CarDialog({
                   setSize(first.size);
                 }
               }}
-            >
-              {o.makes.map((m) => (
-                <option key={m.key} value={m.key}>
-                  {m.label}
-                </option>
-              ))}
-            </Select>
+            />
           </Field>
           <Field label={c.fields.model} htmlFor={`${id}-model`}>
-            <Select
+            <Dropdown
               id={`${id}-model`}
+              required
+              disabled={!make}
               placeholder={c.selectPlaceholder}
-              autoFocus={demo}
+              searchPlaceholder={c.search}
+              emptyLabel={c.noResults}
               value={model}
+              options={models}
               onChange={(v) => (setModel(v), setSize(models.find((m) => m.key === v)?.size ?? size))}
-            >
-              {models.map((m) => (
-                <option key={m.key} value={m.key}>
-                  {m.label}
-                </option>
-              ))}
-            </Select>
+            />
           </Field>
           <Field label={c.fields.year} htmlFor={`${id}-year`}>
-            <Select id={`${id}-year`} placeholder={c.selectPlaceholder} value={year} onChange={(v) => setYear(Number(v))}>
-              {o.years.map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </Select>
+            <Dropdown
+              id={`${id}-year`}
+              required
+              placeholder={c.selectPlaceholder}
+              searchPlaceholder={c.search}
+              emptyLabel={c.noResults}
+              value={year ? String(year) : ""}
+              options={o.years.map((y) => ({ key: String(y), label: String(y) }))}
+              onChange={(v) => setYear(Number(v))}
+            />
           </Field>
           <Field label={c.fields.color} htmlFor={`${id}-color`}>
-            <Select id={`${id}-color`} placeholder={c.selectPlaceholder} required={false} value={color} onChange={setColor}>
-              {o.colors.map((m) => (
-                <option key={m.key} value={m.key}>
-                  {m.label}
-                </option>
-              ))}
-            </Select>
+            <Dropdown id={`${id}-color`} placeholder={c.selectPlaceholder} value={color} options={o.colors} onChange={setColor} />
           </Field>
           <Field label={c.fields.plateNumbers} htmlFor={`${id}-num`}>
             <input
@@ -287,7 +248,7 @@ function CarDialog({
           />
           {c.makeDefaultCar}
         </label>
-        <div className="flex flex-wrap items-center justify-end gap-2.5">
+        <div className="sticky bottom-0 z-20 -mx-5 -mt-2 flex flex-wrap items-center justify-end gap-2.5 border-t border-cool-gray/60 bg-white px-5 pt-3 pb-5 md:-mx-8 md:px-8 md:pb-8">
           <button type="submit" className="h-[46px] rounded-md bg-neon-green px-[22px] text-label-m text-deep-charcoal hover:bg-bg-brand-hover">
             {c.save}
           </button>
@@ -447,6 +408,8 @@ export function CarsManager({
               return v.makeDefault ? list.map((x) => ({ ...x, isDefault: x.id === base.id })) : list;
             });
             setDialog(null);
+            // P-10k «تم التعيين كافتراضي» لما «اجعلها السيارة الافتراضية» متعلّمة
+            if (v.makeDefault && !dialog.car?.isDefault) show(c.toastDefault);
           }}
         />
       )}

@@ -128,7 +128,7 @@ export function ReviewsCarousel({
             aria-label={`${slideLabel} ${i + 1}`}
             aria-current={i === index}
             onClick={() => go(i)}
-            className={`h-2 rounded-xs transition-all xl:rounded-full ${i === index ? "w-[22px] bg-deep-charcoal md:w-6 xl:w-7 xl:bg-neon-green" : "w-2 bg-dot xl:bg-cool-gray"}`}
+            className={`hit relative h-2 rounded-xs transition-all xl:rounded-full ${i === index ? "w-[22px] bg-deep-charcoal md:w-6 xl:w-7 xl:bg-neon-green" : "w-2 bg-dot xl:bg-cool-gray"}`}
           />
         ))}
       </div>

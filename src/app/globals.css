@@ -275,6 +275,23 @@
 
 /* ---------- Paint styles (التدرّجات) ---------- */
 /* Brand/Gradient */
+/* hit: مساحة لمس مخفية 44×44 على الأقل حوالين العناصر الصغيرة (نقاط الكاروسيل، القلب، «تغيير» …) من غير ما الشكل يتغيّر —
+   على شاشات اللمس بس (تقرير الموبايل #19) */
+/* العنصر لازم يكون positioned (relative/absolute) — مش بنحط position هنا عشان مانبوّظش عناصر absolute */
+@utility hit {
+  @media (pointer: coarse) {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
 @utility bg-gradient-brand {
   background-image: linear-gradient(to right, #c8f31d, #34c82a);
 }
@@ -292,6 +309,17 @@
   background-image: linear-gradient(to right, #0b0d0a59, #0b0d0ad1 55%, #0b0d0af5);
   [dir="ltr"] & {
     background-image: linear-gradient(to left, #0b0d0a59, #0b0d0ad1 55%, #0b0d0af5);
+  }
+}
+
+/* الأزرار العائمة (واتساب/المساعد) بتستخبى وأي نافذة أو قائمة مفتوحة — مش فوق الطبقة الغامقة ولا فوق أزرار النافذة */
+body:has([aria-modal="true"]) .fab-root {
+  display: none;
+}
+/* موبايل: مساحة في آخر الفوتر عشان آخر محتوى يتمرر لفوق الأزرار العائمة بدل ما تغطيه */
+@media (max-width: 767px) {
+  body:has(.fab-root) footer {
+    padding-bottom: 7.5rem;
   }
 }
 

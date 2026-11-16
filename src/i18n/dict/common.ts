@@ -20,6 +20,7 @@ const ar = {
   signOut: "تسجيل الخروج",
   points: (n: string) => `${n} نقطة`,
   favorite: "أضف إلى المفضلة",
+  unfavorite: "إزالة من المفضلة",
   endsIn: "ينتهي خلال",
   day: "يوم",
   hour: "ساعة",
@@ -27,10 +28,11 @@ const ar = {
   offeredBy: "مقدم من",
   aiPick: "ترشيح الذكاء الاصطناعي",
   findItAt: "تجدها لدى",
-  discount: (n: number) => `خصم ${n}%`,
+  // الرقم و% معزولين اتجاه (LRI…PDI) عشان يبانوا «20%» في كل مكان — قبل كده «15%» في مكان و«%20» في مكان (تقرير الموبايل #40)
+  discount: (n: number) => `خصم ⁦${n}%⁩`,
   tiers: { platinum: "بلاتيني", gold: "ذهبي", silver: "فضي" },
   tierLetters: { platinum: "P", gold: "G", silver: "S" },
-  accountLinks: { account: "حسابي", bookings: "حجوزاتي", gifts: "الهدايا", settings: "الإعدادات" },
+  accountLinks: { account: "حسابي", bookings: "حجوزاتي", gifts: "باقات الوكالات", settings: "الإعدادات" },
   branches: (n: number) => (n === 1 ? "فرع واحد" : n === 2 ? "فرعان" : n <= 10 ? `${n} فروع` : `${n} فرعاً`),
 };
 
@@ -52,6 +54,7 @@ const en: typeof ar = {
   signOut: "Sign out",
   points: (n: string) => `${n} points`,
   favorite: "Add to favorites",
+  unfavorite: "Remove from favorites",
   endsIn: "Ends in",
   day: "Days",
   hour: "Hours",
@@ -62,7 +65,7 @@ const en: typeof ar = {
   discount: (n: number) => `${n}% off`,
   tiers: { platinum: "Platinum", gold: "Gold", silver: "Silver" },
   tierLetters: { platinum: "P", gold: "G", silver: "S" },
-  accountLinks: { account: "My account", bookings: "My bookings", gifts: "Gifts", settings: "Settings" },
+  accountLinks: { account: "My account", bookings: "My bookings", gifts: "Dealer packages", settings: "Settings" },
   branches: (n: number) => (n === 1 ? "1 branch" : `${n} branches`),
 };
 

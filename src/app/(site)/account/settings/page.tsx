@@ -31,7 +31,12 @@ export default async function SettingsPage() {
         lastName: tx(locale, s.profile, "last_name"),
         phone: s.profile.phone_display,
         email: s.profile.email,
-        addresses: s.addresses.map((a) => ({ id: a.id, selected: a.selected, label: tx(locale, a, "label"), area: tx(locale, a, "area") })),
+        // مفاتيح بس — النصوص من addressOptions حسب اللغة الحالية (فبتتغيّر مع تبديل اللغة)
+        addresses: s.addresses.map((a) => ({ id: a.id, kind: a.kind, name: a.name ?? "", city: a.city, district: a.district, selected: a.selected })),
+        addressOptions: {
+          kinds: s.addressKinds.map((k) => ({ key: k.key, label: tx(locale, k, "label") })),
+          cities: s.addressCities.map((c) => ({ key: c.key, label: tx(locale, c, "label"), districts: c.districts.map((d) => ({ key: d.key, label: tx(locale, d, "label") })) })),
+        },
         alerts: s.alerts.map((p) => pref(locale, p)),
         location: pref(locale, s.location),
         openBookings,

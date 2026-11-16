@@ -83,8 +83,6 @@ export default async function BookingDetailsPage({ searchParams }: { searchParam
                     forgot: tx(locale, auth.c.emailScreen, "forgot"),
                     forgotHref: authHref(routes.forgotPassword, { next: self }),
                   }}
-                  defaultPhone={config.loginDemo.phone}
-                  typed={config.loginDemo.typed}
                   next={self}
                   guestNext={b.query.ref ? bookingHref(routes.bookingPayment, { ...b.query, car: b.car?.id }) : undefined}
                 />

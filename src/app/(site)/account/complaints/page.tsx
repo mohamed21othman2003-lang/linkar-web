@@ -120,6 +120,7 @@ export default async function ComplaintsPage({ searchParams }: { searchParams: P
                           toastPhoto: tx(locale, complaintForm, "toast_photo_added"),
                           toastAccepted: tx(locale, p, "toast_accepted"),
                           toastReply: tx(locale, p, "toast_reply"),
+                          viewer: t.viewer,
                         }}
                       />
                     </>

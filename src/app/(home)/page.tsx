@@ -98,8 +98,10 @@ export default async function Home() {
           notNow: s(m.not_now),
           browserNote: s(m.browser_note),
           privacy: s(m.privacy),
+          noResults: s(m.no_results),
           close: t.close,
         }}
+        suggestions={m.suggestions.map(s)}
       />
     </>
   );

@@ -83,6 +83,8 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
           sizeDetected: tx(locale, p, "size_detected"),
           sizeChange: tx(locale, p, "size_change"),
           selectPlaceholder: t.selectPlaceholder,
+          search: t.search,
+          noResults: t.noResults,
           makeDefaultCar: tx(locale, p, "make_default"),
           save: tx(locale, p, "save"),
         }}

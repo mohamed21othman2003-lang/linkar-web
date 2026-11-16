@@ -20,6 +20,8 @@ export function SearchBar({
   carSizes,
   location,
   locations,
+  initialPlace,
+  initialCar,
   view,
   onSearch,
   className = "",
@@ -31,6 +33,10 @@ export function SearchBar({
   carSizes: CarSize[];
   location: string;
   locations?: { key: string; label: string }[]; // W2-DD · الموقع
+  /** الموقع اللي اتختار في الرئيسية (?loc=) */
+  initialPlace?: string | null;
+  /** مقاس السيارة اللي اتختار في الرئيسية (?car=) */
+  initialCar?: string | null;
   view?: "map";
   onSearch?: () => void;
   className?: string;
@@ -41,21 +47,26 @@ export function SearchBar({
   const t = getSearchDict(locale);
   const router = useRouter();
   const [selected, setSelected] = useState<ServiceSlug[]>(initial);
-  const [car, setCar] = useState<string | null>(null);
+  const [car, setCar] = useState<string | null>(carSizes.some((c) => c.key === initialCar) ? initialCar! : null);
   const [place, setPlace] = useState<string | null>(null);
-  const placeLabel = locations?.find((l) => l.key === place)?.label ?? location;
+  const [noService, setNoService] = useState(false);
+  const pickedLabel = locations?.find((l) => l.key === place)?.label;
+  const placeLabel = pickedLabel ?? initialPlace ?? location;
   const name = (s: ServiceSlug) => tx(locale, services.find((x) => x.slug === s)!, "name");
   const remaining = services.filter((s) => !selected.includes(s.slug));
   const carLabel = car ? tx(locale, carSizes.find((c) => c.key === car)!, "label") : t.carPlaceholder;
   const go = () => {
+    // من غير خدمة: رسالة زي الرئيسية — قبل كده كان بيرجّع للخدمات الافتراضية ويعرض نتايج قديمة
+    if (!selected.length) return setNoService(true);
     onSearch?.();
-    router.push(routes.search({ services: selected, view }));
+    router.push(routes.search({ services: selected, view, loc: pickedLabel ?? initialPlace, car }));
   };
   const one = variant === "page" && selected.length === 1;
   const req = variant === "page" && !one ? <span className="text-required-mark"> *</span> : null;
   const chip = one ? "gap-1.5 px-2.5 py-[5px] text-label-m" : "gap-1 px-2.5 py-[5px] text-[12px] leading-[18px] font-light";
 
   return (
+    <>
     <div
       className={`flex flex-col gap-1 rounded-xl border border-cool-gray bg-white p-2 shadow-[0_6px_12px_rgba(20,41,54,0.08)] lg:h-[76px] lg:flex-row lg:items-center ${className}`}
     >
@@ -85,7 +96,10 @@ export function SearchBar({
                 label={t.add}
                 value={null}
                 options={remaining.map((s) => ({ key: s.slug, label: tx(locale, s, "name") }))}
-                onChange={(k) => setSelected((cur) => [...cur, k])}
+                onChange={(k) => {
+                  setSelected((cur) => [...cur, k]);
+                  setNoService(false);
+                }}
                 trigger={() => (
                   <span className={`inline-flex items-center rounded-full border border-cool-gray bg-white text-deep-charcoal hover:border-border-strong ${chip}`}>
                     {one ? t.addService : t.add}
@@ -148,7 +162,9 @@ export function SearchBar({
         onChange={setCar}
         trigger={(open) => (
           <span className="flex h-14 w-full items-center justify-between gap-2.5 px-3.5 text-start">
-            <span className="flex min-w-0 flex-col items-start whitespace-nowrap">
+            {/* أيقونة زي الخانتين التانيين عشان العناوين التلاتة تبدأ من نفس الخط */}
+            <Icon name="car" size={18} className="shrink-0 text-state-gray" />
+            <span className="flex min-w-0 flex-1 flex-col items-start whitespace-nowrap">
               <span className="text-caption text-state-gray">
                 {t.carLabel}
                 {req}
@@ -168,6 +184,17 @@ export function SearchBar({
         <Icon name="search" size={18} />
         {t.search}
       </button>
+      {noService && (
+        <p role="alert" className="px-3.5 pb-1 text-caption font-medium text-promotional-red lg:hidden">
+          {t.pickService}
+        </p>
+      )}
     </div>
+    {noService && (
+      <p role="alert" className="mt-1.5 text-caption font-medium text-promotional-red max-lg:hidden">
+        {t.pickService}
+      </p>
+    )}
+    </>
   );
 }

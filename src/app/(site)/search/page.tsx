@@ -11,12 +11,28 @@ import { SearchBar } from "@/components/search/SearchBar";
 import { SearchHead } from "@/components/search/SearchHead";
 import { SearchResults } from "@/components/search/SearchResults";
 
-type Params = { searchParams: Promise<{ services?: string | string[]; view?: string }> };
+type Params = { searchParams: Promise<{ services?: string | string[]; view?: string; loc?: string; car?: string }> };
+
+const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)?.trim().slice(0, 80) || null;
+// المدينة من الموقع اللي اتختار («الرياض · حي الملقا» / «حي الروضة، جدة» / «الرياض»)
+function cityOf(loc: string, cities: string[]) {
+  const hit = cities.find((c) => loc.includes(c));
+  if (hit) return hit;
+  return loc.split(/[·،,]/)[0].trim();
+}
 
 export async function generateMetadata({ searchParams }: Params): Promise<Metadata> {
   const [locale, sp] = await Promise.all([getLocale(), searchParams]);
-  const s = await getSearchScenario(parseServices(sp.services));
-  return { title: tx(locale, s.title, "text"), description: tx(locale, s.description, "text") || undefined };
+  const [s, options] = await Promise.all([getSearchScenario(parseServices(sp.services)), getSearchOptions()]);
+  return { title: retitle(tx(locale, s.title, "text"), locale, one(sp.loc), options), description: tx(locale, s.description, "text") || undefined };
+}
+
+// العنوان «… في جدة» بيتبع المدينة اللي العميل اختارها (قبل كده كان دايماً المدينة الافتراضية)
+function retitle(title: string, locale: string, loc: string | null, options: Awaited<ReturnType<typeof getSearchOptions>>) {
+  if (!loc) return title;
+  const fallback = locale === "en" ? options.location.city_en : options.location.city_ar;
+  const cities = locale === "en" ? ["Jeddah", "Riyadh", "Dammam", "Makkah", "Madinah", "Khobar"] : ["جدة", "الرياض", "الدمام", "مكة", "المدينة المنورة", "الخبر"];
+  return title.replace(fallback, cityOf(loc, cities));
 }
 
 // W2-30 نتيجة البحث · خدمتان (الافتراضي) · W2-30a خدمة واحدة · W2-30m عرض الخريطة (?view=map)
@@ -24,6 +40,8 @@ export default async function SearchPage({ searchParams }: Params) {
   const [locale, sp] = await Promise.all([getLocale(), searchParams]);
   const selected = parseServices(sp.services);
   const view = sp.view === "map" ? "map" : "list";
+  const loc = one(sp.loc);
+  const car = one(sp.car);
   const [scenario, services, providers, options] = await Promise.all([getSearchScenario(selected), getServices(), getProviders(), getSearchOptions()]);
   const c = getCommon(locale);
   const t = getSearchDict(locale);
@@ -35,12 +53,14 @@ export default async function SearchPage({ searchParams }: Params) {
       <div className="bg-cool-gray/25 py-4">
         <Container>
           <SearchBar
-            key={selected.join(",")}
+            key={`${selected.join(",")}|${loc}|${car}`}
             locale={locale}
             services={services}
             selected={selected}
             carSizes={options.carSizes}
             location={tx(locale, options.location, "label")}
+            initialPlace={loc}
+            initialCar={car}
             locations={options.location.options.map((o) => ({ key: o.key, label: tx(locale, o, "label") }))}
             view={view === "map" ? "map" : undefined}
           />
@@ -52,7 +72,7 @@ export default async function SearchPage({ searchParams }: Params) {
           { label: t.crumbServices, href: routes.services },
           { label: tx(locale, scenario.crumb, "text") },
         ]}
-        title={tx(locale, scenario.title, "text")}
+        title={retitle(tx(locale, scenario.title, "text"), locale, loc, options)}
         description={tx(locale, scenario.description, "text")}
         tile={scenario.tile}
         facts={scenario.facts.map((f) => ({ icon: f.icon, label: tx(locale, f, "label"), value: tx(locale, f, "value") }))}

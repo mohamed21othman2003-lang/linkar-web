@@ -15,6 +15,7 @@ import { Icon } from "@/components/icons/Icon";
 import { ProviderTile, StatusDotPill } from "./account-ui";
 import { FilterDropdown } from "./booking-dropdown";
 import { RatingModal, type RatingView } from "./booking-modals";
+import { ScrollRow } from "./scroll-row";
 
 export type BookingRowView = {
   id: string;
@@ -27,6 +28,7 @@ export type BookingRowView = {
   dateIso: string;
   branch: string;
   car: string;
+  carFull: string; // «لكزس ES 2022» — الشركة + الموديل + السنة (الكروت؛ الجدول بيعرض المختصر)
   carKey: BookingCar;
   amount: string;
   action: BookingRowAction;
@@ -152,7 +154,7 @@ export function BookingTable({
       {/* شريط التبويبات + الفلاتر: التبويبات كبسولة مجزّأة (كل تبويب سطر واحد والعدد في شارة)،
           والفلاتر بتنزل سطر لوحدها لما المساحة متكفيش بدل ما التبويبات تتزنق وتلف */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" className="flex max-w-full gap-1 overflow-x-auto rounded-[12px] bg-cool-gray/40 p-1 [scrollbar-width:none]">
+        <ScrollRow role="tablist" watch={tab} className="flex max-w-full gap-1 rounded-[12px] bg-cool-gray/40 p-1">
           {tabOrder.map((k) => {
             const on = k === tab;
             return (
@@ -171,7 +173,7 @@ export function BookingTable({
               </button>
             );
           })}
-        </div>
+        </ScrollRow>
         <div className="flex flex-wrap items-center gap-2">
           <FilterDropdown
             label={t.car}
@@ -286,15 +288,16 @@ export function BookingTable({
               {/* المبلغ سطر لوحده: لما كان في آخر نفس السطر كانت «·» بتفضل معلّقة، و<bdi> عشان «ES 2022» ماتقلبش ترتيب الفواصل */}
               <div className="flex flex-col gap-0.5">
                 <p className="text-body-s text-state-gray">
-                  {r.date} · {r.branch} · <bdi>{r.car}</bdi>
+                  {r.date} · {r.branch} · <bdi className="whitespace-nowrap">{r.carFull}</bdi>
                 </p>
                 <span className="text-label-m whitespace-nowrap text-deep-charcoal">
                   {r.amount}
                 </span>
               </div>
+              {/* رابط واحد للكارت: السهم بيختفي لما الزر نفسه بيفتح نفس صفحة التفاصيل (التفاصيل / تتبّع) */}
               <div className="mt-auto flex items-center justify-between">
                 {action(r, true)}
-                {chevron(r, true)}
+                {r.action !== "details" && r.action !== "track" && chevron(r, true)}
               </div>
             </div>
           ))}
@@ -306,12 +309,12 @@ export function BookingTable({
         </div>
       </div>
 
-      {/* الترقيم */}
+      {/* الترقيم — كله صفحة واحدة، فأزرار الصفحات بتختفي على الموبايل (الديسكتوب زي الفيجما) */}
       <div className="flex items-center justify-between gap-3">
         <p className="text-caption text-state-gray">
           {t.showing(visible.length, visible.length, tab === "all")}
         </p>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 max-md:hidden">
           <button
             type="button"
             disabled

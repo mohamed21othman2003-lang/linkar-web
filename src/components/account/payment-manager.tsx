@@ -3,6 +3,7 @@
 import { useId, useState, type ReactNode } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { AxCloseButton, AxConfirm, AxDialog, useAxToast } from "./account-extra-dialog";
+import { printReceipt } from "./print";
 import { AxEmpty } from "./account-extra-ui";
 
 export type CardView = { id: string; brand: string; last4: string; expiry: string; holder: string; isDefault: boolean };
@@ -316,7 +317,12 @@ export function PaymentManager({
                   <span className="text-caption text-state-gray">{inv.date}</span>
                 </div>
                 <div className="flex items-center gap-6">
-                  <button type="button" onClick={() => show(c.toastDownload, "download")} className="inline-flex items-center gap-1.5 py-1 text-label-m text-nature-green hover:underline">
+                  <button
+                    type="button"
+                    // نافذة الطباعة (حفظ PDF) بفاتورة بسيطة؛ الرسالة بس لو النافذة اتفتحت فعلاً
+                    onClick={() => printReceipt({ title: inv.title, subtitle: inv.date, rows: [[c.invoicesTitle, inv.amount]], fileName: `Linkar-${inv.id}` }) && show(c.toastDownload, "download")}
+                    className="inline-flex items-center gap-1.5 py-1 text-label-m text-nature-green hover:underline"
+                  >
                     <Icon name="download" size={16} className="text-nature-green" />
                     {c.downloadPdf}
                   </button>

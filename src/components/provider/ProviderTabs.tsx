@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
+import { MobileTotalBar } from "./MobileTotalBar";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getProviderDict } from "@/i18n/dict/provider";
@@ -101,7 +102,8 @@ export function ProviderTabs({
   };
 
   const [size, setSize] = useState<CarSize>("sedan");
-  const [selected, setSelected] = useState<string[]>(detail.default_selection);
+  // مفيش خدمة مختارة مسبقاً — العميل يضيف بنفسه (تقرير الموبايل #17)
+  const [selected, setSelected] = useState<string[]>([]);
   const toggle = useCallback((id: string) => setSelected((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id])), []);
   const [compareOpen, setCompareOpen] = useState(false);
   const [compared, setCompared] = useState<string[]>(detail.compare_default);
@@ -351,6 +353,7 @@ export function ProviderTabs({
               )}
             </div>
           </aside>
+          {items.length > 0 && <MobileTotalBar label={t.total} total={formatPrice(locale, total)} href={href} cta={t.continue} />}
           <CompareModal
             locale={locale}
             open={compareOpen}

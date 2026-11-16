@@ -94,7 +94,8 @@ export function SearchResults(props: Props) {
       <CompareProvider
         locale={locale}
         items={compareItems}
-        initial={s.compare_initial}
+        // المقارنة بتبدأ فاضية — الشريط بيظهر بس لما العميل يضيف بنفسه (تقرير الموبايل #14)
+        initial={[]}
         serviceName={tx(locale, s.compare_label_map, "text")}
         highlight={s.ai?.provider ?? null}
         copy={{ max: options.compareMax, added: options.toasts.added }}
@@ -162,10 +163,11 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
       <Container className="flex flex-col-reverse gap-3 pt-1 pb-5 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <p className="me-1 text-label-l whitespace-nowrap text-deep-charcoal">{count}</p>
-          <QuickChip active={filters.hasOffer} onClick={() => openFilters({ hasOffer: !filters.hasOffer })} icon="tag">
+          {/* الشيبس السريعة بتفلتر على طول (قبل كده كانت بتفتح شاشة «كل الفلاتر») — #47 */}
+          <QuickChip active={filters.hasOffer} onClick={() => setFilters((f) => ({ ...f, hasOffer: !f.hasOffer }))} icon="tag">
             {L(options.filterGroups.offers.hasOffer)}
           </QuickChip>
-          <QuickChip active={filters.warranty === 5} onClick={() => openFilters({ warranty: filters.warranty === 5 ? 0 : 5 })}>
+          <QuickChip active={filters.warranty === 5} onClick={() => setFilters((f) => ({ ...f, warranty: f.warranty === 5 ? 0 : 5 }))}>
             {L(options.filterGroups.warranty5)}
           </QuickChip>
           <QuickChip active={nFilters > 0} onClick={() => openFilters()} icon="filter">
@@ -289,7 +291,12 @@ function Body({ locale, scenario: s, providers, view, options }: Props) {
                           features={o.features.map((f) => ({ icon: f.icon, label: tx(locale, f.label, "text") }))}
                           price={o.price}
                           oldPrice={o.old_price}
-                          detailsHref={routes.providerService(o.provider, o.services[o.services.length - 1])}
+                          // آخر خدمة في العرض *يقدّمها* مقدّم الخدمة فعلاً — «لمعة» مابيقدّمش نانو سيراميك فكان الرابط 404 (تقرير الموبايل #7)
+                          detailsHref={(() => {
+                            const own = [...(providers[o.provider]?.services ?? []), ...(providers[o.provider]?.more_services ?? [])];
+                            const svc = [...o.services].reverse().find((x) => own.includes(x));
+                            return svc ? routes.providerService(o.provider, svc) : routes.provider(o.provider);
+                          })()}
                           bookHref={`${routes.bookingBranch}?provider=${o.provider}&services=${o.services.join(",")}`}
                         />
                       );

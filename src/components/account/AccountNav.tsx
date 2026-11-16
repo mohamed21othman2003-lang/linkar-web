@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { routes } from "@/lib/routes";
 import { SignOutButton } from "./signout-dialog";
+import { ScrollRow } from "./scroll-row";
 
 export type AccountNavView = {
   name: string;
@@ -33,18 +33,6 @@ function AccountNavCompact({
   v: AccountNavView;
   pathname: string;
 }) {
-  const track = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = track.current;
-    const on = el?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (!el || !on) return;
-    const a = on.getBoundingClientRect(),
-      b = el.getBoundingClientRect();
-    el.scrollBy({
-      left: a.left + a.width / 2 - (b.left + b.width / 2),
-      behavior: "instant",
-    });
-  }, [pathname]);
   return (
     <nav className="flex flex-col gap-3 rounded-[20px] border border-cool-gray bg-white p-3 lg:hidden">
       <div className="flex items-center gap-2.5 px-1">
@@ -66,14 +54,12 @@ function AccountNavCompact({
           </Link>
         </span>
         <SignOutButton className="flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-[9px] text-label-m text-promotional-red hover:bg-tile">
-          <Icon name="logout" size={16} flip className="text-state-gray" />
+          <LogoutIcon />
           {v.signOut}
         </SignOutButton>
       </div>
-      <div
-        ref={track}
-        className="-mx-3 flex gap-1.5 overflow-x-auto px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      {/* التبويبات بتتسحب: مسافة وتلاشي على الحافة، والنشط بيتحرّك للنص لوحده (ScrollRow) */}
+      <ScrollRow watch={pathname} className="-mx-3 flex gap-1.5 px-3">
         {v.items.map((i) => {
           const on = isActive(pathname, i.href);
           return (
@@ -87,8 +73,17 @@ function AccountNavCompact({
             </Link>
           );
         })}
-      </div>
+      </ScrollRow>
     </nav>
+  );
+}
+
+// أيقونة الخروج مرسومة «[→» (صح في الإنجليزي) — بتنعكس في العربي بس (عكس قاعدة dir-flip العامة اللي بتعكس في الإنجليزي)
+function LogoutIcon() {
+  return (
+    <span className="flex rtl:-scale-x-100">
+      <Icon name="logout" size={16} className="text-state-gray" />
+    </span>
   );
 }
 
@@ -135,7 +130,7 @@ export function AccountNav({ v }: { v: AccountNavView }) {
         <div className="h-px bg-cool-gray" />
         {/* P-06 · تأكيد تسجيل الخروج قبل الخروج */}
         <SignOutButton className="flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-body-m text-promotional-red hover:bg-tile">
-          <Icon name="logout" size={16} flip className="text-state-gray" />
+          <LogoutIcon />
           {v.signOut}
         </SignOutButton>
       </nav>

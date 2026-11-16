@@ -62,14 +62,15 @@ function CarouselCard({ locale, item }: { locale: Locale; item: CarouselData }) 
         <span className="text-caption text-white/60">{c.startsFrom}</span>
         <span className="text-h5 text-white">{formatPrice(locale, p.starting_price)}</span>
       </p>
-      <div className="flex items-center justify-between">
-        <Link href={routes.providers()} className="flex items-center gap-0.5 text-label-m text-neon-green hover:underline">
+      {/* نفس أفعال كارت الديسكتوب: التفاصيل (صفحة مقدّم الخدمة — كانت بتودّي لكل مقدّمي الخدمة) + «احجز» (تقرير الموبايل #63)؛
+          مسافة الأيقونة 6px زي باقي اللينكات (كانت 2px — #58) */}
+      <div className="flex items-center justify-between gap-2">
+        <Link href={routes.provider(p.slug)} className="flex min-h-11 items-center gap-1.5 text-label-m text-neon-green hover:underline">
           {t.viewDetails}
           <Icon name="chevron-left" size={14} flip />
         </Link>
-        <Link href={routes.search({ services: p.services })} className="flex items-center gap-1 text-label-m text-white">
-          <Icon name="plus" size={14} />
-          {t.compare}
+        <Link href={routes.provider(p.slug)} className="flex h-10 items-center rounded-full bg-neon-green px-4 text-label-m text-deep-charcoal hover:bg-bg-brand-hover">
+          {c.book}
         </Link>
       </div>
     </article>
@@ -166,7 +167,7 @@ export function SimilarProviders({
                   aria-label={t.carouselPage(i + 1)}
                   aria-current={i === page}
                   onClick={() => goPage(i)}
-                  className={`h-2 rounded-xs transition-[width,background-color] duration-300 ease-figma-out ${i === page ? "w-5 bg-white" : "w-2 bg-white/30"}`}
+                  className={`hit relative h-2 rounded-xs transition-[width,background-color] duration-300 ease-figma-out ${i === page ? "w-5 bg-white" : "w-2 bg-white/30"}`}
                 />
               ))}
             </div>

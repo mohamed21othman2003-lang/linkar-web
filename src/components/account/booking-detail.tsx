@@ -1,15 +1,16 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { getAccountDict } from "@/i18n/dict/account";
 import { routes } from "@/lib/routes";
 import { Icon } from "@/components/icons/Icon";
 import { Breadcrumb } from "@/components/ui/PageHeader";
+import { QrCode } from "@/components/ui/QrCode";
 import { useToast } from "./account-dialog";
+import { printElement } from "./print";
 import { BrandIcon, Card, ProviderTile, VoucherCode } from "./account-ui";
 import {
   ContactBranchPopup,
@@ -92,7 +93,10 @@ export function BookingDetail({
     setRating(false);
     if (openRating) window.history.replaceState(null, "", routes.booking(id));
   };
-  const download = () => showToast(d.toasts.downloading, "download");
+  const details = useRef<HTMLDivElement>(null);
+  // «تحميل الفاتورة (PDF)»: كارت التفاصيل (المزوّد + البنود + المدفوع) في نافذة الطباعة ← حفظ PDF
+  const downloadInvoice = () => printElement(details.current, `Linkar-${id}`) && showToast(d.toasts.downloading, "download");
+  const downloadVoucher = (el: HTMLElement | null) => printElement(el, `Linkar-${v.voucher.code}`) && showToast(d.toasts.downloading, "download");
 
   // زي الفيجما: الدعم → W2-96 · الشكوى → W2-69 · «قيّم الخدمة» في W2-37c → W2-39 (تقييم الخدمة بعد اكتمالها)
   const manageHref = (a: ManageView) =>
@@ -118,10 +122,11 @@ export function BookingDetail({
       </div>
 
       {/* متتبّع الحالة */}
-      <Card className="flex flex-col gap-4 px-4 py-6 md:px-7">
+      <Card className="flex flex-col gap-4 px-3 py-6 md:px-7">
         <ol className="flex items-start justify-start">
           {v.tracker.map((s, i) => (
-            <li key={i} className={`flex min-w-0 flex-1 flex-col items-center gap-2 text-center ${v.tracker.length < 3 ? "max-w-[320px]" : ""}`}>
+            // الخطوة الحالية أعرض شوية عشان ملاحظتها («القسيمة صالحة حتى…») ماتلفّش 3 سطور على الموبايل
+            <li key={i} className={`flex min-w-0 flex-col items-center gap-2 text-center ${s.state === "current" ? "flex-[1.6] md:flex-1" : "flex-1"} ${v.tracker.length < 3 ? "max-w-[320px]" : ""}`}>
               <span className="flex w-full items-center">
                 <span className={`h-[3px] flex-1 ${i === 0 ? "" : halfColor[s.state]}`} />
                 <StepDot state={s.state} />
@@ -134,7 +139,7 @@ export function BookingDetail({
               >
                 {s.label}
               </span>
-              <span className="px-1 text-caption text-state-gray">{s.note}</span>
+              <span className="text-caption text-balance text-state-gray md:px-1">{s.note}</span>
             </li>
           ))}
         </ol>
@@ -148,6 +153,7 @@ export function BookingDetail({
       <div className="flex flex-col gap-5 min-[1150px]:flex-row min-[1150px]:items-start">
         {/* التفاصيل + سجل الحجز */}
         <div className="flex min-w-0 flex-1 flex-col gap-5">
+          <div ref={details}>
           <Card className="flex flex-col gap-3 px-5 py-[22px] md:px-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
@@ -161,6 +167,7 @@ export function BookingDetail({
                 href={v.branch.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-print-hide
                 className="flex items-center gap-1.5 rounded-[10px] border border-cool-gray px-3 py-2 text-label-m text-deep-charcoal hover:border-border-strong"
               >
                 {t.directions}
@@ -172,14 +179,17 @@ export function BookingDetail({
             {v.rows.map((r) => (
               <div key={r.label} className="flex items-center justify-between gap-4">
                 <span className="text-body-s text-state-gray">{r.label}</span>
-                <span className={`text-end text-label-m ${r.tone === "green" ? "text-nature-green" : "text-deep-charcoal"}`}>{r.value}</span>
+                <span className={`text-end text-label-m ${r.tone === "green" ? "text-nature-green" : "text-deep-charcoal"}`}>
+                  <NoBreakParts value={r.value} />
+                </span>
               </div>
             ))}
-            <button type="button" onClick={download} className="flex items-center gap-1.5 self-start text-label-m text-nature-green hover:underline">
+            <button type="button" data-print-hide onClick={downloadInvoice} className="flex items-center gap-1.5 self-start text-label-m text-nature-green hover:underline">
               <BrandIcon name="feature-price" size={18} />
               {t.invoice}
             </button>
           </Card>
+          </div>
 
           <Card className="flex flex-col gap-3 px-5 py-[22px] md:px-6">
             <h2 className="text-h5 text-deep-charcoal">{t.activity}</h2>
@@ -198,13 +208,7 @@ export function BookingDetail({
         {/* القسيمة + إدارة الحجز */}
         <div className="flex w-full shrink-0 flex-col gap-5 min-[1150px]:w-[340px]">
           <Card className="flex flex-col items-center gap-2.5 p-5">
-            <img
-              src="/figma/account/qr-placeholder.svg"
-              alt=""
-              width={140}
-              height={140}
-              className={`size-[140px] ${v.voucher.state === "active" ? "" : "opacity-25"}`}
-            />
+            <QrCode value={v.voucher.code} size={140} margin={0} label="" className={`size-[140px] ${v.voucher.state === "active" ? "" : "opacity-25"}`} />
             <VoucherCode
               code={v.voucher.code}
               className={`text-[16.6px] leading-7 ${v.voucher.state === "cancelled" ? "text-state-gray line-through" : "text-deep-charcoal"}`}
@@ -261,7 +265,7 @@ export function BookingDetail({
             onClose={() => (window.history.length > 1 ? router.back() : router.push(routes.booking(id)))}
             v={v.voucherFull}
             onShare={() => setShare(true)}
-            onDownload={download}
+            onDownload={downloadVoucher}
           />
           <ShareVoucherPopup
             locale={locale}
@@ -278,4 +282,15 @@ export function BookingDetail({
       {toast}
     </div>
   );
+}
+
+// «تويوتا كامري 2023 · سيدان · ر س ح 1234»: كل جزء بين «·» مايتكسرش (اللوحة كانت بتتقسم على سطرين)
+export function NoBreakParts({ value }: { value: string }) {
+  const parts = value.split(" · ");
+  return parts.map((p, i) => (
+    <span key={i}>
+      {i > 0 && " · "}
+      <span className="whitespace-nowrap">{p}</span>
+    </span>
+  ));
 }

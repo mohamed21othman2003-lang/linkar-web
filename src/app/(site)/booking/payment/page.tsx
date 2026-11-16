@@ -12,7 +12,6 @@ import { Stepper } from "@/components/booking/Stepper";
 import { PaymentForm, type MethodView } from "@/components/booking/PaymentForm";
 import { bookingHref, parseBookingQuery } from "@/components/booking/query";
 import { summaryModel } from "@/components/booking/summary-model";
-import { backHref } from "@/components/booking/back-href";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getBookingDict(await getLocale());
@@ -53,13 +52,14 @@ export default async function BookingPaymentPage({ searchParams }: { searchParam
       <Stepper
         title={t.checkoutTitle}
         subtitle={`${providerName} · ${t.servicesCount(b.lines.length)}`}
-        backLabel={t.backToServices}
-        backHref={backHref(b.query)}
+        // الرجوع للخطوة السابقة (بياناتك) مش للخدمات
+        backLabel={t.backToDetails}
+        backHref={bookingHref(routes.bookingDetails, { ...b.query, car: b.car?.id })}
         steps={t.steps}
         current={4}
       />
       <div className="bg-page-soft">
-        <Container className="flex flex-col gap-8 pt-8 pb-14 lg:flex-row lg:items-start">
+        <Container className="flex flex-col gap-8 pt-8 pb-32 lg:flex-row lg:items-start lg:pb-14">
           <PaymentForm
             key={failed ?? "ok"}
             locale={locale}

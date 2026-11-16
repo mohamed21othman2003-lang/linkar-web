@@ -10,18 +10,23 @@ import { Icon } from "@/components/icons/Icon";
 import { useRouter } from "next/navigation";
 import { CloseButton, Dialog, Popup, useToast } from "./account-dialog";
 import { ProviderTile, VoucherCode } from "./account-ui";
+import { AutoTextarea } from "@/components/ui/AutoTextarea";
+import { QrCode } from "@/components/ui/QrCode";
 
-export type BranchView = { id: string; providerSlug: string; branchLine: string; address: string; mapsUrl: string };
+// phone / whatsapp: من بيانات الفرع لو موجودة (+9665… / 9665…) — مش بنألّف أرقام
+export type BranchView = { id: string; providerSlug: string; branchLine: string; address: string; mapsUrl: string; phone?: string; whatsapp?: string };
 
 // P-07 · تواصل مع الفرع (834:3) — من «تواصل مع الفرع» في W2-37
 export function ContactBranchPopup({ locale, open, onClose, b }: { locale: Locale; open: boolean; onClose: () => void; b: BranchView }) {
   const d = getAccountDict(locale);
   const p = d.popups.p07;
-  // رقم الفرع وواتساب مش موجودين في الفيجما — الصفين بيظهروا بدون رابط لحد ما تيجي البيانات من الـAPI
-  const rows: { icon: "phone" | "message" | "navigation"; title: string; sub: string; href?: string }[] = [
-    { icon: "phone", title: p.call, sub: p.callSub },
-    { icon: "message", title: p.whatsapp, sub: p.whatsappSub },
-    { icon: "navigation", title: p.directions, sub: p.directionsSub, href: b.mapsUrl },
+  // الاتصال وواتساب روابط حقيقية لو الفرع ليه رقم؛ من غير رقم بيظهروا معطّلين (من غير سهم) بدل صندوق شكله قابل للضغط
+  const tel = b.phone?.replace(/[^\d+]/g, "");
+  const wa = (b.whatsapp || b.phone)?.replace(/\D/g, "");
+  const rows: { icon: "phone" | "message" | "navigation"; title: string; sub: string; href?: string; external?: boolean }[] = [
+    { icon: "phone", title: p.call, sub: tel ? p.callSub : p.unavailable, href: tel ? `tel:${tel}` : undefined },
+    { icon: "message", title: p.whatsapp, sub: wa ? p.whatsappSub : p.unavailable, href: wa ? `https://wa.me/${wa}?text=${encodeURIComponent(b.id)}` : undefined, external: true },
+    { icon: "navigation", title: p.directions, sub: p.directionsSub, href: b.mapsUrl, external: true },
   ];
   return (
     <Popup open={open} onClose={onClose} title={p.title} closeLabel={d.close}>
@@ -29,29 +34,35 @@ export function ContactBranchPopup({ locale, open, onClose, b }: { locale: Local
         <ProviderTile slug={b.providerSlug} alt="" size={48} />
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="text-label-l text-deep-charcoal">{b.branchLine}</p>
-          <p className="text-caption text-state-gray">{b.address}</p>
+          {b.address && <p className="text-caption text-state-gray">{b.address}</p>}
         </div>
       </div>
       {rows.map((r) => {
         const inner = (
           <>
-            <span className="flex shrink-0 rounded-md bg-neon-green/16 p-2.5 text-deep-charcoal">
+            <span className={`flex shrink-0 rounded-md p-2.5 ${r.href ? "bg-neon-green/16 text-deep-charcoal" : "bg-tile text-state-gray"}`}>
               <Icon name={r.icon} size={18} />
             </span>
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span className="text-label-l text-deep-charcoal">{r.title}</span>
+              <span className={`text-label-l ${r.href ? "text-deep-charcoal" : "text-state-gray"}`}>{r.title}</span>
               <span className="text-caption text-state-gray">{r.sub}</span>
             </span>
-            <Icon name="chevron-left" size={16} flip className="shrink-0 text-state-gray" />
+            {r.href && <Icon name="chevron-left" size={16} flip className="shrink-0 text-state-gray" />}
           </>
         );
-        const cls = "flex items-center gap-3 rounded-[14px] border border-cool-gray px-3.5 py-3 text-start";
+        const cls = "flex w-full items-center gap-3 rounded-[14px] border border-cool-gray px-3.5 py-3 text-start";
         return r.href ? (
-          <a key={r.icon} href={r.href} target="_blank" rel="noopener noreferrer" onClick={onClose} className={`${cls} hover:border-border-strong`}>
+          <a
+            key={r.icon}
+            href={r.href}
+            {...(r.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            onClick={onClose}
+            className={`${cls} hover:border-border-strong`}
+          >
             {inner}
           </a>
         ) : (
-          <div key={r.icon} aria-disabled="true" className={cls}>
+          <div key={r.icon} aria-disabled="true" className={`${cls} cursor-not-allowed bg-tile/60`}>
             {inner}
           </div>
         );
@@ -170,9 +181,10 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
           // «نشر التقييم» → W2-70 تقييماتي
           router.push(routes.reviews);
         }}
-        className="flex flex-col gap-5 rounded-[24px] bg-white p-5 shadow-modal sm:p-8"
+        // النافذة بتسكرول جوّاها (أقصاها طول الشاشة) والرأس ثابت ← زر الإغلاق ما يختفيش على الموبايل
+        className="flex max-h-[calc(100dvh-48px)] flex-col gap-5 overflow-y-auto overscroll-contain rounded-[24px] bg-white p-5 shadow-modal sm:p-8"
       >
-        <div className="flex items-start justify-between gap-3">
+        <div className="sticky top-0 z-10 -mx-5 -mt-5 -mb-2 flex items-start justify-between gap-3 bg-white px-5 pt-5 pb-2 sm:-mx-8 sm:-mt-8 sm:px-8 sm:pt-8">
           <div className="flex flex-col gap-1">
             {/* W2-63 (202:19621): من غير شارة النقاط ولا سطور W2-39 تحت التقييم العام */}
             <h2 className="text-h4 text-deep-charcoal">{t.title}</h2>
@@ -198,11 +210,12 @@ export function RatingModal({ locale, open, onClose, r }: { locale: Locale; open
             <Stars value={scores[i + 1] ?? 0} size={20} onChange={(n) => set(i + 1, n)} label={t.star} />
           </div>
         ))}
-        <textarea
+        {/* بيبدأ فاضي (مش نص تجريبي) وبيطول مع الكلام */}
+        <AutoTextarea
           aria-label={t.commentLabel}
-          defaultValue={r.comment}
-          rows={2}
-          className="w-full resize-y rounded-md border-[1.5px] border-deep-charcoal bg-white px-3.5 py-3 text-body-m text-deep-charcoal outline-none"
+          placeholder={t.commentLabel}
+          minRows={3}
+          className="w-full rounded-md border-[1.5px] border-deep-charcoal bg-white px-3.5 py-3 text-body-m text-deep-charcoal outline-none placeholder:text-state-gray"
         />
         <div className="flex">
           <input ref={file} type="file" accept="image/*" multiple hidden onChange={(e) => {
@@ -269,10 +282,11 @@ export function VoucherModal({
   onClose: () => void;
   v: VoucherView;
   onShare: () => void;
-  onDownload: () => void;
+  onDownload: (card: HTMLElement | null) => void; // بيطبع الكارت (حفظ PDF)
 }) {
   const d = getAccountDict(locale);
   const t = d.voucher;
+  const card = useRef<HTMLDivElement>(null);
   const rows: [string, string, boolean?][] = [
     [t.rows.id, v.id, true],
     [t.rows.car, v.car],
@@ -284,14 +298,16 @@ export function VoucherModal({
   const outline = "flex min-w-0 flex-1 items-center justify-center gap-2 rounded-[14px] border border-cool-gray bg-white px-3 py-3 text-label-m whitespace-nowrap text-deep-charcoal hover:border-border-strong";
   return (
     <Dialog open={open} onClose={onClose} label={t.label} className="max-w-[520px]">
-      <div className="flex flex-col overflow-hidden rounded-[28px] bg-white shadow-modal">
+      <div ref={card} className="flex flex-col overflow-hidden rounded-[28px] bg-white shadow-modal">
         <div className="flex flex-col items-start gap-[18px] bg-deep-charcoal px-5 pt-6 pb-[26px] sm:px-7">
           <div className="flex w-full items-center justify-between">
             <span className="flex items-center gap-2.5">
               <img src="/brand/logo-inverse.svg" alt="LINKAR" width={96} height={13} className="h-[13px] w-24" />
               <span className="text-label-m text-neon-green">{t.label}</span>
             </span>
-            <CloseButton label={d.close} onClick={onClose} tone="glass" />
+            <span data-print-hide className="contents">
+              <CloseButton label={d.close} onClick={onClose} tone="glass" />
+            </span>
           </div>
           <div className="flex items-center gap-3">
             <ProviderTile slug={v.providerSlug} alt="" size={48} />
@@ -306,7 +322,7 @@ export function VoucherModal({
           </span>
         </div>
         <div className="flex flex-col items-center gap-2.5 px-7 pt-7 pb-[22px]">
-          <img src="/figma/account/qr-placeholder.svg" alt="" width={200} height={200} className="size-[200px]" />
+          <QrCode value={v.code} size={200} margin={0} label="" className="size-[200px]" />
           <VoucherCode code={v.code} className="text-[23.9px] leading-10 text-deep-charcoal" />
           <p className="text-center text-body-s text-state-gray">{t.show}</p>
         </div>
@@ -316,7 +332,13 @@ export function VoucherModal({
             <div key={label} className="flex items-center justify-between gap-4 text-[14px] leading-[22px]">
               <span className="shrink-0 font-light text-state-gray">{label}</span>
               <span className="text-end font-medium text-deep-charcoal" dir={ltr ? "ltr" : undefined}>
-                {value}
+                {/* كل جزء بين «·» مايتكسرش (اللوحة كانت بتتقسم على سطرين) */}
+                {value.split(" · ").map((part, i) => (
+                  <span key={i}>
+                    {i > 0 && " · "}
+                    <span className="whitespace-nowrap">{part}</span>
+                  </span>
+                ))}
               </span>
             </div>
           ))}
@@ -326,8 +348,8 @@ export function VoucherModal({
           </p>
         </div>
         {/* موبايل: الـ3 أزرار في سطر واحد بتتزنق (النص بيلف والأيقونات بتصغر) — PDF والمشاركة جنب بعض والاتجاهات سطر لوحده */}
-        <div className="grid grid-cols-2 gap-2.5 px-5 pt-1.5 pb-3 sm:flex sm:px-7">
-          <button type="button" onClick={onDownload} className={outline}>
+        <div data-print-hide className="grid grid-cols-2 gap-2.5 px-5 pt-1.5 pb-3 sm:flex sm:px-7">
+          <button type="button" onClick={() => onDownload(card.current)} className={outline}>
             <Icon name="download" size={16} className="shrink-0" />
             {t.pdf}
           </button>

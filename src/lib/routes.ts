@@ -6,9 +6,12 @@ export const routes = {
 
   // 02 · البحث والاكتشاف والمقارنة
   services: "/services", // W2-25
-  search: (q: { services?: string[]; view?: "map" } = {}) => {
+  // loc = الموقع اللي العميل اختاره (نص) · car = مقاس السيارة (large | suv | sedan) — بيتملوا في شريط البحث وعنوان النتائج
+  search: (q: { services?: string[]; view?: "map"; loc?: string | null; car?: string | null } = {}) => {
     const p = new URLSearchParams();
     if (q.services?.length) p.set("services", q.services.join(","));
+    if (q.loc) p.set("loc", q.loc);
+    if (q.car) p.set("car", q.car);
     if (q.view) p.set("view", q.view);
     const s = p.toString();
     return s ? `/search?${s}` : "/search";

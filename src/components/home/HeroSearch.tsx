@@ -132,7 +132,8 @@ export function HeroSearch(p: HeroSearchProps) {
             setDialog(true);
             return;
           }
-          router.push(routes.search({ services: selected }));
+          // الموقع ونوع السيارة بيتنقلوا لصفحة النتائج (?loc=&car=) — «SUV متوسطة» في الرئيسية = suv في البحث
+          router.push(routes.search({ services: selected, loc: location, car: car === "mid-suv" ? "suv" : car }));
         }}
       >
         <button
@@ -171,11 +172,11 @@ export function HeroSearch(p: HeroSearchProps) {
             />
           </button>
           {carOpen && (
-            // WEB · Popup · P-17 · Field · نوع السيارة (1443:392232)
+            // WEB · Popup · P-17 · Field · نوع السيارة (1443:392232) — بعرض الخانة نفسها ومحاذي لحوافها (تقرير الموبايل #34)
             <ul
               role="listbox"
               aria-label={p.carLabel}
-              className="absolute start-0 top-full z-30 mt-2 flex w-[300px] animate-dissolve max-w-[calc(100vw-40px)] flex-col gap-0.5 rounded-lg border border-cool-gray bg-white p-2 text-deep-charcoal shadow-[0_12px_24px_#1429362e]"
+              className="absolute inset-x-0 top-full z-30 mt-2 flex w-full animate-dissolve flex-col gap-0.5 rounded-lg border border-cool-gray bg-white p-2 text-deep-charcoal shadow-[0_12px_24px_#1429362e]"
             >
               {p.carTypes.map((c) => {
                 const on = c.slug === car;

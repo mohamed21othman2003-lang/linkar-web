@@ -42,18 +42,24 @@ export async function Footer({ home = false }: { home?: boolean }) {
               <span dir="ltr">{site.email}</span>
             </a>
             <div className="flex gap-2.5 max-md:order-4">
-              {f.social.map((s) => (
-                <a
-                  key={s.platform}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="flex size-10 items-center justify-center rounded-[20px] border border-white/18 bg-white/8 hover:bg-white/15"
-                >
-                  <Image src={`/figma/social/${s.platform}.svg`} alt="" width={18} height={18} unoptimized />
-                </a>
-              ))}
+              {f.social.map((s) =>
+                s.href ? (
+                  <a
+                    key={s.platform}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="flex size-11 items-center justify-center rounded-full border border-white/18 bg-white/8 hover:bg-white/15"
+                  >
+                    <Image src={`/figma/social/${s.platform}.svg`} alt="" width={18} height={18} unoptimized />
+                  </a>
+                ) : (
+                  <span key={s.platform} title={s.label} className="flex size-11 items-center justify-center rounded-full border border-white/18 bg-white/8">
+                    <Image src={`/figma/social/${s.platform}.svg`} alt={s.label} width={18} height={18} unoptimized />
+                  </span>
+                ),
+              )}
             </div>
           </div>
           <div className="hidden flex-1 grid-cols-4 gap-4 md:grid xl:gap-12">

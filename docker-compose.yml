@@ -20,6 +20,10 @@ services:
       # Loopback only by default (published through nginx / a reverse proxy).
       # Without a proxy, set BIND_ADDR=0.0.0.0 in .env
       - "${BIND_ADDR:-127.0.0.1}:${WEB_PORT:-3000}:3000"
+    environment:
+      # Linkar's WhatsApp number for the floating WhatsApp button (digits with country code, e.g. 9665XXXXXXXX).
+      # Empty = the button opens the contact page instead. Read at runtime: "docker compose up -d" is enough.
+      LINKAR_WHATSAPP: ${LINKAR_WHATSAPP:-}
     volumes:
       # Optimized image cache (AVIF/WebP) kept between deploys
       - next_image_cache:/app/.next/cache/images

@@ -46,8 +46,15 @@ export function WhatsAppDialog({ open, onClose, copy }: { open: boolean; onClose
           </button>
         </div>
         <p className="text-body-s text-text-secondary">{copy.body}</p>
-        {/* ترتيب الفيجما: «إغلاق» من بداية السطر و«فتح واتساب» في آخره */}
+        {/* الزر الأساسي «فتح واتساب» في بداية السطر (يمين في العربي) و«إغلاق» بعده (تقرير الموبايل #6) */}
         <div className="flex gap-2.5 pt-1.5">
+          <a
+            href={copy.href}
+            {...(copy.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="flex h-[52px] flex-1 items-center justify-center rounded-[14px] bg-whatsapp px-4 text-label-l text-white hover:brightness-95"
+          >
+            {copy.open}
+          </a>
           <button
             type="button"
             onClick={onClose}
@@ -55,14 +62,6 @@ export function WhatsAppDialog({ open, onClose, copy }: { open: boolean; onClose
           >
             {copy.close}
           </button>
-          <a
-            href={copy.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-[52px] flex-1 items-center justify-center rounded-[14px] bg-whatsapp px-4 text-label-l text-white hover:brightness-95"
-          >
-            {copy.open}
-          </a>
         </div>
       </div>
     </div>

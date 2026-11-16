@@ -80,8 +80,8 @@ export const carSizes: (Localized<"label"> & { key: CarSize })[] = [
 ];
 
 // قوائم نافذة الإضافة — بالترتيب في القوائم المنسدلة W2-DD (الشركة · الموديل · سنة الصنع · اللون) — القائمة الكاملة هتيجي من الـAPI
-// موديلات تويوتا من W2-DD · الموديل، و«ES» من W2-67. القائمة فيها كمان هيونداي ونيسان وكيا ومرسيدس وفورد،
-// بس الفيجما مافيهاش موديلات ليهم، فمش ظاهرين لحد ما الموديلات تيجي من الـAPI (الموديل خانة إجبارية)
+// موديلات تويوتا من W2-DD · الموديل، و«ES» من W2-67. الشركات اللي في قائمة الفيجما (هيونداي ونيسان وكيا ومرسيدس وفورد)
+// اتضافت بموديلاتها الشائعة وحجمها (تقرير QA #50: كانت شركتين بس) لحد ما الكتالوج ييجي من الـAPI
 export const carMakes: (Localized<"label"> & { key: string; models: (Localized<"label"> & { key: string; size: CarSize })[] })[] = [
   {
     key: "toyota",
@@ -93,13 +93,73 @@ export const carMakes: (Localized<"label"> & { key: string; models: (Localized<"
       { key: "landcruiser", label_ar: "لاندكروزر", label_en: "Land Cruiser", size: "large" },
       { key: "yaris", label_ar: "يارس", label_en: "Yaris", size: "sedan" },
       { key: "rav4", label_ar: "راف 4", label_en: "RAV4", size: "suv" },
+      { key: "hilux", label_ar: "هايلكس", label_en: "Hilux", size: "large" },
     ],
   },
   {
     key: "lexus",
     label_ar: "لكزس",
     label_en: "Lexus",
-    models: [{ key: "es", label_ar: "ES", label_en: "ES", size: "sedan" }],
+    models: [
+      { key: "es", label_ar: "ES", label_en: "ES", size: "sedan" },
+      { key: "rx", label_ar: "RX", label_en: "RX", size: "suv" },
+      { key: "lx", label_ar: "LX", label_en: "LX", size: "large" },
+    ],
+  },
+  {
+    key: "hyundai",
+    label_ar: "هيونداي",
+    label_en: "Hyundai",
+    models: [
+      { key: "accent", label_ar: "أكسنت", label_en: "Accent", size: "sedan" },
+      { key: "elantra", label_ar: "إلنترا", label_en: "Elantra", size: "sedan" },
+      { key: "sonata", label_ar: "سوناتا", label_en: "Sonata", size: "sedan" },
+      { key: "tucson", label_ar: "توسان", label_en: "Tucson", size: "suv" },
+      { key: "santafe", label_ar: "سانتافي", label_en: "Santa Fe", size: "suv" },
+    ],
+  },
+  {
+    key: "nissan",
+    label_ar: "نيسان",
+    label_en: "Nissan",
+    models: [
+      { key: "sunny", label_ar: "صني", label_en: "Sunny", size: "sedan" },
+      { key: "altima", label_ar: "ألتيما", label_en: "Altima", size: "sedan" },
+      { key: "xtrail", label_ar: "إكس تريل", label_en: "X-Trail", size: "suv" },
+      { key: "patrol", label_ar: "باترول", label_en: "Patrol", size: "large" },
+    ],
+  },
+  {
+    key: "kia",
+    label_ar: "كيا",
+    label_en: "Kia",
+    models: [
+      { key: "pegas", label_ar: "بيجاس", label_en: "Pegas", size: "sedan" },
+      { key: "k5", label_ar: "K5", label_en: "K5", size: "sedan" },
+      { key: "sportage", label_ar: "سبورتاج", label_en: "Sportage", size: "suv" },
+      { key: "sorento", label_ar: "سورينتو", label_en: "Sorento", size: "suv" },
+    ],
+  },
+  {
+    key: "mercedes",
+    label_ar: "مرسيدس",
+    label_en: "Mercedes-Benz",
+    models: [
+      { key: "c-class", label_ar: "C-Class", label_en: "C-Class", size: "sedan" },
+      { key: "e-class", label_ar: "E-Class", label_en: "E-Class", size: "sedan" },
+      { key: "gle", label_ar: "GLE", label_en: "GLE", size: "suv" },
+      { key: "g-class", label_ar: "G-Class", label_en: "G-Class", size: "large" },
+    ],
+  },
+  {
+    key: "ford",
+    label_ar: "فورد",
+    label_en: "Ford",
+    models: [
+      { key: "taurus", label_ar: "توروس", label_en: "Taurus", size: "sedan" },
+      { key: "explorer", label_ar: "إكسبلورر", label_en: "Explorer", size: "large" },
+      { key: "f150", label_ar: "F-150", label_en: "F-150", size: "large" },
+    ],
   },
 ];
 
@@ -113,7 +173,8 @@ export const carColors: (Localized<"label"> & { key: string })[] = [
 ];
 
 // W2-DD · سنة الصنع (5 سنين في القائمة)
-export const carYears = [2026, 2025, 2024, 2023, 2022];
+// من 2026 لحد 2005 (نفس قائمة P-24 في التسجيل)
+export const carYears = Array.from({ length: 2027 - 2005 }, (_, i) => 2026 - i);
 
 // القيم الظاهرة في نموذج الفيجما (W2-67b)
 export const carDraft = { make: "toyota", model: "landcruiser", year: 2024, color: "black", plate_numbers: "4417", plate_letters_ar: "ك ه ن", plate_letters_en: "K H N" };

@@ -13,7 +13,7 @@ import { LogoTile } from "@/components/search/LogoTile";
 import { getCommon } from "@/i18n/dict/common";
 
 export type PickerService = { service: Service; card: ServicePageCard; providers: Provider[] };
-type Copy = Record<"selectedOne" | "selectedTwo" | "selectedMany" | "together" | "ctaOne" | "ctaTwo" | "ctaMany" | "hint" | "topLabel", string>;
+type Copy = Record<"selectedOne" | "selectedTwo" | "selectedMany" | "together" | "togetherMany" | "ctaOne" | "ctaTwo" | "ctaMany" | "hint" | "topLabel", string>;
 
 // كروت الخدمات الغامقة قابلة للاختيار المتعدد + شريط الاختيار (Selection bar) في W2-25
 export function ServicePicker({
@@ -60,10 +60,11 @@ export function ServicePicker({
       </div>
 
       {n > 0 ? (
-        <div className="flex flex-col gap-4 rounded-[20px] bg-deep-charcoal px-6 py-4 md:flex-row md:items-center md:justify-between">
+        // موبايل: الشريط ثابت تحت الشاشة بدل ما يكون في آخر الصفحة بس (#38)
+        <div className="flex flex-col gap-4 rounded-[20px] bg-deep-charcoal px-6 py-4 max-md:sticky max-md:bottom-3 max-md:z-20 max-md:gap-3 max-md:px-4 max-md:py-3 max-md:shadow-[0_12px_24px_#0d1a2140] md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-x-3 text-white">
             {/* W2-25: «تُحجزان معاً…» في البداية وبعدها جملة الاختيار */}
-            {n > 1 && <p className="text-caption">{copy.together}</p>}
+            {n > 1 && <p className="text-caption">{n > 2 ? copy.togetherMany : copy.together}</p>}
             <p className="text-label-l">{title}</p>
           </div>
           <Link
@@ -105,7 +106,7 @@ function ServiceOverviewCard({
       tabIndex={0}
       onClick={onToggle}
       onKeyDown={(e) => (e.key === " " || e.key === "Enter") && (e.preventDefault(), onToggle())}
-      className={`flex cursor-pointer flex-col gap-4 rounded-[20px] bg-v3-card-dark p-6 transition-[border-color] duration-200 ease-figma-out ${on ? "border-4 border-neon-green pb-4" : ""}`}
+      className={`flex cursor-pointer flex-col gap-4 rounded-[20px] bg-v3-card-dark p-6 transition-[outline-color] duration-200 ease-figma-out ${on ? "outline-4 -outline-offset-4 outline-neon-green" : ""}`}
     >
       {/* Top: الأيقونة والاسم في البداية، والـCheckbox في الآخر */}
       <div className="flex h-[52px] items-center justify-between gap-3">

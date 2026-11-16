@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { routes } from "@/lib/routes";
 import { useAxToast } from "./account-extra-dialog";
+import { AutoTextarea } from "@/components/ui/AutoTextarea";
 
 export type PickerBookingView = { id: string; title: string; meta: string; note?: string; disabled?: boolean; logo: string; logoAlt: string };
 
@@ -64,15 +65,16 @@ function DescribeStep({ title, text, c }: { title: string; text: string; c: Comp
   return (
     <Card title={title} text={text}>
       <div className="flex min-h-[120px] flex-col justify-between gap-2 rounded-md border-[1.5px] border-deep-charcoal bg-white px-4 py-3.5 focus-within:shadow-focus-ring">
-        <textarea
+        {/* بيطول مع النص (كان سطرين ثابتين والسطر الأخير بيتقص من غير مقبض تكبير) */}
+        <AutoTextarea
           name="description"
           aria-label={title}
           required
           value={value}
           maxLength={c.maxLength}
           onChange={(e) => setValue(e.target.value)}
-          rows={2}
-          className="w-full resize-none bg-transparent text-body-m text-deep-charcoal outline-none focus-visible:shadow-none"
+          minRows={2}
+          className="w-full bg-transparent text-body-m text-deep-charcoal outline-none focus-visible:shadow-none"
         />
         {/* W2-69b / W2-69c: العدّاد تحت النص من بداية السطر (يمين في العربي) */}
         <span dir="ltr" className="self-start text-caption text-state-gray" aria-live="polite">

@@ -3,7 +3,7 @@ import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
 import type { Provider } from "@/lib/data/types";
-import { formatNumber, formatPrice, currency } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { RatingMeta } from "@/components/ui/Badges";
 import { LogoArea } from "./ClientLogo";
@@ -37,7 +37,8 @@ export function OfferCard({
   const name = tx(locale, provider, "name");
   return (
     <article
-      className="relative flex min-h-[614px] w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center"
+      // الطول الثابت 614 من الديسكتوب بس — على الموبايل كان بيسيب فراغ 60–80px قبل الأزرار (تقرير الموبايل #39)
+      className="relative flex w-full flex-col overflow-hidden rounded-[20px] bg-cover bg-center md:min-h-[614px]"
       style={{ backgroundImage: "url(/figma/cards/offer-card-bg.png)" }}
     >
       <LogoArea slug={provider.slug} src={provider.logo} alt={name} />
@@ -71,11 +72,10 @@ export function OfferCard({
         {/* السعر القديم في نص ارتفاع السعر الكبير (W2-30 Offer card: منتصفهم على نفس الخط) */}
         <div className="mt-[16px] flex items-center justify-between">
           <span className="text-[32px] leading-[1.4] font-bold text-neon-green">{formatPrice(locale, price)}</span>
-          <span className="text-[14px] text-white">
-            <s>{formatNumber(oldPrice)}</s> {currency(locale)}
-          </span>
+          {/* نفس شكل السعر الكبير (العملة في نفس المكان) — قبل كده «SAR 7,800» جنب «9,100 SAR» (#40) */}
+          <s className="text-[14px] whitespace-nowrap text-white">{formatPrice(locale, oldPrice)}</s>
         </div>
-        <div className="mt-auto grid grid-cols-2 gap-[9.7px]">
+        <div className="mt-5 grid grid-cols-2 gap-[9.7px] md:mt-auto">
           <Link
             href={bookHref}
             className="flex h-[30px] items-center justify-center rounded-full bg-neon-green max-md:h-10 text-label-m font-bold text-deep-charcoal hover:bg-bg-brand-hover"

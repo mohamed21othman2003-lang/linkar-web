@@ -62,7 +62,7 @@ export default async function FavoritesPage({ searchParams }: { searchParams: Pr
                   (كلها بالـpx: Tailwind بيطلّع الـbreakpoints العشوائية قبل sm/xl فكانت بتتغطّى) */}
               <div className="grid grid-cols-1 gap-4 min-[640px]:grid-cols-2 min-[1280px]:grid-cols-3 min-[1400px]:grid-cols-[repeat(3,301px)]">
                 {providers.map(({ provider, branch }) => (
-                  <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} showBadges showCertified={false} meta={tx(locale, branch, "label")} />
+                  <ProviderCard key={provider.slug} locale={locale} provider={provider} services={services} showBadges showCertified={false} meta={tx(locale, branch, "label")} favorited />
                 ))}
               </div>
             </section>

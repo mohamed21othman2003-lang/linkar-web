@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { PendingRating } from "@/components/booking/PendingRating";
 import { Footer } from "@/components/layout/Footer";
 import { Fabs } from "@/components/layout/Fabs";
 
@@ -17,10 +16,6 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
         <div className="[contain-intrinsic-size:auto_1100px] [content-visibility:auto]">
           <Footer home />
         </div>
-      </Suspense>
-      {/* «قيّم الخدمة» بيفتح لوحده بعد اكتمال الحجز (W2-39) — للعميل اللي عنده حجز مكتمل ماتقيّمش بس */}
-      <Suspense fallback={null}>
-        <PendingRating />
       </Suspense>
       <Suspense fallback={null}>
         <Fabs />

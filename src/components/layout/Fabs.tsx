@@ -13,23 +13,29 @@ export async function Fabs({ side = "start" }: { side?: "start" | "end" } = {}) 
   const assistant = tx(locale, site.fab, "assistant");
   const whatsapp = tx(locale, site.fab, "whatsapp");
   return (
-    <div className={`fixed end-5 bottom-[34px] z-30 flex flex-col gap-4 md:end-8 md:bottom-24 ${side === "start" ? "xl:start-8 xl:end-auto" : ""}`}>
-      <div className="max-xl:hidden">
-      <HelpPopupButton popup="assistant" copy={popups} aria-label={assistant} title={assistant} className="relative block size-[60px]">
-        {/* الأيقونة شاملة الظل والنقطة الليموني — أكبر من الزر (108×108) */}
+    // fab-root: بيستخبى وأي نافذة/قائمة مفتوحة (globals.css) — قبل كده كان بيبان فوق الطبقة الغامقة (تقرير الموبايل #12)
+    <div className={`fab-root fixed end-4 bottom-6 z-30 flex flex-col items-center gap-3 md:end-8 md:bottom-24 md:gap-4 ${side === "start" ? "xl:start-8 xl:end-auto" : ""}`}>
+      {/* «مساعد لينكار» على كل المقاسات (P-21) — قبل كده كان مستخبي تحت 1280 (#27). على الموبايل 48 زي زر واتساب */}
+      <HelpPopupButton popup="assistant" copy={popups} aria-label={assistant} title={assistant} className="relative block size-12 md:size-[60px]">
+        {/* الأيقونة شاملة الظل والنقطة الليموني — أكبر من الزر (108×108)؛ على الموبايل متصغّرة بنفس النسبة */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/glyphs/fab-assistant.svg" alt="" width={108} height={108} loading="lazy" className="pointer-events-none absolute -top-[14px] -left-6 max-w-none" />
+        <img
+          src="/figma/glyphs/fab-assistant.svg"
+          alt=""
+          width={108}
+          height={108}
+          className="pointer-events-none absolute -top-[14px] -left-6 max-w-none max-md:-top-[11px] max-md:-left-[19px] max-md:size-[86px]"
+        />
       </HelpPopupButton>
-      </div>
       <HelpPopupButton
         popup="whatsapp"
         copy={popups}
         aria-label={whatsapp}
         title={whatsapp}
-        className="flex size-[50px] items-center justify-center rounded-full bg-whatsapp shadow-fab md:size-[60px]"
+        className="flex size-12 items-center justify-center rounded-full bg-whatsapp shadow-fab md:size-[60px]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/glyphs/whatsapp.svg" alt="" width={28} height={28} loading="lazy" className="size-6 md:size-7" />
+        <img src="/figma/glyphs/whatsapp.svg" alt="" width={28} height={28} className="size-6 md:size-7" />
       </HelpPopupButton>
     </div>
   );

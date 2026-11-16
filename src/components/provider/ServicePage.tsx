@@ -4,6 +4,7 @@ import Image from "@/components/ui/Img";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { MobileTotalBar } from "./MobileTotalBar";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getProviderDict } from "@/i18n/dict/provider";
@@ -113,7 +114,8 @@ export function ServicePage({
   const size: CarSize = car?.size ?? guestSize;
 
   // الخدمات المضافة لنفس الزيارة
-  const [addons, setAddons] = useState<string[]>(d ? detail.default_selection.filter((s) => s !== service.slug) : []);
+  // الخدمة نفسها بس — مفيش إضافات مختارة مسبقاً (تقرير الموبايل #17)
+  const [addons, setAddons] = useState<string[]>([]);
   const toggle = (id: string) => setAddons((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
   // «خدمات أخرى»: Add · SCROLL_TO Booking card · SCROLL_ANIMATE 400ms EASE_OUT
   const addAndScroll = (id: string) => {
@@ -518,6 +520,7 @@ export function ServicePage({
           </div>
         </aside>
       </div>
+      <MobileTotalBar label={t.totalCount(picked.length)} total={formatPrice(locale, total)} href={href} cta={t.continue} />
 
       {/* مقدّمو خدمة آخرون يقدّمون نفس الخدمة */}
       {otherOffers.length > 0 && (

@@ -5,7 +5,7 @@ import { getPendingRating } from "@/lib/server/booking";
 import { getSession } from "@/lib/server/session";
 import { PendingRatingPrompt } from "./PendingRatingPrompt";
 
-// نافذة «قيّم الخدمة» التلقائية بعد اكتمال الخدمة — نفس بيانات /booking/rate (W2-39)
+// نافذة «قيّم الخدمة» (W2-39) لحجز مكتمل لسه ماتقيّمش — مابتفتحش لوحدها؛ بتفتح من كارت «قيّم» في حسابي (RateLink)
 export async function PendingRating() {
   const [locale, user] = await Promise.all([getLocale(), getSession()]);
   const data = await getPendingRating(user);
@@ -21,7 +21,6 @@ export async function PendingRating() {
       overall={booking.overall}
       criteria={booking.criteria.map((c) => ({ key: c.key, label: tx(locale, c, "label"), value: c.value, serviceSpecific: c.service_specific }))}
       serviceCategory={tx(locale, booking, "service_category")}
-      comment={tx(locale, booking, "comment")}
       publicName={tx(locale, booking, "customer_display")}
       points={booking.points_reward}
       complaintHref={routes.complaintNew}

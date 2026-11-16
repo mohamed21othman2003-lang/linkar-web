@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ServiceSlug } from "@/lib/data/types";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";
 import { getCommon } from "@/i18n/dict/common";
@@ -8,7 +9,7 @@ import { routes } from "@/lib/routes";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ProvidersListing } from "@/components/search/ProvidersListing";
 
-type Params = { searchParams: Promise<{ view?: string }> };
+type Params = { searchParams: Promise<{ view?: string; service?: string }> };
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -40,6 +41,8 @@ export default async function ProvidersPage({ searchParams }: Params) {
         view={sp.view === "map" ? "map" : "list"}
         providers={ordered}
         services={services}
+        // شيبس الرئيسية (?service=wash …) بتفتح الصفحة والخدمة متفلترة
+        initialService={services.some((s) => s.slug === sp.service) ? (sp.service as ServiceSlug) : null}
         total={Math.max(page.total, ordered.length)}
         pageSize={page.page_size}
         pins={page.pins}

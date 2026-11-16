@@ -10,7 +10,7 @@ import type { Provider, Service, ServiceSlug } from "@/lib/data/types";
 import type { MapPoint } from "@/lib/data/search/types";
 import type { SortKey, sortOptions as SortOptionsData, toasts as ToastsData } from "@/lib/data/search/options";
 import { mapGeometry } from "@/lib/data/search/map";
-import { formatNumber, formatPrice } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { routes } from "@/lib/routes";
 import { Icon, ServiceGlyph } from "@/components/icons/Icon";
 import { Container } from "@/components/ui/Container";
@@ -36,6 +36,7 @@ type Props = {
   location: string;
   sortOptions: typeof SortOptionsData;
   toasts: typeof ToastsData;
+  initialService?: ServiceSlug | null;
 };
 
 const hasOffers = (p: Provider) => !!p.tag && p.tag.label_en.toLowerCase().includes("offer");
@@ -49,11 +50,11 @@ export function ProvidersListing(props: Props) {
   );
 }
 
-function Body({ locale, view, providers, services, total, pageSize, pins, me, mapSelected, location, sortOptions, toasts }: Props) {
+function Body({ locale, view, providers, services, total, pageSize, pins, me, mapSelected, location, sortOptions, toasts, initialService = null }: Props) {
   const t = getSearchDict(locale);
   const c = getCommon(locale);
   const toast = useToast();
-  const [service, setService] = useState<ServiceSlug | null>(null);
+  const [service, setService] = useState<ServiceSlug | null>(initialService);
   const [offers, setOffers] = useState(false);
   // «متاح اليوم» (W2-26): كل مقدّمي الخدمة في الديمو عندهم مواعيد النهارده، فالفلتر مابيشيلش حد
   const [today, setToday] = useState(false);
@@ -111,7 +112,8 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
             <ViewToggle locale={locale} view={view} hrefs={{ list: routes.providers(), map: routes.providers("map") }} />
           </div>
         </div>
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
+        {/* من غير شريط تمرير (زي باقي الصفوف) + تلاشي خفيف عند الحافة يبيّن إن فيه شيبس كمان (تقرير الموبايل #42) */}
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] max-md:mask-[linear-gradient(to_left,transparent,black_24px,black_calc(100%-24px),transparent)] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
           <button type="button" aria-pressed={!service} onClick={() => setService(null)} className={chip(!service)}>
             {t.allServices}
           </button>
@@ -192,7 +194,7 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
                           style={pos(g, pins[p.slug].x, pins[p.slug].y)}
                         >
                           <LogoTile src={p.logo} alt="" size={26} radius={13} />
-                          <span className="text-label-m whitespace-nowrap">{`${t.from} ${formatNumber(p.starting_price)}`}</span>
+                          <span className="text-label-m whitespace-nowrap">{`${t.from} ${formatPrice(locale, p.starting_price)}`}</span>
                         </button>
                       );
                     })}
@@ -208,17 +210,37 @@ function Body({ locale, view, providers, services, total, pageSize, pins, me, ma
                   <Icon name="search" size={16} className="text-neon-green" />
                   {t.searchThisArea}
                 </button>
-                <div className="pointer-events-auto absolute end-5 bottom-5 flex flex-col gap-2">
-                  <button type="button" aria-label={t.zoomIn} onClick={() => setZoom((z) => Math.min(z + 0.15, 1.3))} className="flex size-10 items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:bg-tile">
+                <div className={`pointer-events-auto absolute end-5 bottom-5 flex flex-col gap-2 ${sel ? "max-sm:bottom-[148px]" : ""}`}>
+                  <button type="button" aria-label={t.zoomIn} onClick={() => setZoom((z) => Math.min(+(z + 0.25).toFixed(2), 2))} className="flex size-10 items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:bg-tile">
                     <Icon name="plus" size={20} />
                   </button>
-                  <button type="button" aria-label={t.zoomOut} onClick={() => setZoom((z) => Math.max(z - 0.15, 1))} className="flex size-10 items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:bg-tile">
+                  <button type="button" aria-label={t.zoomOut} onClick={() => setZoom((z) => Math.max(+(z - 0.25).toFixed(2), 1))} className="flex size-10 items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:bg-tile">
                     <span className="h-0.5 w-3.5 rounded-[1px] bg-deep-charcoal" />
                   </button>
                   <button type="button" aria-label={t.locate} onClick={() => setSelected(filtered[0]?.slug ?? selected)} className="flex size-10 items-center justify-center rounded-md border border-cool-gray bg-white text-deep-charcoal hover:bg-tile">
                     <Icon name="navigation" size={20} />
                   </button>
                 </div>
+                {/* موبايل: الضغط على الدبوس بيطلّع كارت صغير تحت الخريطة (اسم · تقييم · سعر · احجز) — قبل كده مكانش بيحصل حاجة (تقرير الموبايل #16) */}
+                {sel && (
+                  <div className="pointer-events-auto absolute inset-x-3 bottom-3 flex animate-dissolve items-center gap-3 rounded-2xl border border-cool-gray bg-white p-3 shadow-[0_12px_24px_#1429362e] sm:hidden">
+                    <LogoTile src={sel.logo} alt="" size={48} radius={14} />
+                    <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5">
+                      <Link href={routes.provider(sel.slug)} className="max-w-full truncate text-label-l text-deep-charcoal">
+                        {tx(locale, sel, "name")}
+                      </Link>
+                      <span className="flex items-center gap-1 text-caption text-state-gray">
+                        <Icon name="star-filled" size={13} className="text-v3-rating-star" />
+                        <span className="font-medium text-deep-charcoal">{sel.rating.toFixed(1)}</span>
+                        <span>{`· ${sel.distance_km.toFixed(1)} ${c.km}`}</span>
+                      </span>
+                      <span className="text-label-m whitespace-nowrap text-deep-charcoal">{`${c.startsFrom} ${formatPrice(locale, sel.starting_price)}`}</span>
+                    </span>
+                    <Link href={routes.provider(sel.slug)} className="flex h-11 shrink-0 items-center rounded-full bg-neon-green px-4 text-label-m text-deep-charcoal">
+                      {c.book}
+                    </Link>
+                  </div>
+                )}
                 {/* W2-26m (المعدّل): الكارت المختار على بعد 307 من فوق الخريطة و20 من طرفها */}
                 {sel && (
                   <div className="pointer-events-auto absolute top-5 hidden w-[301px] sm:block lg:top-[307px]" style={{ right: 20 }}>

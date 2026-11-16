@@ -30,6 +30,11 @@ const ar = {
   you: "أنت",
   charCount: "{n} / {max}",
   selectPlaceholder: "اختر",
+  // القوائم المنسدلة الطويلة (W2-DD) — ours
+  search: "ابحث",
+  noResults: "لا توجد نتائج",
+  // P-14 · عارض الصور
+  viewer: { title: "الصور المرفقة", close: "إغلاق", prev: "الصورة السابقة", next: "الصورة التالية", remove: "حذف الصورة", open: "عرض الصورة" },
 };
 
 const en: typeof ar = {
@@ -56,6 +61,9 @@ const en: typeof ar = {
   you: "You",
   charCount: "{n} / {max}",
   selectPlaceholder: "Select",
+  search: "Search",
+  noResults: "No results",
+  viewer: { title: "Attached photos", close: "Close", prev: "Previous photo", next: "Next photo", remove: "Remove photo", open: "View photo" },
 };
 
 export const getAccountExtra = (locale: Locale) => (locale === "en" ? en : ar);

@@ -7,10 +7,11 @@ import { getBookingDict } from "@/i18n/dict/booking";
 import { getAuthDict } from "@/i18n/dict/auth";
 import { signIn } from "@/app/actions/session";
 import { Icon } from "@/components/icons/Icon";
-import { MethodTabs } from "@/components/auth/ui";
+import { MethodTabs, inputBoxClass, submitClass } from "@/components/auth/ui";
+import { formatSaudiPhone, normalizeSaudiPhone } from "@/lib/data/auth/rules";
 import { EmailLoginForm } from "@/components/auth/EmailForms";
 
-// W2-34a · تسجيل الدخول برقم الجوال داخل خطوة «بياناتك»: رقم الجوال ← رمز التحقق (4 خانات) ← «تحقّق ومتابعة» ← أو Google / Apple.
+// W2-34a · تسجيل الدخول برقم الجوال داخل خطوة «بياناتك»: رقم الجوال ← «أرسل رمز التحقق» ← رمز التحقق (4 خانات) ← «تحقّق ومتابعة» ← أو Google / Apple.
 // W2-34e · نفس الكارت بتبويب «البريد الإلكتروني»: البريد + كلمة المرور ← «تسجيل الدخول ومتابعة» (?login=email).
 // العميل العادي: signIn ويرجع لنفس الخطوة (W2-34b). عميل رابط المسوّق (ref): يكمل كضيف مباشرة للدفع (W2-35s).
 export function PhoneLogin({
@@ -18,8 +19,6 @@ export function PhoneLogin({
   method = "phone",
   tabs,
   emailCopy,
-  defaultPhone,
-  typed = "",
   next,
   guestNext,
 }: {
@@ -27,8 +26,6 @@ export function PhoneLogin({
   method?: "phone" | "email";
   tabs: { phone: { label: string; href: string }; email: { label: string; href: string } };
   emailCopy: { email: string; emailPlaceholder: string; password: string; forgot: string; forgotHref: string };
-  defaultPhone: string; // «55 123 4567»
-  typed?: string; // أرقام مكتوبة مسبقاً (حالة الفيجما: «7 4» والخانة الثالثة عليها التركيز)
   next: string; // الرابط بعد تسجيل الدخول
   guestNext?: string; // لو موجود: تحقق كضيف ثم هذا الرابط
 }) {
@@ -59,7 +56,7 @@ export function PhoneLogin({
           }}
         />
       ) : (
-        <PhoneCode locale={locale} defaultPhone={defaultPhone} typed={typed} action={action} guestNext={guestNext} />
+        <PhoneCode locale={locale} action={action} guestNext={guestNext} />
       )}
 
       <div className="flex items-center gap-3 text-[14px] leading-[22px] font-light text-v3-text-meta">
@@ -89,33 +86,54 @@ export function PhoneLogin({
   );
 }
 
-// رقم الجوال (مرسل له الرمز) + رمز التحقق + إعادة الإرسال + «تحقّق ومتابعة»
+// رقم الجوال ← «أرسل رمز التحقق» ← رمز التحقق + إعادة الإرسال + «تحقّق ومتابعة».
+// الحقل بيبدأ فاضي والرمز ما بيتبعتش إلا بعد الضغط (زي /login) — نفس شكل حقل الجوال في /login (+966 | الرقم)
 function PhoneCode({
   locale,
-  defaultPhone,
-  typed,
   action,
   guestNext,
 }: {
   locale: Locale;
-  defaultPhone: string;
-  typed: string;
   action: () => Promise<void>;
   guestNext?: string;
 }) {
   const t = getBookingDict(locale);
+  const errors = getAuthDict(locale);
   const router = useRouter();
-  const [phone, setPhone] = useState(defaultPhone);
-  const [editing, setEditing] = useState(false);
-  const [digits, setDigits] = useState([0, 1, 2, 3].map((i) => typed[i] ?? ""));
+  const [phone, setPhone] = useState("");
+  const [sent, setSent] = useState(false); // الرمز اتبعت؟
+  const [invalid, setInvalid] = useState(false);
+  const [digits, setDigits] = useState(["", "", "", ""]);
   const [left, setLeft] = useState(45);
   const boxes = useRef<(HTMLInputElement | null)[]>([]);
+  const phoneInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (editing || left <= 0) return;
+    if (!sent || left <= 0) return;
     const id = setTimeout(() => setLeft((s) => s - 1), 1000);
     return () => clearTimeout(id);
-  }, [left, editing]);
+  }, [left, sent]);
+
+  // نفس تطبيع /login: أرقام عربية ← لاتينية، ونشيل 966 / 0 من الأول
+  const onPhone = (raw: string) => {
+    let d = raw.replace(/[٠-٩]/g, (x) => String("٠١٢٣٤٥٦٧٨٩".indexOf(x))).replace(/\D/g, "");
+    d = d.replace(/^(00966|966)/, "").replace(/^0/, "").slice(0, 9);
+    setPhone(formatSaudiPhone(d));
+    setInvalid(false);
+  };
+
+  const send = () => {
+    if (!normalizeSaudiPhone(phone)) {
+      setInvalid(true);
+      phoneInput.current?.focus();
+      return;
+    }
+    setSent(true);
+    setLeft(45);
+    setDigits(["", "", "", ""]);
+    // الخانات بتترسم بعد الـrender
+    requestAnimationFrame(() => boxes.current[0]?.focus());
+  };
 
   const setDigit = (i: number, v: string) => {
     const d = v.replace(/\D/g, "");
@@ -142,36 +160,47 @@ function PhoneCode({
         <label htmlFor="booking-phone" className="text-label-m">
           {t.phone}
         </label>
-        <div dir="ltr" className={`flex h-[50px] items-center gap-2 rounded-md border bg-white px-3.5 ${editing ? "border-deep-charcoal" : "border-cool-gray"}`}>
-          <span className="text-label-m text-v3-text-meta">+966</span>
+        <div dir="ltr" className={`${inputBoxClass({ invalid })} gap-3 ${sent ? "bg-tile" : ""}`}>
+          <span className="text-label-l text-deep-charcoal" aria-label={errors.phonePrefix}>
+            +966
+          </span>
+          <span aria-hidden className="h-[22px] w-px bg-cool-gray" />
           <input
+            ref={phoneInput}
             id="booking-phone"
-            inputMode="tel"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            dir="ltr"
             value={phone}
-            readOnly={!editing}
-            onChange={(e) => setPhone(e.target.value.replace(/[^\d\s]/g, ""))}
-            className={`min-w-0 flex-1 bg-transparent text-[16px] font-light outline-none ${locale === "ar" ? "text-right" : "text-left"}`}
+            readOnly={sent}
+            placeholder="55 123 4567"
+            aria-invalid={invalid}
+            onChange={(e) => onPhone(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !sent) {
+                e.preventDefault();
+                send();
+              }
+            }}
+            className="min-w-0 flex-1 bg-transparent text-body-l text-deep-charcoal outline-none placeholder:text-state-gray focus-visible:shadow-none!"
           />
         </div>
-        {editing ? (
-          <button
-            type="button"
-            onClick={() => (setEditing(false), setLeft(45), setDigits(["", "", "", ""]), boxes.current[0]?.focus())}
-            className="w-fit text-label-m text-nature-green hover:underline"
-          >
-            {t.sendCode}
-          </button>
-        ) : (
+        {invalid && (
+          <p role="alert" className="text-caption text-promotional-red">
+            {errors.phoneInvalid}
+          </p>
+        )}
+        {sent && (
           <p className="flex flex-wrap items-center gap-1 text-[14px] leading-[22px] font-light">
             <span className="text-v3-text-meta">{t.fill(t.sentTo, { phone: local })}</span>
             <button
               type="button"
               onClick={() => {
-                // النموذج الأولي: «تعديل الرقم» ← SCROLL_TO حقل الجوال (SCROLL_ANIMATE 400ms)
-                setEditing(true);
-                const el = document.getElementById("booking-phone");
-                el?.scrollIntoView({ behavior: "smooth", block: "center" });
-                el?.focus({ preventScroll: true });
+                // «تعديل الرقم» ← الحقل يرجع قابل للكتابة والرمز القديم يتلغي
+                setSent(false);
+                setDigits(["", "", "", ""]);
+                requestAnimationFrame(() => phoneInput.current?.focus());
               }}
               className="text-nature-green hover:underline"
             >
@@ -181,59 +210,64 @@ function PhoneCode({
         )}
       </div>
 
-      <form
-        action={guestNext ? undefined : action}
-        onSubmit={(e) => {
-          // الرمز ناقص ← نركّز على أول خانة فاضية بدل الإرسال
-          if (!complete) {
-            e.preventDefault();
-            boxes.current[digits.findIndex((d) => !d)]?.focus();
-            return;
-          }
-          if (guestNext) {
-            e.preventDefault();
-            router.push(guestNext);
-          }
-        }}
-        className="flex flex-col gap-4"
-      >
-        <span className="text-label-m">{t.code}</span>
-        <div dir="ltr" className={`flex gap-3 ${locale === "ar" ? "justify-end" : "justify-start"}`}>
-          {digits.map((d, i) => (
-            <input
-              key={i}
-              ref={(el) => {
-                boxes.current[i] = el;
-              }}
-              aria-label={`${t.code} ${i + 1}`}
-              inputMode="numeric"
-              autoComplete={i === 0 ? "one-time-code" : "off"}
-              value={d}
-              onChange={(e) => setDigit(i, e.target.value)}
-              onKeyDown={(e) => e.key === "Backspace" && !d && i > 0 && boxes.current[i - 1]?.focus()}
-              autoFocus={i === Math.min(3, typed.length)}
-              className="size-16 rounded-[14px] border border-cool-gray bg-white text-center text-[26px] leading-10 font-bold outline-none focus:border-2 focus:border-deep-charcoal focus-visible:shadow-none!"
-            />
-          ))}
-        </div>
-        <div className="flex items-center justify-between gap-2 text-[14px] leading-[22px] font-light text-v3-text-meta">
-          {left > 0 ? (
-            <span>{t.fill(t.resendIn, { t: mmss })}</span>
-          ) : (
-            <button type="button" onClick={() => setLeft(45)} className="text-nature-green hover:underline">
-              {t.resend}
-            </button>
-          )}
-          <span>{t.attempts}</span>
-        </div>
-        <button
-          type="submit"
-          aria-disabled={!complete}
-          className="flex h-[54px] items-center justify-center rounded-[14px] bg-neon-green text-label-l text-deep-charcoal transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
-        >
-          {t.verify}
+      {!sent ? (
+        <button type="button" onClick={send} className={submitClass("lg")}>
+          {t.sendCode}
         </button>
-      </form>
+      ) : (
+        <form
+          action={guestNext ? undefined : action}
+          onSubmit={(e) => {
+            // الرمز ناقص ← نركّز على أول خانة فاضية بدل الإرسال
+            if (!complete) {
+              e.preventDefault();
+              boxes.current[digits.findIndex((d) => !d)]?.focus();
+              return;
+            }
+            if (guestNext) {
+              e.preventDefault();
+              router.push(guestNext);
+            }
+          }}
+          className="flex flex-col gap-4"
+        >
+          <span className="text-label-m">{t.code}</span>
+          <div dir="ltr" className={`flex gap-3 ${locale === "ar" ? "justify-end" : "justify-start"}`}>
+            {digits.map((d, i) => (
+              <input
+                key={i}
+                ref={(el) => {
+                  boxes.current[i] = el;
+                }}
+                aria-label={`${t.code} ${i + 1}`}
+                inputMode="numeric"
+                autoComplete={i === 0 ? "one-time-code" : "off"}
+                value={d}
+                onChange={(e) => setDigit(i, e.target.value)}
+                onKeyDown={(e) => e.key === "Backspace" && !d && i > 0 && boxes.current[i - 1]?.focus()}
+                className="size-16 rounded-[14px] border border-cool-gray bg-white text-center text-[26px] leading-10 font-bold outline-none focus:border-2 focus:border-deep-charcoal focus-visible:shadow-none! max-[360px]:size-14"
+              />
+            ))}
+          </div>
+          <div className="flex items-center justify-between gap-2 text-[14px] leading-[22px] font-light text-v3-text-meta">
+            {left > 0 ? (
+              <span>{t.fill(t.resendIn, { t: mmss })}</span>
+            ) : (
+              <button type="button" onClick={() => setLeft(45)} className="text-nature-green hover:underline">
+                {t.resend}
+              </button>
+            )}
+            <span>{t.attempts}</span>
+          </div>
+          <button
+            type="submit"
+            aria-disabled={!complete}
+            className="flex h-[54px] items-center justify-center rounded-[14px] bg-neon-green text-label-l text-deep-charcoal transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
+          >
+            {t.verify}
+          </button>
+        </form>
+      )}
     </>
   );
 }

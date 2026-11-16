@@ -4,7 +4,7 @@
 import type { DemoUser } from "@/lib/data/types";
 import { bookings, bookingCars, type Booking } from "@/lib/data/account/bookings";
 import { overviewInProgress, overviewNext, overviewOffers, overviewRate, overviewStats } from "@/lib/data/account/overview";
-import { settingsAddresses, settingsAlerts, settingsLocation, settingsProfile } from "@/lib/data/account/settings";
+import { addressCities, addressKinds, settingsAddresses, settingsAlerts, settingsLocation, settingsProfile } from "@/lib/data/account/settings";
 import { notificationFeed, type FeedNotification } from "@/lib/data/notifications";
 
 export async function getBookings(user: DemoUser): Promise<Booking[]> {
@@ -46,5 +46,5 @@ export async function getNotificationFeed(user: DemoUser): Promise<FeedNotificat
 }
 
 export async function getSettings() {
-  return { profile: settingsProfile, addresses: settingsAddresses, alerts: settingsAlerts, location: settingsLocation };
+  return { profile: settingsProfile, addresses: settingsAddresses, addressKinds, addressCities, alerts: settingsAlerts, location: settingsLocation };
 }

@@ -7,6 +7,7 @@ import { getBookingDict } from "@/i18n/dict/booking";
 import { Icon } from "@/components/icons/Icon";
 import { Modal, Toast } from "./Modal";
 import { LogoTile } from "./LogoTile";
+import { AutoTextarea } from "@/components/ui/AutoTextarea";
 
 export type RatingCriterion = {
   key: string;
@@ -48,7 +49,7 @@ export function RatingModal({
   provider,
   overall: initialOverall,
   criteria: initialCriteria,
-  comment,
+  comment = "",
   publicName,
   points,
   serviceCategory,
@@ -62,7 +63,7 @@ export function RatingModal({
   provider: { slug: string; name: string; logo: string };
   overall: number;
   criteria: RatingCriterion[];
-  comment: string;
+  comment?: string; // مسودة التعليق — بيبدأ فاضي (مش نص تجريبي متكتب مسبقاً)
   publicName: string;
   points: number;
   serviceCategory: string; // «التلميع» ← «سؤال خاص بخدمة التلميع»
@@ -79,9 +80,10 @@ export function RatingModal({
 
   return (
     <>
-      <Modal open={open} onClose={onClose} width={640} label={t.rateTitle} className="gap-5! sm:p-8!" shadow="shadow-elevation-3">
-        {/* W2-39: زر الإغلاق في نص ارتفاع الرأس (62px)، والشارة نازلة 4px عن نص سطر العنوان */}
-        <div className="flex items-center justify-between gap-3">
+      {/* الكارت نفسه بيسكرول (أقصاه طول الشاشة) والرأس ثابت فوق ← زر الإغلاق ما يختفيش مع السكرول على الموبايل */}
+      <Modal open={open} onClose={onClose} width={640} label={t.rateTitle} className="max-h-[calc(100dvh-32px)] gap-5! overflow-y-auto overscroll-contain sm:p-8!" shadow="shadow-elevation-3">
+        {/* W2-39: زر الإغلاق في نص ارتفاع الرأس (62px) على الديسكتوب؛ على الموبايل العنوان بيلف فالزر بيتحاذى مع أول سطر */}
+        <div className="sticky top-0 z-10 -mx-5 -mt-6 -mb-2 flex items-start justify-between gap-3 bg-white px-5 pt-6 pb-2 sm:-mx-8 sm:-mt-8 sm:items-center sm:px-8 sm:pt-8">
           <div className="flex flex-col gap-1">
             {/* نسخة العميل: شارة «+50 نقطة بعد النشر» جنب العنوان */}
             <div className="flex flex-wrap items-center gap-x-[11px] gap-y-1">
@@ -124,12 +126,13 @@ export function RatingModal({
           </Fragment>
         ))}
 
-        <textarea
+        <AutoTextarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={t.commentPh}
-          rows={2}
-          className="min-h-[83px] resize-none rounded-md border-[1.5px] border-deep-charcoal px-3.5 py-3 text-body-m outline-none"
+          aria-label={t.commentPh}
+          minRows={2}
+          className="min-h-[83px] rounded-md border-[1.5px] border-deep-charcoal px-3.5 py-3 text-body-m outline-none"
         />
 
         {/* W2-39: «أضف صوراً» في نص عرض النافذة */}

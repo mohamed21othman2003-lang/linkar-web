@@ -23,7 +23,10 @@ export function ProviderCard({
   aiLabel = false,
   meta,
   chipFit = false,
+  favorited = false,
 }: {
+  // محفوظ في المفضلة (صفحة المفضلة): قلب مليان و«إزالة من المفضلة»
+  favorited?: boolean;
   // شارات الخدمات على قد الكلمة (W2-26 كل مقدّمي الخدمة) بدل العرض الأدنى بتاع الهوم
   chipFit?: boolean;
   // بديل عدد الفروع في سطر التقييم (اسم الفرع في المفضلة)
@@ -52,7 +55,7 @@ export function ProviderCard({
     >
       <Link href={routes.provider(provider.slug)} aria-label={name} className="absolute inset-0 z-0" />
       <LogoArea slug={provider.slug} src={provider.logo} alt={name} />
-      <FavoriteButton label={t.favorite} className="absolute top-[19.5px] end-[19.6px] z-10" />
+      <FavoriteButton label={t.favorite} labelOn={t.unfavorite} initial={favorited} className="absolute top-[19.5px] end-[19.6px] z-10" />
       <div className="pointer-events-none relative flex flex-1 flex-col items-start px-[22px] pt-[14px] pb-[18px]">
         {aiLabel ? (
           <span className="flex h-[30px] items-center gap-3 text-[12px] text-neon-green">

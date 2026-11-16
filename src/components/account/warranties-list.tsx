@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/icons/Icon";
+import { QrCode } from "@/components/ui/QrCode";
 import { Dialog, CloseButton, popupBtnClass } from "./account-dialog";
 
 export type WarrantyCardView =
@@ -89,7 +90,8 @@ export function WarrantiesList({
               <CloseButton label={copy.close} onClick={() => setOpen(null)} />
             </div>
             <div className="flex flex-col items-center gap-2 rounded-lg bg-tile p-[18px] text-center">
-              <Icon name="qr" size={120} className="text-deep-charcoal" />
+              {/* رمز QR حقيقي لرقم الشهادة (كان أيقونة QR عامة) */}
+              <QrCode value={current.certificate} size={140} className="rounded-md" />
               <p className="text-[16px] leading-[24px] font-semibold text-deep-charcoal" dir="ltr">
                 {current.certificate}
               </p>

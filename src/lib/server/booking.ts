@@ -39,7 +39,8 @@ export function withDisplay(provider: Provider, display?: ProviderDisplay): Prov
     name_en: d.name_en ?? provider.name_en,
     rating: d.rating ?? provider.rating,
     distance_km: d.distance_km ?? provider.distance_km,
-    branches: d.branches ?? provider.branches,
+    // عدد الفروع من مصدر واحد (providers.ts = نفس رقم صفحة المزوّد) — أرقام كروت العروض/الباقات كانت مختلفة (6 مقابل 18)
+    branches: provider.branches,
   };
 }
 
@@ -75,18 +76,20 @@ export type ResolvedBooking = {
   serviceSlugs: ServiceSlug[];
 };
 
+// مقدّم خدمة فروعه لسه مش في البيانات: فرع واحد «أقرب فرع لموقعك» بمسافة المركز من بياناته —
+// من غير عنوان ولا مدينة (الواجهة بتخفي السطور الفاضية بدل ما تعرض نص قالب)
 function placeholderBranch(p: Provider): Branch {
   return {
     id: `${p.slug}-main`,
     provider: p.slug,
-    name_ar: "[الفرع الرئيسي]",
-    name_en: "[Main branch]",
-    street_ar: "[العنوان]",
-    street_en: "[Address]",
+    name_ar: "أقرب فرع لموقعك",
+    name_en: "Nearest branch to you",
+    street_ar: "",
+    street_en: "",
     district_ar: "",
     district_en: "",
-    city_ar: "جدة",
-    city_en: "Jeddah",
+    city_ar: "",
+    city_en: "",
     hours_ar: "",
     hours_en: "",
     distance_km: p.distance_km,
@@ -264,8 +267,8 @@ export async function getCompletedBooking(id?: string) {
   return provider ? { booking: b, provider } : null;
 }
 
-// حجز مكتمل لسه ماتقيّمش (زر «قيّم» في «حجوزاتي») — نافذة التقييم W2-39 بتفتح لوحدها مرة واحدة لما العميل يفتح الموقع تاني
-// بعد ما الخدمة تكتمل (اجتماع 9 نوفمبر: «قيّم الخدمة بتطلع بوباب بعد ما يفتح مرة تانية»). الزائر والعميل الجديد: مافيش
+// حجز مكتمل لسه ماتقيّمش (زر «قيّم» في «حجوزاتي») — نافذة التقييم W2-39 مابقتش بتفتح لوحدها بعد الدخول (تقرير QA #22):
+// بتفتح من كارت «كيف كانت تجربتك…؟» في حسابي. الزائر والعميل الجديد: مافيش
 export async function getPendingRating(user: DemoUser | null) {
   if (!user) return null;
   const mine = await getBookings(user);

@@ -13,7 +13,7 @@ import { ScrollLink } from "./motion";
 // Hero · Linkar (v2 · Hero) — V2-01 · Home (202:7312) · تابلت V2-01t (202:11805) · موبايل V2-01m (202:11198)
 // صورة الكوبيه معكوسة في العربي (السيارة شمال)، العنوان كله ليموني، مربعات الخدمات + الموقع ونوع السيارة + «ابحث»،
 // وتحت: QR + شارات المتاجر (QR مش ظاهر على الموبايل) و«اكتشف المزيد من لينكار»
-export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Locale; content: HomeContent; signedIn: boolean; nextAnchor: string }) {
+export function HomeHero({ locale, content, nextAnchor }: { locale: Locale; content: HomeContent; signedIn?: boolean; nextAnchor: string }) {
   const h = content.hero;
   const d = getHomeDict(locale);
   const ar = locale === "ar";
@@ -28,18 +28,19 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
 
   return (
     <section className="relative bg-deep-charcoal text-white lg:h-[810px]">
-      {/* الصورة: ديسكتوب معكوسة في العربي · تابلت FILL مش معكوسة · موبايل CROP (34%×78% من الصورة بدءًا من 60%/8%) — V2-01m/V2-01t */}
+      {/* الصورة: ديسكتوب معكوسة في العربي · تابلت مش معكوسة · موبايل: نفس الكادر (العربية ناحية 77%/47% من الصورة — V2-01m)
+          بـcover بنسبتها الطبيعية — قبل كده object-fill كان بيمطّها (تقرير الموبايل #33) */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 max-md:inset-auto max-md:top-[-10.26%] max-md:left-[-176.47%] max-md:h-[128.21%] max-md:w-[294.12%]">
+        <div className="absolute inset-0">
           <Image
             src="/figma/home/hero-coupe-2x.jpg"
             alt=""
             fill
             loading="eager"
             fetchPriority="high"
-            sizes="(max-width: 767px) 150vw, 100vw"
+            sizes="(max-width: 767px) 180vw, 100vw"
             quality={55}
-            className={`object-cover max-md:object-fill ${ar ? "lg:-scale-x-100" : ""}`}
+            className={`object-cover max-md:object-[85%_45%] ${ar ? "lg:-scale-x-100" : ""}`}
           />
         </div>
       </div>
@@ -69,16 +70,17 @@ export function HomeHero({ locale, content, signedIn, nextAnchor }: { locale: Lo
             <br className="md:hidden" />
             {s(h.title_highlight)}
           </h1>
-          <p className="mt-2 text-body-l text-white/92 max-lg:mt-0 max-md:text-[15px]/[24px] max-md:text-white/85 lg:text-white">
+          <p className="mt-2 text-body-l text-white/92 max-md:text-[15px]/[24px] max-md:text-white/85 lg:text-white">
             <span className="max-lg:hidden">{s(h.subtitle)}</span>
             <span className="lg:hidden">{s(h.subtitle_t)}</span>
           </p>
           <div className="mt-[22px] md:mt-7">
             <HeroSearch
               tiles={slugs.map((slug) => ({ slug, label: s(h.tiles[slug]) }))}
-              defaultSelected={h.default_services}
-              locationPlaceholder={s(signedIn ? h.location_user : h.location_guest)}
-              locationPlaceholderCompact={s(h.location_guest)}
+              // مفيش خدمات مختارة مسبقاً للزائر — العميل يختار بنفسه (تقرير الموبايل #46)
+              defaultSelected={[]}
+              // نفس الاسم على كل الشاشات (قبل كده «المدينة» على الديسكتوب و«الموقع أو الفرع» على الموبايل)
+              locationPlaceholder={s(h.location_guest)}
               carPlaceholder={s(h.car_placeholder)}
               carTypes={content.carTypes.map((c) => ({ slug: c.slug, label: s(c) }))}
               searchLabel={s(h.search)}

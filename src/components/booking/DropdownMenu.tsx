@@ -60,10 +60,11 @@ export function DropdownMenu<V extends string>({
                     onChange(o.value);
                     setOpen(false);
                   }}
-                  className={`flex w-full items-center gap-2.5 rounded-[10px] px-3 py-[11px] text-start text-[16px] transition-colors duration-150 ease-figma-out ${on ? "bg-tile leading-[26px] font-medium" : "leading-[28px] font-light hover:bg-tile"}`}
+                  // النص من بداية السطر وعلامة الاختيار في الناحية التانية (تقرير الموبايل #41)
+                  className={`flex w-full items-center justify-start gap-2.5 rounded-[10px] px-3 py-[11px] text-start text-[16px] transition-colors duration-150 ease-figma-out ${on ? "bg-tile leading-[26px] font-medium" : "leading-[28px] font-light hover:bg-tile"}`}
                 >
+                  <span className="min-w-0 flex-1 text-start">{o.label}</span>
                   <span className="flex size-4 shrink-0 items-center justify-center">{on && <Icon name="check" size={16} className="text-nature-green" />}</span>
-                  {o.label}
                 </button>
               </li>
             );

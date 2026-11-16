@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";
 import { getBookingDict } from "@/i18n/dict/booking";
 import { getOffersDict } from "@/i18n/dict/offers";
+import { getCommon } from "@/i18n/dict/common";
 import type { Provider, ServiceSlug } from "@/lib/data/types";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons/Icon";
@@ -60,6 +61,7 @@ export function Listing({
 }) {
   const t = getBookingDict(locale);
   const o = getOffersDict(locale);
+  const c = getCommon(locale);
   const offers = kind === "offers";
   const defaultSort: Sort = offers ? "discount" : "savings";
   const [sort, setSort] = useState<Sort>(defaultSort);
@@ -164,16 +166,32 @@ export function Listing({
         <Icon name="filter" size={18} className="text-nature-green" />
         {t.filterButton}
       </button>
-      <aside className={`${panelOpen ? "flex" : "hidden"} w-full shrink-0 flex-col gap-[18px] rounded-[20px] border border-border-default bg-white p-[22px] lg:flex lg:w-[286px]`}>
-        <div className="flex items-center justify-between">
+      {/* موبايل/تابلت: الفلاتر شاشة من تحت (bottom sheet) بعنوان ثابت فوق وزر «عرض النتائج» ثابت تحت —
+          قبل كده كانت بتفتح جوه الصفحة بطول ~1,200px وتزق النتائج لتحت (تقرير الموبايل #15) */}
+      {panelOpen && (
+        <>
+          <div className="fixed inset-0 z-50 animate-dissolve bg-bg-overlay lg:hidden" onClick={() => setPanelOpen(false)} aria-hidden />
+          <style>{"@media (max-width:1023px){body{overflow:hidden}}"}</style>
+        </>
+      )}
+      <aside
+        {...(panelOpen ? { role: "dialog", "aria-modal": true, "aria-label": offers ? o.filterOffers : o.filterPackages } : {})}
+        className={`${panelOpen ? "flex" : "hidden"} w-full shrink-0 flex-col gap-[18px] rounded-[20px] border border-border-default bg-white p-[22px] max-lg:fixed max-lg:inset-x-0 max-lg:top-10 max-lg:bottom-0 max-lg:z-50 max-lg:overflow-y-auto max-lg:overscroll-contain max-lg:rounded-b-none max-lg:pt-0 max-lg:pb-0 lg:flex lg:w-[286px]`}
+      >
+        <div className="flex items-center justify-between max-lg:sticky max-lg:top-0 max-lg:z-10 max-lg:-mx-[22px] max-lg:bg-white max-lg:px-[22px] max-lg:pt-4 max-lg:pb-3">
           {/* «فلتر العروض / الباقات» Bold 18 + أيقونة filter 18 (Charcoal) قبلها بفاصل 8 */}
           <span className="flex items-center gap-2 text-h5">
             <Icon name="filter" size={18} className="text-deep-charcoal" />
             {offers ? o.filterOffers : o.filterPackages}
           </span>
-          <button type="button" onClick={clearAll} className="text-label-m text-nature-green hover:underline">
-            {t.clearAll}
-          </button>
+          <span className="flex items-center gap-1">
+            <button type="button" onClick={clearAll} className="px-1 py-2 text-label-m text-nature-green hover:underline">
+              {t.clearAll}
+            </button>
+            <button type="button" aria-label={c.close} onClick={() => setPanelOpen(false)} className="flex size-10 items-center justify-center rounded-full text-deep-charcoal hover:bg-tile lg:hidden">
+              <Icon name="x" size={18} />
+            </button>
+          </span>
         </div>
 
         <FilterGroup title={t.provider}>
@@ -264,16 +282,18 @@ export function Listing({
           </div>
         )}
 
-        <a
-          href="#results"
-          onClick={() => {
-            setPanelOpen(false);
-            setToast(t.filtersApplied); // P-10s
-          }}
-          className="flex h-12 items-center justify-center rounded-md bg-neon-green text-label-l transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
-        >
-          {offers ? t.showOffers(ordered.length) : t.showPackages(ordered.length)}
-        </a>
+        <div className="max-lg:sticky max-lg:bottom-0 max-lg:-mx-[22px] max-lg:mt-auto max-lg:border-t max-lg:border-border-default max-lg:bg-white max-lg:px-[22px] max-lg:pt-3 max-lg:pb-[max(12px,env(safe-area-inset-bottom))]">
+          <a
+            href="#results"
+            onClick={() => {
+              setPanelOpen(false);
+              setToast(t.filtersApplied); // P-10s
+            }}
+            className="flex h-12 items-center justify-center rounded-md bg-neon-green text-label-l transition-colors duration-200 ease-figma-out hover:bg-bg-brand-hover active:bg-bg-brand-pressed"
+          >
+            {offers ? t.showOffers(ordered.length) : t.showPackages(ordered.length)}
+          </a>
+        </div>
       </aside>
 
       <section id="results" className="@container flex min-w-0 flex-1 scroll-mt-28 flex-col gap-[18px] lg:pt-4">
@@ -378,8 +398,17 @@ function FilterGroup({ title, children }: { title: string; children: React.React
 }
 
 function CheckRow({ on, label, count, onClick, logo }: { on: boolean; label: string; count: number; onClick: () => void; logo?: React.ReactNode }) {
+  // خيار مالوش نتائج (0) مايتختارش (#15)
+  const off = count === 0 && !on;
   return (
-    <button type="button" role="checkbox" aria-checked={on} onClick={onClick} className="flex h-6 items-center justify-between gap-2 text-start">
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={on}
+      disabled={off}
+      onClick={onClick}
+      className="flex h-6 items-center justify-between gap-2 text-start disabled:cursor-not-allowed disabled:opacity-45"
+    >
       <span className="flex min-w-0 items-center gap-2">
         <span className={`flex size-[18px] shrink-0 items-center justify-center rounded-[6px] border transition-colors duration-150 ease-figma-out ${on ? "border-deep-charcoal bg-deep-charcoal text-neon-green" : "border-border-default bg-white"}`}>
           {on && <Icon name="check" size={12} className="animate-dissolve-fast" />}
