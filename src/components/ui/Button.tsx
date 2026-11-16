@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import type { ComponentProps, ReactNode } from "react";
 
 // Button (36:192) + أزرار V2: Primary = إجراء رئيسي واحد في الشاشة.

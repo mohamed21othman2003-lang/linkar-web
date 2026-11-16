@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import { tx, type Locale } from "@/i18n/config";
 import type { BlogPost, blogPage } from "@/lib/data/blog/blog";
 import { routes } from "@/lib/routes";

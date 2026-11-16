@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import type { CSSProperties } from "react";
 import type { Locale } from "@/i18n/config";
 import { tx } from "@/i18n/config";

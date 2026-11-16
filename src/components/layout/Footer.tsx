@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import Image from "@/components/ui/Img";
 import { getLocale } from "@/i18n/locale";
 import { tx } from "@/i18n/config";

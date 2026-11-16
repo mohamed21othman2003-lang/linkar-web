@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import Image from "@/components/ui/Img";
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";

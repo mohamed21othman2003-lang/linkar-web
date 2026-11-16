@@ -1,5 +1,5 @@
 import Image from "@/components/ui/Img";
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import { Icon } from "@/components/icons/Icon";
 
 export type PostCardView = { slug: string; href: string; title: string; excerpt: string; tag: string; minutes: string; photo: string; category: string };

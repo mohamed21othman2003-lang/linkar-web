@@ -3,6 +3,7 @@ import "./globals.css";
 import { siteFonts } from "./fonts";
 import { getLocale, dirOf } from "@/i18n/locale";
 import { CriticalIconSymbols } from "@/components/icons/CriticalIconSymbols";
+import { NavInterceptor } from "@/components/layout/NavInterceptor";
 
 // المحتوى الحقيقي (العنوان والوصف) هييجي من طبقة البيانات في المرحلة 1
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default async function RootLayout({
     <html lang={locale} dir={dirOf(locale)} data-scroll-behavior="smooth" className={`${siteFonts} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-bg-canvas text-text-primary">
         <CriticalIconSymbols />
+        <NavInterceptor />
         {children}
       </body>
     </html>

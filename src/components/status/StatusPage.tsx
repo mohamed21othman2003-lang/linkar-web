@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import type { ReactNode } from "react";
 import { RetryButton } from "./RetryButton";
 

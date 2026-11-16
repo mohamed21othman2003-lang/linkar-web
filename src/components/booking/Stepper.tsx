@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import { Fragment } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { Container } from "@/components/ui/Container";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import { routes } from "@/lib/routes";
 
 // Brand logo (543:43): Primary على الفاتح · Inverse على الغامق — ممنوع إعادة تلوينه أو مطّه

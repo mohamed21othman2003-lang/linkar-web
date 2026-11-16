@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import type { Locale } from "@/i18n/config";
 import { getGiftDict } from "@/i18n/dict/gift";
 import { routes } from "@/lib/routes";

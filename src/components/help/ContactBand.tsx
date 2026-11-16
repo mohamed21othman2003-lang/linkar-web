@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 
 // «Contact band» — لم تجد إجابتك؟ (W2-97 · W2-97b · W2-98): غامق r24، النص من بداية السطر والأزرار في آخره
 export function ContactBand({

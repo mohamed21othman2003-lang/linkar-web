@@ -1,5 +1,5 @@
 import Image from "@/components/ui/Img";
-import Link from "next/link";
+import Link from "@/components/ui/NavLink";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/icons/Icon";
 import { logoSize } from "@/lib/data/providers";
