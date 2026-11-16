@@ -171,7 +171,7 @@ export function ProviderTabs({
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-caption whitespace-nowrap text-state-gray">{t.pricePerCar}</span>
-                <div role="radiogroup" aria-label={t.pricePerCar} className="flex gap-1 rounded-md bg-cool-gray/40 p-1">
+                <div role="radiogroup" aria-label={t.pricePerCar} className="flex max-w-full gap-1 rounded-md bg-cool-gray/40 p-1">
                   {SIZES.map((k) => (
                     <button
                       key={k}
@@ -179,7 +179,7 @@ export function ProviderTabs({
                       role="radio"
                       aria-checked={size === k}
                       onClick={() => setSize(k)}
-                      className={`rounded-[9px] px-3.5 py-[7px] text-label-m whitespace-nowrap ${size === k ? "bg-deep-charcoal text-white" : "text-deep-charcoal hover:bg-white/60"}`}
+                      className={`min-w-0 flex-1 rounded-[9px] px-3.5 py-[7px] max-[359px]:px-2.5 text-label-m whitespace-nowrap ${size === k ? "bg-deep-charcoal text-white" : "text-deep-charcoal hover:bg-white/60"}`}
                     >
                       <span dir="auto">{t.sizes[k]}</span>
                     </button>
