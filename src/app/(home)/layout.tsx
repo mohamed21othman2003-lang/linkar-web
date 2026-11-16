@@ -13,7 +13,10 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
       <main className="flex-1">{children}</main>
       {/* الفوتر آخر الصفحة: بيتجهّز في مهمة لوحده (Suspense) — ظهوره مش بيزق أي حاجة فوقه */}
       <Suspense fallback={null}>
-        <Footer home />
+        {/* content-visibility: المتصفح مابيحسبش layout الفوتر لحد ما يقرّب من الشاشة */}
+        <div className="[contain-intrinsic-size:auto_1100px] [content-visibility:auto]">
+          <Footer home />
+        </div>
       </Suspense>
       {/* «قيّم الخدمة» بيفتح لوحده بعد اكتمال الحجز (W2-39) — للعميل اللي عنده حجز مكتمل ماتقيّمش بس */}
       <Suspense fallback={null}>
